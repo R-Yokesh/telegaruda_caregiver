@@ -1,0 +1,27 @@
+.app_sidebar {
+  background-color: #0066cc; /* Blue color */
+}
+
+.sidebar_container {
+  color: #fff; /* White text */
+}
+
+.sidebar-btn-wrapper {
+  color: #fff; /* White text for footer */
+}
+
+.cdbreact .cdb-sidebar-menu .cdb-sidebar-menu-item {
+  color: #fff;
+}
+
+.cdbreact .cdb-sidebar-menu .cdb-sidebar-menu-item:hover {
+  background-color: #005bb5; /* Darker blue for hover effect */
+}
+
+.cdbreact .cdb-sidebar-header {
+  background-color: #0066cc; /* Match header background color */
+}
+
+.cdbreact .cdb-sidebar-footer {
+  background-color: #0066cc; /* Match footer background color */
+}
