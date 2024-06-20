@@ -1,0 +1,51 @@
+.setting-div1 {
+    margin-top: 5%;
+}
+
+.setting-container {
+    width: 100%;
+    background: white !important;
+    padding: 2%;
+    border-radius: 20px;
+}
+
+.setting-whole-div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.setting-personal-icon {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.setting-personal {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-personal-span-1 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 29px;
+    color: #17171D;
+}
+
+.setting-personal-span-2 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #17171D99;
+}
+
+.setting-edit {
+    cursor: pointer;
+}
+
+.setting-line {
+    margin-top: 20px;
+    border-top: 1px solid #E8E8E8;
+}

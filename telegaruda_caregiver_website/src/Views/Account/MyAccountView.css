@@ -1,0 +1,51 @@
+.div1 {
+    margin-top: 5%;
+}
+
+.acc-container {
+    width: 100%;
+    background: white !important;
+    padding: 2%;
+    border-radius: 20px;
+}
+
+.acc-whole-div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.acc-personal-icon {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.acc-personal {
+    display: flex;
+    flex-direction: column;
+}
+
+.acc-personal-span-1 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 29px;
+    color: #17171D;
+}
+
+.acc-personal-span-2 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #17171D99;
+}
+
+.acc-edit {
+    cursor: pointer;
+}
+
+.acc-form {
+    margin: 10px;
+    border-top: 1px solid #E8E8E8;
+}
