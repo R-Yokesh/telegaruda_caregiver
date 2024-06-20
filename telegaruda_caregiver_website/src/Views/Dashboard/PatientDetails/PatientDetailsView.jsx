@@ -6,6 +6,7 @@ import PatientTabs from "../../../Components/Dashboard/PatientTabs/PatientTabs";
 import Breadcrumb from "../../../Components/Breadcrumb/Breadcrumb";
 import VitalsTab from "../../../Components/Dashboard/PatientTabs/VitalsTab/VitalsTab";
 import { Assets } from "../../../assets/Assets";
+import MedicalProfile from "../../../Components/Dashboard/PatientTabs/MedicalProfileTab/MedicalProfile";
 
 const PatientDetailsView = () => {
   const tabs = [
@@ -19,7 +20,7 @@ const PatientDetailsView = () => {
       title: "Medical Profile",
       image: Assets.Notes,
     },
-    
+
     {
       id: 3,
       title: "Camera Control",
@@ -50,7 +51,8 @@ const PatientDetailsView = () => {
         {currentTab === 2 && (
           <CRow>
             <CCol md={12}>
-              <VitalsTab />
+              {/* <VitalsTab /> */}
+              <MedicalProfile />
             </CCol>
           </CRow>
         )}

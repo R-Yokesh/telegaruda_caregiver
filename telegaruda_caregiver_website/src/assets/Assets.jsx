@@ -15,12 +15,12 @@ import ExpandClose from "./Images/ExpandClose.png";
 import EyeClose from "./Images/eye-close.png";
 import EyeOpen from "./Images/eye.png";
 
-import teleconcult from './Images/SideMenu/tele-icon.svg'
-import avilability from './Images/SideMenu/avil-icon.svg'
-import account from './Images/SideMenu/account-icon.svg'
-import setting from './Images/SideMenu/setting.svg'
-import masters from './Images/SideMenu/master-icon.svg'
-import user from './Images/SideMenu/user.png'
+import teleconcult from "./Images/SideMenu/tele-icon.svg";
+import avilability from "./Images/SideMenu/avil-icon.svg";
+import account from "./Images/SideMenu/account-icon.svg";
+import setting from "./Images/SideMenu/setting.svg";
+import masters from "./Images/SideMenu/master-icon.svg";
+import user from "./Images/SideMenu/user.png";
 
 import patient1 from "./Images/Patients/Patient-1.png";
 import Call from "./Images/Patients/Call.png";
@@ -41,6 +41,11 @@ import VitalKetone from "./Images/Patients/Vital-Ketone.png";
 import VitalLipid from "./Images/Patients/Vital-Lipid.png";
 import VitalRespi from "./Images/Patients/Vital-Respi.png";
 
+import Imaging from "./Images/Patients/Imaging.png";
+import Lab from "./Images/Patients/Lab.png";
+import PhyExam from "./Images/Patients/PhysicalExam.png";
+import VitalSig from "./Images/Patients/VitalSign.png";
+
 export const Assets = {
   logomain,
   loginbanner,
@@ -50,7 +55,11 @@ export const Assets = {
   Close,
   Notify,
   TwoFA,
-  ForgetPass, ExpandOpen, ExpandClose, EyeClose, EyeOpen,
+  ForgetPass,
+  ExpandOpen,
+  ExpandClose,
+  EyeClose,
+  EyeOpen,
   teleconcult: teleconcult,
   avilability: avilability,
   account: account,
@@ -73,4 +82,8 @@ export const Assets = {
   VitalHCT,
   VitalBMI,
   VitalBs,
+  Imaging,
+  Lab,
+  PhyExam,
+  VitalSig,
 };

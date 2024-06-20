@@ -1,0 +1,42 @@
+.medical-tabs {
+    background-color: white;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    height: 100%;
+}
+
+.medical-tabs-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.medical-tab-items {
+    padding: 12px;
+    display: flex;
+    gap: 5px;
+    color: black;
+    cursor: pointer;
+}
+
+.medical-tab-active {
+    background: #0084CF;
+    border-radius: 10px;
+}
+
+.medical-tab-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 23.12px;
+    text-align: left;
+    color: black;
+}
+
+.medical-tab-title-active {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 23.12px;
+    text-align: left;
+    color: white;
+}
