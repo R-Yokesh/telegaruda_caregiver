@@ -22,6 +22,25 @@ import setting from './Images/SideMenu/setting.svg'
 import masters from './Images/SideMenu/master-icon.svg'
 import user from './Images/SideMenu/user.png'
 
+import patient1 from "./Images/Patients/Patient-1.png";
+import Call from "./Images/Patients/Call.png";
+import Wave from "./Images/Patients/Wave.png";
+import Camera from "./Images/Patients/Camera.png";
+import Qr from "./Images/Patients/QR.png";
+import Notes from "./Images/Patients/Notes.png";
+
+import VitalBP from "./Images/Patients/Vital-BP.png";
+import Vitalline from "./Images/Patients/Lines.png";
+
+import VitalBs from "./Images/Patients/Vital-BS.png";
+import VitalBMI from "./Images/Patients/Vital-BMI.png";
+import VitalHCT from "./Images/Patients/Vital-HCT.png";
+import VitalHae from "./Images/Patients/Vital-Haemo.png";
+import VitalHBeat from "./Images/Patients/Vital-HeartBeat.png";
+import VitalKetone from "./Images/Patients/Vital-Ketone.png";
+import VitalLipid from "./Images/Patients/Vital-Lipid.png";
+import VitalRespi from "./Images/Patients/Vital-Respi.png";
+
 export const Assets = {
   logomain,
   loginbanner,
@@ -38,4 +57,20 @@ export const Assets = {
   setting: setting,
   masters: masters,
   user: user,
+  patient1,
+  Call,
+  Wave,
+  Camera,
+  Qr,
+  Notes,
+  VitalBP,
+  Vitalline,
+  VitalRespi,
+  VitalLipid,
+  VitalKetone,
+  VitalHBeat,
+  VitalHae,
+  VitalHCT,
+  VitalBMI,
+  VitalBs,
 };

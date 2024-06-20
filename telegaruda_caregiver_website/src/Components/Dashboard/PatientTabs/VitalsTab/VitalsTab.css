@@ -1,0 +1,57 @@
+.vitals-title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28.9px;
+    letter-spacing: 0.1em;
+    text-align: left;
+}
+
+.vital-cards {
+    height: 100%;
+    width: 100%;
+    box-shadow: 0px 4px 24px 0px #17171D14;
+    border-radius: 25px;
+    border: none;
+}
+
+.vital-icon-and-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.vital-card-title {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.vital-line-container {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.vital-card-text-bold {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28.9px;
+    text-align: left;
+}
+
+.vital-card-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.vital-badge-list {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.vital-badge {
+    margin-bottom: 10px;
+}

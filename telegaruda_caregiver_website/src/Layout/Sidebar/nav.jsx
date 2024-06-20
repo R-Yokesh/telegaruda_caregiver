@@ -1,43 +1,43 @@
-import React from 'react';
-import { CTooltip } from '@coreui/react';
-import { Assets } from '../../assets/Assets';
+import React from "react";
+import { CTooltip } from "@coreui/react";
+import { Assets } from "../../assets/Assets";
 
-const url = '/telegaruda-provider';
+const url = "/telegaruda-provider";
 export const Sidebar_Menus = [
   {
-    name: 'Teleconsult',
-    subName: 'Update & Join Video Consult',
-    to: '/patient',
+    name: "Patient",
+    subName: "Update & Join Video Consult",
+    to: "/patient/details",
     iconClass: Assets.teleconcult,
-    iconType: 'solid' // Optional, defaults to 'regular'
+    iconType: "solid", // Optional, defaults to 'regular'
   },
   {
-    name: 'Availability',
-    subName: 'Update Availability Detail and More',
-    to: '/patient',
+    name: "Availability",
+    subName: "Update Availability Detail and More",
+    to: "/patient",
     iconClass: Assets.avilability,
-    iconType: 'solid' // Optional, defaults to 'regular'
+    iconType: "solid", // Optional, defaults to 'regular'
   },
   {
-    name: 'Account',
-    subName: 'Profile User Detail and More',
-    to: '/account',
+    name: "Account",
+    subName: "Profile User Detail and More",
+    to: "/account",
     iconClass: Assets.account,
-    iconType: 'solid' // Optional, defaults to 'regular'
+    iconType: "solid", // Optional, defaults to 'regular'
   },
   {
-    name: 'Settings',
-    subName: 'Password, 2FA & Preference',
-    to: '/settings',
+    name: "Settings",
+    subName: "Password, 2FA & Preference",
+    to: "/settings",
     iconClass: Assets.setting,
-    iconType: 'solid' // Optional, defaults to 'regular'
+    iconType: "solid", // Optional, defaults to 'regular'
   },
   {
-    name: 'Masters',
-    subName: 'Add Masters',
-    to: '/patient',
+    name: "Masters",
+    subName: "Add Masters",
+    to: "/patient",
     iconClass: Assets.masters,
-    iconType: 'solid' // Optional, defaults to 'regular'
+    iconType: "solid", // Optional, defaults to 'regular'
   },
   // {
   //   name: 'Doctor',
@@ -46,4 +46,3 @@ export const Sidebar_Menus = [
   //   iconType: 'solid' // Optional, defaults to 'regular'
   // }
 ];
-

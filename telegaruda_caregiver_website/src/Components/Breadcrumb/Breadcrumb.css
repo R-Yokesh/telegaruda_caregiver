@@ -1,0 +1,18 @@
+.breadcrumb-item-custom a {
+    text-decoration: none !important;
+    /* Remove underline */
+    color: #17171D99 !important;
+    /* Set text color to black */
+}
+
+.breadcrumb-label {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 23.12px;
+    letter-spacing: 0.1em;
+    text-align: left;
+}
+
+.black a {
+    color: black !important;
+}

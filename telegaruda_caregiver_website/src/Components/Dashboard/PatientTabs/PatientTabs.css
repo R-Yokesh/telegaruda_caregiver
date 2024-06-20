@@ -1,0 +1,39 @@
+.card-tabs {
+    background-color: #000000;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    height: 100%;
+}
+
+.tabs-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.tab-items {
+    padding: 12px;
+    display: flex;
+    gap: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.tab-active {
+    background: #0084CF;
+    border-radius: 10px;
+}
+
+.tab-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 23.12px;
+    text-align: left;
+    color: white;
+}
+
+.tab-icon {
+    width: 24px;
+    height: 24px;
+}

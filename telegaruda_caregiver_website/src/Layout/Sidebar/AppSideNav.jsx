@@ -13,7 +13,7 @@ const AppSideNav = ({ menus }) => {
               <img src={menu.iconClass} alt="menu-icon" className='menu-icon' />
               <div className='side-section'>
                 <p>{menu.name}</p>
-                <p className='menu-small'><small>{menu.subName}</small></p>
+                {/* <p className='menu-small'><small>{menu.subName}</small></p> */}
               </div>
             </div>
           </Link>

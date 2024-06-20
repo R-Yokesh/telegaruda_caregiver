@@ -1,0 +1,34 @@
+.card-profile {
+    background-color: #0084CF;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+}
+
+.img-container {
+    width: 90px;
+    height: 90px;
+}
+
+.user-title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28.9px;
+    text-align: left;
+    color: white;
+}
+
+.user-email {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 14px;
+    color: white;
+    margin-bottom: 6px;
+}
+
+.user-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
