@@ -2,9 +2,9 @@ import { CBadge, CCard, CCardBody, CCol, CRow } from "@coreui/react";
 import React from "react";
 import "./VitalsTab.css";
 import { Assets } from "../../../../assets/Assets";
+import Badge from "../../../Badge/Badge";
 
-const VitalsTab = ({ category }) => {
-  console.log("first", category);
+const VitalsTab = ({ category, openModal }) => {
   const data = [
     {
       id: 1,
@@ -40,7 +40,7 @@ const VitalsTab = ({ category }) => {
       name: "HCT",
       category: "Hematologic Profile",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "23", color: "danger" }],
+      badge: [{ label: "23", color: "error" }],
     },
     {
       id: 5,
@@ -48,7 +48,7 @@ const VitalsTab = ({ category }) => {
       name: "Heart Rate",
       category: "Primary Vitals",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "1 Bpm", color: "primary" }],
+      badge: [{ label: "1 Bpm", color: "success" }],
     },
     {
       id: 6,
@@ -56,7 +56,7 @@ const VitalsTab = ({ category }) => {
       name: "Haemoglobin",
       category: "Hematologic Profile",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "1212", color: "danger" }],
+      badge: [{ label: "1212", color: "error" }],
     },
     {
       id: 7,
@@ -64,7 +64,7 @@ const VitalsTab = ({ category }) => {
       name: "Blood Ketone",
       category: "Hematologic Profile",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "121", color: "danger" }],
+      badge: [{ label: "121", color: "error" }],
     },
     {
       id: 8,
@@ -74,9 +74,9 @@ const VitalsTab = ({ category }) => {
       date: "Recently Added 27-03-2024",
       badge: [
         { label: "LDL: Optimal", color: "success" },
-        { label: "MDL: High", color: "danger" },
-        { label: "VLDL: High", color: "danger" },
-        { label: "TG: Optimal", color: "danger" },
+        { label: "MDL: High", color: "error" },
+        { label: "VLDL: High", color: "error" },
+        { label: "TG: Optimal", color: "error" },
         { label: "Total: Optimal", color: "success" },
       ],
     },
@@ -86,7 +86,7 @@ const VitalsTab = ({ category }) => {
       name: "Respiration Rate",
       category: "Primary Vitals",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "44", color: "danger" }],
+      badge: [{ label: "44", color: "error" }],
     },
     {
       id: 10,
@@ -111,10 +111,10 @@ const VitalsTab = ({ category }) => {
       date: "Recently Added 27-03-2024",
       category: "Primary Vitals",
       badge: [
-        { label: "FEV1: 1L", color: "danger" },
-        { label: "FVC: 1L", color: "danger" },
-        { label: "FEV1/FVC: 40", color: "danger" },
-        { label: "PEF: 1L/min", color: "danger" },
+        { label: "FEV1: 1L", color: "error" },
+        { label: "FVC: 1L", color: "error" },
+        { label: "FEV1/FVC: 40", color: "error" },
+        { label: "PEF: 1L/min", color: "error" },
       ],
     },
     {
@@ -123,7 +123,7 @@ const VitalsTab = ({ category }) => {
       name: "Blood Uric Acid",
       category: "Hematologic Profile",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "6mg/dl", color: "danger" }],
+      badge: [{ label: "6mg/dl", color: "error" }],
     },
     {
       id: 14,
@@ -131,7 +131,7 @@ const VitalsTab = ({ category }) => {
       name: "Urinalysis",
       category: "Renal and Metabolic Markers",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "100pmol/d", color: "danger" }],
+      badge: [{ label: "100pmol/d", color: "error" }],
     },
     {
       id: 15,
@@ -139,7 +139,7 @@ const VitalsTab = ({ category }) => {
       name: "Urea",
       date: "Recently Added 27-03-2024",
       category: "Renal and Metabolic Markers",
-      badge: [{ label: "20mg/dl", color: "danger" }],
+      badge: [{ label: "20mg/dl", color: "error" }],
     },
     {
       id: 16,
@@ -147,7 +147,7 @@ const VitalsTab = ({ category }) => {
       name: "Creatinine",
       category: "Renal and Metabolic Markers",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "85pmol/L", color: "danger" }],
+      badge: [{ label: "85pmol/L", color: "error" }],
     },
     {
       id: 17,
@@ -155,7 +155,7 @@ const VitalsTab = ({ category }) => {
       name: "GFR",
       category: "Renal and Metabolic Markers",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "90ml/min", color: "danger" }],
+      badge: [{ label: "90ml/min", color: "error" }],
     },
   ];
 
@@ -177,8 +177,8 @@ const VitalsTab = ({ category }) => {
           {/* <span className="vitals-title">VITALS</span> */}
           <CRow className="mt-3 ">
             {filteredProducts?.map((item, index) => (
-              <CCol md={4} key={index} className="mb-3">
-                <CCard className="vital-cards">
+              <CCol md={6} xl={4} key={index} className="mb-3">
+                <CCard className="vital-cards" onClick={() => openModal(item)}>
                   <CCardBody>
                     <div className="vital-icon-and-title">
                       <div>
@@ -194,9 +194,10 @@ const VitalsTab = ({ category }) => {
                     <div className="vital-badge">
                       <div className="vital-badge-list">
                         {item.badge.map((dt, i) => (
-                          <CBadge color={dt.color} key={i}>
-                            {dt.label}
-                          </CBadge>
+                          // <CBadge color={dt.color} key={i}>
+                          //   {dt.label}
+                          // </CBadge>
+                          <Badge label={dt?.label} color={dt?.color} />
                         ))}
                       </div>
                     </div>

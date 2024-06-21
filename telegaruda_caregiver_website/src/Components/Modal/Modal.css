@@ -1,0 +1,10 @@
+.close-modal {
+    position: absolute;
+    top: -60px;
+    right: 45%;
+    padding: 8px;
+    width: 50px;
+    cursor: pointer;
+    color: #888888;
+    margin-top: 10px;
+}

@@ -4,14 +4,11 @@
 }
 
 .back-box {
-    background-color: white;
     border-radius: 6px;
-    width: 30px;
+    width: 60px;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
-    font-weight: 700;
     cursor: pointer;
 }

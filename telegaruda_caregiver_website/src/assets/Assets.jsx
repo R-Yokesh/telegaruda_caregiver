@@ -45,8 +45,15 @@ import Imaging from "./Images/Patients/Imaging.png";
 import Lab from "./Images/Patients/Lab.png";
 import PhyExam from "./Images/Patients/PhysicalExam.png";
 import VitalSig from "./Images/Patients/VitalSign.png";
+import CloseBtn from "./Images/Patients/Close-Btn.png";
+import BackBtn from "./Images/Patients/Back-Btn.png";
+
+import Add from "./Images/Patients/Add.png";
+import Filter from "./Images/Patients/Filter-2.png";
+import Chart from "./Images/Patients/Chart.png";
 
 export const Assets = {
+  BackBtn,
   logomain,
   loginbanner,
   eyei,
@@ -86,4 +93,8 @@ export const Assets = {
   Lab,
   PhyExam,
   VitalSig,
+  CloseBtn,
+  Add,
+  Filter,
+  Chart,
 };

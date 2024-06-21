@@ -40,10 +40,10 @@ const PatientDetailsView = () => {
     <div className="p-3">
       <CContainer>
         <CRow className="mb-4">
-          <CCol md={5}>
+          <CCol md={12} xl={5} className="mb-2">
             <PatentProfile />
           </CCol>
-          <CCol md={7}>
+          <CCol md={12} xl={7}>
             <PatientTabs tabs={tabs} getCurrentTab={getCurrentTab} />
           </CCol>
         </CRow>

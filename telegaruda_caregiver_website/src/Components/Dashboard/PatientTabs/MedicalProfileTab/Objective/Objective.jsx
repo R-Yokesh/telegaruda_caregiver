@@ -6,6 +6,8 @@ import Breadcrumb from "../../../../Breadcrumb/Breadcrumb";
 import "./Objective.css";
 import MedicalTab from "../MedicalTab";
 import VitalsTab from "../../VitalsTab/VitalsTab";
+import Modal from "../../../../Modal/Modal";
+import ObjectiveDetailPage from "./DetailPage/ObjectiveDetailPage";
 
 const Objective = () => {
   const cardData = [
@@ -26,6 +28,7 @@ const Objective = () => {
   });
   const [selectedData, setSelectedData] = useState();
   const [cardView, setCardView] = useState(false);
+  const [cardSelectedData, setSelectedCardData] = useState();
 
   const getSelectedData = (data) => {
     setSelectedData(data);
@@ -43,51 +46,79 @@ const Objective = () => {
   }
 
   const currentTabtitle = findTitleById(currentTab);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (data) => {
+    setSelectedCardData(data);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  console.log(cardSelectedData, "first", selectedData);
+
   return (
-    <CContainer className="mt-3">
-      {!cardView ? (
-        <CRow>
-          {cardData.map((dt, i) => (
-            <CCol md={3} className="mb-3">
-              <Card data={dt} getSelectedData={getSelectedData} />
-            </CCol>
-          ))}
-        </CRow>
-      ) : (
-        <>
-          <CRow className="mt-2">
-            <CCol md={7} className="mb-3">
-              <div className="d-flex gap-2">
-                <div className="back-box" onClick={() => setCardView(false)}>
-                  &#8592;
-                </div>
-                <span className="Obj-name">Vital Signs</span>
-              </div>
-            </CCol>
-            <CCol md={5} className="mb-3">
-              <Breadcrumb
-                paths={[
-                  { label: "Home", to: "/" },
-                  { label: "Patient List", to: "/patient/details" },
-                  { label: "Medical Profile", to: "/patient/details" },
-                  { label: "Vital Signs", to: "/patient/details" },
-                ]}
-              />
-            </CCol>
-          </CRow>
-          <CRow className="mt-2">
-            <MedicalTab
-              tabs={tabs}
-              getCurrentTab={getCurrentTab}
-              defaultTab={0}
-            />
-          </CRow>
+    <>
+      <CContainer className="mt-3">
+        {!cardView ? (
           <CRow>
-            <VitalsTab category={currentTabtitle} />
+            {cardData.map((dt, i) => (
+              <CCol md={4} xl={3} className="mb-3">
+                <Card data={dt} getSelectedData={getSelectedData} />
+              </CCol>
+            ))}
           </CRow>
-        </>
-      )}
-    </CContainer>
+        ) : (
+          <>
+            <CRow className="mt-4">
+              <CCol md={6} className="mb-3">
+                <div className="d-flex">
+                  <div className="back-box" onClick={() => setCardView(false)}>
+                    <img
+                      alt="BackBtn"
+                      src={Assets.BackBtn}
+                      style={{ width: "60px" }}
+                    />
+                  </div>
+                  <span className="Obj-name">Vital Signs</span>
+                </div>
+              </CCol>
+              <CCol md={6} className="mb-3">
+                <Breadcrumb
+                  paths={[
+                    { label: "Home", to: "/" },
+                    { label: "Patient List", to: "/patient/details" },
+                    { label: "Medical Profile", to: "/patient/details" },
+                    { label: "Vital Signs", to: "/patient/details" },
+                  ]}
+                />
+              </CCol>
+            </CRow>
+            <CRow>
+              <MedicalTab
+                tabs={tabs}
+                getCurrentTab={getCurrentTab}
+                defaultTab={0}
+              />
+            </CRow>
+            <CRow>
+              <VitalsTab category={currentTabtitle} openModal={openModal} />
+            </CRow>
+          </>
+        )}
+      </CContainer>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <CContainer className="p-0">
+          <CRow>
+            <CCol className="mb-3">
+              <ObjectiveDetailPage data={cardSelectedData} />
+            </CCol>
+          </CRow>
+        </CContainer>
+      </Modal>
+    </>
   );
 };
 
