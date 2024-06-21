@@ -40,6 +40,7 @@ import VitalHBeat from "./Images/Patients/Vital-HeartBeat.png";
 import VitalKetone from "./Images/Patients/Vital-Ketone.png";
 import VitalLipid from "./Images/Patients/Vital-Lipid.png";
 import VitalRespi from "./Images/Patients/Vital-Respi.png";
+import Patient from './Images/Patients/patient-image.png';
 
 export const Assets = {
   logomain,
@@ -73,4 +74,5 @@ export const Assets = {
   VitalHCT,
   VitalBMI,
   VitalBs,
+  Patient
 };
