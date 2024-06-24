@@ -56,6 +56,8 @@ import Chart from "./Images/Patients/Chart.png";
 import Delete from "./Images/Patients/Delete.png";
 import EditPencil from "./Images/Patients/Edit_Pencil.png";
 import Warning from "./Images/Patients/Warning.png";
+import CloseX from "./Images/Patients/close-x.png";
+
 
 export const Assets = {
   BackBtn,
@@ -105,5 +107,6 @@ export const Assets = {
   EditPencil,
   Warning,
   Delete,
-  Patient
+  Patient,
+  CloseX
 };

@@ -10,14 +10,16 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from "@coreui/react";
-import React from "react";
+import React, { useState } from "react";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../assets/Assets";
 import Table from "../../../../../Tables/Table";
 import Badge from "../../../../../Badge/Badge";
 import ActiveButton from "../../../../../Buttons/ActiveButton/ActiveButton";
+import ChartTab from "../../../../../Charts/ChartTab";
 
 const ObjectiveDetailPage = ({ data }) => {
+  const [chartView, setChartView] = useState(false);
   const columns = [
     { id: 1, label: "NO." },
     { id: 2, label: "RESULT" },
@@ -81,6 +83,13 @@ const ObjectiveDetailPage = ({ data }) => {
       action: [{ type: "edit" }, { type: "delete" }],
     },
   ];
+
+  const chartPage = () => {
+    setChartView(true);
+  };
+  const tablePage = () => {
+    setChartView(false);
+  };
   return (
     <>
       <CContainer className="p-0">
@@ -118,24 +127,37 @@ const ObjectiveDetailPage = ({ data }) => {
                     </div>
                   </PrimaryButton>
                 </CCol>
-                <CCol xs={4} md={4} lg={4}>
-                  <PrimaryButton>
-                    <div className="d-flex align-items-center gap-2">
-                      <img src={Assets.Chart} alt="add" />
-                      <span className="fs-16 fw-600">Chart</span>
-                    </div>
-                  </PrimaryButton>
-                </CCol>
-                {/* <CCol xs={4} md={4} lg={4}>
-                  <ActiveButton>Chart</ActiveButton>
-                </CCol> */}
+                {!chartView && (
+                  <CCol xs={4} md={4} lg={4}>
+                    <PrimaryButton onClick={() => chartPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Chart} alt="add" />
+                        <span className="fs-16 fw-600">Chart</span>
+                      </div>
+                    </PrimaryButton>
+                  </CCol>
+                )}
+                {chartView && (
+                  <CCol xs={4} md={4} lg={4}>
+                    <ActiveButton onClick={() => tablePage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.CloseX} alt="add" />
+                        <span className="fs-16 fw-600">Chart</span>
+                      </div>
+                    </ActiveButton>
+                  </CCol>
+                )}
               </CRow>
             </CCol>
           </CRow>
         </CContainer>
         <CRow>
           <CCol xl={12}>
-            <Table columns={columns} rowData={rowData} />
+            {!chartView ? (
+              <Table columns={columns} rowData={rowData} />
+            ) : (
+              <ChartTab />
+            )}
           </CCol>
         </CRow>
       </CContainer>

@@ -112,6 +112,8 @@ code {
 }
 
 @import url('./assets/Css/Card.css');
+@import url('./assets/Css/Chart.css');
+
 
 .light-back {
   background-color: var(--screen-back);

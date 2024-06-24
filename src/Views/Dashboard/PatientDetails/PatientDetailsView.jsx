@@ -9,29 +9,6 @@ import { Assets } from "../../../assets/Assets";
 import MedicalProfile from "../../../Components/Dashboard/PatientTabs/MedicalProfileTab/MedicalProfile";
 
 const PatientDetailsView = () => {
-  const tabs = [
-    {
-      id: 1,
-      title: "Call",
-      image: Assets.Call,
-    },
-    {
-      id: 2,
-      title: "Medical Profile",
-      image: Assets.Notes,
-    },
-
-    {
-      id: 3,
-      title: "Camera Control",
-      image: Assets.Camera,
-    },
-    {
-      id: 4,
-      title: "Pair",
-      image: Assets.Qr,
-    },
-  ];
   const [currentTab, setCurrentTab] = useState(2);
   const getCurrentTab = (data) => {
     setCurrentTab(data);
@@ -44,7 +21,8 @@ const PatientDetailsView = () => {
             <PatentProfile />
           </CCol>
           <CCol md={12} xl={7}>
-            <PatientTabs tabs={tabs} getCurrentTab={getCurrentTab} />
+            {/* tabs={tabs} */}
+            <PatientTabs getCurrentTab={getCurrentTab} />
           </CCol>
         </CRow>
 

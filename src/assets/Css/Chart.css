@@ -1,0 +1,33 @@
+.chart-tabs-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--text-color);
+}
+
+.chart-tab-items {
+    padding: 6px 12px;
+    display: flex;
+    gap: 5px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.chart-tab-active {
+    background: #0084CF;
+    border-radius: 25px;
+}
+
+.chart-tab-title {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 23.12px;
+    text-align: left;
+    color: white;
+}
+
+.chart-tab-title-active {
+    font-weight: 800;
+}

@@ -2,8 +2,8 @@
 
 .act-button {
     display: inline-block;
-    background-color: #0084CF;
-    color: #ffffff;
+    background-color: var(--text-color);
+    color: var(--white);
     font-size: 16px;
     padding: 8px;
     border: none;
@@ -14,7 +14,7 @@
 }
 
 .act-button:hover {
-    background-color: #0084CF;
+    background-color: var(--text-color);
 }
 
 /* Responsive styles */
