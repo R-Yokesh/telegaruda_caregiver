@@ -1,9 +1,52 @@
 import React from 'react'
 import Breadcrumb from '../../Components/Breadcrumb/Breadcrumb'
 import PatientCard from '../../Components/PatientCard/PatientCard'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Assets } from '../../assets/Assets'
 
 function ExistingPatientView() {
+
+    const navigate = useNavigate();
+
+    const PatientDetail = [
+        {
+            name: 'Ram Mohan S R',
+            email: 'rammohan@cure.com',
+            mobile: '+91 98765 43210',
+            mrn: 'MRN 3',
+            age: '34 yrs (M)',
+            profile: Assets.Patient
+        },
+        {
+            name: 'Ram Mohan S R',
+            email: 'rammohan@cure.com',
+            mobile: '+91 98765 43210',
+            mrn: 'MRN 3',
+            age: '34 yrs (M)',
+            profile: Assets.Patient
+        },
+        {
+            name: 'Ram Mohan S R',
+            email: 'rammohan@cure.com',
+            mobile: '+91 98765 43210',
+            mrn: 'MRN 3',
+            age: '34 yrs (M)',
+            profile: Assets.Patient
+        },
+        {
+            name: 'Ram Mohan S R',
+            email: 'rammohan@cure.com',
+            mobile: '+91 98765 43210',
+            mrn: 'MRN 3',
+            age: '34 yrs (M)',
+            profile: Assets.Patient
+        },
+    ]
+
+    const DetailSec = () => {
+        navigate('/patients')
+    }
+
     return (
         <section className='existing-patient'>
             <div className='flex-sec top-sec'>
@@ -15,9 +58,11 @@ function ExistingPatientView() {
                 </div>
             </div>
             <div className='row'>
-                <div className='col-4'>
-                    <PatientCard />
-                </div>
+                {PatientDetail.map((data, i) => (
+                    <div className='col-4' onClick={DetailSec()}>
+                        <PatientCard PatientDetail={data} />
+                    </div>
+                ))}
             </div>
         </section >
     )

@@ -1,24 +1,24 @@
 import React from 'react'
 import { Assets } from '../../assets/Assets'
 
-function PatientCard() {
+function PatientCard({ PatientDetail }) {
     return (
         <div className='card-sec'>
             <div className='row align-items-center'>
                 <div className='profile col-4'>
-                    <img src={Assets.Patient} alt="Patient-image" />
+                    <img src={PatientDetail.profile} alt="Patient-image" />
                 </div>
                 <div className='patient-details col-8'>
-                    <h5>Ram Mohan S R</h5>
+                    <h5>{PatientDetail.name}</h5>
                     <p className='flex-sec-wrap gap-sec'>
-                        <small>rammohan@cure.com</small>
+                        <small>{PatientDetail.email}</small>
                         <small>|</small>
-                        <small>+91 98765 43210</small>
+                        <small>{PatientDetail.mobile}</small>
                     </p>
                     <p className='flex-sec-wrap gap-sec'>
-                        <small>MRN: MRN 3</small>
+                        <small>MRN: {PatientDetail.mrn}</small>
                         <small>|</small>
-                        <small>34 yrs (M)</small>
+                        <small>{PatientDetail.age}</small>
                     </p>
                 </div>
             </div>
