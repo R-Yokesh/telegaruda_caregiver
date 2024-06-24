@@ -17,7 +17,7 @@ const routes = [
   { path: url + "/account", name: "Account", element: MyAccountView },
   { path: url + "/settings", name: "Setting", element: SettingView },
   {
-    path: url + "/patient/details",
+    path: url + "/patients/detail",
     name: "Patient",
     element: PatientDetailsView,
   },
