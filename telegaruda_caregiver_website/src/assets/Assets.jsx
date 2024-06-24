@@ -52,6 +52,10 @@ import Add from "./Images/Patients/Add.png";
 import Filter from "./Images/Patients/Filter-2.png";
 import Chart from "./Images/Patients/Chart.png";
 
+import Delete from "./Images/Patients/Delete.png";
+import EditPencil from "./Images/Patients/Edit_Pencil.png";
+import Warning from "./Images/Patients/Warning.png";
+
 export const Assets = {
   BackBtn,
   logomain,
@@ -97,4 +101,7 @@ export const Assets = {
   Add,
   Filter,
   Chart,
+  EditPencil,
+  Warning,
+  Delete,
 };

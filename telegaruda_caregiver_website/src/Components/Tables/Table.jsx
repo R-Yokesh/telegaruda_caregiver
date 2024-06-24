@@ -8,6 +8,7 @@ import {
 } from "@coreui/react";
 import React from "react";
 import Badge from "../Badge/Badge";
+import { Assets } from "../../assets/Assets";
 
 const Table = ({ columns, rowData }) => {
   return (
@@ -73,7 +74,35 @@ const Table = ({ columns, rowData }) => {
                     <div className="table-content fs-16 fw-500">{dt?.date}</div>
                   </div>
                 </td>
-                <td>{dt?.diastolic}</td>
+                <td>
+                  <div className="d-flex gap-2">
+                    {dt?.action?.map((data, i) => (
+                      <div className="d-flex">
+                        {data.type === "warning" && (
+                          <img
+                            src={Assets.Warning}
+                            alt="warn"
+                            className="cursor"
+                          />
+                        )}
+                        {data.type === "edit" && (
+                          <img
+                            src={Assets.EditPencil}
+                            alt="warn"
+                            className="cursor"
+                          />
+                        )}
+                        {data.type === "delete" && (
+                          <img
+                            src={Assets.Delete}
+                            alt="warn"
+                            className="cursor"
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

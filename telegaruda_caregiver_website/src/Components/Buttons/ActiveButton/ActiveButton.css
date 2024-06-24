@@ -1,0 +1,33 @@
+/* Button.css */
+
+.act-button {
+    display: inline-block;
+    background-color: #0084CF;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 100%;
+}
+
+.act-button:hover {
+    background-color: #0084CF;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .act-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .act-button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}

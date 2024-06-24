@@ -15,6 +15,7 @@ import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../assets/Assets";
 import Table from "../../../../../Tables/Table";
 import Badge from "../../../../../Badge/Badge";
+import ActiveButton from "../../../../../Buttons/ActiveButton/ActiveButton";
 
 const ObjectiveDetailPage = ({ data }) => {
   const columns = [
@@ -99,9 +100,9 @@ const ObjectiveDetailPage = ({ data }) => {
                 </div>
               </div>
             </CCol>
-            <CCol lg={5} className="d-flex align-items-center">
+            <CCol lg={5} className="d-flex align-items-center mt-2">
               <CRow className="w-100 d-flex justify-content-around">
-                <CCol md={4} lg={4}>
+                <CCol xs={4} md={4} lg={4}>
                   <PrimaryButton>
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.Add} alt="add" />
@@ -109,7 +110,7 @@ const ObjectiveDetailPage = ({ data }) => {
                     </div>
                   </PrimaryButton>
                 </CCol>
-                <CCol md={4} lg={4}>
+                <CCol xs={4} md={4} lg={4}>
                   <PrimaryButton>
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.Filter} alt="add" />
@@ -117,7 +118,7 @@ const ObjectiveDetailPage = ({ data }) => {
                     </div>
                   </PrimaryButton>
                 </CCol>
-                <CCol md={4} lg={4}>
+                <CCol xs={4} md={4} lg={4}>
                   <PrimaryButton>
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.Chart} alt="add" />
@@ -125,6 +126,9 @@ const ObjectiveDetailPage = ({ data }) => {
                     </div>
                   </PrimaryButton>
                 </CCol>
+                {/* <CCol xs={4} md={4} lg={4}>
+                  <ActiveButton>Chart</ActiveButton>
+                </CCol> */}
               </CRow>
             </CCol>
           </CRow>

@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
 .fs-14 {
   font-size: 14px !important;
 }
@@ -57,6 +61,7 @@ code {
 .badge-error {
   background-color: #EC5A5A !important;
 }
+
 
 /* Custom CSS for styling */
 .responsive-table-container {
