@@ -1,3 +1,4 @@
+import { element } from "prop-types";
 import React from "react";
 
 const DashboardView = React.lazy(() =>
@@ -8,6 +9,7 @@ const SettingView = React.lazy(() => import("./Views/Settings/SettingsView"));
 const PatientDetailsView = React.lazy(() =>
   import("./Views/Dashboard/PatientDetails/PatientDetailsView")
 );
+const ExistingPatientView = React.lazy(() => import("./Views/ExistingPatient/ExistingPatientView"));
 const url = "";
 const routes = [
   // { path: url + "/", name: "Home" },
@@ -19,6 +21,7 @@ const routes = [
     name: "Patient",
     element: PatientDetailsView,
   },
+  { path: "/patients", name: "ExistingPatients", element: ExistingPatientView }
 ];
 
 export default routes;

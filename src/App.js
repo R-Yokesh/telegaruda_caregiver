@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="App">
-      <Router basename="/telegaruda-provider">
+      <Router basename="/telegaruda-caregiver">
         <Suspense>
           <Routes>
             {/* <Route path='/' name='Login' element={<Login />} /> */}

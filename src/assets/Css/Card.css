@@ -1,6 +1,43 @@
-.card-text-title {
-    font-size: 20px;
+.card-sec {
+    background-color: var(--white);
+    padding: 20px 15px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 24px var(--shadow);
+    margin-bottom: 25px;
+}
+
+.profile img {
+    width: 100%;
+}
+
+.gap-sec {
+    gap: 5px;
+}
+
+.patient-details p,
+.patient-details h5 {
+    margin-bottom: 6px;
     font-weight: 600;
-    line-height: 29px;
-    color: #17171D;
+    color: var(--text-color);
+}
+
+.card-sec {
+    position: relative;
+}
+
+.edit-icon {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 25px;
+}
+
+.patient-adding button {
+    background-color: var(--theme-blue);
+    border: 0px;
+    color: var(--white);
+    padding: 8px 22px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-weight: 600;
 }

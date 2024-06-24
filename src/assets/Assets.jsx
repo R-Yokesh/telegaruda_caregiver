@@ -40,6 +40,7 @@ import VitalHBeat from "./Images/Patients/Vital-HeartBeat.png";
 import VitalKetone from "./Images/Patients/Vital-Ketone.png";
 import VitalLipid from "./Images/Patients/Vital-Lipid.png";
 import VitalRespi from "./Images/Patients/Vital-Respi.png";
+import Patient from './Images/Patients/patient-image.png';
 
 import Imaging from "./Images/Patients/Imaging.png";
 import Lab from "./Images/Patients/Lab.png";
@@ -104,4 +105,5 @@ export const Assets = {
   EditPencil,
   Warning,
   Delete,
+  Patient
 };
