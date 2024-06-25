@@ -40,7 +40,7 @@ import VitalHBeat from "./Images/Patients/Vital-HeartBeat.png";
 import VitalKetone from "./Images/Patients/Vital-Ketone.png";
 import VitalLipid from "./Images/Patients/Vital-Lipid.png";
 import VitalRespi from "./Images/Patients/Vital-Respi.png";
-import Patient from './Images/Patients/patient-image.png';
+import Patient from "./Images/Patients/patient-image.png";
 
 import Imaging from "./Images/Patients/Imaging.png";
 import Lab from "./Images/Patients/Lab.png";
@@ -58,6 +58,7 @@ import EditPencil from "./Images/Patients/Edit_Pencil.png";
 import Warning from "./Images/Patients/Warning.png";
 import CloseX from "./Images/Patients/close-x.png";
 
+import QrCode from "./Images/Patients/QR-Code.png";
 
 export const Assets = {
   BackBtn,
@@ -108,5 +109,6 @@ export const Assets = {
   Warning,
   Delete,
   Patient,
-  CloseX
+  CloseX,
+  QrCode,
 };

@@ -10,7 +10,24 @@ import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
 
-const Table = ({ columns, rowData }) => {
+const Table = ({ columns, rowData, data }) => {
+  const formattedColumns = data?.columnsData.map((column) => ({
+    ...column,
+    accessor: column.label.toLowerCase().replace(/\s/g, "_"), // Create accessor for dynamic data access
+  }));
+
+  // Handle potential missing rows
+  const formattedData = data?.tableData.map((row) => {
+    return formattedColumns.reduce((acc, column) => {
+      const value = row[column.label.toLowerCase().replace(/\s/g, "_")]; // Access data based on accessor
+      acc[column.accessor === "ecg_result" ? "result" : column.accessor] =
+        value || "-"; // Set default value if data is missing
+      return acc;
+    }, {});
+  });
+
+  console.log(data, formattedColumns, "first formattedData", formattedData);
+
   return (
     // <>
     //   <CTable className="responsive-table">
@@ -43,13 +60,13 @@ const Table = ({ columns, rowData }) => {
         <table class="responsive-table">
           <thead>
             <tr>
-              {columns?.map((data, i) => (
+              {formattedColumns?.map((data, i) => (
                 <th key={i}>{data?.label}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {rowData?.map((dt, i) => (
+            {formattedData?.map((dt, i) => (
               <tr key={i}>
                 <td>{dt?.id}</td>
                 <td>
@@ -105,6 +122,7 @@ const Table = ({ columns, rowData }) => {
                 </td>
               </tr>
             ))}
+            
           </tbody>
         </table>
       </div>

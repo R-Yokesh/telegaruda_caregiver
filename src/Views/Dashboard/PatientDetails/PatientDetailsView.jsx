@@ -7,6 +7,7 @@ import Breadcrumb from "../../../Components/Breadcrumb/Breadcrumb";
 import VitalsTab from "../../../Components/Dashboard/PatientTabs/VitalsTab/VitalsTab";
 import { Assets } from "../../../assets/Assets";
 import MedicalProfile from "../../../Components/Dashboard/PatientTabs/MedicalProfileTab/MedicalProfile";
+import PairTab from "../../../Components/Dashboard/PatientTabs/PairTab/PairTab";
 
 const PatientDetailsView = () => {
   const [currentTab, setCurrentTab] = useState(2);
@@ -31,6 +32,13 @@ const PatientDetailsView = () => {
             <CCol md={12}>
               {/* <VitalsTab /> */}
               <MedicalProfile />
+            </CCol>
+          </CRow>
+        )}
+        {currentTab === 4 && (
+          <CRow>
+            <CCol md={12}>
+              <PairTab />
             </CCol>
           </CRow>
         )}

@@ -17,6 +17,7 @@ import Table from "../../../../../Tables/Table";
 import Badge from "../../../../../Badge/Badge";
 import ActiveButton from "../../../../../Buttons/ActiveButton/ActiveButton";
 import ChartTab from "../../../../../Charts/ChartTab";
+import DynamicTable from "../../../../../Tables/DynamicTable";
 
 const ObjectiveDetailPage = ({ data }) => {
   const [chartView, setChartView] = useState(false);
@@ -90,6 +91,7 @@ const ObjectiveDetailPage = ({ data }) => {
   const tablePage = () => {
     setChartView(false);
   };
+
   return (
     <>
       <CContainer className="p-0">
@@ -127,16 +129,29 @@ const ObjectiveDetailPage = ({ data }) => {
                     </div>
                   </PrimaryButton>
                 </CCol>
-                {!chartView && (
-                  <CCol xs={4} md={4} lg={4}>
-                    <PrimaryButton onClick={() => chartPage()}>
-                      <div className="d-flex align-items-center gap-2">
-                        <img src={Assets.Chart} alt="add" />
-                        <span className="fs-16 fw-600">Chart</span>
-                      </div>
-                    </PrimaryButton>
-                  </CCol>
-                )}
+                {data.name !== "Temperature" &&
+                  data.name !== "BMI" &&
+                  data.name !== "Blood Sugar" &&
+                  data.name !== "Hemoglobin" &&
+                  data.name !== "HCT" &&
+                  data.name !== "Blood Uric Acid" &&
+                  data.name !== "Blood Ketone" &&
+                  data.name !== "Urea" &&
+                  data.name !== "Creatinine" &&
+                  data.name !== "GFR" && (
+                    <>
+                      {!chartView && (
+                        <CCol xs={4} md={4} lg={4}>
+                          <PrimaryButton onClick={() => chartPage()}>
+                            <div className="d-flex align-items-center gap-2">
+                              <img src={Assets.Chart} alt="add" />
+                              <span className="fs-16 fw-600">Chart</span>
+                            </div>
+                          </PrimaryButton>
+                        </CCol>
+                      )}
+                    </>
+                  )}
                 {chartView && (
                   <CCol xs={4} md={4} lg={4}>
                     <ActiveButton onClick={() => tablePage()}>
@@ -154,9 +169,13 @@ const ObjectiveDetailPage = ({ data }) => {
         <CRow>
           <CCol xl={12}>
             {!chartView ? (
-              <Table columns={columns} rowData={rowData} />
+              // <Table columns={columns} rowData={rowData} data={data} />
+              <DynamicTable
+                columnsData={data?.columnsData}
+                tableData={data?.tableData}
+              />
             ) : (
-              <ChartTab />
+              <ChartTab data={data} />
             )}
           </CCol>
         </CRow>

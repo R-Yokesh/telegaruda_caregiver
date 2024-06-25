@@ -16,6 +16,8 @@ code {
   cursor: pointer;
 }
 
+
+
 .fs-14 {
   font-size: 14px !important;
 }
@@ -60,6 +62,10 @@ code {
 
 .badge-error {
   background-color: #EC5A5A !important;
+}
+
+.badge-warning {
+  background-color: #5ad4ec !important;
 }
 
 
@@ -159,4 +165,8 @@ code {
 
 .jGeaPm {
   border-bottom: 0px !important;
+}
+
+.text-secondary {
+  color: var(--text-color);
 }

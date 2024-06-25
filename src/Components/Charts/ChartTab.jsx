@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import LineChartDetails from "./LineChart";
 import ColumnChartDetails from "./ColumnChartDetails";
 
-const ChartTab = () => {
+const ChartTab = ({ data }) => {
+  console.log(data, "data d");
   const tabs = [
     {
       id: 1,
@@ -40,8 +41,8 @@ const ChartTab = () => {
         ))}
       </div>
       <div className="mt-2">
-        {currentTab?.id === 1 && <LineChartDetails />}
-        {currentTab?.id === 2 && <ColumnChartDetails />}
+        {currentTab?.id === 1 && <LineChartDetails datas={data} />}
+        {currentTab?.id === 2 && <ColumnChartDetails datas={data}/>}
       </div>
     </div>
   );

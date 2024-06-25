@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Modal.css"; // Import your CSS file for styling modal (optional)
 import { CModal, CModalBody } from "@coreui/react";
 import { Assets } from "../../assets/Assets";
