@@ -2,6 +2,9 @@ import {
   CBadge,
   CCol,
   CContainer,
+  CFormInput,
+  CModal,
+  CModalBody,
   CRow,
   CTable,
   CTableBody,
@@ -19,8 +22,14 @@ import ActiveButton from "../../../../../Buttons/ActiveButton/ActiveButton";
 import ChartTab from "../../../../../Charts/ChartTab";
 import DynamicTable from "../../../../../Tables/DynamicTable";
 
+import BPForm from "../AddForms/BPForm";
+import HeartRate from "../AddForms/HeartRate";
+import LFTForm from "../AddForms/LFTForm";
+
 const ObjectiveDetailPage = ({ data }) => {
   const [chartView, setChartView] = useState(false);
+  const [addView, setAddView] = useState(false);
+
   const columns = [
     { id: 1, label: "NO." },
     { id: 2, label: "RESULT" },
@@ -91,7 +100,12 @@ const ObjectiveDetailPage = ({ data }) => {
   const tablePage = () => {
     setChartView(false);
   };
-
+  const addPage = () => {
+    setAddView(true);
+  };
+  const addBack = () => {
+    setAddView(false);
+  };
   return (
     <>
       <CContainer className="p-0">
@@ -114,12 +128,22 @@ const ObjectiveDetailPage = ({ data }) => {
             <CCol lg={5} className="d-flex align-items-center mt-2">
               <CRow className="w-100 d-flex justify-content-around">
                 <CCol xs={4} md={4} lg={4}>
-                  <PrimaryButton>
-                    <div className="d-flex align-items-center gap-2">
-                      <img src={Assets.Add} alt="add" />
-                      <span className="fs-16 fw-600">Add</span>
-                    </div>
-                  </PrimaryButton>
+                  {!addView && (
+                    <PrimaryButton onClick={() => addPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Add} alt="add" />
+                        <span className="fs-16 fw-600">Add</span>
+                      </div>
+                    </PrimaryButton>
+                  )}
+                  {addView && (
+                    <ActiveButton onClick={() => addBack()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.CloseX} alt="add" />
+                        <span className="fs-16 fw-600">Add</span>
+                      </div>
+                    </ActiveButton>
+                  )}
                 </CCol>
                 <CCol xs={4} md={4} lg={4}>
                   <PrimaryButton>
@@ -129,29 +153,16 @@ const ObjectiveDetailPage = ({ data }) => {
                     </div>
                   </PrimaryButton>
                 </CCol>
-                {data.name !== "Temperature" &&
-                  data.name !== "BMI" &&
-                  data.name !== "Blood Sugar" &&
-                  data.name !== "Hemoglobin" &&
-                  data.name !== "HCT" &&
-                  data.name !== "Blood Uric Acid" &&
-                  data.name !== "Blood Ketone" &&
-                  data.name !== "Urea" &&
-                  data.name !== "Creatinine" &&
-                  data.name !== "GFR" && (
-                    <>
-                      {!chartView && (
-                        <CCol xs={4} md={4} lg={4}>
-                          <PrimaryButton onClick={() => chartPage()}>
-                            <div className="d-flex align-items-center gap-2">
-                              <img src={Assets.Chart} alt="add" />
-                              <span className="fs-16 fw-600">Chart</span>
-                            </div>
-                          </PrimaryButton>
-                        </CCol>
-                      )}
-                    </>
-                  )}
+                {!chartView && (
+                  <CCol xs={4} md={4} lg={4}>
+                    <PrimaryButton onClick={() => chartPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Chart} alt="add" />
+                        <span className="fs-16 fw-600">Chart</span>
+                      </div>
+                    </PrimaryButton>
+                  </CCol>
+                )}
                 {chartView && (
                   <CCol xs={4} md={4} lg={4}>
                     <ActiveButton onClick={() => tablePage()}>
@@ -168,17 +179,33 @@ const ObjectiveDetailPage = ({ data }) => {
         </CContainer>
         <CRow>
           <CCol xl={12}>
-            {!chartView ? (
-              // <Table columns={columns} rowData={rowData} data={data} />
+            {chartView ? (
+              <ChartTab data={data} />
+            ) : (
               <DynamicTable
                 columnsData={data?.columnsData}
                 tableData={data?.tableData}
               />
-            ) : (
-              <ChartTab data={data} />
             )}
           </CCol>
         </CRow>
+
+        {/* Modal for add  */}
+        <CModal
+          alignment="center"
+          visible={addView}
+          onClose={addBack}
+          aria-labelledby="VerticallyCenteredExample"
+          size="xl"
+        >
+          <CModalBody className="p-4">
+            {data?.name === "Blood Pressure" && <BPForm addBack={addBack} />}
+            {data?.name === "Heart Rate" && <HeartRate addBack={addBack} />}
+            {data?.name === "Lung Function Test (LFT)" && (
+              <LFTForm addBack={addBack} />
+            )}
+          </CModalBody>
+        </CModal>
       </CContainer>
     </>
   );

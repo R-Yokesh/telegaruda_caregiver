@@ -170,3 +170,48 @@ code {
 .text-secondary {
   color: var(--text-color);
 }
+
+.react-datepicker__view-calendar-icon input {
+  width: 100% !important;
+  border: 1px solid #17171D33;
+  border-radius: 5px;
+}
+
+.react-datepicker__input-container input:focus {
+  outline: none;
+  border-color: var(--theme-blue);
+}
+
+.form-label {
+  color: #17171D99;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.form-control:focus {
+  border-color: var(--theme-blue);
+  box-shadow: none !important;
+}
+
+[type="file"] {
+  height: 0;
+  overflow: hidden;
+  width: 0;
+}
+
+[type="file"]+label {
+  background: var(--white);
+  border: 1px solid #17171D33;
+  border-radius: 5px;
+  color: var(--text-color);
+  cursor: pointer;
+  display: inline-block;
+  font-size: inherit;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  outline: none;
+  padding: 12px;
+  position: relative;
+  transition: all 0.3s;
+  vertical-align: middle;
+}

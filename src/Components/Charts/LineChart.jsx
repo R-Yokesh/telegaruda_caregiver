@@ -10,8 +10,6 @@ import {
 } from "recharts";
 
 const LineChartDetails = ({ datas }) => {
-  console.log(datas, "chart");
-
   function removePercent(str) {
     // Remove trailing percent sign (%) using String.replace() method
     // Replace '%' with an empty string ''
@@ -22,13 +20,23 @@ const LineChartDetails = ({ datas }) => {
   const formattedData = datas?.tableData?.map((item) => ({
     name: item?.date?.split(" ")[0], // Extract date part only
     data1: parseInt(
-      item?.["pulse_(in_bpm)"] ||
+      item?.["blood_ketone_value"] ||
+        item?.["hemoglobinValue"] ||
+        item?.["bmi"] ||
+        item?.["blood_sugar_value"] ||
+        item?.["pulse_(in_bpm)"] ||
         item?.["heart_rate_(bpm)"] ||
         item?.["respiration_rate_(bpm)"] ||
         removePercent(item?.["spo2"]) ||
+        removePercent(item?.["hct_rate"]) ||
         item?.["fvc_(l)"] ||
         item?.["totalOnly"] ||
-        item?.["chartValue"]
+        item?.["chartValue"] ||
+        item?.["temperature_value"] ||
+        item?.["blood_uric_acid_value"] ||
+        item?.["urea_value"] ||
+        item?.["creatinine_value"] ||
+        item?.["gfr_value"]
     ), // Convert pluse to integer if needed
     data2: parseInt(item?.["ph"] ? item?.["ph"] : ""),
   }));
@@ -70,6 +78,16 @@ const LineChartDetails = ({ datas }) => {
       !isNaN(item?.data1) ? item?.data1 : -Infinity
     )
   );
+  // Custom tooltip formatter function
+  const tooltipFormatter = (value, name, props) => {
+    if (name === "data1") {
+      return [value, datas?.chartLabel1];
+    }
+    if (name === "data2") {
+      return [value, datas?.chartLabel2];
+    }
+    return [name, value];
+  };
 
   return (
     <LineChart
@@ -90,10 +108,25 @@ const LineChartDetails = ({ datas }) => {
         axisLine={false}
         tickLine={false}
       />
+      <Tooltip formatter={tooltipFormatter} />
+      {!formattedData[0].data2 ? (
+        <Legend
+          payload={[
+            { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
+          ]}
+        />
+      ) : (
+        <Legend
+          payload={[
+            { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
+            { value: datas?.chartLabel2, type: "line", color: "#0194CF" },
+          ]}
+        />
+      )}
       <CartesianGrid horizontal={true} vertical={false} strokeWidth={1} />
-      <Line type="linear" dataKey="data1" stroke="#0084CF" dot={false} />
+      <Line type="linear" dataKey="data1" stroke="#0084CF" />
       {formattedData[0].data2 && (
-        <Line type="linear" dataKey="data2" stroke="#0094CF" dot={false} />
+        <Line type="linear" dataKey="data2" stroke="#0194CF" />
       )}
     </LineChart>
   );
