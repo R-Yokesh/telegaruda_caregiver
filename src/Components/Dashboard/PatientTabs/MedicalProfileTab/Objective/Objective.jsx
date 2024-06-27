@@ -57,8 +57,6 @@ const Objective = () => {
     setIsModalOpen(false);
   };
 
-  console.log(cardSelectedData, "first", selectedData);
-
   return (
     <>
       <CContainer className="mt-3">
@@ -88,8 +86,8 @@ const Objective = () => {
               <CCol md={6} className="mb-3">
                 <Breadcrumb
                   paths={[
-                    { label: "Home", to: "/" },
-                    { label: "Patient List", to: "/patients/history" },
+                    { label: "Home", to: "/patients" },
+                    { label: "Patient List", to: "/patients" },
                     { label: "Medical Profile", to: "/patients/history" },
                     { label: "Vital Signs", to: "/patients/history" },
                   ]}

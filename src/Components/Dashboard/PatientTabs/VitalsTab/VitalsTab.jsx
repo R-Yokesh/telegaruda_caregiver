@@ -3,6 +3,7 @@ import React from "react";
 import "./VitalsTab.css";
 import { Assets } from "../../../../assets/Assets";
 import Badge from "../../../Badge/Badge";
+import CardChart from "../../../Charts/CardChart";
 
 const VitalsTab = ({ category, openModal }) => {
   const data = [
@@ -743,7 +744,8 @@ const VitalsTab = ({ category, openModal }) => {
                       </div>
                     </div>
                     <div className="vital-line-container">
-                      <img alt="line" src={Assets.Vitalline} />
+                      {/* <img alt="line" src={Assets.Vitalline} /> */}
+                      <CardChart datas={item} />
                     </div>
                   </CCardBody>
                 </CCard>
