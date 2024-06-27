@@ -46,3 +46,11 @@
     width: 20px;
     vertical-align: text-bottom;
 }
+
+.card-link {
+    text-decoration: none;
+}
+
+.bread-crumbs a {
+    text-decoration: none;
+}

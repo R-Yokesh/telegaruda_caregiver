@@ -16,6 +16,13 @@ code {
   cursor: pointer;
 }
 
+html,
+body {
+  overflow-y: hidden;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
 
 
 .fs-14 {
@@ -123,6 +130,8 @@ code {
 
 .light-back {
   background-color: var(--screen-back);
+  overflow-y: scroll;
+  height: 90vh;
 }
 
 .flex-sec-wrap {

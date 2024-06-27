@@ -27,7 +27,7 @@ const Header = () => {
           <img src={Assets.user} alt="Profile" />
           <div className="profile-text">
             <span className="profile-name">Merry Jane</span>
-            <span className="profile-location">Provider <button className='signout-btn' onClick={(e) => Logout(e)}>signout</button></span>
+            <span className="profile-location">Caregiver <button className='signout-btn' onClick={(e) => Logout(e)}>signout</button></span>
           </div>
         </div>
       </div>

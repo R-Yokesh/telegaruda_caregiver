@@ -59,9 +59,13 @@ function ExistingPatientView() {
             </div>
             <div className='row'>
                 {PatientDetail.map((data, i) => (
-                    <div className='col-4' onClick={DetailSec()}>
-                        <PatientCard PatientDetail={data} />
+
+                    <div className='col-4'>
+                        <Link to={'/patients/history'} className='card-link'>
+                            <PatientCard PatientDetail={data} />
+                        </Link>
                     </div>
+
                 ))}
             </div>
         </section >
