@@ -23,7 +23,7 @@ const routes = [
     element: PatientDetailsView,
   },
   { path: "/patients", name: "ExistingPatients", element: ExistingPatientView },
-  { path: "/patients/history", name: "PatientHistory", element: PatientHistory }
+  { path: "/patients/history", name: "PatientHistory", element: PatientDetailsView }
 
 ];
 

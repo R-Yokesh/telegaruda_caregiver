@@ -8,9 +8,10 @@ import VitalsTab from "../../../Components/Dashboard/PatientTabs/VitalsTab/Vital
 import { Assets } from "../../../assets/Assets";
 import MedicalProfile from "../../../Components/Dashboard/PatientTabs/MedicalProfileTab/MedicalProfile";
 import PairTab from "../../../Components/Dashboard/PatientTabs/PairTab/PairTab";
+import CallHistoryView from "../../CallHistory/CallHistoryView";
 
 const PatientDetailsView = () => {
-  const [currentTab, setCurrentTab] = useState(2);
+  const [currentTab, setCurrentTab] = useState(1);
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
@@ -19,7 +20,6 @@ const PatientDetailsView = () => {
       <CContainer>
         <CRow className="mb-4">
           <CCol md={12} xl={5} className="mb-2">
-          <CCol md={12} xl={5} className="mb-2">
             <PatentProfile />
           </CCol>
           <CCol md={12} xl={7}>
@@ -27,6 +27,7 @@ const PatientDetailsView = () => {
             <PatientTabs getCurrentTab={getCurrentTab} />
           </CCol>
         </CRow>
+        {currentTab === 1 && <CallHistoryView />}
 
         {currentTab === 2 && (
           <CRow>

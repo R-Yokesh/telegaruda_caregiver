@@ -27,7 +27,7 @@ const PatientTabs = ({ getCurrentTab }) => {
       image: Assets.Qr,
     },
   ];
-  const [currentTab, setCurrentTab] = useState(tabs[1]);
+  const [currentTab, setCurrentTab] = useState(tabs[0]);
 
   const switchTab = (data) => {
     setCurrentTab(data);

@@ -14,7 +14,7 @@ const LoginPage = () => {
   };
   const loginSec = (e) => {
     sessionStorage.setItem('loggedIn', 'true')
-    navigate('/*')
+    navigate('/patients')
   }
   return (
     <div className="login-container-logiss">

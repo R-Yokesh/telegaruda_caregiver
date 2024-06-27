@@ -3,7 +3,6 @@ import React from "react";
 import "./VitalsTab.css";
 import { Assets } from "../../../../assets/Assets";
 import Badge from "../../../Badge/Badge";
-import Badge from "../../../Badge/Badge";
 
 const VitalsTab = ({ category, openModal }) => {
   const data = [

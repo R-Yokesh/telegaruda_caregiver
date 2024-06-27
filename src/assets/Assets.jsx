@@ -60,8 +60,6 @@ import CloseX from "./Images/Patients/close-x.png";
 
 import QrCode from "./Images/Patients/QR-Code.png";
 
-
-
 import SpO2 from "./Images/Patients/SpO2.png";
 import Temp from "./Images/Patients/Temp.png";
 import LFT from "./Images/Patients/LFT.png";
@@ -73,7 +71,8 @@ import Creatinine from "./Images/Patients/Creatinine.png";
 import GFR from "./Images/Patients/GFR.png";
 import Urea from "./Images/Patients/Urea.png";
 
-
+import notes from "./Images/notes-icon.svg";
+import filter from "./Images/fillter-filled.svg";
 
 export const Assets = {
   BackBtn,
@@ -127,7 +126,15 @@ export const Assets = {
   Patient,
   CloseX,
   QrCode,
-  SpO2,  LFT,
+  SpO2,
+  LFT,
   Temp,
-  BUAcid,BKetone,Urinalysis,Creatinine,Urea,GFR
+  BUAcid,
+  BKetone,
+  Urinalysis,
+  Creatinine,
+  Urea,
+  GFR,
+  filter,
+  notes,
 };
