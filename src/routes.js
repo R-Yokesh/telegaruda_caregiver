@@ -10,6 +10,7 @@ const PatientDetailsView = React.lazy(() =>
   import("./Views/Dashboard/PatientDetails/PatientDetailsView")
 );
 const ExistingPatientView = React.lazy(() => import("./Views/ExistingPatient/ExistingPatientView"));
+const PatientHistory = React.lazy(() => import("./Views/CallHistory/CallHistoryView"));
 const url = "";
 const routes = [
   // { path: url + "/", name: "Home" },
@@ -21,7 +22,9 @@ const routes = [
     name: "Patient",
     element: PatientDetailsView,
   },
-  { path: "/patients", name: "ExistingPatients", element: ExistingPatientView }
+  { path: "/patients", name: "ExistingPatients", element: ExistingPatientView },
+  { path: "/patients/history", name: "PatientHistory", element: PatientHistory }
+
 ];
 
 export default routes;

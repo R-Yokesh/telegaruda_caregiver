@@ -77,6 +77,7 @@ import Urea from "./Images/Patients/Urea.png";
 
 export const Assets = {
   BackBtn,
+  BackBtn,
   logomain,
   loginbanner,
   eyei,

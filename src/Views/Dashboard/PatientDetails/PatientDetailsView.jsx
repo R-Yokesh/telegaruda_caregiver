@@ -19,6 +19,7 @@ const PatientDetailsView = () => {
       <CContainer>
         <CRow className="mb-4">
           <CCol md={12} xl={5} className="mb-2">
+          <CCol md={12} xl={5} className="mb-2">
             <PatentProfile />
           </CCol>
           <CCol md={12} xl={7}>
