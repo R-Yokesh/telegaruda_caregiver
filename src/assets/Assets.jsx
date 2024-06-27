@@ -15,12 +15,12 @@ import ExpandClose from "./Images/ExpandClose.png";
 import EyeClose from "./Images/eye-close.png";
 import EyeOpen from "./Images/eye.png";
 
-import teleconcult from './Images/SideMenu/tele-icon.svg'
-import avilability from './Images/SideMenu/avil-icon.svg'
-import account from './Images/SideMenu/account-icon.svg'
-import setting from './Images/SideMenu/setting.svg'
-import masters from './Images/SideMenu/master-icon.svg'
-import user from './Images/SideMenu/user.png'
+import teleconcult from "./Images/SideMenu/tele-icon.svg";
+import avilability from "./Images/SideMenu/avil-icon.svg";
+import account from "./Images/SideMenu/account-icon.svg";
+import setting from "./Images/SideMenu/setting.svg";
+import masters from "./Images/SideMenu/master-icon.svg";
+import user from "./Images/SideMenu/user.png";
 
 import patient1 from "./Images/Patients/Patient-1.png";
 import Call from "./Images/Patients/Call.png";
@@ -42,7 +42,25 @@ import VitalLipid from "./Images/Patients/Vital-Lipid.png";
 import VitalRespi from "./Images/Patients/Vital-Respi.png";
 import Patient from './Images/Patients/patient-image.png';
 
+import Imaging from "./Images/Patients/Imaging.png";
+import Lab from "./Images/Patients/Lab.png";
+import PhyExam from "./Images/Patients/PhysicalExam.png";
+import VitalSig from "./Images/Patients/VitalSign.png";
+import CloseBtn from "./Images/Patients/Close-Btn.png";
+import BackBtn from "./Images/Patients/Back-Btn.png";
+
+import Add from "./Images/Patients/Add.png";
+import Filter from "./Images/Patients/Filter-2.png";
+import Chart from "./Images/Patients/Chart.png";
+
+import Delete from "./Images/Patients/Delete.png";
+import EditPencil from "./Images/Patients/Edit_Pencil.png";
+import Warning from "./Images/Patients/Warning.png";
+import notes from "./Images/notes-icon.svg";
+import filter from "./Images/fillter-filled.svg";
+
 export const Assets = {
+  BackBtn,
   logomain,
   loginbanner,
   eyei,
@@ -51,7 +69,11 @@ export const Assets = {
   Close,
   Notify,
   TwoFA,
-  ForgetPass, ExpandOpen, ExpandClose, EyeClose, EyeOpen,
+  ForgetPass,
+  ExpandOpen,
+  ExpandClose,
+  EyeClose,
+  EyeOpen,
   teleconcult: teleconcult,
   avilability: avilability,
   account: account,
@@ -74,5 +96,18 @@ export const Assets = {
   VitalHCT,
   VitalBMI,
   VitalBs,
-  Patient
+  Imaging,
+  Lab,
+  PhyExam,
+  VitalSig,
+  CloseBtn,
+  Add,
+  Filter,
+  Chart,
+  EditPencil,
+  Warning,
+  Delete,
+  Patient,
+  notes,
+  filter
 };

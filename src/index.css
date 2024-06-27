@@ -12,6 +12,96 @@ code {
     monospace;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
+.fs-14 {
+  font-size: 14px !important;
+}
+
+.fs-16 {
+  font-size: 16px !important;
+}
+
+.fs-20 {
+  font-size: 20px !important;
+}
+
+.fw-500 {
+  font-weight: 500 !important;
+}
+
+.fw-600 {
+  font-weight: 600 !important;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  color: #ffffff;
+  text-align: left !important;
+  white-space: normal !important;
+  /* Ensures text wraps onto next line */
+  word-wrap: break-word !important;
+  /* Allows long words to wrap */
+  overflow-wrap: break-word !important;
+  line-height: 20.23px !important;
+}
+
+.badge-success {
+  background-color: #48B875 !important;
+}
+
+.badge-error {
+  background-color: #EC5A5A !important;
+}
+
+
+/* Custom CSS for styling */
+.responsive-table-container {
+  overflow-x: auto;
+}
+
+.responsive-table {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  border-collapse: collapse;
+}
+
+.responsive-table th {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 12px 10px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.responsive-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #E8E8E8
+}
+
+/* Remove bottom border for last row in tbody */
+.responsive-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-content {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+
+}
+
 :root {
   --white: #fff;
   --screen-back: rgba(233, 233, 233, 1);

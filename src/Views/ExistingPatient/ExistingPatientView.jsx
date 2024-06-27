@@ -44,7 +44,7 @@ function ExistingPatientView() {
     ]
 
     const DetailSec = () => {
-        navigate('/patients')
+        navigate('/patients/history')
     }
 
     return (

@@ -1,33 +1,32 @@
-/* secondary-button.css */
+/* Button.css */
 
-.secondary-button {
+.act-button {
     display: inline-block;
-    background-color: #FFFFFF;
-    color: #000000;
+    background-color: #0084CF;
+    color: #ffffff;
     font-size: 16px;
     padding: 8px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%;
-    box-shadow: 0px 2px 24px 0px #17171D1C;
+    min-width: 100%;
 }
 
-.secondary-button:hover {
-    background-color: #FFFFFF;
+.act-button:hover {
+    background-color: #0084CF;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
-    .secondary-button {
+    .act-button {
         font-size: 14px;
         padding: 8px 16px;
     }
 }
 
 @media (max-width: 576px) {
-    .secondary-button {
+    .act-button {
         font-size: 12px;
         padding: 6px 12px;
     }
