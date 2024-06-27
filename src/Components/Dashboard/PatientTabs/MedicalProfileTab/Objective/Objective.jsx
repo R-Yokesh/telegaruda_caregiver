@@ -89,9 +89,9 @@ const Objective = () => {
                 <Breadcrumb
                   paths={[
                     { label: "Home", to: "/" },
-                    { label: "Patient List", to: "/patient/details" },
-                    { label: "Medical Profile", to: "/patient/details" },
-                    { label: "Vital Signs", to: "/patient/details" },
+                    { label: "Patient List", to: "/patients/detail" },
+                    { label: "Medical Profile", to: "/patients/detail" },
+                    { label: "Vital Signs", to: "/patients/detail" },
                   ]}
                 />
               </CCol>

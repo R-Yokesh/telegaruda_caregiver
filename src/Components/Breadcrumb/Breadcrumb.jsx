@@ -4,7 +4,7 @@ import "./Breadcrumb.css";
 
 const Breadcrumb = ({ paths }) => {
   const lastIndex = paths.length - 1;
-  const url = "/telegaruda-provider";
+  const url = "/telegaruda-caregiver";
   return (
     <>
       <CBreadcrumb>
