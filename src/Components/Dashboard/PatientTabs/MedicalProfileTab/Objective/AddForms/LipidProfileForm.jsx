@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 
-const LFTForm = ({ addBack }) => {
+const LipidProfileForm = ({ addBack }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date());
 
@@ -56,7 +56,96 @@ const LFTForm = ({ addBack }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                FVC (L) *
+                Result *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                placeholder="Enter"
+              />
+            </div>
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Unit (Total) *
+              </label>
+              <select
+                class="form-select"
+                aria-label="Disabled select example"
+                defaultValue={"mg/dL"}
+              >
+                <option value="dL">dL</option>
+                <option value="mg">mg</option>
+                <option value="mg/dL">mg/dL</option>
+              </select>
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Total *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+              />
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Unit (Triglycerides) *
+              </label>
+              <select
+                class="form-select"
+                aria-label="Disabled select example"
+                defaultValue={"mg/dL"}
+              >
+                <option value="dL">dL</option>
+                <option value="mg">mg</option>
+                <option value="mg/dL">mg/dL</option>
+              </select>
+            </div>
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Triglycerides *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+              />
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Unit (HDL) *
+              </label>
+              <select
+                class="form-select"
+                aria-label="Disabled select example"
+                defaultValue={"mg/dL"}
+              >
+                <option value="dL">dL</option>
+                <option value="mg">mg</option>
+                <option value="mg/dL">mg/dL</option>
+              </select>
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                HDL *
               </label>
               <input
                 type="text"
@@ -70,7 +159,23 @@ const LFTForm = ({ addBack }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                FEV1 (L) *
+                Unit (LDL) *
+              </label>
+              <select
+                class="form-select"
+                aria-label="Disabled select example"
+                defaultValue={"mg/dL"}
+              >
+                <option value="dL">dL</option>
+                <option value="mg">mg</option>
+                <option value="mg/dL">mg/dL</option>
+              </select>
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                LDL *
               </label>
               <input
                 type="text"
@@ -82,19 +187,7 @@ const LFTForm = ({ addBack }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                FEV1/FVC Ratio *
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-              />
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                PEF (L/Min) *
+                HDL/LDL *
               </label>
               <input
                 type="text"
@@ -108,19 +201,23 @@ const LFTForm = ({ addBack }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                SVC (L) *
+                Unit (VLDL) *
               </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-              />
+              <select
+                class="form-select"
+                aria-label="Disabled select example"
+                defaultValue={"mg/dL"}
+              >
+                <option value="dL">dL</option>
+                <option value="mg">mg</option>
+                <option value="mg/dL">mg/dL</option>
+              </select>
             </div>
           </CCol>
-          <CCol lg={8}>
+          <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes *
+                VLDL *
               </label>
               <input
                 type="text"
@@ -143,4 +240,4 @@ const LFTForm = ({ addBack }) => {
   );
 };
 
-export default LFTForm;
+export default LipidProfileForm;

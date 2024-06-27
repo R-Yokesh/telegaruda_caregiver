@@ -25,6 +25,20 @@ import DynamicTable from "../../../../../Tables/DynamicTable";
 import BPForm from "../AddForms/BPForm";
 import HeartRate from "../AddForms/HeartRate";
 import LFTForm from "../AddForms/LFTForm";
+import LipidProfileForm from "../AddForms/LipidProfileForm";
+import Temperature from "../AddForms/Temperature";
+import Spo2 from "../AddForms/Spo2";
+import RespirationRateForm from "../AddForms/RespirationRateForm";
+import BMI from "../AddForms/BMI";
+import BSugar from "../AddForms/BSugar";
+import Hemogloin from "../AddForms/Hemogloin";
+import HCT from "../AddForms/HCT";
+import BUricAcid from "../AddForms/BUricAcid";
+import BKetone from "../AddForms/BKetone";
+import Urea from "../AddForms/Urea";
+import Creatinine from "../AddForms/Creatinine";
+import GFR from "../AddForms/GFR";
+import Urinalysis from "../AddForms/Urinalysis";
 
 const ObjectiveDetailPage = ({ data }) => {
   const [chartView, setChartView] = useState(false);
@@ -204,6 +218,26 @@ const ObjectiveDetailPage = ({ data }) => {
             {data?.name === "Lung Function Test (LFT)" && (
               <LFTForm addBack={addBack} />
             )}
+            {data?.name === "Lipid Profile" && (
+              <LipidProfileForm addBack={addBack} />
+            )}
+            {data?.name === "Temperature" && <Temperature addBack={addBack} />}
+            {data?.name === "SpO2" && <Spo2 addBack={addBack} />}
+            {data?.name === "Respiration Rate" && (
+              <RespirationRateForm addBack={addBack} />
+            )}
+            {data?.name === "BMI" && <BMI addBack={addBack} />}
+            {data?.name === "Blood Sugar" && <BSugar addBack={addBack} />}
+            {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} />}
+            {data?.name === "HCT" && <HCT addBack={addBack} />}
+            {data?.name === "Blood Uric Acid" && (
+              <BUricAcid addBack={addBack} />
+            )}
+            {data?.name === "Blood Ketone" && <BKetone addBack={addBack} />}
+            {data?.name === "Urea" && <Urea addBack={addBack} />}
+            {data?.name === "Creatinine" && <Creatinine addBack={addBack} />}
+            {data?.name === "GFR" && <GFR addBack={addBack} />}
+            {data?.name === "Urinalysis" && <Urinalysis addBack={addBack} />}
           </CModalBody>
         </CModal>
       </CContainer>
