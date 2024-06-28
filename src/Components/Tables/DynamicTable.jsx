@@ -103,7 +103,7 @@ const DynamicTable = ({ columnsData, tableData }) => {
             visible={editModal}
             onClose={() => setEditModal(false)}
             aria-labelledby="VerticallyCenteredExample"
-            size="xl"
+            size="lg"
           >
             <CModalHeader>
               <h4 className="fw-600">Edit {selectedData?.name}</h4>
