@@ -13,9 +13,9 @@ const LoginPage = () => {
     setPasswordVisible(!passwordVisible);
   };
   const loginSec = (e) => {
-    sessionStorage.setItem('loggedIn', 'true')
-    navigate('/patients')
-  }
+    sessionStorage.setItem("loggedIn", "true");
+    navigate("/patients");
+  };
   return (
     <div className="login-container-logiss">
       <div className="login-left-logiss">
@@ -32,15 +32,16 @@ const LoginPage = () => {
           <div className="comndivs">
             {/* <form method="post"> */}
             <div className="input-group-logiss">
-              <label htmlFor="username" className="login-label-logiss">
+              {/* <label htmlFor="username" className="login-label-logiss">
                 User name
-              </label>
+              </label> */}
               <input
                 type="text"
                 id="username"
                 name="username"
                 className="login-input-logiss"
                 required
+                placeholder="User name"
               />
             </div>
             <div className="password-wrapper-logiss">
@@ -50,15 +51,23 @@ const LoginPage = () => {
                 name="password"
                 className="login-input-logiss"
                 required
+                placeholder="Password"
               />
               <span
                 onClick={togglePasswordVisibility}
                 className="eye-icon-logiss"
               >
-                <img src={Assets.eyei} alt="Show Password" />
+                <img
+                  src={Assets.eyei}
+                  alt="Show Password"
+                  style={{ width: "24px" }}
+                />
               </span>
             </div>
-            <button className="login-button-logiss" onClick={(e) => loginSec(e)}>
+            <button
+              className="login-button-logiss"
+              onClick={(e) => loginSec(e)}
+            >
               Login
             </button>
             <a href="#" className="forgot-password-logiss">

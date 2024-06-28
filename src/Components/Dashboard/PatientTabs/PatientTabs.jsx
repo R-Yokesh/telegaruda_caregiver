@@ -27,9 +27,16 @@ const PatientTabs = ({ getCurrentTab }) => {
       image: Assets.Qr,
     },
   ];
-  const [currentTab, setCurrentTab] = useState(tabs[0]);
+
+
+  const [currentTab, setCurrentTab] = useState(() => {
+    // Initial state setup using localStorage
+    const storedCount = localStorage.getItem("patiendDetailTab");
+    return storedCount ? JSON.parse(storedCount) : tabs[0];
+  });
 
   const switchTab = (data) => {
+    localStorage.setItem("patiendDetailTab", JSON.stringify(data));
     setCurrentTab(data);
     getCurrentTab(data.id);
   };

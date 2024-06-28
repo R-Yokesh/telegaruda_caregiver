@@ -17,14 +17,14 @@ function PatientCard({ PatientDetail }) {
         <div className="patient-details col-8">
           <h5>{PatientDetail.name}</h5>
           <p className="flex-sec-wrap gap-sec">
-            <small>{PatientDetail.email}</small>
-            <small>|</small>
-            <small>{PatientDetail.mobile}</small>
+            <small className="fs-10 fw-500">{PatientDetail.email}</small>
+            <small className="fs-10 fw-500">|</small>
+            <small className="fs-10 fw-500">{PatientDetail.mobile}</small>
           </p>
           <p className="flex-sec-wrap gap-sec">
-            <small>MRN: {PatientDetail.mrn}</small>
-            <small>|</small>
-            <small>{PatientDetail.age}</small>
+            <small className="fs-10 fw-600">MRN: {PatientDetail.mrn}</small>
+            <small className="fs-10 fw-600">|</small>
+            <small className="fs-10 fw-600">{PatientDetail.age}</small>
           </p>
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   CFormInput,
   CModal,
   CModalBody,
+  CModalHeader,
   CRow,
   CTable,
   CTableBody,
@@ -39,6 +40,7 @@ import Urea from "../AddForms/Urea";
 import Creatinine from "../AddForms/Creatinine";
 import GFR from "../AddForms/GFR";
 import Urinalysis from "../AddForms/Urinalysis";
+import BlurBackground from "../../../../../BlurBackground/BlurBackground";
 
 const ObjectiveDetailPage = ({ data }) => {
   const [chartView, setChartView] = useState(false);
@@ -205,41 +207,56 @@ const ObjectiveDetailPage = ({ data }) => {
         </CRow>
 
         {/* Modal for add  */}
-        <CModal
-          alignment="center"
-          visible={addView}
-          onClose={addBack}
-          aria-labelledby="VerticallyCenteredExample"
-          size="xl"
-        >
-          <CModalBody className="p-4">
-            {data?.name === "Blood Pressure" && <BPForm addBack={addBack} />}
-            {data?.name === "Heart Rate" && <HeartRate addBack={addBack} />}
-            {data?.name === "Lung Function Test (LFT)" && (
-              <LFTForm addBack={addBack} />
-            )}
-            {data?.name === "Lipid Profile" && (
-              <LipidProfileForm addBack={addBack} />
-            )}
-            {data?.name === "Temperature" && <Temperature addBack={addBack} />}
-            {data?.name === "SpO2" && <Spo2 addBack={addBack} />}
-            {data?.name === "Respiration Rate" && (
-              <RespirationRateForm addBack={addBack} />
-            )}
-            {data?.name === "BMI" && <BMI addBack={addBack} />}
-            {data?.name === "Blood Sugar" && <BSugar addBack={addBack} />}
-            {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} />}
-            {data?.name === "HCT" && <HCT addBack={addBack} />}
-            {data?.name === "Blood Uric Acid" && (
-              <BUricAcid addBack={addBack} />
-            )}
-            {data?.name === "Blood Ketone" && <BKetone addBack={addBack} />}
-            {data?.name === "Urea" && <Urea addBack={addBack} />}
-            {data?.name === "Creatinine" && <Creatinine addBack={addBack} />}
-            {data?.name === "GFR" && <GFR addBack={addBack} />}
-            {data?.name === "Urinalysis" && <Urinalysis addBack={addBack} />}
-          </CModalBody>
-        </CModal>
+        {addView && (
+          <BlurBackground>
+            <CModal
+              alignment="center"
+              visible={addView}
+              onClose={addBack}
+              aria-labelledby="VerticallyCenteredExample"
+              size="lg"
+            >
+              <CModalHeader>
+                <h4 className="fw-600">Add {data?.name}</h4>
+              </CModalHeader>
+              <CModalBody className="p-4">
+                {data?.name === "Blood Pressure" && (
+                  <BPForm addBack={addBack} />
+                )}
+                {data?.name === "Heart Rate" && <HeartRate addBack={addBack} />}
+                {data?.name === "Lung Function Test (LFT)" && (
+                  <LFTForm addBack={addBack} />
+                )}
+                {data?.name === "Lipid Profile" && (
+                  <LipidProfileForm addBack={addBack} />
+                )}
+                {data?.name === "Temperature" && (
+                  <Temperature addBack={addBack} />
+                )}
+                {data?.name === "SpO2" && <Spo2 addBack={addBack} />}
+                {data?.name === "Respiration Rate" && (
+                  <RespirationRateForm addBack={addBack} />
+                )}
+                {data?.name === "BMI" && <BMI addBack={addBack} />}
+                {data?.name === "Blood Sugar" && <BSugar addBack={addBack} />}
+                {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} />}
+                {data?.name === "HCT" && <HCT addBack={addBack} />}
+                {data?.name === "Blood Uric Acid" && (
+                  <BUricAcid addBack={addBack} />
+                )}
+                {data?.name === "Blood Ketone" && <BKetone addBack={addBack} />}
+                {data?.name === "Urea" && <Urea addBack={addBack} />}
+                {data?.name === "Creatinine" && (
+                  <Creatinine addBack={addBack} />
+                )}
+                {data?.name === "GFR" && <GFR addBack={addBack} />}
+                {data?.name === "Urinalysis" && (
+                  <Urinalysis addBack={addBack} />
+                )}
+              </CModalBody>
+            </CModal>
+          </BlurBackground>
+        )}
       </CContainer>
     </>
   );

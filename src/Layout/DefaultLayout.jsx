@@ -10,7 +10,7 @@ const DefaultLayout = () => {
         <SideBar />
         <div className="flex-grow-1 d-flex flex-column">
           <Header />
-          <div className="flex-grow-1 light-back px-5 py-5">
+          <div className="flex-grow-1 light-back px-4 py-4">
             <AppContent />
           </div>
         </div>

@@ -11,14 +11,19 @@ import PairTab from "../../../Components/Dashboard/PatientTabs/PairTab/PairTab";
 import CallHistoryView from "../../CallHistory/CallHistoryView";
 
 const PatientDetailsView = () => {
-  const [currentTab, setCurrentTab] = useState(1);
+  const [currentTab, setCurrentTab] = useState(() => {
+    // Initial state setup using localStorage
+    const storedCount = localStorage.getItem("patiendDetailTab");
+    const parsedData = storedCount && JSON.parse(storedCount);
+    return storedCount ? parsedData?.id : 1;
+  });
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
   return (
     <div className="">
       {/* <CContainer> */}
-      <CRow className="mb-4">
+      <CRow className="mb-2">
         <CCol md={12} xl={5} className="mb-2">
           <PatentProfile />
         </CCol>

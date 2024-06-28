@@ -11,14 +11,14 @@ function DoctorCards({ DoctorDetail }) {
                 <div className='patient-details col-8'>
                     <h5>{DoctorDetail.name}</h5>
                     <p className='flex-sec-wrap gap-sec'>
-                        <small>{DoctorDetail.email}</small>
-                        <small>|</small>
-                        <small>{DoctorDetail.mobile}</small>
+                        <small className="fs-10 fw-500">{DoctorDetail.email}</small>
+                        <small className="fs-10 fw-500">|</small>
+                        <small className="fs-10 fw-500">{DoctorDetail.mobile}</small>
                     </p>
                     <p className='flex-sec-wrap gap-sec'>
-                        <small>MRN: {DoctorDetail.mrn}</small>
-                        <small>|</small>
-                        <small>{DoctorDetail.age}</small>
+                        <small className="fs-10 fw-600">MRN: {DoctorDetail.mrn}</small>
+                        <small className="fs-10 fw-600">|</small>
+                        <small className="fs-10 fw-600">{DoctorDetail.age}</small>
                     </p>
                 </div>
             </div>

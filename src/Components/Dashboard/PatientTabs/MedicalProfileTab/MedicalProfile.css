@@ -13,7 +13,7 @@
 }
 
 .medical-tab-items {
-    padding: 12px;
+    padding: 8px;
     display: flex;
     gap: 5px;
     color: black;
@@ -31,6 +31,7 @@
     line-height: 23.12px;
     text-align: left;
     color: black;
+    text-transform: uppercase;
 }
 
 .medical-tab-title-active {
@@ -39,4 +40,5 @@
     line-height: 23.12px;
     text-align: left;
     color: white;
+    text-transform: uppercase;
 }

@@ -76,7 +76,6 @@ import filter from "./Images/fillter-filled.svg";
 
 export const Assets = {
   BackBtn,
-  BackBtn,
   logomain,
   loginbanner,
   eyei,

@@ -35,8 +35,9 @@ const VitalsTab = ({ category, openModal }) => {
           diastolic: "25",
           "pulse_(in_bpm)": "89",
           chartLabel1: "PULSE (IN BPM)",
-          date: "02-04-2024 12:13PM",
-          action: [{ type: "warning" }],
+          date: "02-04-2024 12:13",
+          action: [{ type: "edit" }, { type: "warning" }],
+          name: "Blood Pressure",
         },
         {
           "no.": 2,
@@ -47,8 +48,9 @@ const VitalsTab = ({ category, openModal }) => {
           systolic: "112",
           diastolic: "25",
           "pulse_(in_bpm)": "125",
-          date: "05-04-2024 12:13PM",
-          action: [{ type: "warning" }],
+          date: "05-04-2024 13:15",
+          action: [{ type: "edit" }, { type: "warning" }],
+          name: "Blood Pressure",
         },
       ],
       chartLabel1: "PULSE (IN BPM)",
@@ -78,6 +80,7 @@ const VitalsTab = ({ category, openModal }) => {
           type: "Random",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Blood Sugar",
         },
         {
           "no.": 2,
@@ -90,6 +93,7 @@ const VitalsTab = ({ category, openModal }) => {
           type: "Random",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Blood Sugar",
         },
       ],
     },
@@ -119,6 +123,7 @@ const VitalsTab = ({ category, openModal }) => {
           weight: "61kg",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "BMI",
         },
         {
           "no.": 2,
@@ -131,6 +136,7 @@ const VitalsTab = ({ category, openModal }) => {
           weight: "87.5kg",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "BMI",
         },
       ],
     },
@@ -156,6 +162,7 @@ const VitalsTab = ({ category, openModal }) => {
           hct_rate: "42%",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "HCT",
         },
         {
           "no.": 2,
@@ -166,6 +173,7 @@ const VitalsTab = ({ category, openModal }) => {
           hct_rate: "45%",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "HCT",
         },
       ],
     },
@@ -193,6 +201,7 @@ const VitalsTab = ({ category, openModal }) => {
           "heart_rate_(bpm)": "120",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Heart Rate",
         },
         {
           "no.": 2,
@@ -204,6 +213,7 @@ const VitalsTab = ({ category, openModal }) => {
           "heart_rate_(bpm)": "70",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Heart Rate",
         },
       ],
     },
@@ -230,6 +240,7 @@ const VitalsTab = ({ category, openModal }) => {
           hemoglobinValue: "15",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Hemoglobin",
         },
         {
           "no.": 2,
@@ -241,6 +252,7 @@ const VitalsTab = ({ category, openModal }) => {
           hemoglobinValue: "15",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Hemoglobin",
         },
       ],
     },
@@ -267,6 +279,7 @@ const VitalsTab = ({ category, openModal }) => {
           blood_ketone_value: "0.33",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Blood Ketone",
         },
         {
           "no.": 2,
@@ -278,6 +291,7 @@ const VitalsTab = ({ category, openModal }) => {
           blood_ketone_value: "0.33",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Blood Ketone",
         },
       ],
     },
@@ -320,6 +334,7 @@ const VitalsTab = ({ category, openModal }) => {
           vldl: "5 mg/dL",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Lipid Profile",
         },
         {
           "no.": 2,
@@ -336,6 +351,7 @@ const VitalsTab = ({ category, openModal }) => {
           vldl: "5 mg/dL",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Lipid Profile",
         },
       ],
     },
@@ -361,6 +377,7 @@ const VitalsTab = ({ category, openModal }) => {
           "respiration_rate_(bpm)": "44",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Respiration Rate",
         },
         {
           "no.": 2,
@@ -371,6 +388,7 @@ const VitalsTab = ({ category, openModal }) => {
           "respiration_rate_(bpm)": "18",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Respiration Rate",
         },
       ],
     },
@@ -398,6 +416,7 @@ const VitalsTab = ({ category, openModal }) => {
           spo2: "99%",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "SpO2",
         },
         {
           "no.": 2,
@@ -409,6 +428,7 @@ const VitalsTab = ({ category, openModal }) => {
           "pulse_rate_(bpm)": "70",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "SpO2",
         },
       ],
     },
@@ -437,6 +457,7 @@ const VitalsTab = ({ category, openModal }) => {
           type: "Oral",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Temperature",
         },
         {
           "no.": 2,
@@ -449,6 +470,7 @@ const VitalsTab = ({ category, openModal }) => {
           type: "Oral",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Temperature",
         },
       ],
     },
@@ -485,6 +507,7 @@ const VitalsTab = ({ category, openModal }) => {
           "svc_(l)": "3.51",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Lung Function Test (LFT)",
         },
         {
           "no.": 2,
@@ -495,6 +518,7 @@ const VitalsTab = ({ category, openModal }) => {
           "svc_(l)": "3.51",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Lung Function Test (LFT)",
         },
       ],
     },
@@ -521,6 +545,7 @@ const VitalsTab = ({ category, openModal }) => {
           blood_uric_acid_value: "5",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Blood Uric Acid",
         },
         {
           "no.": 2,
@@ -532,6 +557,7 @@ const VitalsTab = ({ category, openModal }) => {
           blood_uric_acid_value: "5",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Blood Uric Acid",
         },
       ],
     },
@@ -569,6 +595,7 @@ const VitalsTab = ({ category, openModal }) => {
           rbc: "None",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Urinalysis",
         },
         {
           "no.": 2,
@@ -585,6 +612,7 @@ const VitalsTab = ({ category, openModal }) => {
           rbc: "None",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Urinalysis",
         },
       ],
     },
@@ -611,6 +639,7 @@ const VitalsTab = ({ category, openModal }) => {
           urea_value: "20",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Urea",
         },
         {
           "no.": 2,
@@ -622,6 +651,7 @@ const VitalsTab = ({ category, openModal }) => {
           urea_value: "20",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Urea",
         },
       ],
     },
@@ -648,6 +678,7 @@ const VitalsTab = ({ category, openModal }) => {
           creatinine_value: "88",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "Creatinine",
         },
         {
           "no.": 2,
@@ -659,6 +690,7 @@ const VitalsTab = ({ category, openModal }) => {
           creatinine_value: "88",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "Creatinine",
         },
       ],
     },
@@ -685,6 +717,7 @@ const VitalsTab = ({ category, openModal }) => {
           gfr_value: "90",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
+          name: "GFR",
         },
         {
           "no.": 2,
@@ -696,6 +729,7 @@ const VitalsTab = ({ category, openModal }) => {
           gfr_value: "90",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
+          name: "GFR",
         },
       ],
     },
@@ -707,14 +741,6 @@ const VitalsTab = ({ category, openModal }) => {
   return (
     <>
       <CRow className="mb-1">
-        {/* <CCol md={12}>
-          <Breadcrumb
-            paths={[
-              { label: "Patient", to: "/patient" },
-              { label: "Vitals", to: "/patient/details" },
-            ]}
-          />
-        </CCol> */}
         <CCol md={12}>
           {/* <span className="vitals-title">VITALS</span> */}
           <CRow className="mt-3 ">

@@ -1,13 +1,38 @@
 import { CCol, CContainer, CRow } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 
-const LipidProfileForm = ({ addBack }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(new Date());
+const LipidProfileForm = ({ addBack, defaultData }) => {
+
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  useEffect(() => {
+    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
+    const parseDateString = (dateString) => {
+      const parts = dateString?.split(" ");
+      const datePart = parts[0];
+      const timePart = parts[1];
+      const [month, day, year] = datePart?.split("-")?.map(Number);
+      const [hours, minutes] = timePart?.split(":")?.map(Number);
+      return new Date(year, month - 1, day, hours, minutes);
+    };
+
+    // Example default date string
+    const defaultDateString = defaultData?.date;
+
+    // Parse default date string to Date object
+    const defaultDate = defaultData
+      ? parseDateString(defaultDateString)
+      : new Date();
+
+    // Set default date in state
+    setSelectedDate(defaultDate);
+    setSelectedTime(defaultDate);
+  }, [defaultData]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -15,6 +40,11 @@ const LipidProfileForm = ({ addBack }) => {
 
   const handleTimeChange = (date) => {
     setSelectedTime(date);
+  };
+  const extractNum = (data) => {
+    const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
+
+    return numbers || "";
   };
   return (
     <>
@@ -63,6 +93,7 @@ const LipidProfileForm = ({ addBack }) => {
                 class="form-control"
                 id="validationTooltip01"
                 placeholder="Enter"
+                defaultValue={defaultData?.result?.name}
               />
             </div>
           </CCol>
@@ -93,6 +124,7 @@ const LipidProfileForm = ({ addBack }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
+                defaultValue={defaultData?.totalOnly}
               />
             </div>
           </CCol>
@@ -123,6 +155,7 @@ const LipidProfileForm = ({ addBack }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
+                defaultValue={extractNum(defaultData?.triglycerides)}
               />
             </div>
           </CCol>
@@ -151,6 +184,7 @@ const LipidProfileForm = ({ addBack }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
+                defaultValue={extractNum(defaultData?.hdl)}
               />
             </div>
           </CCol>
@@ -181,6 +215,7 @@ const LipidProfileForm = ({ addBack }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
+                defaultValue={extractNum(defaultData?.ldl)}
               />
             </div>
           </CCol>
@@ -193,6 +228,7 @@ const LipidProfileForm = ({ addBack }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
+                defaultValue={extractNum(defaultData?.["hdl/ldl"])}
               />
             </div>
           </CCol>
@@ -223,6 +259,7 @@ const LipidProfileForm = ({ addBack }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
+                defaultValue={extractNum(defaultData?.["vldl"])}
               />
             </div>
           </CCol>

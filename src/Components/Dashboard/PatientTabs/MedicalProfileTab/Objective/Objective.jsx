@@ -70,28 +70,32 @@ const Objective = () => {
           </CRow>
         ) : (
           <>
-            <CRow className="mt-4">
-              <CCol md={6} className="mb-3">
-                <div className="d-flex">
-                  <div className="back-box" onClick={() => setCardView(false)}>
-                    <img
-                      alt="BackBtn"
-                      src={Assets.BackBtn}
-                      style={{ width: "60px" }}
-                    />
-                  </div>
-                  <span className="Obj-name">Vital Signs</span>
+            <CRow>
+              <CCol md={6} className="mb-2">
+                <div className="d-flex gap-2">
+                  <img
+                    alt="BackBtn"
+                    src={Assets.BackBtn}
+                    style={{ width: "35px" }}
+                    onClick={() => setCardView(false)}
+                    className="cursor"
+                  />
+                  <span className="Obj-name d-flex align-items-center">
+                    Vital Signs
+                  </span>
                 </div>
               </CCol>
-              <CCol md={6} className="mb-3">
-                <Breadcrumb
-                  paths={[
-                    { label: "Home", to: "/patients" },
-                    { label: "Patient List", to: "/patients" },
-                    { label: "Medical Profile", to: "/patients/history" },
-                    { label: "Vital Signs", to: "/patients/history" },
-                  ]}
-                />
+              <CCol md={6} className="mb-2 d-flex justify-content-end">
+                <div className="d-flex mt-2">
+                  <Breadcrumb
+                    paths={[
+                      { label: "Home", to: "/patients" },
+                      { label: "Patient List", to: "/patients" },
+                      { label: "Medical Profile", to: "/patients/history" },
+                      { label: "Vital Signs", to: "/patients/history" },
+                    ]}
+                  />
+                </div>
               </CCol>
             </CRow>
             <CRow>

@@ -5,19 +5,18 @@ import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 
-const HCT = ({ addBack, defaultData }) => {
-  console.log("first", defaultData);
+const BPForm = ({ editBack, defaultData }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
+      const parts = dateString.split(" ");
       const datePart = parts[0];
       const timePart = parts[1];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      const [hours, minutes] = timePart?.split(":")?.map(Number);
+      const [month, day, year] = datePart.split("-").map(Number);
+      const [hours, minutes] = timePart.split(":").map(Number);
       return new Date(year, month - 1, day, hours, minutes);
     };
 
@@ -25,14 +24,12 @@ const HCT = ({ addBack, defaultData }) => {
     const defaultDateString = defaultData?.date;
 
     // Parse default date string to Date object
-    const defaultDate = defaultData
-      ? parseDateString(defaultDateString)
-      : new Date();
+    const defaultDate = parseDateString(defaultDateString);
 
     // Set default date in state
     setSelectedDate(defaultDate);
     setSelectedTime(defaultDate);
-  }, [defaultData]);
+  }, []);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -41,10 +38,11 @@ const HCT = ({ addBack, defaultData }) => {
   const handleTimeChange = (date) => {
     setSelectedTime(date);
   };
+
   const extractNum = (data) => {
     const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-    return numbers || "";
+    return numbers;
   };
   return (
     <>
@@ -86,23 +84,51 @@ const HCT = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                HCT(%) *
+                Systolic *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={extractNum(defaultData?.hct_rate)}
+                defaultValue={defaultData?.systolic}
+              />
+            </div>
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CCol lg={6}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Diastolic *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.diastolic}
+              />
+            </div>
+          </CCol>
+          <CCol lg={6}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Pulse (in BPM) *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["pulse_(in_bpm)"]}
               />
             </div>
           </CCol>
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => addBack()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={() => editBack()}>SAVE</PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
-            <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>
+            <SecondaryButton onClick={() => editBack()}>CANCEL</SecondaryButton>
           </CCol>
         </CRow>
       </CContainer>
@@ -110,4 +136,4 @@ const HCT = ({ addBack, defaultData }) => {
   );
 };
 
-export default HCT;
+export default BPForm;
