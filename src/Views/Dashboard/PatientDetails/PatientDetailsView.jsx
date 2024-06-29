@@ -37,7 +37,6 @@ const PatientDetailsView = () => {
       {currentTab === 2 && (
         <CRow>
           <CCol md={12}>
-            {/* <VitalsTab /> */}
             <MedicalProfile />
           </CCol>
         </CRow>

@@ -7,13 +7,13 @@
 }
 
 .medical-tabs-container {
+    padding: 8px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
 }
 
 .medical-tab-items {
-    padding: 8px;
     display: flex;
     gap: 5px;
     color: black;
@@ -26,6 +26,7 @@
 }
 
 .medical-tab-title {
+    padding: 12px;
     font-size: 16px;
     font-weight: 600;
     line-height: 23.12px;
@@ -35,6 +36,7 @@
 }
 
 .medical-tab-title-active {
+    padding: 12px;
     font-size: 16px;
     font-weight: 600;
     line-height: 23.12px;

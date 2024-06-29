@@ -36,7 +36,7 @@ const VitalsTab = ({ category, openModal }) => {
           "pulse_(in_bpm)": "89",
           chartLabel1: "PULSE (IN BPM)",
           date: "02-04-2024 12:13",
-          action: [{ type: "edit" }, { type: "warning" }],
+          action: [{ type: "warning" }],
           name: "Blood Pressure",
         },
         {
@@ -49,7 +49,7 @@ const VitalsTab = ({ category, openModal }) => {
           diastolic: "25",
           "pulse_(in_bpm)": "125",
           date: "05-04-2024 13:15",
-          action: [{ type: "edit" }, { type: "warning" }],
+          action: [ { type: "warning" }],
           name: "Blood Pressure",
         },
       ],
@@ -742,7 +742,6 @@ const VitalsTab = ({ category, openModal }) => {
     <>
       <CRow className="mb-1">
         <CCol md={12}>
-          {/* <span className="vitals-title">VITALS</span> */}
           <CRow className="mt-3 ">
             {filteredProducts?.map((item, index) => (
               <CCol md={6} xl={4} key={index} className="mb-3">
@@ -762,10 +761,9 @@ const VitalsTab = ({ category, openModal }) => {
                     <div className="vital-badge">
                       <div className="vital-badge-list">
                         {item.badge.map((dt, i) => (
-                          // <CBadge color={dt.color} key={i}>
-                          //   {dt.label}
-                          // </CBadge>
-                          <Badge label={dt?.label} color={dt?.color} />
+                          <div key={i} style={{ height: "24px" }}>
+                            <Badge label={dt?.label} color={dt?.color} />
+                          </div>
                         ))}
                       </div>
                     </div>

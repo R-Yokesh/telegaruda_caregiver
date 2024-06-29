@@ -58,8 +58,8 @@ const CardChart = ({ datas }) => {
   return (
     <>
       <LineChart
-        width={300}
-        height={100}
+        width={250}
+        height={90}
         data={formattedData}
         margin={{ top: 20, right: 5, left: 10, bottom: 5 }}
       >
