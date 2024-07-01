@@ -41,10 +41,12 @@ import Creatinine from "../AddForms/Creatinine";
 import GFR from "../AddForms/GFR";
 import Urinalysis from "../AddForms/Urinalysis";
 import BlurBackground from "../../../../../BlurBackground/BlurBackground";
+import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 
 const ObjectiveDetailPage = ({ data }) => {
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
+  const [filterView, setFilterView] = useState(false);
 
   const columns = [
     { id: 1, label: "NO." },
@@ -122,6 +124,13 @@ const ObjectiveDetailPage = ({ data }) => {
   const addBack = () => {
     setAddView(false);
   };
+
+  const filterPage = () => {
+    setFilterView(true);
+  };
+  const filterBack = () => {
+    setFilterView(false);
+  };
   return (
     <>
       <CContainer className="p-0">
@@ -162,12 +171,25 @@ const ObjectiveDetailPage = ({ data }) => {
                   )}
                 </CCol>
                 <CCol xs={4} md={4} lg={4}>
-                  <PrimaryButton>
-                    <div className="d-flex align-items-center gap-2">
-                      <img src={Assets.Filter} alt="add" />
-                      <span className="fs-16 fw-600">Filter</span>
-                    </div>
-                  </PrimaryButton>
+                  {filterView && (
+                    <ActiveButton onClick={() => filterBack()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.CloseX} alt="add" />
+                        <span className="fs-16 fw-600">Filter</span>
+                      </div>
+                    </ActiveButton>
+                  )}
+                  {!filterView && (
+                    <PrimaryButton>
+                      <div
+                        className="d-flex align-items-center gap-2"
+                        onClick={() => filterPage()}
+                      >
+                        <img src={Assets.Filter} alt="add" />
+                        <span className="fs-16 fw-600">Filter</span>
+                      </div>
+                    </PrimaryButton>
+                  )}
                 </CCol>
                 {!chartView && (
                   <CCol xs={4} md={4} lg={4}>
@@ -198,10 +220,13 @@ const ObjectiveDetailPage = ({ data }) => {
             {chartView ? (
               <ChartTab data={data} />
             ) : (
-              <DynamicTable
-                columnsData={data?.columnsData}
-                tableData={data?.tableData}
-              />
+              <>
+                {filterView && <DateRangePicker onClose={filterBack} />}
+                <DynamicTable
+                  columnsData={data?.columnsData}
+                  tableData={data?.tableData}
+                />
+              </>
             )}
           </CCol>
         </CRow>

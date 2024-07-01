@@ -59,7 +59,7 @@ const Objective = () => {
 
   return (
     <>
-      <CContainer className="mt-3">
+      <div className="mt-3">
         {!cardView ? (
           <CRow>
             {cardData.map((dt, i) => (
@@ -99,18 +99,22 @@ const Objective = () => {
               </CCol>
             </CRow>
             <CRow>
-              <MedicalTab
-                tabs={tabs}
-                getCurrentTab={getCurrentTab}
-                defaultTab={0}
-              />
+              <CCol md={12}>
+                <MedicalTab
+                  tabs={tabs}
+                  getCurrentTab={getCurrentTab}
+                  defaultTab={0}
+                />
+              </CCol>
             </CRow>
             <CRow>
-              <VitalsTab category={currentTabtitle} openModal={openModal} />
+              <CCol md={12}>
+                <VitalsTab category={currentTabtitle} openModal={openModal} />
+              </CCol>
             </CRow>
           </>
         )}
-      </CContainer>
+      </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CContainer className="p-0">
           <CRow>

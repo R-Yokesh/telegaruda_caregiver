@@ -130,6 +130,9 @@ body {
 @import url('./assets/Css/Card.css');
 @import url('./assets/Css/Chart.css');
 @import url('./assets/Css/BlurBackground.css');
+@import url('./assets/Css/DateRangePicker.css');
+
+
 
 .light-back {
   background-color: var(--screen-back);
