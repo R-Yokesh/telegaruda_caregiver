@@ -8,6 +8,8 @@ import MedicalTab from "../MedicalTab";
 import VitalsTab from "../../VitalsTab/VitalsTab";
 import Modal from "../../../../Modal/Modal";
 import ObjectiveDetailPage from "./DetailPage/ObjectiveDetailPage";
+import VitalSign from "./VitalSign/VitalSign";
+import PhysicalExam from "./PhysicalExam/PhysicalExam";
 
 const Objective = () => {
   const cardData = [
@@ -16,51 +18,26 @@ const Objective = () => {
     { id: 3, name: "Lab", image: Assets.Lab },
     { id: 4, name: "Imaging", image: Assets.Imaging },
   ];
-  const tabs = [
-    { id: 1, title: "Primary Vitals" },
-    { id: 2, title: "Metabolic And Biochemical Profile" },
-    { id: 3, title: "Hematologic Profile" },
-    { id: 4, title: "Renal and Metabolic Markers" },
-  ];
-  const [currentTab, setCurrentTab] = useState({
-    id: 1,
-    title: "Primary Vitals",
-  });
-  const [selectedData, setSelectedData] = useState();
-  const [cardView, setCardView] = useState(false);
-  const [cardSelectedData, setSelectedCardData] = useState();
+
+  // const [selectedData, setSelectedData] = useState();
+  const [vitalView, setVitalView] = useState(false);
+  const [phyView, setPhyView] = useState(false);
 
   const getSelectedData = (data) => {
-    setSelectedData(data);
+    console.log("first data", data);
+    // setSelectedData(data);
     if (data?.id === 1) {
-      setCardView(true);
+      setVitalView(true);
     }
-  };
-  const getCurrentTab = (data) => {
-    setCurrentTab(data);
-  };
-
-  function findTitleById(id) {
-    const titleObject = tabs?.find((title) => title.id === id);
-    return titleObject ? titleObject?.title : "Primary Vitals"; // Return the title or a message if not found
-  }
-
-  const currentTabtitle = findTitleById(currentTab);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = (data) => {
-    setSelectedCardData(data);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+    if (data?.id === 2) {
+      setPhyView(true);
+    }
   };
 
   return (
     <>
       <div className="mt-3">
-        {!cardView ? (
+        {!vitalView && !phyView ? (
           <CRow>
             {cardData.map((dt, i) => (
               <CCol md={4} xl={3} className="mb-3">
@@ -68,62 +45,12 @@ const Objective = () => {
               </CCol>
             ))}
           </CRow>
-        ) : (
-          <>
-            <CRow>
-              <CCol md={6} className="mb-2">
-                <div className="d-flex gap-2">
-                  <img
-                    alt="BackBtn"
-                    src={Assets.BackBtn}
-                    style={{ width: "35px" }}
-                    onClick={() => setCardView(false)}
-                    className="cursor"
-                  />
-                  <span className="Obj-name d-flex align-items-center">
-                    Vital Signs
-                  </span>
-                </div>
-              </CCol>
-              <CCol md={6} className="mb-2 d-flex justify-content-end">
-                <div className="d-flex mt-2">
-                  <Breadcrumb
-                    paths={[
-                      { label: "Home", to: "/patients" },
-                      { label: "Patient List", to: "/patients" },
-                      { label: "Medical Profile", to: "/patients/history" },
-                      { label: "Vital Signs", to: "/patients/history" },
-                    ]}
-                  />
-                </div>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol md={12}>
-                <MedicalTab
-                  tabs={tabs}
-                  getCurrentTab={getCurrentTab}
-                  defaultTab={0}
-                />
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol md={12}>
-                <VitalsTab category={currentTabtitle} openModal={openModal} />
-              </CCol>
-            </CRow>
-          </>
-        )}
+        ) : vitalView ? (
+          <VitalSign setVitalView={() => setVitalView(false)} />
+        ) : phyView ? (
+          <PhysicalExam onClose={() => setPhyView(false)} />
+        ) : null}
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <CContainer className="p-0">
-          <CRow>
-            <CCol className="mb-3">
-              <ObjectiveDetailPage data={cardSelectedData} />
-            </CCol>
-          </CRow>
-        </CContainer>
-      </Modal>
     </>
   );
 };

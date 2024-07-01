@@ -44,8 +44,16 @@ body {
   font-size: 16px !important;
 }
 
+.fs-18 {
+  font-size: 18px !important;
+}
+
 .fs-20 {
   font-size: 20px !important;
+}
+
+.fw-400 {
+  font-weight: 400 !important;
 }
 
 .fw-500 {
@@ -131,6 +139,7 @@ body {
 @import url('./assets/Css/Chart.css');
 @import url('./assets/Css/BlurBackground.css');
 @import url('./assets/Css/DateRangePicker.css');
+@import url('./assets/Css/Pagination.css');
 
 
 
@@ -242,4 +251,11 @@ body {
   line-height: 37.57px;
   letter-spacing: 0.1em;
   text-align: left;
+}
+
+.date-card {
+  width: 350px;
+  max-width: 100%;
+  box-shadow: 0px 4px 24px 0px #17171D14;
+  border-radius: 10px;
 }

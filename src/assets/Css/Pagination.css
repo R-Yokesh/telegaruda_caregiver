@@ -1,0 +1,19 @@
+.pagination button {
+    width: 56px;
+    height: 56px;
+    gap: 0px;
+    border-radius: 8px;
+    opacity: 0px;
+    box-shadow: 0px 4px 24px 0px #0084CF14;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28.9px;
+}
+
+.active {
+    background: #0084CF;
+    color: white;
+}

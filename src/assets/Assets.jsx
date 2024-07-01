@@ -74,6 +74,9 @@ import Urea from "./Images/Patients/Urea.png";
 import notes from "./Images/notes-icon.svg";
 import filter from "./Images/fillter-filled.svg";
 
+import search from "./Images/search.png";
+import deleteorg from "./Images/Delete-Org.svg";
+
 export const Assets = {
   BackBtn,
   logomain,
@@ -136,4 +139,6 @@ export const Assets = {
   GFR,
   filter,
   notes,
+  search,
+  deleteorg,
 };
