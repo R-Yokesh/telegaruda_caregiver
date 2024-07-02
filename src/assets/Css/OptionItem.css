@@ -1,0 +1,24 @@
+.option-item {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 23px;
+    height: 43px;
+    max-height: 100%;
+}
+
+.option-item:hover {
+    background-color: #f0f0f0;
+}
+
+.option-item.selected {
+    background: #17171D;
+    color: white;
+    border: 1px solid #17171D33
+}

@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 
+@import url('./assets/Css/Card.css');
+@import url('./assets/Css/Chart.css');
+@import url('./assets/Css/BlurBackground.css');
+@import url('./assets/Css/DateRangePicker.css');
+@import url('./assets/Css/Pagination.css');
+@import url('./assets/Css/OptionItem.css');
+
 body {
   margin: 0;
   font-family: "Jost", sans-serif !important;
@@ -13,6 +20,10 @@ code {
 
 .cursor {
   cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default !important;
 }
 
 html,
@@ -135,11 +146,6 @@ body {
 
 
 
-@import url('./assets/Css/Card.css');
-@import url('./assets/Css/Chart.css');
-@import url('./assets/Css/BlurBackground.css');
-@import url('./assets/Css/DateRangePicker.css');
-@import url('./assets/Css/Pagination.css');
 
 
 

@@ -76,6 +76,9 @@ import filter from "./Images/fillter-filled.svg";
 
 import search from "./Images/search.png";
 import deleteorg from "./Images/Delete-Org.svg";
+import listview from "./Images/list.svg";
+import PlusIcon from "./Images/Plus-Icon.svg";
+import MinusIcon from "./Images/Minus-Icon.svg";
 
 export const Assets = {
   BackBtn,
@@ -141,4 +144,7 @@ export const Assets = {
   notes,
   search,
   deleteorg,
+  listview,
+  PlusIcon,
+  MinusIcon,
 };

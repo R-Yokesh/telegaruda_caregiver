@@ -8,6 +8,8 @@ import DateCards from "../../../../../DateCards/DateCards";
 import Pagination from "../../../../../Pagination/Pagination";
 import ActiveButton from "../../../../../Buttons/ActiveButton/ActiveButton";
 import SingleDatePicker from "../../../../../DateRangePicker/SingleDatePicker";
+import OptionItem from "../../../../../OptionItems/OptionItem";
+import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 
 const PhysicalExam = ({ onClose }) => {
   const dateCards = [
@@ -28,6 +30,17 @@ const PhysicalExam = ({ onClose }) => {
   ];
   const [currentPage, setCurrentPage] = useState(1);
   const [addFormView, setAddFormView] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const options = [
+    "Lorem ipsum",
+    "Lorem ipsum",
+    "Lorem ipsum",
+    "Lorem ipsum",
+    "Lorem ipsum",
+    "Lorem ipsum",
+    "Lorem ipsum 2",
+  ];
 
   const itemsPerPage = 9; // Number of items to display per page
 
@@ -46,9 +59,55 @@ const PhysicalExam = ({ onClose }) => {
   const addFormPage = () => {
     setAddFormView(true);
   };
+
+  const handleSelect = (option, isSelected) => {
+    if (isSelected) {
+      setSelectedOptions([...selectedOptions, option]);
+    } else {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    }
+  };
+
+  const [nutritionOpen, setNutritionOpen] = useState(false);
+  const [constiOpen, setConstiOpen] = useState(false);
+  const [generalOpen, setGeneralOpen] = useState(false);
+  const [heentOpen, setHeentOpen] = useState(false);
+
+  const nutritionTabOpen = () => {
+    setNutritionOpen(true);
+  };
+
+  const nutritionTabClose = () => {
+    setNutritionOpen(false);
+  };
+
+  const constiTabOpen = () => {
+    setConstiOpen(true);
+  };
+
+  const constiTabClose = () => {
+    setConstiOpen(false);
+  };
+
+  const generalTabOpen = () => {
+    setGeneralOpen(true);
+  };
+
+  const generalTabClose = () => {
+    setGeneralOpen(false);
+  };
+
+  const heentTabOpen = () => {
+    setHeentOpen(true);
+  };
+
+  const heentTabClose = () => {
+    setHeentOpen(false);
+  };
+
   return (
     <>
-      <CRow className="mb-2">
+      <CRow className="mb-0">
         <CCol md={6} className="mb-2">
           <div className="d-flex gap-2">
             <img
@@ -118,20 +177,233 @@ const PhysicalExam = ({ onClose }) => {
         </>
       )}
       {addFormView && (
-        <CCard className="p-2">
-          <CCardBody>
+        <CCard className="p-2 cursor-default mb-5">
+          <CCardBody className="mb-3">
             <CRow className="mb-2">
               <CCol className="d-flex align-items-center gap-2">
                 <span>Date</span>
                 <SingleDatePicker />
               </CCol>
               <CCol className="d-flex justify-content-end">
-                <div style={{ width: "150px" }}>
-                  <ActiveButton>List View</ActiveButton>
+                <div style={{ width: "120px" }}>
+                  <ActiveButton onClick={() => setAddFormView(false)}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets?.listview} alt="close" />
+                      <span>List View</span>
+                    </div>
+                  </ActiveButton>
                 </div>
               </CCol>
             </CRow>
-            <div className="vertical-line mb-2"></div>
+            <div className="vertical-line mb-3"></div>
+            <CRow className="mb-2">
+              <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
+                {!nutritionOpen && (
+                  <img
+                    alt="plus"
+                    src={Assets?.PlusIcon}
+                    onClick={nutritionTabOpen}
+                    className="cursor"
+                  />
+                )}
+                {nutritionOpen && (
+                  <img
+                    alt="plus"
+                    src={Assets?.MinusIcon}
+                    onClick={nutritionTabClose}
+                    className="cursor"
+                  />
+                )}
+                <span className="fs-16 fw-600">Nutritional</span>
+              </CCol>
+              {nutritionOpen && (
+                <>
+                  <CCol lg={12} className="mb-2">
+                    <div class="position-relative">
+                      <label for="validationTooltip01" class="form-label">
+                        Custom Entry
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="validationTooltip01"
+                        placeholder="Custom Entry"
+                      />
+                    </div>
+                  </CCol>
+                  <CRow>
+                    {options?.map((option, index) => (
+                      <CCol lg={"auto"}>
+                        <OptionItem
+                          key={index}
+                          label={option}
+                          onSelect={handleSelect}
+                        />
+                      </CCol>
+                    ))}
+                  </CRow>
+                </>
+              )}
+            </CRow>
+            <div className="vertical-line mt-2 mb-3"></div>
+            <CRow className="mb-2">
+              <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
+                {!constiOpen && (
+                  <img
+                    alt="plus"
+                    src={Assets?.PlusIcon}
+                    onClick={constiTabOpen}
+                    className="cursor"
+                  />
+                )}
+                {constiOpen && (
+                  <img
+                    alt="plus"
+                    src={Assets?.MinusIcon}
+                    onClick={constiTabClose}
+                    className="cursor"
+                  />
+                )}
+                <span className="fs-16 fw-600">Constitutional</span>
+              </CCol>
+              {constiOpen && (
+                <>
+                  <CCol lg={12} className="mb-2">
+                    <div class="position-relative">
+                      <label for="validationTooltip01" class="form-label">
+                        Custom Entry
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="validationTooltip01"
+                        placeholder="Custom Entry"
+                      />
+                    </div>
+                  </CCol>
+                  <CRow>
+                    {options?.map((option, index) => (
+                      <CCol lg={"auto"}>
+                        <OptionItem
+                          key={index}
+                          label={option}
+                          onSelect={handleSelect}
+                        />
+                      </CCol>
+                    ))}
+                  </CRow>
+                </>
+              )}
+            </CRow>
+            <div className="vertical-line mt-2 mb-3"></div>
+            <CRow className="mb-2">
+              <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
+                {!generalOpen && (
+                  <img
+                    alt="plus"
+                    src={Assets?.PlusIcon}
+                    onClick={generalTabOpen}
+                    className="cursor"
+                  />
+                )}
+                {generalOpen && (
+                  <img
+                    alt="plus"
+                    src={Assets?.MinusIcon}
+                    onClick={generalTabClose}
+                    className="cursor"
+                  />
+                )}
+                <span className="fs-16 fw-600">General</span>
+              </CCol>
+              {generalOpen && (
+                <>
+                  <CCol lg={12} className="mb-2">
+                    <div class="position-relative">
+                      <label for="validationTooltip01" class="form-label">
+                        Custom Entry
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="validationTooltip01"
+                        placeholder="Custom Entry"
+                      />
+                    </div>
+                  </CCol>
+                  <CRow>
+                    {options?.map((option, index) => (
+                      <CCol lg={"auto"}>
+                        <OptionItem
+                          key={index}
+                          label={option}
+                          onSelect={handleSelect}
+                        />
+                      </CCol>
+                    ))}
+                  </CRow>
+                </>
+              )}
+            </CRow>
+            <div className="vertical-line mt-2 mb-3"></div>
+            <CRow className="mb-2">
+              <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
+                {!heentOpen && (
+                  <img
+                    alt="plus"
+                    src={Assets?.PlusIcon}
+                    onClick={heentTabOpen}
+                    className="cursor"
+                  />
+                )}
+                {heentOpen && (
+                  <img
+                    alt="plus"
+                    src={Assets?.MinusIcon}
+                    onClick={heentTabClose}
+                    className="cursor"
+                  />
+                )}
+                <span className="fs-16 fw-600">HEENT</span>
+              </CCol>
+              {heentOpen && (
+                <>
+                  <CCol lg={12} className="mb-2">
+                    <div class="position-relative">
+                      <label for="validationTooltip01" class="form-label">
+                        Custom Entry
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="validationTooltip01"
+                        placeholder="Custom Entry"
+                      />
+                    </div>
+                  </CCol>
+                  <CRow>
+                    {options?.map((option, index) => (
+                      <CCol lg={"auto"}>
+                        <OptionItem
+                          key={index}
+                          label={option}
+                          onSelect={handleSelect}
+                        />
+                      </CCol>
+                    ))}
+                  </CRow>
+                </>
+              )}
+            </CRow>
+            <div className="vertical-line mt-2 mb-3"></div>
+            <CRow className="mb-1">
+              <div style={{ width: "128px" }}>
+                <PrimaryButton>SAVE</PrimaryButton>
+              </div>
+              <div style={{ width: "128px" }}>
+                <SecondaryButton>CANCEL</SecondaryButton>
+              </div>
+            </CRow>
           </CCardBody>
         </CCard>
       )}
