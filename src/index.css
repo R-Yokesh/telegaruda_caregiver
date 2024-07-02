@@ -103,6 +103,10 @@ body {
   background-color: #5ad4ec !important;
 }
 
+.badge-primary {
+  background-color: var(--theme-blue) !important;
+}
+
 
 /* Custom CSS for styling */
 .responsive-table-container {
@@ -144,7 +148,40 @@ body {
 
 }
 
+/* Custom CSS for styling */
+.lab-responsive-table-container {
+  overflow-x: auto;
+}
 
+.lab-responsive-table {
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 10px;
+  /* Adjust the radius value as needed */
+  overflow: hidden;
+  /* Ensures rounded corners display properly */
+}
+
+.lab-responsive-table th {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 12px 10px !important;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase
+}
+
+.lab-responsive-table td {
+  padding: 10px !important;
+  text-align: center;
+  border-bottom: 2px solid #E8E8E8
+}
+
+/* Remove bottom border for last row in tbody */
+.lab-responsive-table tbody tr:last-child td {
+  border-bottom: none;
+}
 
 
 
@@ -269,4 +306,38 @@ body {
 .vertical-line {
   border-radius: 2px;
   border: 2px solid #E8E8E8
+}
+
+/* Lab form file upload changes */
+
+.pad-10 {
+  padding: 10px !important;
+}
+
+.input-file-container {
+  position: relative;
+  width: 100%;
+}
+
+.input-file+.input-file-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 45px;
+  color: #000000;
+  font-size: 1em;
+  transition: all .4s;
+  cursor: pointer;
+  border: 1px solid #17171D33
+}
+
+.input-file {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 225px;
+  opacity: 0;
+  padding: 14px 0;
+  cursor: pointer;
 }

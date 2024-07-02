@@ -79,6 +79,11 @@ import deleteorg from "./Images/Delete-Org.svg";
 import listview from "./Images/list.svg";
 import PlusIcon from "./Images/Plus-Icon.svg";
 import MinusIcon from "./Images/Minus-Icon.svg";
+import OptionsIcon from "./Images/Options.svg";
+
+import TableEdit from "./Images/Edit_table.svg";
+import TableDelete from "./Images/Delete_table.svg";
+import Export from "./Images/Export.png";
 
 export const Assets = {
   BackBtn,
@@ -147,4 +152,8 @@ export const Assets = {
   listview,
   PlusIcon,
   MinusIcon,
+  OptionsIcon,
+  TableEdit,
+  TableDelete,
+  Export,
 };

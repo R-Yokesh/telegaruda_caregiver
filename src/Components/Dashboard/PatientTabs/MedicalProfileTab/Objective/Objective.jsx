@@ -10,6 +10,7 @@ import Modal from "../../../../Modal/Modal";
 import ObjectiveDetailPage from "./DetailPage/ObjectiveDetailPage";
 import VitalSign from "./VitalSign/VitalSign";
 import PhysicalExam from "./PhysicalExam/PhysicalExam";
+import Lab from "./Lab/Lab";
 
 const Objective = () => {
   const cardData = [
@@ -22,6 +23,7 @@ const Objective = () => {
   // const [selectedData, setSelectedData] = useState();
   const [vitalView, setVitalView] = useState(false);
   const [phyView, setPhyView] = useState(false);
+  const [labView, setLabView] = useState(false);
 
   const getSelectedData = (data) => {
     console.log("first data", data);
@@ -32,12 +34,15 @@ const Objective = () => {
     if (data?.id === 2) {
       setPhyView(true);
     }
+    if (data?.id === 3) {
+      setLabView(true);
+    }
   };
 
   return (
     <>
       <div className="mt-3">
-        {!vitalView && !phyView ? (
+        {!vitalView && !phyView && !labView ? (
           <CRow>
             {cardData.map((dt, i) => (
               <CCol md={4} xl={3} className="mb-3">
@@ -49,6 +54,8 @@ const Objective = () => {
           <VitalSign setVitalView={() => setVitalView(false)} />
         ) : phyView ? (
           <PhysicalExam onClose={() => setPhyView(false)} />
+        ) : labView ? (
+          <Lab onClose={() => setLabView(false)} />
         ) : null}
       </div>
     </>

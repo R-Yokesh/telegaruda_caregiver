@@ -2,7 +2,6 @@ import { CCol, CRow } from "@coreui/react";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../assets/Assets";
-import ActiveButton from "../Buttons/ActiveButton/ActiveButton";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 
 const DateSelector = () => {
