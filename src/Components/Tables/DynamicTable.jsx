@@ -5,23 +5,23 @@ import { CModal, CModalBody, CModalHeader } from "@coreui/react";
 import BlurBackground from "../BlurBackground/BlurBackground";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton/SecondaryButton";
-import BMI from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/EditForms/BMI";
-import BPForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/EditForms/BPForm";
-import RespirationRateForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/RespirationRateForm";
-import Spo2 from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/Spo2";
-import Temperature from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/Temperature";
-import LFTForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/LFTForm";
-import HeartRate from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/HeartRate";
-import BSugar from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/BSugar";
-import LipidProfileForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/LipidProfileForm";
-import HCT from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/HCT";
-import Hemogloin from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/Hemogloin";
-import BKetone from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/BKetone";
-import BUricAcid from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/BUricAcid";
-import GFR from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/GFR";
-import Creatinine from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/Creatinine";
-import Urea from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/Urea";
-import Urinalysis from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/AddForms/Urinalysis";
+import RespirationRateForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/RespirationRateForm";
+import Spo2 from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/Spo2";
+import Temperature from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/Temperature";
+import LFTForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/LFTForm";
+import HeartRate from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/HeartRate";
+import BSugar from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BSugar";
+import LipidProfileForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/LipidProfileForm";
+import HCT from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/HCT";
+import Hemogloin from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/Hemogloin";
+import BKetone from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BKetone";
+import BUricAcid from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BUricAcid";
+import GFR from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/GFR";
+import Creatinine from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/Creatinine";
+import Urea from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/Urea";
+import Urinalysis from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/Urinalysis";
+import BMI from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BMI";
+import BPForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BPForm";
 
 const DynamicTable = ({ columnsData, tableData }) => {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -111,13 +111,13 @@ const DynamicTable = ({ columnsData, tableData }) => {
             <CModalBody className="p-3">
               {selectedData?.name === "BMI" && (
                 <BMI
-                  editBack={() => setEditModal(false)}
+                  addBack={() => setEditModal(false)}
                   defaultData={selectedData}
                 />
               )}
               {selectedData?.name === "Blood Pressure" && (
                 <BPForm
-                  editBack={() => setEditModal(false)}
+                  addBack={() => setEditModal(false)}
                   defaultData={selectedData}
                 />
               )}

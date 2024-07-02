@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
-import { CCol, CRow } from "@coreui/react";
+import { CCard, CCardBody, CCol, CRow } from "@coreui/react";
 import { Assets } from "../../../../../../assets/Assets";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import DateSelector from "../../../../../DateRangePicker/DateSelector";
 import DateCards from "../../../../../DateCards/DateCards";
 import Pagination from "../../../../../Pagination/Pagination";
+import ActiveButton from "../../../../../Buttons/ActiveButton/ActiveButton";
+import SingleDatePicker from "../../../../../DateRangePicker/SingleDatePicker";
 
 const PhysicalExam = ({ onClose }) => {
   const dateCards = [
@@ -25,6 +27,8 @@ const PhysicalExam = ({ onClose }) => {
     { id: 14, date: "06/07/2024" },
   ];
   const [currentPage, setCurrentPage] = useState(1);
+  const [addFormView, setAddFormView] = useState(false);
+
   const itemsPerPage = 9; // Number of items to display per page
 
   // Function to handle page change
@@ -39,6 +43,9 @@ const PhysicalExam = ({ onClose }) => {
     return dateCards?.slice(startIndex, endIndex);
   };
 
+  const addFormPage = () => {
+    setAddFormView(true);
+  };
   return (
     <>
       <CRow className="mb-2">
@@ -69,40 +76,65 @@ const PhysicalExam = ({ onClose }) => {
           </div>
         </CCol>
       </CRow>
-      <CRow className="mb-2">
-        <CCol lg={8} className="">
-          <DateSelector />
-        </CCol>
-        <CCol lg={4} className="d-flex justify-content-end align-items-center">
-          <div>
-            <PrimaryButton>
-              <div className="d-flex align-items-center gap-2">
-                <img src={Assets.Add} alt="add" />
-                <span className="fs-16 fw-600">Add</span>
-              </div>
-            </PrimaryButton>
-          </div>
-        </CCol>
-      </CRow>
-      <div className="mb-2">
-        <CRow>
-          {getCurrentPageItems()?.map((item, i) => (
-            <CCol lg={4} className="mb-3" key={i}>
-              <DateCards data={item} />
+      {!addFormView && (
+        <>
+          <CRow className="mb-2">
+            <CCol lg={8} className="">
+              <DateSelector />
             </CCol>
-          ))}
-        </CRow>
-        <CRow className="mb-3">
-          <CCol lg={12} className="d-flex justify-content-center">
-            <Pagination
-              currentPage={currentPage}
-              onPageChange={onPageChange}
-              totalItems={dateCards?.length}
-              itemsPerPage={itemsPerPage}
-            />
-          </CCol>
-        </CRow>
-      </div>
+            <CCol
+              lg={4}
+              className="d-flex justify-content-end align-items-center"
+            >
+              <div>
+                <PrimaryButton onClick={() => addFormPage()}>
+                  <div className="d-flex align-items-center gap-2">
+                    <img src={Assets.Add} alt="add" />
+                    <span className="fs-16 fw-600">Add</span>
+                  </div>
+                </PrimaryButton>
+              </div>
+            </CCol>
+          </CRow>
+          <div className="mb-2">
+            <CRow>
+              {getCurrentPageItems()?.map((item, i) => (
+                <CCol lg={4} className="mb-3" key={i}>
+                  <DateCards data={item} />
+                </CCol>
+              ))}
+            </CRow>
+            <CRow className="mb-3">
+              <CCol lg={12} className="d-flex justify-content-center">
+                <Pagination
+                  currentPage={currentPage}
+                  onPageChange={onPageChange}
+                  totalItems={dateCards?.length}
+                  itemsPerPage={itemsPerPage}
+                />
+              </CCol>
+            </CRow>
+          </div>
+        </>
+      )}
+      {addFormView && (
+        <CCard className="p-2">
+          <CCardBody>
+            <CRow className="mb-2">
+              <CCol className="d-flex align-items-center gap-2">
+                <span>Date</span>
+                <SingleDatePicker />
+              </CCol>
+              <CCol className="d-flex justify-content-end">
+                <div style={{ width: "150px" }}>
+                  <ActiveButton>List View</ActiveButton>
+                </div>
+              </CCol>
+            </CRow>
+            <div className="vertical-line mb-2"></div>
+          </CCardBody>
+        </CCard>
+      )}
     </>
   );
 };

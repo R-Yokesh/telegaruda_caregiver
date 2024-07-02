@@ -5,18 +5,19 @@ import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 
-const BPForm = ({ editBack, defaultData }) => {
+const BPForm = ({ addBack, defaultData }) => {
+  console.log("first", defaultData);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
-      const parts = dateString.split(" ");
+      const parts = dateString?.split(" ");
       const datePart = parts[0];
       const timePart = parts[1];
-      const [month, day, year] = datePart.split("-").map(Number);
-      const [hours, minutes] = timePart.split(":").map(Number);
+      const [month, day, year] = datePart?.split("-")?.map(Number);
+      const [hours, minutes] = timePart?.split(":")?.map(Number);
       return new Date(year, month - 1, day, hours, minutes);
     };
 
@@ -24,12 +25,14 @@ const BPForm = ({ editBack, defaultData }) => {
     const defaultDateString = defaultData?.date;
 
     // Parse default date string to Date object
-    const defaultDate = parseDateString(defaultDateString);
+    const defaultDate = defaultData
+      ? parseDateString(defaultDateString)
+      : new Date();
 
     // Set default date in state
     setSelectedDate(defaultDate);
     setSelectedTime(defaultDate);
-  }, []);
+  }, [defaultData]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -38,11 +41,10 @@ const BPForm = ({ editBack, defaultData }) => {
   const handleTimeChange = (date) => {
     setSelectedTime(date);
   };
-
   const extractNum = (data) => {
     const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-    return numbers;
+    return numbers || "";
   };
   return (
     <>
@@ -125,10 +127,10 @@ const BPForm = ({ editBack, defaultData }) => {
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => editBack()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={() => addBack()}>SAVE</PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
-            <SecondaryButton onClick={() => editBack()}>CANCEL</SecondaryButton>
+            <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>
           </CCol>
         </CRow>
       </CContainer>
