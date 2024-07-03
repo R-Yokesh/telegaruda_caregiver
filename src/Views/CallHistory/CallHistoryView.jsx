@@ -5,10 +5,13 @@ import { CCol, CRow } from "@coreui/react";
 import { Assets } from "../../assets/Assets";
 import { useState } from "react";
 import DoctorCards from "../../Components/DoctorCards/DoctorCards";
-import { Link } from "react-router-dom";
-// import FilterModal from '../../Components/FilterModal/FilterModal';
+import { Link, useNavigate } from "react-router-dom";
+import FilterModal from '../../Components/FilterModal/FilterModal';
 
 function CallHistoryView() {
+
+  const [visible, setVisible] = useState(false)
+  const navigate = useNavigate();
 
   const DoctorDetail = [
     {
@@ -44,6 +47,11 @@ function CallHistoryView() {
       profile: Assets.Patient,
     },
   ];
+
+  const DetailSec = () => {
+    navigate("/patients/summary");
+  };
+
   return (
     <section className="call-history-sec">
       <div className="flex-sec top-sec">
@@ -57,7 +65,7 @@ function CallHistoryView() {
           <h4>Appointments - Call History</h4>
         </div>
         <div className="patient-adding">
-          <button>
+          <button onClick={() => setVisible(!visible)}>
             <img src={Assets.filter} alt="filter-sec" className="filter-icon" />{" "}
             Filter
           </button>
@@ -66,15 +74,17 @@ function CallHistoryView() {
       <div className="doctor-card-sec">
         <div className="row">
           {DoctorDetail.map((data, i) => (
-            <div className="col-4">
-              <DoctorCards DoctorDetail={data} />
+            <div className="col-4" onClick={() => DetailSec()}>
+              <Link className="card-link">
+                <DoctorCards DoctorDetail={data} />
+              </Link>
             </div>
           ))}
         </div>
       </div>
-      {/* <div className='modal-sec'>
-                <FilterModal />
-            </div> */}
+      <div className='modal-sec'>
+        <FilterModal visible={visible} setVisible={setVisible} />
+      </div>
     </section>
   );
 }

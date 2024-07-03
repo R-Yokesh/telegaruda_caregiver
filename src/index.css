@@ -6,6 +6,9 @@
 @import url('./assets/Css/DateRangePicker.css');
 @import url('./assets/Css/Pagination.css');
 @import url('./assets/Css/OptionItem.css');
+@import url('./assets/Css/Filter.css');
+@import url('./assets/Css/PatientDetailCard.css');
+@import url('./assets/Css/Table.css');
 
 body {
   margin: 0;
@@ -40,6 +43,7 @@ body {
   --text-light: rgba(23, 23, 29, 0.6);
   --shadow: rgba(23, 23, 29, 0.08);
   --theme-blue: #0084CF;
+  --green: #48B875;
 }
 
 .fs-10 {

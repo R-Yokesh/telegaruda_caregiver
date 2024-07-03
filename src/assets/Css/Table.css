@@ -1,0 +1,26 @@
+.green tbody tr td:nth-child(2) {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+.table-sec table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.table-sec table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.table-sec table tr:first-child th:first-child,
+.table-sec table tr:first-child td:first-child {
+    border-top-left-radius: 10px
+}
+
+.table-sec table tr:first-child th:last-child,
+.table-sec table tr:first-child td:last-child {
+    border-top-right-radius: 10px
+}
+
+.table-sec h4 {
+    margin-bottom: 16px;
+}

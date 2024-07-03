@@ -1,0 +1,65 @@
+.modal-cutomize .modal-dialog {
+    right: 0px;
+    margin-left: auto;
+    margin-right: inherit;
+    top: 0px;
+    margin-top: inherit;
+    border-radius: 0px;
+    height: 100%;
+    background: #fff;
+    overflow-y: hidden;
+    position: fixed;
+}
+
+.modal-cutomize .modal-footer {
+    display: block;
+}
+
+.modal-cutomize .modal-footer button {
+    width: 100%;
+}
+
+.modal-cutomize .clear-filter-btn {
+    width: 100%;
+    background: var(--white);
+    box-shadow: 0px 2px 24px rgba(23, 23, 29, 0.11);
+    border: 0px;
+    padding: 12px 10px;
+    color: var(--text-color);
+}
+
+.modal-cutomize .apply-filter-sec {
+    background-color: var(--theme-blue);
+    padding: 12px 10px;
+}
+
+.modal-cutomize .modal-header {
+    border-bottom: 0px;
+}
+
+.modal-cutomize .form-select {
+    margin-bottom: 25px;
+    cursor: pointer;
+    padding: 12px;
+}
+
+.modal-cutomize .modal-footer {
+    border-top: 0px;
+    border-bottom: 0px;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.modal-cutomize .modal-content {
+    border: 0px;
+    height: 100%;
+}
+
+.date-sec {
+    margin-bottom: 6px;
+}
+
+.picker-sec {
+    cursor: pointer;
+}
