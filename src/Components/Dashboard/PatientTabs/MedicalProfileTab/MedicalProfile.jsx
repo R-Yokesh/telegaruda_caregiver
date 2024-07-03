@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MedicalTab from "./MedicalTab";
 import Objective from "./Objective/Objective";
+import Assesment from "./Assesment/Assesment";
 
 const MedicalProfile = () => {
   const tabs = [
@@ -15,13 +16,12 @@ const MedicalProfile = () => {
     setCurrentTab(data);
   };
 
-
-
   return (
     <>
       <div>
-        <MedicalTab tabs={tabs} getCurrentTab={getCurrentTab} defaultTab={1}/>
+        <MedicalTab tabs={tabs} getCurrentTab={getCurrentTab} defaultTab={1} />
         {currentTab === 2 && <Objective />}
+        {currentTab === 3 && <Assesment />}
       </div>
     </>
   );
