@@ -49,6 +49,12 @@ import VitalSig from "./Images/Patients/VitalSign.png";
 import CloseBtn from "./Images/Patients/Close-Btn.png";
 import BackBtn from "./Images/Patients/Back-Btn.png";
 
+import History from "./Images/Patients/History.png"
+import WellnessProfile from "./Images/Patients/WellnessProfile.png"
+import ReviewSytm from "./Images/Patients/ReviewSytm.png"
+import AssesmentTool from "./Images/Patients/AssesmentTool.png"
+import ThreeDots from "./Images/ThreeDots.svg"
+
 import Add from "./Images/Patients/Add.png";
 import Filter from "./Images/Patients/Filter-2.png";
 import Chart from "./Images/Patients/Chart.png";
@@ -116,6 +122,10 @@ export const Assets = {
   PhyExam,
   VitalSig,
   CloseBtn,
+  History,
+  WellnessProfile,
+  ReviewSytm,
+  AssesmentTool,
   Add,
   Filter,
   Chart,
@@ -136,4 +146,5 @@ export const Assets = {
   GFR,
   filter,
   notes,
+  ThreeDots,
 };
