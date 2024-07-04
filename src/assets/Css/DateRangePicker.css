@@ -17,3 +17,15 @@
 .date-size .react-datepicker-wrapper {
     width: 100% !important;
 }
+
+.date-size .react-datepicker__view-calendar-icon input {
+    padding: 10px 0px 10px 30px;
+}
+
+.date-size .react-datepicker__view-calendar-icon input {
+    padding: 10px 0px 10px 30px;
+}
+
+.date-size .react-datepicker__input-container .react-datepicker__calendar-icon {
+    top: 5px;
+}

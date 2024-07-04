@@ -7,10 +7,9 @@ import {
   CTableRow,
 } from "@coreui/react";
 import React from "react";
-import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
 
-const LabTable = ({ columns, rowData, getselectedData }) => {
+const ImmunizationTable = ({ columns, rowData, getselectedData }) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
@@ -31,16 +30,14 @@ const LabTable = ({ columns, rowData, getselectedData }) => {
                 <span className="fs-16 fw-500">{dt?.id}</span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.date}</span>
+                <span className="fs-16 fw-500">{dt?.vaccine}</span>
               </CTableDataCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.name}</span>
+                <span className="fs-16 fw-500">{dt?.period}</span>
               </CTableDataCell>
-              <CTableDataCell>
-                <Badge label={dt?.file} color={"primary"} />
-              </CTableDataCell>
-              <CTableDataCell>{dt?.notes}</CTableDataCell>
-              <CTableDataCell>{dt?.link}</CTableDataCell>
+              <CTableDataCell>{dt?.status}</CTableDataCell>
+              <CTableDataCell>{dt?.dosage_date}</CTableDataCell>
+              <CTableDataCell>{dt?.taken_date}</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex align-items-center justify-content-center gap-2">
                   <img
@@ -65,4 +62,4 @@ const LabTable = ({ columns, rowData, getselectedData }) => {
   );
 };
 
-export default LabTable;
+export default ImmunizationTable;

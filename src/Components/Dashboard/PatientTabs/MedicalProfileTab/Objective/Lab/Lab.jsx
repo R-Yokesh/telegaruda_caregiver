@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
-import { CCard, CCardBody, CCol, CRow } from "@coreui/react";
+import {
+  CCard,
+  CCardBody,
+  CCol,
+  CModal,
+  CModalBody,
+  CRow,
+} from "@coreui/react";
 import { Assets } from "../../../../../../assets/Assets";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Pagination from "../../../../../Pagination/Pagination";
@@ -11,6 +18,7 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import SearchBar from "../../../../../SearchBar/SearchBar";
 import LabTable from "../../../../../Tables/LabTable";
 import LabForm from "./LabForm";
+import BlurBackground from "../../../../../BlurBackground/BlurBackground";
 
 const Lab = ({ onClose }) => {
   const columnData = [
@@ -25,7 +33,7 @@ const Lab = ({ onClose }) => {
   const rowData = [
     {
       id: 1,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PDF",
       notes: "-",
@@ -33,7 +41,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 2,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PNG",
       notes: "-",
@@ -41,7 +49,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 3,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PDF",
       notes: "-",
@@ -49,7 +57,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 4,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PDF",
       notes: "-",
@@ -57,7 +65,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 5,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PDF",
       notes: "-",
@@ -65,7 +73,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 6,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PDF",
       notes: "-",
@@ -73,7 +81,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 7,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PDF",
       notes: "-",
@@ -81,7 +89,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 8,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PNG",
       notes: "-",
@@ -89,7 +97,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 9,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PDF",
       notes: "-",
@@ -97,7 +105,7 @@ const Lab = ({ onClose }) => {
     },
     {
       id: 10,
-      date: "06/07/2024",
+      date: "06-07-2024",
       name: "Complete Blood Count",
       file: "PDF",
       notes: "-",
@@ -106,17 +114,9 @@ const Lab = ({ onClose }) => {
   ];
   const [currentPage, setCurrentPage] = useState(1);
   const [addFormView, setAddFormView] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [deleteView, setDeleteView] = useState(false);
 
-  const options = [
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum 2",
-  ];
+  const [selectedData, setSelectedData] = useState({});
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -136,49 +136,15 @@ const Lab = ({ onClose }) => {
     setAddFormView(true);
   };
 
-  const handleSelect = (option, isSelected) => {
-    if (isSelected) {
-      setSelectedOptions([...selectedOptions, option]);
-    } else {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+  const getselectedData = (data, type) => {
+    console.log(type, "first", data);
+    setSelectedData(data);
+    if (type === "edit") {
+      addFormPage();
     }
-  };
-
-  const [nutritionOpen, setNutritionOpen] = useState(false);
-  const [constiOpen, setConstiOpen] = useState(false);
-  const [generalOpen, setGeneralOpen] = useState(false);
-  const [heentOpen, setHeentOpen] = useState(false);
-
-  const nutritionTabOpen = () => {
-    setNutritionOpen(true);
-  };
-
-  const nutritionTabClose = () => {
-    setNutritionOpen(false);
-  };
-
-  const constiTabOpen = () => {
-    setConstiOpen(true);
-  };
-
-  const constiTabClose = () => {
-    setConstiOpen(false);
-  };
-
-  const generalTabOpen = () => {
-    setGeneralOpen(true);
-  };
-
-  const generalTabClose = () => {
-    setGeneralOpen(false);
-  };
-
-  const heentTabOpen = () => {
-    setHeentOpen(true);
-  };
-
-  const heentTabClose = () => {
-    setHeentOpen(false);
+    if (type === "delete") {
+      setDeleteView(true);
+    }
   };
 
   return (
@@ -238,7 +204,11 @@ const Lab = ({ onClose }) => {
           </CRow>
           <div className="mb-2">
             <CRow>
-              <LabTable rowData={getCurrentPageItems()} columns={columnData} />
+              <LabTable
+                rowData={getCurrentPageItems()}
+                columns={columnData}
+                getselectedData={getselectedData}
+              />
             </CRow>
             <CRow className="mb-3">
               <CCol lg={12} className="d-flex justify-content-center">
@@ -256,9 +226,44 @@ const Lab = ({ onClose }) => {
       {addFormView && (
         <CCard className="p-2 cursor-default mb-5">
           <CCardBody className="mb-3">
-            <LabForm back={() => setAddFormView(false)} />
+            <LabForm
+              back={() => {
+                setAddFormView(false);
+                setSelectedData({});
+              }}
+              defaultValues={selectedData}
+            />
           </CCardBody>
         </CCard>
+      )}
+
+      {deleteView && (
+        <BlurBackground>
+          <CModal
+            alignment="center"
+            visible={deleteView}
+            onClose={() => setDeleteView(false)}
+            aria-labelledby="VerticallyCenteredExample"
+          >
+            <CModalBody className="p-3">
+              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                <h5>Are you sure want to delete ?</h5>
+                <div className="d-flex gap-2 mt-2">
+                  <div style={{ width: "80px" }}>
+                    <PrimaryButton onClick={() => setDeleteView(false)}>
+                      Yes
+                    </PrimaryButton>
+                  </div>
+                  <div style={{ width: "80px" }}>
+                    <SecondaryButton onClick={() => setDeleteView(false)}>
+                      No
+                    </SecondaryButton>
+                  </div>
+                </div>
+              </div>
+            </CModalBody>
+          </CModal>
+        </BlurBackground>
       )}
     </>
   );

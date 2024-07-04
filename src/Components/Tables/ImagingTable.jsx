@@ -10,7 +10,10 @@ import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
 
-const ImagingTable = ({ columns, rowData }) => {
+const ImagingTable = ({ columns, rowData, getselectedData }) => {
+  const selectedData = (data, type) => {
+    getselectedData(data, type);
+  };
   return (
     <>
       <CTable className="lab-responsive-table">
@@ -40,8 +43,18 @@ const ImagingTable = ({ columns, rowData }) => {
               <CTableDataCell>{dt?.link}</CTableDataCell>
               <CTableDataCell>
                 <div className="d-flex align-items-center justify-content-center gap-2">
-                  <img alt="edit" src={Assets?.TableEdit} className="cursor" />
-                  <img alt="delete" src={Assets?.TableDelete} />
+                  <img
+                    alt="edit"
+                    src={Assets?.TableEdit}
+                    className="cursor"
+                    onClick={() => selectedData(dt, "edit")}
+                  />
+                  <img
+                    alt="delete"
+                    src={Assets?.TableDelete}
+                    className="cursor"
+                    onClick={() => selectedData(dt, "delete")}
+                  />
                 </div>
               </CTableDataCell>
             </CTableRow>

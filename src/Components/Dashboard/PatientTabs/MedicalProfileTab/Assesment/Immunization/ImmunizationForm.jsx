@@ -2,11 +2,12 @@ import { CCol, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
-import { Assets } from "../../../../../../assets/Assets";
 import DatePicker from "react-datepicker";
 
-const ImagingForm = ({ back, defaultValues }) => {
+const ImmunizationForm = ({ back, defaultValues }) => {
+  console.log("first", defaultValues);
   const [date, setDate] = useState(null);
+  const [takendate, setTakenDate] = useState(null);
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -18,24 +19,79 @@ const ImagingForm = ({ back, defaultValues }) => {
     };
 
     // Example default date string
-    const defaultDateString = defaultValues?.date;
+    const defaultDateString = defaultValues?.dosage_date;
+    const defaultDateString1 = defaultValues?.taken_date;
 
     // Parse default date string to Date object
-    const defaultDate = defaultValues?.date
+    const defaultDate = defaultValues?.dosage_date
       ? parseDateString(defaultDateString)
+      : new Date();
+    const defaultDate1 = defaultValues?.taken_date
+      ? parseDateString(defaultDateString1)
       : new Date();
 
     // Set default date in state
     setDate(defaultDate);
+    setTakenDate(defaultDate1);
   }, [defaultValues]);
 
   return (
     <>
       <CRow className="mb-3">
+        <CCol lg={6}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Vaccine *
+              </label>
+              <input
+                type="text"
+                class="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.vaccine}
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={6}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Period *
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.period}
+              />
+            </div>
+          </div>
+        </CCol>
+      </CRow>
+      <CRow className="mb-3">
+        <CCol lg={4}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Status *
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.status}
+              />
+            </div>
+          </div>
+        </CCol>
         <CCol lg={4}>
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date *
+              Dosage Date *
             </label>
             <div className="date-size">
               <DatePicker
@@ -47,77 +103,18 @@ const ImagingForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Scan Type *
-              </label>
-              <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.name}
+          <div class="position-relative">
+            <label for="validationTooltip01" class="form-label">
+              Taken Date *
+            </label>
+            <div className="date-size">
+              <DatePicker
+                showIcon
+                selected={takendate}
+                onChange={(date) => setTakenDate(date)}
               />
             </div>
           </div>
-        </CCol>
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Notes
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.notes}
-              />
-            </div>
-          </div>
-        </CCol>
-      </CRow>
-      <CRow className="mb-3">
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Link of Imaging File URL
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.link}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Upload Results / Image (pdf, jpg, jpeg, png)
-              </label>
-              <div class="input-file-container">
-                <input class="input-file" id="my-file" type="file" />
-                <label
-                  tabindex="0"
-                  for="my-file"
-                  className="input-file-trigger"
-                >
-                  <img alt="upload" src={Assets.Export} />
-                  <span>Choose File</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </CCol>
-        <CCol className="d-flex align-items-center">
-          <span className="fs-18 fw-400">No Files Chosen</span>
         </CCol>
       </CRow>
       <CRow className="mb-1">
@@ -132,4 +129,4 @@ const ImagingForm = ({ back, defaultValues }) => {
   );
 };
 
-export default ImagingForm;
+export default ImmunizationForm;

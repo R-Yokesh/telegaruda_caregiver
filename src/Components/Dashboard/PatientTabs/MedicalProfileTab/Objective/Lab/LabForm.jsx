@@ -1,13 +1,33 @@
 import { CCol, CRow } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import { Assets } from "../../../../../../assets/Assets";
 import DatePicker from "react-datepicker";
 
-const LabForm = ({ back }) => {
-  const [date, setDate] = useState(new Date());
+const LabForm = ({ back, defaultValues }) => {
+  const [date, setDate] = useState(null);
 
+  useEffect(() => {
+    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
+    const parseDateString = (dateString) => {
+      const parts = dateString?.split(" ");
+      const datePart = parts[0];
+      const [month, day, year] = datePart?.split("-")?.map(Number);
+      return new Date(year, month - 1, day);
+    };
+
+    // Example default date string
+    const defaultDateString = defaultValues?.date;
+
+    // Parse default date string to Date object
+    const defaultDate = defaultValues?.date
+      ? parseDateString(defaultDateString)
+      : new Date();
+
+    // Set default date in state
+    setDate(defaultDate);
+  }, [defaultValues]);
   return (
     <>
       <CRow className="mb-3">
@@ -36,6 +56,7 @@ const LabForm = ({ back }) => {
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
+                defaultValue={defaultValues?.name}
               />
             </div>
           </div>
@@ -51,6 +72,7 @@ const LabForm = ({ back }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
+                defaultValue={defaultValues?.notes}
               />
             </div>
           </div>
@@ -68,6 +90,7 @@ const LabForm = ({ back }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
+                defaultValue={defaultValues?.link}
               />
             </div>
           </div>
