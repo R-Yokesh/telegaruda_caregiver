@@ -7,8 +7,8 @@ import Immunization from "./Immunization/Immunization";
 
 const Assesment = () => {
   const cardData = [
-    { id: 1, name: "Diagnosis (Including ICD)", image: Assets.VitalSig },
-    { id: 2, name: "Immunization Status", image: Assets.PhyExam },
+    { id: 1, name: "Diagnosis (Including ICD)", image: Assets.Diagnosis },
+    { id: 2, name: "Immunization Status", image: Assets.Immunizaion },
   ];
   const [diagnosisView, setDiagnosisView] = useState(false);
   const [immunizationView, setImmunizationView] = useState(false);

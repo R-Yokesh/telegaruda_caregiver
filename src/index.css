@@ -123,6 +123,17 @@ body {
   background-color: var(--theme-blue) !important;
 }
 
+.badge-yellow {
+  background-color: #E5A000 !important;
+}
+
+.light-label {
+  color: #17171D99 !important;
+}
+
+.dark-label {
+  color: #17171D !important;
+}
 
 /* Custom CSS for styling */
 .responsive-table-container {

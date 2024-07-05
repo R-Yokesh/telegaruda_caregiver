@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-const Dropdown = () => {
-  const options = ["Severity", "Option 2", "Option 3"]; // Example options
+const Dropdown = ({options}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]);
 

@@ -85,6 +85,17 @@ import TableEdit from "./Images/Edit_table.svg";
 import TableDelete from "./Images/Delete_table.svg";
 import Export from "./Images/Export.png";
 
+import Diagnosis from "./Images/Diagnosis.png";
+import Immunizaion from "./Images/Immunization.png";
+
+import Orders from "./Images//Orders.png";
+import PatEdu from "./Images/Pat-Edu.png";
+import Vaccine from "./Images/Vaccine.png";
+import CPT from "./Images/CPT.png";
+import Therapies from "./Images/Therapies.png";
+import visibleEye from "./Images/visible-eye.svg";
+import Accept from "./Images/Accept.svg";
+
 export const Assets = {
   BackBtn,
   logomain,
@@ -156,4 +167,13 @@ export const Assets = {
   TableEdit,
   TableDelete,
   Export,
+  Diagnosis,
+  Immunizaion,
+  Orders,
+  PatEdu,
+  Vaccine,
+  CPT,
+  Therapies,
+  visibleEye,
+  Accept,
 };

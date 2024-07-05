@@ -139,6 +139,7 @@ const Immunization = ({ onClose }) => {
   const addFormPage = () => {
     setAddFormView(true);
   };
+  const options = ["Severity", "Option 2", "Option 3"]; // Example options
 
   const getselectedData = (data, type) => {
     console.log(type, "first", data);
@@ -211,9 +212,12 @@ const Immunization = ({ onClose }) => {
                       />
                     </div>
                   </CCol>
-                  <CCol md={3} className="d-flex flex-column gap-1 justify-content-end">
+                  <CCol
+                    md={3}
+                    className="d-flex flex-column gap-1 justify-content-end"
+                  >
                     <div style={{ width: "100%" }}>
-                      <Dropdown />
+                      <Dropdown options={options} />
                     </div>
                   </CCol>
                   <CCol

@@ -3,7 +3,7 @@ import "./SecondaryButton.css";
 
 const SecondaryButton = ({ children, onClick }) => {
   return (
-    <button className="secondary-button" onClick={onClick}>
+    <button className="secondary-button fw-600" onClick={onClick}>
       {children}
     </button>
   );

@@ -1,0 +1,353 @@
+import {
+  CCard,
+  CCardBody,
+  CCol,
+  CFormCheck,
+  CModal,
+  CModalBody,
+  CRow,
+} from "@coreui/react";
+import React, { useState } from "react";
+import LabForm from "../../../Objective/Lab/LabForm";
+import Pagination from "../../../../../../Pagination/Pagination";
+import LabTable from "../../../../../../Tables/LabTable";
+import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
+import { Assets } from "../../../../../../../assets/Assets";
+import DateSelector from "../../../../../../DateRangePicker/DateSelector";
+import LabOrderTable from "../../../../../../Tables/LabOrderTable";
+import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
+import Dropdown from "../../../../../../Dropdown/Dropdown";
+import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
+import LabOrderForm from "./LabOrderForm";
+
+const LabOrder = () => {
+  const columnData = [
+    { id: 1, label: "No." },
+    { id: 2, label: "LAB TEST DATE" },
+    { id: 3, label: "LAB TEST NAME" },
+    { id: 4, label: "FILE" },
+    { id: 5, label: "NOTES" },
+    { id: 6, label: "LINK" },
+    { id: 7, label: "ICD CODE" },
+    { id: 8, label: "LAB STATUS" },
+    { id: 9, label: "ACTIONS" },
+  ];
+  const rowData = [
+    {
+      id: 1,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PDF",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Accepted",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 2,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PNG",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Accepted",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 3,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Uploaded",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 4,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PDF",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Not Uploaded",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 5,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PDF",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Not Uploaded",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 6,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PDF",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Not Uploaded",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 7,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PDF",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Not Uploaded",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 8,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PNG",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Not Uploaded",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 9,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PDF",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Not Uploaded",
+      lab_name: "Raj Lab 1",
+    },
+    {
+      id: 10,
+      date: "06-07-2024",
+      name: "Complete Blood Count",
+      file: "PDF",
+      notes: "-",
+      link: "-",
+      icd_code: "D64.9",
+      lab_status: "Not Uploaded",
+      lab_name: "Raj Lab 1",
+    },
+  ];
+  const [addFormView, setAddFormView] = useState(false);
+  const [detailView, setDetailView] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedData, setSelectedData] = useState({});
+
+  const itemsPerPage = 5; // Number of items to display per page
+
+  // Function to handle page change
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Function to get items for the current page
+  const getCurrentPageItems = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return rowData?.slice(startIndex, endIndex);
+  };
+
+  const addFormPage = () => {
+    setAddFormView(true);
+  };
+
+  const detailPage = () => {
+    setDetailView(true);
+  };
+
+  const getselectedData = (data, type) => {
+    console.log(type, "first", data);
+    setSelectedData(data);
+    if (type === "details") {
+      detailPage();
+    }
+  };
+
+  const options = ["Morning", "Afternoon", "Evening", "Night"];
+
+  return (
+    <>
+      {!addFormView && (
+        <>
+          <CRow className="mb-2">
+            <CCol lg={8} className="">
+              <DateSelector />
+            </CCol>
+            <CCol
+              lg={4}
+              className="d-flex justify-content-end align-items-center gap-2"
+            >
+              <div>
+                <PrimaryButton onClick={() => addFormPage()}>
+                  <div className="d-flex align-items-center gap-2">
+                    <img src={Assets.Add} alt="add" />
+                    <span className="fs-16 fw-600">Add</span>
+                  </div>
+                </PrimaryButton>
+              </div>
+            </CCol>
+          </CRow>
+          <div className="mb-2">
+            <CRow>
+              <LabOrderTable
+                rowData={getCurrentPageItems()}
+                columns={columnData}
+                getselectedData={getselectedData}
+              />
+            </CRow>
+            <CRow className="mb-3">
+              <CCol lg={12} className="d-flex justify-content-center">
+                <Pagination
+                  currentPage={currentPage}
+                  onPageChange={onPageChange}
+                  totalItems={rowData?.length}
+                  itemsPerPage={itemsPerPage}
+                />
+              </CCol>
+            </CRow>
+          </div>
+        </>
+      )}
+      {addFormView && (
+        <CCard className="p-2 cursor-default mb-5">
+          <CCardBody className="mb-3">
+            <LabOrderForm
+              back={() => {
+                setAddFormView(false);
+                setSelectedData({});
+              }}
+              defaultValues={selectedData}
+            />
+          </CCardBody>
+        </CCard>
+      )}
+
+      {detailView && (
+        <BlurBackground>
+          <CModal
+            alignment="center"
+            visible={detailView}
+            onClose={() => setDetailView(false)}
+            aria-labelledby="VerticallyCenteredExample"
+            size="lg"
+          >
+            <CModalBody className="p-5">
+              <CRow className="mb-3">
+                <CCol lg={12}>
+                  <span className="fs-20 fw-600">Slot Confirmation​</span>
+                </CCol>
+              </CRow>
+              <CRow>
+                <CCol lg={3} className="mb-3">
+                  <div className="d-flex flex-column gap-2">
+                    <span className="fs-14 fw-400 light-label">Date​</span>
+                    <span className="fs-18 fw-400 dark-label">
+                      {selectedData?.date}
+                    </span>
+                  </div>
+                </CCol>
+                <CCol lg={3} className="mb-3">
+                  <div className="d-flex flex-column gap-2">
+                    <span className="fs-14 fw-400 light-label">Test Name</span>
+                    <span className="fs-18 fw-400 dark-label">
+                      {selectedData?.name}
+                    </span>
+                  </div>
+                </CCol>
+                <CCol lg={3} className="mb-3">
+                  <div className="d-flex flex-column gap-2">
+                    <span className="fs-14 fw-400 light-label">ICD Code</span>
+                    <span className="fs-18 fw-400 dark-label">D64.9</span>
+                  </div>
+                </CCol>
+                <CCol lg={3} className="mb-3">
+                  <div className="d-flex flex-column gap-2">
+                    <span className="fs-14 fw-400 light-label">Notes</span>
+                    <span className="fs-18 fw-400 dark-label">-</span>
+                  </div>
+                </CCol>
+                <CCol lg={4} className="mb-3">
+                  <div className="d-flex flex-column gap-2">
+                    <span className="fs-14 fw-400 light-label">
+                      Lab/Scan Center
+                    </span>
+                    <span className="fs-18 fw-400 dark-label">
+                      {selectedData?.lab_name}
+                    </span>
+                  </div>
+                </CCol>
+                <CCol lg={4} className="mb-3">
+                  <div className="d-flex flex-column gap-2">
+                    <span className="fs-14 fw-400 light-label">Slot</span>
+                    <div
+                      className="w-100"
+                      style={{
+                        border: "1px solid #17171D33",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <Dropdown options={options} />
+                    </div>
+                  </div>
+                </CCol>
+                <CCol lg={4} className="mb-3">
+                  <div className="d-flex flex-column gap-2">
+                    <span className="fs-14 fw-400 light-label">Test Type</span>
+                    <div>
+                      <CFormCheck
+                        inline
+                        type="radio"
+                        name="inlineRadioOptions"
+                        id="inlineCheckbox1"
+                        value="Lab Test"
+                        label="Lab Test"
+                        defaultChecked
+                      />
+                      <CFormCheck
+                        inline
+                        type="radio"
+                        name="inlineRadioOptions"
+                        id="inlineCheckbox2"
+                        value="Home Test"
+                        label="Home Test"
+                      />
+                    </div>
+                  </div>
+                </CCol>
+              </CRow>
+              <CRow>
+                <div style={{ width: "128px" }}>
+                  <PrimaryButton>SAVE</PrimaryButton>
+                </div>
+                <div style={{ width: "128px" }}>
+                  <SecondaryButton onClick={() => setDetailView(false)}>
+                    CANCEL
+                  </SecondaryButton>
+                </div>
+              </CRow>
+            </CModalBody>
+          </CModal>
+        </BlurBackground>
+      )}
+    </>
+  );
+};
+
+export default LabOrder;
