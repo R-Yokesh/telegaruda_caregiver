@@ -312,7 +312,7 @@ const VitalsTab = ({ category, openModal }) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "Total" },
+        { id: 3, label: "Total Cholesterol" },
         { id: 4, label: "Triglycerides" },
         { id: 5, label: "HDL" },
         { id: 6, label: "LDL" },
@@ -325,7 +325,7 @@ const VitalsTab = ({ category, openModal }) => {
         {
           "no.": 1,
           result: { status: "success", name: "Normal" },
-          total: "180 mg/dL",
+          total_cholesterol: "180 mg/dL",
           totalOnly: "180",
           triglycerides: "140 mg/dL",
           hdl: "60 mg/dL",
@@ -342,7 +342,7 @@ const VitalsTab = ({ category, openModal }) => {
             status: "success",
             name: "Normal",
           },
-          total: "180 mg/dL",
+          total_cholesterol: "180 mg/dL",
           totalOnly: "190",
           triglycerides: "140 mg/dL",
           hdl: "60 mg/dL",

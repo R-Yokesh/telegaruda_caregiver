@@ -4,6 +4,7 @@ import { CCol, CRow } from "@coreui/react";
 import { Assets } from "../../../../../../assets/Assets";
 import MedicalTab from "../../MedicalTab";
 import LabOrder from "./Lab Order/LabOrder";
+import ImagingOrder from "./Imaging Order/ImagingOrder";
 
 const Orders = ({ onClose }) => {
   const tabs = [
@@ -57,6 +58,11 @@ const Orders = ({ onClose }) => {
         {currentTab === 2 && (
           <>
             <LabOrder />
+          </>
+        )}
+        {currentTab === 3 && (
+          <>
+            <ImagingOrder />
           </>
         )}
       </CRow>
