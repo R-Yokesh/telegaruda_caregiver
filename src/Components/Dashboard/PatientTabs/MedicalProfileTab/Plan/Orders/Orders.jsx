@@ -5,6 +5,7 @@ import { Assets } from "../../../../../../assets/Assets";
 import MedicalTab from "../../MedicalTab";
 import LabOrder from "./Lab Order/LabOrder";
 import ImagingOrder from "./Imaging Order/ImagingOrder";
+import MedicationOrder from "./Medication Order/MedicationOrder";
 
 const Orders = ({ onClose }) => {
   const tabs = [
@@ -55,6 +56,11 @@ const Orders = ({ onClose }) => {
         </CCol>
       </CRow>
       <CRow className="mt-3">
+        {currentTab === 1 && (
+          <>
+            <MedicationOrder />
+          </>
+        )}
         {currentTab === 2 && (
           <>
             <LabOrder />

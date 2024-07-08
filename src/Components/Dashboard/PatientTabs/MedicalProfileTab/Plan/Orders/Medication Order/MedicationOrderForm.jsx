@@ -6,7 +6,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 
-const ImagingOrderForm = ({ back, defaultValues }) => {
+const MedicationOrderForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
 
   useEffect(() => {
@@ -68,9 +68,9 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Imaging Order Name *
+                Lab Test Name *
               </label>
-              <input 
+              <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
@@ -118,7 +118,7 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Select Scan Center *
+                Select Lab *
               </label>
               <div
                 className="w-100"
@@ -145,4 +145,4 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
   );
 };
 
-export default ImagingOrderForm;
+export default MedicationOrderForm;

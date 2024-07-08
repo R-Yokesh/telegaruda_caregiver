@@ -95,6 +95,10 @@ import CPT from "./Images/CPT.png";
 import Therapies from "./Images/Therapies.png";
 import visibleEye from "./Images/visible-eye.svg";
 import Accept from "./Images/Accept.svg";
+import UpdateIcon from "./Images/UpdateIcon.svg";
+
+import PlusCircle from "./Images/Plus-Circle.svg";
+import TickCircle from "./Images/Tick-Circle.svg";
 
 export const Assets = {
   BackBtn,
@@ -176,4 +180,7 @@ export const Assets = {
   Therapies,
   visibleEye,
   Accept,
+  UpdateIcon,
+  PlusCircle,
+  TickCircle,
 };

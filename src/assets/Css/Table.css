@@ -24,3 +24,14 @@
 .table-sec h4 {
     margin-bottom: 16px;
 }
+
+
+/* Detail table style */
+/* New style for every 4th data cell (td) */
+.detailsTable td:nth-child(5n) {
+    border-right: 1px solid black;
+}
+
+.detailsTable tbody tr:last-child td {
+    border-bottom: none;
+}
