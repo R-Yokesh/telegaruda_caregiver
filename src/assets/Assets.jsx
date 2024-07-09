@@ -100,6 +100,9 @@ import UpdateIcon from "./Images/UpdateIcon.svg";
 import PlusCircle from "./Images/Plus-Circle.svg";
 import TickCircle from "./Images/Tick-Circle.svg";
 
+import whiteAdd from "./Images/White-Add.svg";
+import whiteDel from "./Images/White-Del.svg";
+
 export const Assets = {
   BackBtn,
   logomain,
@@ -183,4 +186,6 @@ export const Assets = {
   UpdateIcon,
   PlusCircle,
   TickCircle,
+  whiteDel,
+  whiteAdd,
 };

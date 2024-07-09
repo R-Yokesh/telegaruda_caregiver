@@ -91,6 +91,10 @@ body {
   min-height: 100% !important;
 }
 
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
 .text-align-center {
   text-align: center !important;
 }

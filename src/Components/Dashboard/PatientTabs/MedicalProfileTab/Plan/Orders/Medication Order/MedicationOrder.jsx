@@ -170,59 +170,75 @@ const MedicationOrder = () => {
 
   return (
     <>
-      {!addFormView && (
-        <>
-          <CRow className="mb-2">
-            <CCol lg={8} className="">
-              <DateSelector />
-            </CCol>
-            <CCol
-              lg={4}
-              className="d-flex justify-content-end align-items-center gap-2"
-            >
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.Add} alt="add" />
-                    <span className="fs-16 fw-600">Add</span>
-                  </div>
-                </PrimaryButton>
-              </div>
+      <>
+        <CRow className="mb-2">
+          <CCol lg={8} className="">
+            <DateSelector />
+          </CCol>
+          <CCol
+            lg={4}
+            className="d-flex justify-content-end align-items-center gap-2"
+          >
+            <div>
+              <PrimaryButton onClick={() => addFormPage()}>
+                <div className="d-flex align-items-center gap-2">
+                  <img src={Assets.Add} alt="add" />
+                  <span className="fs-16 fw-600">Add</span>
+                </div>
+              </PrimaryButton>
+            </div>
+          </CCol>
+        </CRow>
+        <div className="mb-2">
+          <CRow>
+            <MedicationOrderTable
+              rowData={getCurrentPageItems()}
+              columns={columnData}
+              getselectedData={getselectedData}
+            />
+          </CRow>
+          <CRow className="mb-3">
+            <CCol lg={12} className="d-flex justify-content-center">
+              <Pagination
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+                totalItems={rowData?.length}
+                itemsPerPage={itemsPerPage}
+              />
             </CCol>
           </CRow>
-          <div className="mb-2">
-            <CRow>
-              <MedicationOrderTable
-                rowData={getCurrentPageItems()}
-                columns={columnData}
-                getselectedData={getselectedData}
-              />
-            </CRow>
-            <CRow className="mb-3">
-              <CCol lg={12} className="d-flex justify-content-center">
-                <Pagination
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                  totalItems={rowData?.length}
-                  itemsPerPage={itemsPerPage}
-                />
-              </CCol>
-            </CRow>
-          </div>
-        </>
-      )}
+        </div>
+      </>
       {addFormView && (
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            <MedicationOrderForm
-              back={() => {
-                setAddFormView(false);
-                setSelectedData({});
-              }}
-              defaultValues={selectedData}
-            />
-          </CCardBody>
-        </CCard>
+        <BlurBackground>
+          <CModal
+            alignment="center"
+            visible={addFormView}
+            onClose={() => setAddFormView(false)}
+            aria-labelledby="VerticallyCenteredExample"
+            size="xl"
+          >
+            <CModalBody className="p-0">
+              <div
+                className="close-modal"
+                onClick={() => {setAddFormView(false)}}
+              >
+                <img
+                  src={Assets.CloseBtn}
+                  alt="close-btn"
+                  style={{ width: "100%" }}
+                />{" "}
+              </div>
+              <MedicationOrderForm
+                back={() => {
+                  setAddFormView(false);
+                  setSelectedData({});
+                }}
+                defaultValues={selectedData}
+              />
+            </CModalBody>
+          </CModal>
+        </BlurBackground>
       )}
 
       {detailView && (
