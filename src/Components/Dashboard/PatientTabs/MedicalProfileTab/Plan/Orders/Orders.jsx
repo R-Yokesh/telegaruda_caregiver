@@ -13,7 +13,7 @@ const Orders = ({ onClose }) => {
     { id: 2, title: "Lab Order" },
     { id: 3, title: "Imaging Order" },
   ];
-  const [currentTab, setCurrentTab] = useState(2);
+  const [currentTab, setCurrentTab] = useState(1);
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
@@ -51,7 +51,7 @@ const Orders = ({ onClose }) => {
           <MedicalTab
             tabs={tabs}
             getCurrentTab={getCurrentTab}
-            defaultTab={1}
+            defaultTab={0}
           />
         </CCol>
       </CRow>
