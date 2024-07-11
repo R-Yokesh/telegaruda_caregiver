@@ -3,6 +3,7 @@ import MedicalTab from "./MedicalTab";
 import Objective from "./Objective/Objective";
 import Assesment from "./Assesment/Assesment";
 import Plan from "./Plan/Plan";
+import Subjective from "./Subjective/Subjective";
 
 const MedicalProfile = () => {
   const tabs = [
@@ -21,6 +22,7 @@ const MedicalProfile = () => {
     <>
       <div>
         <MedicalTab tabs={tabs} getCurrentTab={getCurrentTab} defaultTab={1} />
+        {currentTab === 1 && <Subjective />}
         {currentTab === 2 && <Objective />}
         {currentTab === 3 && <Assesment />}
         {currentTab === 4 && <Plan />}

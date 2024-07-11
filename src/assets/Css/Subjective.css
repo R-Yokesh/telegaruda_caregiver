@@ -1,0 +1,25 @@
+.min-height-200 {
+    min-height: 200px;
+}
+
+.gap-15 {
+    gap: 15px;
+}
+
+.chief-complaints .search-bar {
+    display: flex;
+    align-items: center;
+    border: unset;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 52%;
+}
+
+.chief-complaints .search-bar button {
+    background-color: #0084CF;
+    border: none;
+    color: #fff;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}

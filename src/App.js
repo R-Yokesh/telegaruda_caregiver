@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 import DefaultLayout from "./Layout/DefaultLayout";
 import LogIn from "./Views/Login/LogIn";
+import './assets/Css/Subjective.css'
+
 
 function App() {
 
