@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
-const Dropdown = ({options}) => {
+const Dropdown = ({ options, defaultValue }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(
+    defaultValue || options[0]
+  );
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
