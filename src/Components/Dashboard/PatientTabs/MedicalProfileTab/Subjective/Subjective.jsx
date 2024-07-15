@@ -7,6 +7,7 @@ import "../Objective/Objective.css";
 import Table from "../../../../Tables/Table";
 import ChiefComplaints from "./Chief Complaints/ChiefComplaints";
 import PresentIllness from "./Present Illness/PresentIllness";
+import History from "./History/History";
 
 const Subjective = () => {
   const cardData = [
@@ -21,6 +22,7 @@ const Subjective = () => {
   const [selectedData, setSelectedData] = useState();
   const [cardView, setCardView] = useState(false);
   const [presentIll, setPresentIll] = useState(false);
+  const [historyView, setHistoryView] = useState(false);
 
   const getSelectedData = (data) => {
     setSelectedData(data);
@@ -30,12 +32,15 @@ const Subjective = () => {
     if (data?.id === 2) {
       setPresentIll(true);
     }
+    if (data?.id === 3) {
+      setHistoryView(true);
+    }
   };
 
   return (
     <>
-      <CContainer className="mt-3">
-        {!cardView && !presentIll ? (
+      <div className="mt-3">
+        {!cardView && !presentIll && !historyView ? (
           <CRow>
             {cardData.map((dt, i) => (
               <CCol md={4} xl={3} className="mb-3">
@@ -55,8 +60,12 @@ const Subjective = () => {
           <>
             <PresentIllness OnClose={() => setPresentIll(false)} />
           </>
+        ) : historyView ? (
+          <>
+            <History OnClose={() => setHistoryView(false)} />
+          </>
         ) : null}
-      </CContainer>
+      </div>
     </>
   );
 };

@@ -212,14 +212,14 @@ const Immunization = ({ onClose }) => {
                       />
                     </div>
                   </CCol>
-                  <CCol
+                  {/* <CCol
                     md={3}
                     className="d-flex flex-column gap-1 justify-content-end"
                   >
                     <div style={{ width: "100%" }}>
                       <Dropdown options={options} />
                     </div>
-                  </CCol>
+                  </CCol> */}
                   <CCol
                     md={3}
                     className="d-flex flex-column gap-1 justify-content-end"

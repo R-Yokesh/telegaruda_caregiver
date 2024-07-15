@@ -6,11 +6,13 @@ import MedicalTab from "../../MedicalTab";
 import SignsSymptoms from "./Signs And Symptoms/SignsSymptoms";
 import Medication from "./Medication/Medication";
 
-const PresentIllness = ({ OnClose }) => {
+const History = ({ OnClose }) => {
   const tabs = [
-    { id: 1, title: "Signs and Symptoms" },
-    { id: 2, title: "Medication" },
-    { id: 3, title: "Allergies" },
+    { id: 1, title: "Medical History" },
+    { id: 2, title: "O/G History" },
+    { id: 3, title: "Surgical History" },
+    { id: 4, title: "Family History" },
+    { id: 5, title: "Social History" },
   ];
   const [currentTab, setCurrentTab] = useState(1);
   const getCurrentTab = (data) => {
@@ -30,7 +32,7 @@ const PresentIllness = ({ OnClose }) => {
               className="cursor"
             />
             <span className="Obj-name d-flex align-items-center">
-              History of Present Illness (HPI)
+              History
             </span>
           </div>
         </CCol>
@@ -42,7 +44,7 @@ const PresentIllness = ({ OnClose }) => {
                 { label: "Patient List", to: "/patients" },
                 { label: "Medical Profile", to: "/patients/history" },
                 {
-                  label: "History of Present Illness (HPI)",
+                  label: "History",
                   to: "/patients/history",
                 },
               ]}
@@ -76,4 +78,4 @@ const PresentIllness = ({ OnClose }) => {
   );
 };
 
-export default PresentIllness;
+export default History;
