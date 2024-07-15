@@ -1,7 +1,7 @@
-.green tbody tr td:nth-child(2) {
+/* .green tbody tr td:nth-child(2) {
     background-color: var(--green);
     color: var(--white);
-}
+} */
 
 .table-sec table tr:last-child td:last-child {
     border-bottom-right-radius: 10px;
@@ -23,4 +23,48 @@
 
 .table-sec h4 {
     margin-bottom: 16px;
+}
+
+.table-sec-headings p {
+    margin-bottom: 12px;
+    margin-top: 20px;
+}
+
+.page-card {
+    background-color: var(--white);
+    padding: 25px 4%;
+    border-radius: 15px;
+}
+
+.card-data-type {
+    border-bottom: 1px solid var(--light-gray);
+    margin-top: 20px;
+}
+
+.multi-card {
+    flex-wrap: wrap !important;
+    gap: 20px;
+}
+
+.multi-card p {
+    background-color: var(--text-color);
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 30px;
+    font-size: 14px;
+}
+
+.green {
+    background: var(--green);
+    color: var(--white);
+    padding: 2px 10px;
+    border-radius: 8px;
+}
+
+.table-sec {
+    margin-bottom: 30px;
+}
+
+.table-link {
+    color: var(--text-color);
 }

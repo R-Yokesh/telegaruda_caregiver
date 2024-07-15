@@ -1,5 +1,5 @@
 import React from 'react'
-import { CTable } from '@coreui/react'
+import { CTable, CTableHead, CTableHeaderCell, CTableBody, CTableRow, CTableDataCell } from '@coreui/react'
 
 function SummaryTable({ columns, items, green, head }) {
 
