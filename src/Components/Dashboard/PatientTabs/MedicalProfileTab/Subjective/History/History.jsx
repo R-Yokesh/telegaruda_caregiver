@@ -3,8 +3,8 @@ import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import { CCol, CRow } from "@coreui/react";
 import { Assets } from "../../../../../../assets/Assets";
 import MedicalTab from "../../MedicalTab";
-import SignsSymptoms from "./Signs And Symptoms/SignsSymptoms";
-import Medication from "./Medication/Medication";
+import MedicalHistory from "./Medical History/MedicalHistory";
+import SurgicalHistory from "./Surgical History/SurgicalHistory";
 
 const History = ({ OnClose }) => {
   const tabs = [
@@ -31,9 +31,7 @@ const History = ({ OnClose }) => {
               onClick={OnClose}
               className="cursor"
             />
-            <span className="Obj-name d-flex align-items-center">
-              History
-            </span>
+            <span className="Obj-name d-flex align-items-center">History</span>
           </div>
         </CCol>
         <CCol md={8} className="mb-2 d-flex justify-content-end">
@@ -64,15 +62,15 @@ const History = ({ OnClose }) => {
       <CRow className="mt-3">
         {currentTab === 1 && (
           <>
-            <SignsSymptoms />
+            <MedicalHistory />
           </>
         )}
-        {currentTab === 2 && (
+        {currentTab === 2 && <></>}
+        {currentTab === 3 && (
           <>
-            <Medication />
+            <SurgicalHistory />
           </>
         )}
-        {currentTab === 3 && <></>}
       </CRow>
     </>
   );

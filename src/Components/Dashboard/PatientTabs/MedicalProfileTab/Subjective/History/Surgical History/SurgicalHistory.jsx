@@ -18,172 +18,88 @@ import LabOrderTable from "../../../../../../Tables/LabOrderTable";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
-import SignsSymptomsForm from "./SignsSymptomsForm";
-import MedicationOrderTable from "../../../../../../Tables/MedicationOrderTable";
-import SymtomsTable from "../../../../../../Tables/Subjective/SymtomsTable";
+import MedicationForm from "./MedicationForm";
+import MedicationTable from "../../../../../../Tables/Subjective/MedicationTable";
+import SurgicalTable from "../../../../../../Tables/Subjective/SurgicalTable";
 
-const SignsSymptoms = () => {
-  const detailsData = [
-    { id: 1, label: "" },
-    { id: 2, label: "RX" },
-    { id: 3, label: "FREQUENCY" },
-    { id: 4, label: "DURATION" },
-    { id: 5, label: "QTY/TAKEN" },
-    { id: 6, label: "ACTIONS​" },
-  ];
-
-  const detailsValue = [
-    {
-      id: 1,
-      name: "Prescribed",
-      rx: "Medicine 1",
-      frequency: ["1/2", 0, 0, 0],
-      duration: "3 Days",
-      qty: "1 tablet",
-    },
-    {
-      id: 2,
-      name: "Alternative",
-      rx: "Medicine 2",
-      frequency: ["1/2", 0, 0, 0],
-      duration: "3 Days",
-      qty: "1 tablet",
-    },
-  ];
-
+const SurgicalHistory = () => {
   const columnData = [
-    { id: 1, label: "NO." },
-    { id: 2, label: "ONSET" },
-    { id: 3, label: "LOCATION" },
-    { id: 4, label: "DURATION IN DAYS" },
-    { id: 5, label: "Characteristics (SL)" },
-    { id: 6, label: "aggravating factors" },
-    { id: 7, label: "Relieving factors" },
-    { id: 8, label: "Temporal factors" },
-    { id: 9, label: "Severity" },
-    { id: 10, label: "Notes" },
-    { id: 11, label: "Actions" },
+    { id: 1, label: "No." },
+    { id: 2, label: "Date" },
+    { id: 3, label: "Surgery Name" },
+    { id: 4, label: "Reason" },
+    { id: 5, label: "Notes" },
+    { id: 6, label: "ACTIONS" },
   ];
   const rowData = [
     {
       id: 1,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
       id: 2,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Mild",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
       id: 3,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
       id: 4,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Moderate",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
       id: 5,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Worst",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
       id: 6,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Severe",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
-      id: 7,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
       id: 8,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
       id: 9,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
     {
       id: 10,
-      onset: "06-07-2024",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
+      date: "06-07-2024",
+      name: "Lorem Ipsum",
+      reason: "Lorem Ipsum",
+      notes: "Lorem ipsum",
     },
   ];
   const [addFormView, setAddFormView] = useState(false);
@@ -225,6 +141,8 @@ const SignsSymptoms = () => {
     }
   };
 
+  const options = ["Morning", "Afternoon", "Evening", "Night"];
+
   return (
     <>
       {!addFormView && (
@@ -255,12 +173,11 @@ const SignsSymptoms = () => {
             </CCol>
           </CRow>
           <div className="mb-2">
-            <SymtomsTable
+            <SurgicalTable
               rowData={getCurrentPageItems()}
               columns={columnData}
               getselectedData={getselectedData}
             />
-
             <CRow className="mb-3">
               <CCol lg={12} className="d-flex justify-content-center">
                 <Pagination
@@ -277,7 +194,7 @@ const SignsSymptoms = () => {
       {addFormView && (
         <CCard className="p-2 cursor-default mb-5">
           <CCardBody className="mb-3">
-            <SignsSymptomsForm
+            <MedicationForm
               back={() => {
                 setAddFormView(false);
                 setSelectedData({});
@@ -320,4 +237,4 @@ const SignsSymptoms = () => {
   );
 };
 
-export default SignsSymptoms;
+export default SurgicalHistory;

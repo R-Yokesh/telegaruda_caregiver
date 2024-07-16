@@ -2,126 +2,121 @@ import {
   CCard,
   CCardBody,
   CCol,
-  CFormCheck,
   CModal,
   CModalBody,
   CRow,
 } from "@coreui/react";
 import React, { useState } from "react";
-import LabForm from "../../../Objective/Lab/LabForm";
 import Pagination from "../../../../../../Pagination/Pagination";
-import LabTable from "../../../../../../Tables/LabTable";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../../assets/Assets";
 import DateSelector from "../../../../../../DateRangePicker/DateSelector";
-import LabOrderTable from "../../../../../../Tables/LabOrderTable";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
-import Dropdown from "../../../../../../Dropdown/Dropdown";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
-import MedicationForm from "./MedicationForm";
-import MedicationTable from "../../../../../../Tables/Subjective/MedicationTable";
+import SignsSymptomsForm from "./SignsSymptomsForm";
+import MedicalHistoryTable from "../../../../../../Tables/Subjective/MedicalHistoryTable";
 
-const Medication = () => {
+const MedicalHistory = () => {
   const columnData = [
-    { id: 1, label: "No." },
-    { id: 2, label: "Medication Name" },
-    { id: 3, label: "Strength & Dosage" },
-    { id: 4, label: "Route" },
-    { id: 5, label: "Start Date" },
-    { id: 6, label: "End Date" },
-    { id: 7, label: "Status" },
-    { id: 8, label: "ACTIONS" },
+    { id: 1, label: "NO." },
+    { id: 2, label: "ONSET" },
+    { id: 3, label: "CONDITIONS" },
+    { id: 4, label: "ICD10 (SL)" },
+    { id: 5, label: "Chronic" },
+    { id: 6, label: "Previous Illness" },
+    { id: 7, label: "Notes" },
+    { id: 8, label: "Actions" },
   ];
   const rowData = [
     {
       id: 1,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "02-04-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "Yes",
+      prev_illness: "Yes",
+      notes: "Lorem ipsum",
     },
     {
       id: 2,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "02-04-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "Yes",
+      prev_illness: "Yes",
+      notes: "Lorem ipsum",
     },
     {
       id: 3,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "02-04-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "No",
+      prev_illness: "Yes",
+      notes: "Lorem ipsum",
     },
     {
       id: 4,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "01-04-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "No",
+      prev_illness: "No",
+      notes: "Lorem ipsum",
     },
     {
       id: 5,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "01-04-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "Yes",
+      prev_illness: "No",
+      notes: "Lorem ipsum",
     },
     {
       id: 6,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "02-04-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "No",
+      prev_illness: "No",
+      notes: "Lorem ipsum",
     },
     {
       id: 7,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "02-04-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "Yes",
+      prev_illness: "Yes",
+      notes: "Lorem ipsum",
     },
     {
       id: 8,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "02-04-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "Yes",
+      prev_illness: "Yes",
+      notes: "Lorem ipsum",
     },
     {
       id: 9,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "12-03-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "Yes",
+      prev_illness: "Yes",
+      notes: "Lorem ipsum",
     },
     {
       id: 10,
-      start_date: "06-07-2024",
-      end_date: "16-07-2024",
-      name: "Lorem Ipsum",
-      strength: "Lorem Ipsum",
-      route: "Lorem Ipsum",
-      status: "Lorem Ipsum",
+      onset: "02-03-2024",
+      conditions: "Lorem ipsum",
+      icd10: "Lorem ipsum",
+      chronic: "Yes",
+      prev_illness: "Yes",
+      notes: "Lorem ipsum",
     },
   ];
   const [addFormView, setAddFormView] = useState(false);
@@ -163,8 +158,6 @@ const Medication = () => {
     }
   };
 
-  const options = ["Morning", "Afternoon", "Evening", "Night"];
-
   return (
     <>
       {!addFormView && (
@@ -195,11 +188,12 @@ const Medication = () => {
             </CCol>
           </CRow>
           <div className="mb-2">
-            <MedicationTable
+            <MedicalHistoryTable
               rowData={getCurrentPageItems()}
               columns={columnData}
               getselectedData={getselectedData}
             />
+
             <CRow className="mb-3">
               <CCol lg={12} className="d-flex justify-content-center">
                 <Pagination
@@ -216,7 +210,7 @@ const Medication = () => {
       {addFormView && (
         <CCard className="p-2 cursor-default mb-5">
           <CCardBody className="mb-3">
-            <MedicationForm
+            <SignsSymptomsForm
               back={() => {
                 setAddFormView(false);
                 setSelectedData({});
@@ -259,4 +253,4 @@ const Medication = () => {
   );
 };
 
-export default Medication;
+export default MedicalHistory;
