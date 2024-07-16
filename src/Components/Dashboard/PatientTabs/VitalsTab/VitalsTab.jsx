@@ -49,7 +49,7 @@ const VitalsTab = ({ category, openModal }) => {
           diastolic: "25",
           "pulse_(in_bpm)": "125",
           date: "05-04-2024 13:15",
-          action: [ { type: "warning" }],
+          action: [{ type: "warning" }],
           name: "Blood Pressure",
         },
       ],
@@ -180,16 +180,16 @@ const VitalsTab = ({ category, openModal }) => {
     {
       id: 5,
       icon: Assets.VitalHBeat,
-      name: "Heart Rate",
+      name: "ECG",
       category: "Primary Vitals",
       date: "Recently Added 27-03-2024",
       badge: [{ label: "1 Bpm", color: "success" }],
       chartLabel1: "Heart Rate (BPM)",
       columnsData: [
         { id: 1, label: "NO." },
-        { id: 2, label: "ECG RESULT" },
+        { id: 2, label: "INTERPRETATION" },
         { id: 3, label: "ECG" },
-        { id: 4, label: "Heart Rate (BPM)" },
+        { id: 4, label: "ECG TYPE" },
         { id: 5, label: "DATE" },
         { id: 6, label: "ACTION" },
       ],
@@ -197,11 +197,16 @@ const VitalsTab = ({ category, openModal }) => {
         {
           "no.": 1,
           ecg_result: { status: "error", name: "Abnormal Heart Rate" },
-          ecg: "ecg1.png",
+          ecg: {
+            contentType: "image",
+            link: Assets.ecgSample,
+          },
           "heart_rate_(bpm)": "120",
-          date: "06-24-2024 10:15",
+          date: "05-24-2024 10:15",
           action: [{ type: "warning" }],
           name: "Heart Rate",
+          interpretation: "ECG Interpretation",
+          ecg_type: "3 Lead",
         },
         {
           "no.": 2,
@@ -209,11 +214,16 @@ const VitalsTab = ({ category, openModal }) => {
             status: "success",
             name: "Normal",
           },
-          ecg: "ecg.png",
+          ecg: {
+            contentType: "pdf",
+            link: "https://www.orimi.com/pdf-test.pdf",
+          },
           "heart_rate_(bpm)": "70",
-          date: "05-24-2024 10:15",
+          date: "06-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
           name: "Heart Rate",
+          interpretation: "ECG Interpretation",
+          ecg_type: "3 Lead",
         },
       ],
     },
@@ -738,6 +748,27 @@ const VitalsTab = ({ category, openModal }) => {
   const filteredProducts = data.filter(
     (product) => product.category === category
   );
+
+  const renderImage = (contentUrl) => {
+    return (
+      <img
+        src={contentUrl}
+        alt="mage1"
+        style={{ maxWidth: "100%", maxHeight: "100%" }}
+      />
+    );
+  };
+
+  // // Function to render PDF content
+  const renderPdf = (contentUrl) => {
+    return (
+      <iframe
+        title="PDF Viewer"
+        src={contentUrl}
+        style={{ width: "100%", height: "140px", border: "none" }}
+      />
+    );
+  };
   return (
     <>
       <CRow className="mb-1">
@@ -769,7 +800,17 @@ const VitalsTab = ({ category, openModal }) => {
                     </div>
                     <div className="vital-line-container">
                       {/* <img alt="line" src={Assets.Vitalline} /> */}
-                      <CardChart datas={item} />
+                      {item?.name === "ECG" ? (
+                        <div className="chart-item">
+                          {/* <div className="rectangle">
+                            <img src={Assets.ecgSample} alt="ecg" />
+                          </div> */}
+                          {renderImage(Assets.ecgSample)}
+                          {/* {renderPdf("https://www.orimi.com/pdf-test.pdf")} */}
+                        </div>
+                      ) : (
+                        <CardChart datas={item} />
+                      )}
                     </div>
                   </CCardBody>
                 </CCard>

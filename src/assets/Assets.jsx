@@ -49,11 +49,11 @@ import VitalSig from "./Images/Patients/VitalSign.png";
 import CloseBtn from "./Images/Patients/Close-Btn.png";
 import BackBtn from "./Images/Patients/Back-Btn.png";
 
-import History from "./Images/Patients/History.png"
-import WellnessProfile from "./Images/Patients/WellnessProfile.png"
-import ReviewSytm from "./Images/Patients/ReviewSytm.png"
-import AssesmentTool from "./Images/Patients/AssesmentTool.png"
-import ThreeDots from "./Images/ThreeDots.svg"
+import History from "./Images/Patients/History.png";
+import WellnessProfile from "./Images/Patients/WellnessProfile.png";
+import ReviewSytm from "./Images/Patients/ReviewSytm.png";
+import AssesmentTool from "./Images/Patients/AssesmentTool.png";
+import ThreeDots from "./Images/ThreeDots.svg";
 
 import Add from "./Images/Patients/Add.png";
 import Filter from "./Images/Patients/Filter-2.png";
@@ -108,6 +108,7 @@ import TickCircle from "./Images/Tick-Circle.svg";
 
 import whiteAdd from "./Images/White-Add.svg";
 import whiteDel from "./Images/White-Del.svg";
+import ecgSample from "./Images/ecg-sample.png";
 
 export const Assets = {
   BackBtn,
@@ -199,4 +200,5 @@ export const Assets = {
   whiteDel,
   whiteAdd,
   ThreeDots,
+  ecgSample,
 };

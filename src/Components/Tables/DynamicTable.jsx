@@ -224,14 +224,28 @@ const DynamicTable = ({ columnsData, tableData }) => {
     </>
   );
 
+  const renderImage = (contentUrl) => {
+    return (
+      <img
+        src={contentUrl}
+        alt="Image"
+        style={{ maxWidth: "100%", maxHeight: "100%" }}
+      />
+    );
+  };
+
   function renderCell(row, column) {
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
-
-    if (columnKey === "ecg_result") {
+    console.log("first", value);
+    if (columnKey === "ecg") {
+      // Function to render PDF content
+      const renderPdf = (contentUrl) => {
+        window.open(contentUrl, '_blank');
+      };
       return (
-        <div style={{ width: "180px" }}>
-          <Badge label={value?.name} color={value?.status} />
+        <div style={{ width: "80px" }} onClick={() => renderPdf(value.link)}>
+          <span className="hyperlink">ECG</span>
         </div>
       );
     } else if (columnKey === "result") {

@@ -42,6 +42,7 @@ import GFR from "../Forms/GFR";
 import Urinalysis from "../Forms/Urinalysis";
 import BlurBackground from "../../../../../BlurBackground/BlurBackground";
 import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
+import ECGChart from "../ECG Chart/ECGChart";
 
 const ObjectiveDetailPage = ({ data }) => {
   const [chartView, setChartView] = useState(false);
@@ -218,7 +219,11 @@ const ObjectiveDetailPage = ({ data }) => {
         <CRow>
           <CCol xl={12}>
             {chartView ? (
-              <ChartTab data={data} />
+              data?.name === "ECG" ? (
+                <ECGChart data={data}/>
+              ) : (
+                <ChartTab data={data} />
+              )
             ) : (
               <>
                 {filterView && <DateRangePicker onClose={filterBack} />}
@@ -248,7 +253,7 @@ const ObjectiveDetailPage = ({ data }) => {
                 {data?.name === "Blood Pressure" && (
                   <BPForm addBack={addBack} />
                 )}
-                {data?.name === "Heart Rate" && <HeartRate addBack={addBack} />}
+                {data?.name === "ECG" && <HeartRate addBack={addBack} />}
                 {data?.name === "Lung Function Test (LFT)" && (
                   <LFTForm addBack={addBack} />
                 )}

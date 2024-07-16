@@ -4,9 +4,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
+import Dropdown from "../../../../../Dropdown/Dropdown";
 
 const HeartRate = ({ addBack, defaultData }) => {
-
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -46,6 +46,11 @@ const HeartRate = ({ addBack, defaultData }) => {
 
     return numbers || "";
   };
+
+  const options = ["Single Lead", "3 Lead", "12 Lead"];
+  const findIndex = defaultData?.ecg_type
+    ? options?.indexOf(defaultData?.ecg_type)
+    : 0;
   return (
     <>
       <CContainer>
@@ -86,14 +91,23 @@ const HeartRate = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Heart Rate *
+                ECG Type *
               </label>
-              <input
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown options={options} defaultValue={options[findIndex]} />
+              </div>
+              {/* <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={defaultData?.["heart_rate_(bpm)"]}
-              />
+              /> */}
             </div>
           </CCol>
         </CRow>
@@ -105,15 +119,36 @@ const HeartRate = ({ addBack, defaultData }) => {
               </label>
               <input type="file" id="file" />
               <label for="file">Choose file</label>
+
+              <div class="d-flex flex-column gap-1 justify-content-center h-100">
+                {defaultData?.ecg ? (
+                  <span className="">ECG{'('}{defaultData?.ecg?.contentType}{')'}</span>
+                ) : (
+                  <span className="">No File Chosen</span>
+                )}
+              </div>
             </div>
           </CCol>
-          <CCol lg={4}>
+          {/* <CCol lg={4}>
             <div class="position-relative d-flex flex-column gap-1 justify-content-center h-100">
               {defaultData?.ecg ? (
                 <span className="mt-2">{defaultData?.ecg}</span>
               ) : (
                 <span className="mt-2">No File Chosen</span>
               )}
+            </div>
+          </CCol> */}
+          <CCol lg={8}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                ECG Interpretation *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.interpretation}
+              />
             </div>
           </CCol>
         </CRow>

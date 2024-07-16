@@ -215,7 +215,9 @@ body {
   border-bottom: none;
 }
 
-
+.hyperlink {
+  text-decoration: underline;
+}
 
 
 .light-back {
@@ -293,6 +295,7 @@ body {
 }
 
 [type="file"] {
+  display: none;
   height: 0;
   overflow: hidden;
   width: 0;
@@ -305,14 +308,14 @@ body {
   color: var(--text-color);
   cursor: pointer;
   display: inline-block;
-  font-size: inherit;
+  font-size: 14px;
   font-weight: 500;
-  margin-bottom: 1rem;
   outline: none;
-  padding: 12px;
+  padding: 7px;
   position: relative;
   transition: all 0.3s;
   vertical-align: middle;
+  text-align: center;
 }
 
 .signout-modal .modal-content {

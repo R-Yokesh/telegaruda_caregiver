@@ -1,0 +1,50 @@
+.carousel-container {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 20px;
+}
+
+.carousel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.chart-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px
+}
+
+.rectangle {
+    width: 75%;
+    height: 35%;
+
+    img {
+        width: 100%;
+    }
+}
+
+.captions {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.ecg_button {
+    outline: none;
+    border: 1px solid grey;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+.ecg_btngrp {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
