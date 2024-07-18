@@ -19,8 +19,9 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import ImagingOrderForm from "./ImagingOrderForm";
 import ImagingOrderTable from "../../../../../../Tables/ImagingOrderTable";
+import MedicalTab from "../../../MedicalTab";
 
-const ImagingOrder = () => {
+const OGHistory = () => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "SCAN DATE" },
@@ -181,12 +182,113 @@ const ImagingOrder = () => {
     }
   };
 
-  const options = ["Morning", "Afternoon", "Evening", "Night"];
+  const options = ["Yes", "No"];
+  const tabs = [
+    { id: 1, title: "Obstetric History" },
+    { id: 2, title: "Gynaec History" },
+  ];
+  const [currentTab, setCurrentTab] = useState(1);
+  const [currentHistoryTab, setCurrentHistoryTab] = useState(1);
+
+  const GynaecTabs = [
+    { id: 1, title: "Menstrual History" },
+    { id: 2, title: "Screening and Diagnostic History" },
+  ];
+
+  const getCurrentTab = (data) => {
+    setCurrentTab(data);
+  };
+
+  const getHistoryCurrentTab = (data) => {
+    setCurrentHistoryTab(data);
+  };
 
   return (
     <>
       {!addFormView && (
         <>
+          <CRow className="mb-2">
+            <CCol lg={5} className="">
+              <MedicalTab
+                tabs={tabs}
+                getCurrentTab={getCurrentTab}
+                defaultTab={0}
+              />
+            </CCol>
+            <CCol lg={7}>
+              {currentTab === 1 && (
+                <CRow>
+                  <CCol lg={4}>
+                    <div style={{ width: "100%" }}>
+                      <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                          Pregnant
+                        </label>
+                        <div
+                          className="w-100"
+                          style={{
+                            boxShadow: "0px 4px 17px 0px #17171D14",
+                          }}
+                        >
+                          <Dropdown
+                            options={options}
+                            defaultValue={options[0]}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </CCol>
+                  <CCol lg={4}>
+                    <div style={{ width: "100%" }}>
+                      <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                          Previous Cesarean Sections
+                        </label>
+                        <div
+                          className="w-100"
+                          style={{
+                            boxShadow: "0px 4px 17px 0px #17171D14",
+                          }}
+                        >
+                          <Dropdown
+                            options={options}
+                            defaultValue={options[1]}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </CCol>
+                  <CCol lg={4}>
+                    <div style={{ width: "100%" }}>
+                      <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                          Bad Obstetric History
+                        </label>
+                        <div
+                          className="w-100"
+                          style={{
+                            boxShadow: "0px 4px 17px 0px #17171D14",
+                          }}
+                        >
+                          <Dropdown
+                            options={options}
+                            defaultValue={options[1]}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </CCol>
+                </CRow>
+              )}
+              {currentTab === 2 && (
+                <MedicalTab
+                  tabs={GynaecTabs}
+                  getCurrentTab={getHistoryCurrentTab}
+                  defaultTab={0}
+                />
+              )}
+            </CCol>
+          </CRow>
           <CRow className="mb-2">
             <CCol lg={8} className="">
               <DateSelector />
@@ -327,4 +429,4 @@ const ImagingOrder = () => {
   );
 };
 
-export default ImagingOrder;
+export default OGHistory;

@@ -6,10 +6,9 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 
-const MedicationForm = ({ back, defaultValues }) => {
+const SurgicalForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
   const [date1, setDate1] = useState(null);
-
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -35,11 +34,25 @@ const MedicationForm = ({ back, defaultValues }) => {
   return (
     <>
       <CRow className="mb-3">
-        <CCol lg={4}>
+        <CCol lg={6}>
+          <div class="position-relative">
+            <label for="validationTooltip01" class="form-label">
+              Date *
+            </label>
+            <div className="date-size">
+              <DatePicker
+                showIcon
+                selected={date}
+                onChange={(date) => setDate(date)}
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Medication Name
+                Surgery Name *
               </label>
               <input
                 type="text"
@@ -51,80 +64,36 @@ const MedicationForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+      </CRow>
+      <CRow className="mb-3">
+        <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Strength & Dosage
+                Reason *
               </label>
               <input
                 type="text"
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.strength}
+                defaultValue={defaultValues?.name}
               />
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Route
+                Notes *
               </label>
               <input
                 type="text"
-                class="form-control  pad-10"
+                class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.route}
-              />
-            </div>
-          </div>
-        </CCol>
-      </CRow>
-      <CRow className="mb-3">
-        <CCol lg={4}>
-          <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
-              Start Date *
-            </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={date}
-                onChange={(date) => setDate(date)}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4}>
-          <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
-              End Date *
-            </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={date1}
-                onChange={(date) => setDate1(date)}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Status
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.status}
+                defaultValue={defaultValues?.notes}
               />
             </div>
           </div>
@@ -142,4 +111,4 @@ const MedicationForm = ({ back, defaultValues }) => {
   );
 };
 
-export default MedicationForm;
+export default SurgicalForm;

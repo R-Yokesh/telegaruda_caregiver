@@ -18,7 +18,7 @@ import LabOrderTable from "../../../../../../Tables/LabOrderTable";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
-import MedicationForm from "./MedicationForm";
+import SurgicalForm from "./SurgicalForm";
 import MedicationTable from "../../../../../../Tables/Subjective/MedicationTable";
 import SurgicalTable from "../../../../../../Tables/Subjective/SurgicalTable";
 
@@ -75,6 +75,7 @@ const SurgicalHistory = () => {
       notes: "Lorem ipsum",
     },
     {
+      id: 7,
       date: "06-07-2024",
       name: "Lorem Ipsum",
       reason: "Lorem Ipsum",
@@ -194,7 +195,7 @@ const SurgicalHistory = () => {
       {addFormView && (
         <CCard className="p-2 cursor-default mb-5">
           <CCardBody className="mb-3">
-            <MedicationForm
+            <SurgicalForm
               back={() => {
                 setAddFormView(false);
                 setSelectedData({});

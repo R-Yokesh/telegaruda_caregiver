@@ -13,7 +13,7 @@ import { Assets } from "../../../../../../../assets/Assets";
 import DateSelector from "../../../../../../DateRangePicker/DateSelector";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
-import SignsSymptomsForm from "./SignsSymptomsForm";
+import MedHistoryForm from "./MedHistoryForm";
 import MedicalHistoryTable from "../../../../../../Tables/Subjective/MedicalHistoryTable";
 
 const MedicalHistory = () => {
@@ -210,7 +210,7 @@ const MedicalHistory = () => {
       {addFormView && (
         <CCard className="p-2 cursor-default mb-5">
           <CCardBody className="mb-3">
-            <SignsSymptomsForm
+            <MedHistoryForm
               back={() => {
                 setAddFormView(false);
                 setSelectedData({});

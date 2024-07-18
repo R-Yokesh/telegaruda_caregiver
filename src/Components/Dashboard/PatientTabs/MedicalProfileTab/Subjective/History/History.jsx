@@ -5,6 +5,7 @@ import { Assets } from "../../../../../../assets/Assets";
 import MedicalTab from "../../MedicalTab";
 import MedicalHistory from "./Medical History/MedicalHistory";
 import SurgicalHistory from "./Surgical History/SurgicalHistory";
+import OGHistory from "./OG History/OGHistory";
 
 const History = ({ OnClose }) => {
   const tabs = [
@@ -65,7 +66,11 @@ const History = ({ OnClose }) => {
             <MedicalHistory />
           </>
         )}
-        {currentTab === 2 && <></>}
+        {currentTab === 2 && (
+          <>
+            <OGHistory />
+          </>
+        )}
         {currentTab === 3 && (
           <>
             <SurgicalHistory />
