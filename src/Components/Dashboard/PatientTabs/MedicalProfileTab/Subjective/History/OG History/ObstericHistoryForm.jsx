@@ -5,8 +5,9 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 
-const ImagingOrderForm = ({ back, defaultValues }) => {
+const ObstericHistoryForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
+  const [date2, setDate2] = useState(null);
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -18,15 +19,24 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
     };
 
     // Example default date string
-    const defaultDateString = defaultValues?.date;
+    const defaultDateString = defaultValues?.lmp_date;
 
     // Parse default date string to Date object
-    const defaultDate = defaultValues?.date
+    const defaultDate = defaultValues?.lmp_date
       ? parseDateString(defaultDateString)
+      : new Date();
+
+    // Example default date string
+    const defaultDateString2 = defaultValues?.ed_date;
+
+    // Parse default date string to Date object
+    const defaultDate2 = defaultValues?.ed_date
+      ? parseDateString(defaultDateString2)
       : new Date();
 
     // Set default date in state
     setDate(defaultDate);
+    setDate2(defaultDate2);
   }, [defaultValues]);
   const options = ["Morning", "Afternoon", "Evening", "Night"];
 
@@ -36,7 +46,7 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
         <CCol lg={4}>
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date *
+              LMP Date *
             </label>
             <div className="date-size">
               <DatePicker
@@ -48,17 +58,15 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                ICD Code *
-              </label>
-              <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.name}
+          <div class="position-relative">
+            <label for="validationTooltip01" class="form-label">
+              ED Date *
+            </label>
+            <div className="date-size">
+              <DatePicker
+                showIcon
+                selected={date2}
+                onChange={(date) => setDate2(date)}
               />
             </div>
           </div>
@@ -67,74 +75,90 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Imaging Order Name *
+                Trimster *
               </label>
-              <input 
+              <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.notes}
+                defaultValue={defaultValues?.trimster}
               />
             </div>
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-3">
-        <CCol lg={4}>
+        <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes
+                Gravida *
               </label>
               <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.link}
+                defaultValue={defaultValues?.gravida}
               />
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Link of Imaging File URL
+                Para *
               </label>
               <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.link}
+                defaultValue={defaultValues?.para}
               />
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+      </CRow>
+      <CRow className="mb-3">
+        <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Select Scan Center *
+                Fertility Treament *
               </label>
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown options={options} />
-              </div>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.fert_treatment}
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={6}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Lacatating *
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.lacating}
+              />
             </div>
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-1">
-        <div style={{ width: "150px" }}>
-          <PrimaryButton>SEND TO LAB</PrimaryButton>
+        <div style={{ width: "130px" }}>
+          <PrimaryButton>SAVE</PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
@@ -144,4 +168,4 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
   );
 };
 
-export default ImagingOrderForm;
+export default ObstericHistoryForm;

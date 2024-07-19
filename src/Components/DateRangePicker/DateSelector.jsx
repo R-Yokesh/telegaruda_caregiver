@@ -14,7 +14,7 @@ const DateSelector = () => {
     <>
       <CRow className="mb-2">
         <CCol md={3} className="d-flex flex-column gap-1">
-          <span className="fs-18 fw-400">Start Date *</span>
+          <span className="fs-18 fw-400 label-color">Start Date *</span>
           <div style={{ width: "100%" }}>
             <DatePicker
               showIcon
@@ -26,7 +26,7 @@ const DateSelector = () => {
           </div>
         </CCol>
         <CCol md={3} className="d-flex flex-column gap-1">
-          <span className="fs-18 fw-400">End Date *</span>
+          <span className="fs-18 fw-400 label-color">End Date *</span>
           <div style={{ width: "100%" }}>
             <DatePicker
               showIcon

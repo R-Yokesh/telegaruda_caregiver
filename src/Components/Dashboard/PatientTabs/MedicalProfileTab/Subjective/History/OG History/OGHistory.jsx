@@ -17,132 +17,260 @@ import DateSelector from "../../../../../../DateRangePicker/DateSelector";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
-import ImagingOrderForm from "./ImagingOrderForm";
+import ImagingOrderForm from "./ObstericHistoryForm";
 import ImagingOrderTable from "../../../../../../Tables/ImagingOrderTable";
 import MedicalTab from "../../../MedicalTab";
+import ObstetricHistoryTable from "../../../../../../Tables/Subjective/ObstetricHistoryTable";
+import GynaecHistoryTable from "../../../../../../Tables/Subjective/GynaecHistoryTable";
 
 const OGHistory = () => {
   const columnData = [
     { id: 1, label: "No." },
-    { id: 2, label: "SCAN DATE" },
-    { id: 3, label: "SCAN NAME" },
-    { id: 4, label: "FILES" },
-    { id: 5, label: "NOTES" },
-    { id: 6, label: "LINK" },
-    { id: 7, label: "ICD CODE" },
-    { id: 8, label: "SCAN STATUS" },
+    { id: 2, label: "LMP Date" },
+    { id: 3, label: "ED Date" },
+    { id: 4, label: "Trimster" },
+    { id: 5, label: "Gravida" },
+    { id: 6, label: "Para" },
+    { id: 7, label: "Fertility Treament" },
+    { id: 8, label: "Lacatating" },
     { id: 9, label: "ACTIONS" },
   ];
   const rowData = [
     {
       id: 1,
-      date: "01-01-2024",
-      name: "Complete Blood Count",
-      file: "PDF",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Accepted",
-      scan_name: "Raj Scan 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "Yes",
+      lacating: "Yes",
     },
     {
       id: 2,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "PNG",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Accepted",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "Yes",
+      lacating: "Yes",
     },
     {
       id: 3,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Uploaded",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "No",
+      lacating: "Yes",
     },
     {
       id: 4,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "PDF",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Not Uploaded",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "Yes",
+      lacating: "No",
     },
     {
       id: 5,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "PDF",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Not Uploaded",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "No",
+      lacating: "No",
     },
     {
       id: 6,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "PDF",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Not Uploaded",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "Yes",
+      lacating: "Yes",
     },
     {
       id: 7,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "PDF",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Not Uploaded",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "Yes",
+      lacating: "Yes",
     },
     {
       id: 8,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "PNG",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Not Uploaded",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "Yes",
+      lacating: "Yes",
     },
     {
       id: 9,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "PDF",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Not Uploaded",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "Yes",
+      lacating: "Yes",
     },
     {
       id: 10,
-      date: "06-07-2024",
-      name: "Complete Blood Count",
-      file: "PDF",
-      notes: "-",
-      link: "-",
-      icd_code: "D64.9",
-      scan_status: "Not Uploaded",
-      scan_name: "Raj Lab 1",
+      lmp_date: "01-01-2024",
+      ed_date: "05-02-2024",
+      trimster: "Lorem ipsum",
+      gravida: "Lorem ipsum",
+      para: "Lorem ipsum",
+      fert_treatment: "Yes",
+      lacating: "Yes",
+    },
+  ];
+
+  const MensuralcolumnData = [
+    { id: 1, label: "No." },
+    { id: 2, label: "Menatche Age" },
+    { id: 3, label: "Cycles per Year" },
+    { id: 4, label: "Cycle Length in days" },
+    { id: 5, label: "Flow Duration" },
+    { id: 6, label: "Flow Type" },
+    { id: 7, label: "InterMenstrual Bleeding" },
+    { id: 8, label: "cycle irregularity" },
+    { id: 9, label: "dysmenorrhea" },
+    { id: 10, label: "LMP" },
+    { id: 11, label: "ACTIONS" },
+  ];
+  const MenstrualrowData = [
+    {
+      id: 1,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 2,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 3,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 4,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 5,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 6,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 7,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 8,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 9,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
+    },
+    {
+      id: 10,
+      age: "Lorem ipsum",
+      cycle_per_year: "Lorem ipsum",
+      cycle_in_days: "Lorem ipsum",
+      flow_duration: "Lorem ipsum",
+      flow_type: "Lorem ipsum",
+      bleeding: "Yes",
+      irregularity: "Yes",
+      dysmenorrhea: "Yes",
+      lmp: "02-05-2024",
     },
   ];
   const [addFormView, setAddFormView] = useState(false);
@@ -165,6 +293,14 @@ const OGHistory = () => {
     return rowData?.slice(startIndex, endIndex);
   };
 
+  const getCurrentMenstrualPageItems = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return MenstrualrowData?.slice(startIndex, endIndex);
+  };
+
+  
+
   const addFormPage = () => {
     setAddFormView(true);
     setSelectedData({});
@@ -177,8 +313,8 @@ const OGHistory = () => {
   const getselectedData = (data, type) => {
     console.log(type, "first", data);
     setSelectedData(data);
-    if (type === "details") {
-      detailPage();
+    if (type === "edit") {
+      setAddFormView(true);
     }
   };
 
@@ -308,23 +444,48 @@ const OGHistory = () => {
             </CCol>
           </CRow>
           <div className="mb-2">
-            <CRow>
-              <ImagingOrderTable
-                rowData={getCurrentPageItems()}
-                columns={columnData}
-                getselectedData={getselectedData}
-              />
-            </CRow>
-            <CRow className="mb-3">
-              <CCol lg={12} className="d-flex justify-content-center">
-                <Pagination
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                  totalItems={rowData?.length}
-                  itemsPerPage={itemsPerPage}
-                />
-              </CCol>
-            </CRow>
+            {currentTab === 1 && (
+              <>
+                <CRow>
+                  <ObstetricHistoryTable
+                    rowData={getCurrentPageItems()}
+                    columns={columnData}
+                    getselectedData={getselectedData}
+                  />
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol lg={12} className="d-flex justify-content-center">
+                    <Pagination
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={rowData?.length}
+                      itemsPerPage={itemsPerPage}
+                    />
+                  </CCol>
+                </CRow>
+              </>
+            )}
+            {currentTab === 2 && (
+              <>
+                <CRow>
+                  <GynaecHistoryTable
+                    rowData={getCurrentMenstrualPageItems()}
+                    columns={MensuralcolumnData}
+                    getselectedData={getselectedData}
+                  />
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol lg={12} className="d-flex justify-content-center">
+                    <Pagination
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={rowData?.length}
+                      itemsPerPage={itemsPerPage}
+                    />
+                  </CCol>
+                </CRow>
+              </>
+            )}
           </div>
         </>
       )}
