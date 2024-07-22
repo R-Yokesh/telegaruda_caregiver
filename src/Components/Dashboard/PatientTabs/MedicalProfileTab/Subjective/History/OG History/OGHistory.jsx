@@ -22,6 +22,9 @@ import ImagingOrderTable from "../../../../../../Tables/ImagingOrderTable";
 import MedicalTab from "../../../MedicalTab";
 import ObstetricHistoryTable from "../../../../../../Tables/Subjective/ObstetricHistoryTable";
 import GynaecHistoryTable from "../../../../../../Tables/Subjective/GynaecHistoryTable";
+import ScreeningHistory from "../../../../../../Tables/Subjective/ScreeningHistory";
+import MensturalHistoryForm from "./MensturalHistoryForm";
+import ScreeningHistoryForm from "./ScreeningHistoryForm";
 
 const OGHistory = () => {
   const columnData = [
@@ -273,6 +276,109 @@ const OGHistory = () => {
       lmp: "02-05-2024",
     },
   ];
+
+  const ScreeningcolumnData = [
+    { id: 1, label: "No." },
+    { id: 2, label: "date of last pap smear" },
+    { id: 3, label: "History of abnormal pap smear" },
+    { id: 4, label: "date of last mamogram" },
+    { id: 5, label: "History of mamogram" },
+    { id: 6, label: "date of last Breast Exam" },
+    { id: 7, label: "History of Breast Exam" },
+    { id: 8, label: "ACTIONS" },
+  ];
+  const ScreeningrowData = [
+    {
+      id: 1,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 2,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 3,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "08-06-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-07-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 4,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 5,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 6,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 7,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 8,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 9,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+    {
+      id: 10,
+      date_of_last_pap: "02-05-2024",
+      history_of_abnormal: "Lorem ipsum",
+      date_of_last_mamogram: "07-05-2024",
+      history_of_mamogram: "Lorem ipsum",
+      date_of_last_breast: "12-05-2024",
+      history_of_breast: "Lorem ipsum",
+    },
+  ];
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
 
@@ -299,7 +405,11 @@ const OGHistory = () => {
     return MenstrualrowData?.slice(startIndex, endIndex);
   };
 
-  
+  const getCurrentScreeningItem = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return ScreeningrowData?.slice(startIndex, endIndex);
+  };
 
   const addFormPage = () => {
     setAddFormView(true);
@@ -315,6 +425,9 @@ const OGHistory = () => {
     setSelectedData(data);
     if (type === "edit") {
       setAddFormView(true);
+    }
+    if (type === "delete") {
+      detailPage();
     }
   };
 
@@ -333,174 +446,220 @@ const OGHistory = () => {
 
   const getCurrentTab = (data) => {
     setCurrentTab(data);
+    setAddFormView(false);
   };
 
   const getHistoryCurrentTab = (data) => {
     setCurrentHistoryTab(data);
+    setAddFormView(false);
   };
 
   return (
     <>
-      {!addFormView && (
-        <>
-          <CRow className="mb-2">
-            <CCol lg={5} className="">
+      <>
+        <CRow className="mb-2">
+          <CCol lg={5} className="">
+            <MedicalTab
+              tabs={tabs}
+              getCurrentTab={getCurrentTab}
+              defaultTab={0}
+            />
+          </CCol>
+          <CCol lg={7}>
+            {currentTab === 1 && (
+              <CRow>
+                <CCol lg={4}>
+                  <div style={{ width: "100%" }}>
+                    <div class="position-relative">
+                      <label for="validationTooltip01" class="form-label">
+                        Pregnant
+                      </label>
+                      <div
+                        className="w-100"
+                        style={{
+                          boxShadow: "0px 4px 17px 0px #17171D14",
+                        }}
+                      >
+                        <Dropdown options={options} defaultValue={options[0]} />
+                      </div>
+                    </div>
+                  </div>
+                </CCol>
+                <CCol lg={4}>
+                  <div style={{ width: "100%" }}>
+                    <div class="position-relative">
+                      <label for="validationTooltip01" class="form-label">
+                        Previous Cesarean Sections
+                      </label>
+                      <div
+                        className="w-100"
+                        style={{
+                          boxShadow: "0px 4px 17px 0px #17171D14",
+                        }}
+                      >
+                        <Dropdown options={options} defaultValue={options[1]} />
+                      </div>
+                    </div>
+                  </div>
+                </CCol>
+                <CCol lg={4}>
+                  <div style={{ width: "100%" }}>
+                    <div class="position-relative">
+                      <label for="validationTooltip01" class="form-label">
+                        Bad Obstetric History
+                      </label>
+                      <div
+                        className="w-100"
+                        style={{
+                          boxShadow: "0px 4px 17px 0px #17171D14",
+                        }}
+                      >
+                        <Dropdown options={options} defaultValue={options[1]} />
+                      </div>
+                    </div>
+                  </div>
+                </CCol>
+              </CRow>
+            )}
+            {currentTab === 2 && (
               <MedicalTab
-                tabs={tabs}
-                getCurrentTab={getCurrentTab}
+                tabs={GynaecTabs}
+                getCurrentTab={getHistoryCurrentTab}
                 defaultTab={0}
               />
-            </CCol>
-            <CCol lg={7}>
-              {currentTab === 1 && (
-                <CRow>
-                  <CCol lg={4}>
-                    <div style={{ width: "100%" }}>
-                      <div class="position-relative">
-                        <label for="validationTooltip01" class="form-label">
-                          Pregnant
-                        </label>
-                        <div
-                          className="w-100"
-                          style={{
-                            boxShadow: "0px 4px 17px 0px #17171D14",
-                          }}
-                        >
-                          <Dropdown
-                            options={options}
-                            defaultValue={options[0]}
-                          />
-                        </div>
-                      </div>
+            )}
+          </CCol>
+        </CRow>
+        {!addFormView && (
+          <>
+            <CRow className="mb-2">
+              <CCol lg={8} className="">
+                <DateSelector />
+              </CCol>
+              <CCol
+                lg={4}
+                className="d-flex justify-content-end align-items-center gap-2"
+              >
+                <div>
+                  <PrimaryButton onClick={() => addFormPage()}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets.Add} alt="add" />
+                      <span className="fs-16 fw-600">Add</span>
                     </div>
-                  </CCol>
-                  <CCol lg={4}>
-                    <div style={{ width: "100%" }}>
-                      <div class="position-relative">
-                        <label for="validationTooltip01" class="form-label">
-                          Previous Cesarean Sections
-                        </label>
-                        <div
-                          className="w-100"
-                          style={{
-                            boxShadow: "0px 4px 17px 0px #17171D14",
-                          }}
-                        >
-                          <Dropdown
-                            options={options}
-                            defaultValue={options[1]}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </CCol>
-                  <CCol lg={4}>
-                    <div style={{ width: "100%" }}>
-                      <div class="position-relative">
-                        <label for="validationTooltip01" class="form-label">
-                          Bad Obstetric History
-                        </label>
-                        <div
-                          className="w-100"
-                          style={{
-                            boxShadow: "0px 4px 17px 0px #17171D14",
-                          }}
-                        >
-                          <Dropdown
-                            options={options}
-                            defaultValue={options[1]}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </CCol>
-                </CRow>
-              )}
-              {currentTab === 2 && (
-                <MedicalTab
-                  tabs={GynaecTabs}
-                  getCurrentTab={getHistoryCurrentTab}
-                  defaultTab={0}
-                />
-              )}
-            </CCol>
-          </CRow>
-          <CRow className="mb-2">
-            <CCol lg={8} className="">
-              <DateSelector />
-            </CCol>
-            <CCol
-              lg={4}
-              className="d-flex justify-content-end align-items-center gap-2"
-            >
-              <div>
+                  </PrimaryButton>
+                </div>
+                <div>
                 <PrimaryButton onClick={() => addFormPage()}>
                   <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.Add} alt="add" />
-                    <span className="fs-16 fw-600">Add</span>
+                    <img src={Assets.OptionsIcon} alt="add" />
                   </div>
                 </PrimaryButton>
               </div>
-            </CCol>
-          </CRow>
-          <div className="mb-2">
-            {currentTab === 1 && (
-              <>
-                <CRow>
-                  <ObstetricHistoryTable
-                    rowData={getCurrentPageItems()}
-                    columns={columnData}
-                    getselectedData={getselectedData}
-                  />
-                </CRow>
-                <CRow className="mb-3">
-                  <CCol lg={12} className="d-flex justify-content-center">
-                    <Pagination
-                      currentPage={currentPage}
-                      onPageChange={onPageChange}
-                      totalItems={rowData?.length}
-                      itemsPerPage={itemsPerPage}
+              </CCol>
+            </CRow>
+            <div className="mb-2">
+              {currentTab === 1 && (
+                <>
+                  <CRow>
+                    <ObstetricHistoryTable
+                      rowData={getCurrentPageItems()}
+                      columns={columnData}
+                      getselectedData={getselectedData}
                     />
-                  </CCol>
-                </CRow>
-              </>
-            )}
-            {currentTab === 2 && (
-              <>
-                <CRow>
-                  <GynaecHistoryTable
-                    rowData={getCurrentMenstrualPageItems()}
-                    columns={MensuralcolumnData}
-                    getselectedData={getselectedData}
-                  />
-                </CRow>
-                <CRow className="mb-3">
-                  <CCol lg={12} className="d-flex justify-content-center">
-                    <Pagination
-                      currentPage={currentPage}
-                      onPageChange={onPageChange}
-                      totalItems={rowData?.length}
-                      itemsPerPage={itemsPerPage}
+                  </CRow>
+                  <CRow className="mb-3">
+                    <CCol lg={12} className="d-flex justify-content-center">
+                      <Pagination
+                        currentPage={currentPage}
+                        onPageChange={onPageChange}
+                        totalItems={rowData?.length}
+                        itemsPerPage={itemsPerPage}
+                      />
+                    </CCol>
+                  </CRow>
+                </>
+              )}
+              {currentTab === 2 && currentHistoryTab === 1 && (
+                <>
+                  <CRow>
+                    <GynaecHistoryTable
+                      rowData={getCurrentMenstrualPageItems()}
+                      columns={MensuralcolumnData}
+                      getselectedData={getselectedData}
                     />
-                  </CCol>
-                </CRow>
-              </>
-            )}
-          </div>
-        </>
-      )}
+                  </CRow>
+                  <CRow className="mb-3">
+                    <CCol lg={12} className="d-flex justify-content-center">
+                      <Pagination
+                        currentPage={currentPage}
+                        onPageChange={onPageChange}
+                        totalItems={rowData?.length}
+                        itemsPerPage={itemsPerPage}
+                      />
+                    </CCol>
+                  </CRow>
+                </>
+              )}
+              {currentTab === 2 && currentHistoryTab === 2 && (
+                <>
+                  <CRow>
+                    <ScreeningHistory
+                      rowData={getCurrentScreeningItem()}
+                      columns={ScreeningcolumnData}
+                      getselectedData={getselectedData}
+                    />
+                  </CRow>
+                  <CRow className="mb-3">
+                    <CCol lg={12} className="d-flex justify-content-center">
+                      <Pagination
+                        currentPage={currentPage}
+                        onPageChange={onPageChange}
+                        totalItems={rowData?.length}
+                        itemsPerPage={itemsPerPage}
+                      />
+                    </CCol>
+                  </CRow>
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </>
+
       {addFormView && (
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            <ImagingOrderForm
-              back={() => {
-                setAddFormView(false);
-                setSelectedData({});
-              }}
-              defaultValues={selectedData}
-            />
-          </CCardBody>
-        </CCard>
+        <CRow className="mb-2">
+          <CCard className="p-2 cursor-default mb-5">
+            <CCardBody className="mb-3">
+              {currentTab === 1 && (
+                <ImagingOrderForm
+                  back={() => {
+                    setAddFormView(false);
+                    setSelectedData({});
+                  }}
+                  defaultValues={selectedData}
+                />
+              )}
+              {currentTab === 2 && currentHistoryTab === 1 && (
+                <MensturalHistoryForm
+                  back={() => {
+                    setAddFormView(false);
+                    setSelectedData({});
+                  }}
+                  defaultValues={selectedData}
+                />
+              )}
+              {currentTab === 2 && currentHistoryTab === 2 && (
+                <ScreeningHistoryForm
+                  back={() => {
+                    setAddFormView(false);
+                    setSelectedData({});
+                  }}
+                  defaultValues={selectedData}
+                />
+              )}
+            </CCardBody>
+          </CCard>
+        </CRow>
       )}
 
       {detailView && (
@@ -510,78 +669,23 @@ const OGHistory = () => {
             visible={detailView}
             onClose={() => setDetailView(false)}
             aria-labelledby="VerticallyCenteredExample"
-            size="lg"
           >
-            <CModalBody className="p-5">
-              <CRow className="mb-3">
-                <CCol lg={12}>
-                  <span className="fs-20 fw-600">Slot Confirmation​</span>
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol lg={3} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Date​</span>
-                    <span className="fs-18 fw-400 dark-label">
-                      {selectedData?.date}
-                    </span>
+            <CModalBody className="p-3">
+              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                <h5>Are you sure want to delete ?</h5>
+                <div className="d-flex gap-2 mt-2">
+                  <div style={{ width: "80px" }}>
+                    <PrimaryButton onClick={() => setDetailView(false)}>
+                      Yes
+                    </PrimaryButton>
                   </div>
-                </CCol>
-                <CCol lg={3} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Scan Name</span>
-                    <span className="fs-18 fw-400 dark-label">
-                      {selectedData?.name}
-                    </span>
+                  <div style={{ width: "80px" }}>
+                    <SecondaryButton onClick={() => setDetailView(false)}>
+                      No
+                    </SecondaryButton>
                   </div>
-                </CCol>
-                <CCol lg={3} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">ICD Code</span>
-                    <span className="fs-18 fw-400 dark-label">D64.9</span>
-                  </div>
-                </CCol>
-                <CCol lg={3} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Notes</span>
-                    <span className="fs-18 fw-400 dark-label">-</span>
-                  </div>
-                </CCol>
-                <CCol lg={4} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">
-                      Scan Center
-                    </span>
-                    <span className="fs-18 fw-400 dark-label">
-                      {selectedData?.scan_name}
-                    </span>
-                  </div>
-                </CCol>
-                <CCol lg={4} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Slot</span>
-                    <div
-                      className="w-100"
-                      style={{
-                        border: "1px solid #17171D33",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      <Dropdown options={options} />
-                    </div>
-                  </div>
-                </CCol>
-              </CRow>
-              <CRow>
-                <div style={{ width: "128px" }}>
-                  <PrimaryButton>SAVE</PrimaryButton>
                 </div>
-                <div style={{ width: "128px" }}>
-                  <SecondaryButton onClick={() => setDetailView(false)}>
-                    CANCEL
-                  </SecondaryButton>
-                </div>
-              </CRow>
+              </div>
             </CModalBody>
           </CModal>
         </BlurBackground>

@@ -10,13 +10,13 @@ import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
 
-const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
+const SocialHistoryTable = ({ columns, rowData, getselectedData }) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
   return (
-    <div className="table-container">
-      <CTable className="lab-responsive-table-screening">
+    <>
+      <CTable className="lab-responsive-table">
         <CTableHead color="dark">
           <CTableRow>
             {columns?.map((data, i) => (
@@ -34,48 +34,21 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.age}</span>
+                  <span className="fs-16 fw-500">{dt?.smoking}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.cycle_per_year}</span>
+                  <span className="fs-16 fw-500">{dt?.alcohol}</span>
                 </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.cycle_in_days}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  {dt?.flow_duration}
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  {dt?.flow_type}
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  {dt?.bleeding}
-                </div>
-              </CTableDataCell>
+
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.irregularity}</span>
+                  <span>{dt?.drugs}</span>
                 </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.dysmenorrhea}</span>
-                </div>
-              </CTableDataCell> <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.lmp}</span>
-                </div>
-              </CTableDataCell>
+
 
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
@@ -111,8 +84,8 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
           ))}
         </CTableBody>
       </CTable>
-    </div>
+    </>
   );
 };
 
-export default GynaecHistoryTable;
+export default SocialHistoryTable;
