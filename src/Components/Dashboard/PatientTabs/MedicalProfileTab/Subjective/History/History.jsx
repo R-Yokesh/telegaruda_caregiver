@@ -7,6 +7,7 @@ import MedicalHistory from "./Medical History/MedicalHistory";
 import SurgicalHistory from "./Surgical History/SurgicalHistory";
 import OGHistory from "./OG History/OGHistory";
 import SocialHistory from "./Social History/SocialHistory";
+import FamilyHistory from "./Family History/FamilyHistory";
 
 const History = ({ OnClose }) => {
   const tabs = [
@@ -75,6 +76,11 @@ const History = ({ OnClose }) => {
         {currentTab === 3 && (
           <>
             <SurgicalHistory />
+          </>
+        )}
+        {currentTab === 4 && (
+          <>
+            <FamilyHistory />
           </>
         )}
         {currentTab === 5 && (

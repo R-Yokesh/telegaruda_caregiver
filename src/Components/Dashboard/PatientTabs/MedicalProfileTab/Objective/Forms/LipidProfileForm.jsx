@@ -222,13 +222,13 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                HDL/LDL *
+                LDL/HDL *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={extractNum(defaultData?.["hdl/ldl"])}
+                defaultValue={extractNum(defaultData?.["ldl/hdl"])}
               />
             </div>
           </CCol>
