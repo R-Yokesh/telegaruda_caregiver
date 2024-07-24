@@ -237,7 +237,7 @@ body {
 }
 
 .lab-responsive-table-screening thead {
-vertical-align: middle !important;
+  vertical-align: middle !important;
 }
 
 .lab-responsive-table-screening th {
@@ -484,3 +484,6 @@ vertical-align: middle !important;
 }
 
 
+.pad-custom {
+  padding: 2rem 3rem !important;
+}
