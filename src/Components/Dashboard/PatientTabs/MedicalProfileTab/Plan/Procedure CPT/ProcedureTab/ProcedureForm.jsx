@@ -30,7 +30,7 @@ const ProcedureForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                ID *
+              CPT Code *
               </label>
               <input
                 type="text"

@@ -118,7 +118,7 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Total *
+                Total Cholesterol*
               </label>
               <input
                 type="text"

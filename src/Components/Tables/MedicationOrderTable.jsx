@@ -63,7 +63,10 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                   <div
                     style={{
-                      width: dt?.lab_status === "Waiting For Approval" ? "50%" : "0%",
+                      width:
+                        dt?.lab_status === "Waiting For Approval"
+                          ? "50%"
+                          : "0%",
                     }}
                   >
                     {dt?.lab_status === "Waiting For Approval" && (
@@ -71,7 +74,7 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                         alt="edit"
                         src={Assets?.UpdateIcon}
                         className="cursor"
-                        onClick={() => selectedData(dt, "edit")}
+                        onClick={() => selectedData(dt, "details")}
                       />
                     )}
                   </div>
@@ -86,7 +89,7 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                       alt="delete"
                       src={Assets?.visibleEye}
                       className="cursor"
-                      onClick={() => selectedData(dt, "details")}
+                      onClick={() => selectedData(dt, "edit")}
                     />
                   </div>
                 </div>

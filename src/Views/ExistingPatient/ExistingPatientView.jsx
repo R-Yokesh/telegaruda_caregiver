@@ -58,7 +58,7 @@ function ExistingPatientView() {
   const addPatientModalClose = () => {
     setVisible(false);
   };
-  // onClick={addPatient}
+
   return (
     <section className="existing-patient">
       <div className="flex-sec top-sec">
@@ -70,6 +70,7 @@ function ExistingPatientView() {
             </Link>
           </p>
         </div>
+        {/* onClick={addPatient} */}
         <div className="patient-adding">
           <button>+ ADD Patient</button>
         </div>
@@ -133,10 +134,60 @@ function ExistingPatientView() {
                       </div>
                     </div>
                   </CCol>
-                  <CCol lg={6}>col-lg-4</CCol>
-                  <CCol lg={6}>col-lg-4</CCol>
-                  <CCol lg={6}>col-lg-4</CCol>
-                  <CCol lg={6}>col-lg-4</CCol>
+                  <CCol lg={6}>
+                    <div style={{ width: "100%" }}>
+                      <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                          Age *
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control pad-10"
+                          id="validationTooltip01"
+                          placeholder="Enter"
+                        />
+                      </div>
+                    </div>
+                  </CCol>
+                  <CCol lg={6}>
+                    <div style={{ width: "100%" }}>
+                      <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                          Gender *
+                        </label>
+                      </div>
+                    </div>
+                  </CCol>
+                  <CCol lg={6}>
+                    <div style={{ width: "100%" }}>
+                      <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                          Mobile Number *
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control pad-10"
+                          id="validationTooltip01"
+                          placeholder="Enter"
+                        />
+                      </div>
+                    </div>
+                  </CCol>
+                  <CCol lg={6}>
+                    <div style={{ width: "100%" }}>
+                      <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                          MRN Number/Patient Id
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control pad-10"
+                          id="validationTooltip01"
+                          placeholder="Enter"
+                        />
+                      </div>
+                    </div>
+                  </CCol>
                 </CRow>
               </CCol>
             </CRow>

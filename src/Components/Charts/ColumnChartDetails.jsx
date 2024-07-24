@@ -110,7 +110,7 @@ const ColumnChartDetails = ({ datas }) => {
         }))}
       /> */}
 
-      {!formattedData[0].data2 ? (
+      {/* {!formattedData[0].data2 ? (
         <Legend
           payload={[{ value: datas?.name, type: "square", color: "#0084CF" }]}
         />
@@ -119,6 +119,20 @@ const ColumnChartDetails = ({ datas }) => {
           payload={[
             { value: datas?.chartLabel1, type: "square", color: "#0084CF" },
             { value: datas?.chartLabel2, type: "square", color: "#0194CF" },
+          ]}
+        />
+      )} */}
+            {!formattedData[0].data2 ? (
+        <Legend
+          payload={[
+            { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
+          ]}
+        />
+      ) : (
+        <Legend
+          payload={[
+            { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
+            { value: datas?.chartLabel2, type: "line", color: "#0194CF" },
           ]}
         />
       )}

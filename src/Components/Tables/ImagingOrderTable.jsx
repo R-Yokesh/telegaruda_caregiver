@@ -90,7 +90,7 @@ const ImagingOrderTable = ({ columns, rowData, getselectedData }) => {
                         alt="edit"
                         src={Assets?.Accept}
                         className="cursor"
-                        onClick={() => selectedData(dt, "edit")}
+                        onClick={() => selectedData(dt, "details")}
                       />
                     )}
                   </div>
@@ -105,7 +105,7 @@ const ImagingOrderTable = ({ columns, rowData, getselectedData }) => {
                       alt="delete"
                       src={Assets?.visibleEye}
                       className="cursor"
-                      onClick={() => selectedData(dt, "details")}
+                      onClick={() => selectedData(dt, "edit")}
                     />
                   </div>
                 </div>

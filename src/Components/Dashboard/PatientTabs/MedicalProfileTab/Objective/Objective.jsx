@@ -17,8 +17,8 @@ const Objective = () => {
   const cardData = [
     { id: 1, name: "Vital Signs", image: Assets.VitalSig },
     { id: 2, name: "Physical Exam", image: Assets.PhyExam },
-    { id: 3, name: "Lab", image: Assets.Lab },
-    { id: 4, name: "Imaging", image: Assets.Imaging },
+    // { id: 3, name: "Lab", image: Assets.Lab },
+    // { id: 4, name: "Imaging", image: Assets.Imaging },
   ];
 
   // const [selectedData, setSelectedData] = useState();

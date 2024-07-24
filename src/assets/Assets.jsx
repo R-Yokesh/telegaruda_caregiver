@@ -110,6 +110,9 @@ import whiteAdd from "./Images/White-Add.svg";
 import whiteDel from "./Images/White-Del.svg";
 import ecgSample from "./Images/ecg-sample.png";
 
+import cDown from "./Images/chevron-down.svg";
+import cUp from "./Images/chevron-up.svg";
+
 export const Assets = {
   BackBtn,
   logomain,
@@ -201,4 +204,6 @@ export const Assets = {
   whiteAdd,
   ThreeDots,
   ecgSample,
+  cDown,
+  cUp,
 };

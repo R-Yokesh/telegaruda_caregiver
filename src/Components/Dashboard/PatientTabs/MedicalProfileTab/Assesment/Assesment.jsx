@@ -9,6 +9,7 @@ const Assesment = () => {
   const cardData = [
     { id: 1, name: "Diagnosis (Including ICD)", image: Assets.Diagnosis },
     { id: 2, name: "Immunization Status", image: Assets.Immunizaion },
+    { id: 3, name: "Assessment Tool", image: Assets.AssesmentTool },
   ];
   const [diagnosisView, setDiagnosisView] = useState(false);
   const [immunizationView, setImmunizationView] = useState(false);

@@ -6,6 +6,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import ActiveButton from "../../../../../../Buttons/ActiveButton/ActiveButton";
+import DropdownButton from "../../../../../../Buttons/DropDownButton/DropDownButton";
 
 const MedicationOrderForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -443,8 +444,9 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
           </CCol>
         </CRow>
         <CRow className="mb-1">
-          <div style={{ width: "220px" }}>
-            <PrimaryButton>SEND TO PHARMACY</PrimaryButton>
+          <div style={{ width: "250px" }}>
+            {/* <PrimaryButton>SEND TO PHARMACY</PrimaryButton> */}
+            <DropdownButton/>
           </div>
           <div style={{ width: "128px" }}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

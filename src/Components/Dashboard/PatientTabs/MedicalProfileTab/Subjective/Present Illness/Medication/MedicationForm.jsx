@@ -10,7 +10,6 @@ const MedicationForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
   const [date1, setDate1] = useState(null);
 
-
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
@@ -21,20 +20,30 @@ const MedicationForm = ({ back, defaultValues }) => {
     };
 
     // Example default date string
-    const defaultDateString = defaultValues?.date;
+    const defaultDateString = defaultValues?.start_date;
 
     // Parse default date string to Date object
-    const defaultDate = defaultValues?.date
+    const defaultDate = defaultValues?.start_date
       ? parseDateString(defaultDateString)
+      : new Date();
+    // Example default date string
+    const defaultDateString2 = defaultValues?.end_date;
+
+    // Parse default date string to Date object
+    const defaultDate2 = defaultValues?.end_date
+      ? parseDateString(defaultDateString2)
       : new Date();
 
     // Set default date in state
     setDate(defaultDate);
+    setDate1(defaultDate2);
   }, [defaultValues]);
+
+  const options = ["Taking", "Not Taking", "Discontinued", "Status Unknown"];
 
   return (
     <>
-      <CRow className="mb-3">
+      <CRow className="mb-5">
         <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
@@ -119,13 +128,15 @@ const MedicationForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Status
               </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.status}
-              />
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown options={options} defaultValue={options[1]} />
+              </div>
             </div>
           </div>
         </CCol>

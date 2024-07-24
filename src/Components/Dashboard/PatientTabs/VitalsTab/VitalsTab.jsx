@@ -62,7 +62,7 @@ const VitalsTab = ({ category, openModal }) => {
       category: "Metabolic And Biochemical Profile",
       date: "Recently Added 27-03-2024",
       badge: [{ label: "110 mg/DL", color: "success" }],
-      chartLabel1: "Blood Sugar",
+      chartLabel1: "Blood Sugar (mg/DL)",
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
@@ -104,7 +104,7 @@ const VitalsTab = ({ category, openModal }) => {
       category: "Primary Vitals",
       date: "Recently Added 27-03-2024",
       badge: [{ label: "24.5 kg/m²", color: "success" }],
-      chartLabel1: "BMI",
+      chartLabel1: "BMI (kg/m²)",
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },

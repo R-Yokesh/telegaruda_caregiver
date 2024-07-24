@@ -23,13 +23,13 @@ import ImagingOrderTable from "../../../../../../Tables/ImagingOrderTable";
 const ImagingOrder = () => {
   const columnData = [
     { id: 1, label: "No." },
-    { id: 2, label: "SCAN DATE" },
-    { id: 3, label: "SCAN NAME" },
+    { id: 2, label: "DATE" },
+    { id: 3, label: "NAME" },
     { id: 4, label: "FILES" },
     { id: 5, label: "NOTES" },
     { id: 6, label: "LINK" },
     { id: 7, label: "ICD CODE" },
-    { id: 8, label: "SCAN STATUS" },
+    { id: 8, label: "STATUS" },
     { id: 9, label: "ACTIONS" },
   ];
   const rowData = [
