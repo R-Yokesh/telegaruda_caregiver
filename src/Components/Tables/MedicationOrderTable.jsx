@@ -63,11 +63,9 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                   <div
                     style={{
-                      width:
-                        dt?.lab_status === "Waiting For Approval"
-                          ? "50%"
-                          : "0%",
+                      width: "100%",
                     }}
+                    className="d-flex align-items-center justify-content-center gap-3 "
                   >
                     {dt?.lab_status === "Waiting For Approval" && (
                       <img
@@ -77,8 +75,20 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                         onClick={() => selectedData(dt, "details")}
                       />
                     )}
+                    <img
+                      alt="delete"
+                      src={Assets?.EditPencil}
+                      className="cursor"
+                      onClick={() => selectedData(dt, "edit")}
+                    />
+                    <img
+                      alt="delete"
+                      src={Assets?.TableDelete}
+                      className="cursor"
+                      onClick={() => selectedData(dt, "delete")}
+                    />
                   </div>
-                  <div
+                  {/* <div
                     style={{
                       width: dt?.lab_status === "Accepted" ? "50%" : "100%",
                       display: "flex",
@@ -91,7 +101,7 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                       className="cursor"
                       onClick={() => selectedData(dt, "edit")}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </CTableDataCell>
             </CTableRow>

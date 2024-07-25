@@ -9,15 +9,13 @@ import {
 } from "react-router-dom";
 import DefaultLayout from "./Layout/DefaultLayout";
 import LogIn from "./Views/Login/LogIn";
-import './assets/Css/Subjective.css'
-
+import "./assets/Css/Subjective.css";
+import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
-
-  const [loggedIn, setLoggedIn] = useState('');
-  console.log('log', loggedIn)
+  const [loggedIn, setLoggedIn] = useState("");
   useEffect(() => {
-    var login = sessionStorage.getItem('loggedIn');
+    var login = sessionStorage.getItem("loggedIn");
     setLoggedIn(login);
   }, []);
 
@@ -25,17 +23,19 @@ function App() {
     <div className="App">
       <Router basename="/telegaruda-caregiver">
         <Suspense>
-          <Routes>
-            {/* <Route path='/' name='Login' element={<Login />} /> */}
-            {/* {loggedIn !== 'true' ? */}
-            {/* ( */}
-            <Route path="/" name="home" element={<LogIn />} />
-            {/* ) : */}
-            {/* ( */}
-            <Route path="/*" name="Home" element={<DefaultLayout />} />
-            {/* ) */}
-            {/* } */}
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              {/* <Route path='/' name='Login' element={<Login />} /> */}
+              {/* {loggedIn !== 'true' ? */}
+              {/* ( */}
+              <Route path="/" name="home" element={<LogIn />} />
+              {/* ) : */}
+              {/* ( */}
+              <Route path="/*" name="Home" element={<DefaultLayout />} />
+              {/* ) */}
+              {/* } */}
+            </Routes>
+          </AuthProvider>
         </Suspense>
         {/* <DefaultLayout /> */}
       </Router>

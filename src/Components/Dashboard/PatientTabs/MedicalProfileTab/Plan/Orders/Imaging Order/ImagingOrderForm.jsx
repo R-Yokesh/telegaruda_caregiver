@@ -29,7 +29,7 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
     // Set default date in state
     setDate(defaultDate);
   }, [defaultValues]);
-  const options = ["Morning", "Afternoon", "Evening", "Night"];
+  const options = ["Raj Scan 1", "Raj Scan 2", "Raj Scan 3"];
 
   return (
     <>
@@ -59,7 +59,7 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.name}
+                defaultValue={defaultValues?.icd_code}
               />
             </div>
           </div>
@@ -75,7 +75,7 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.notes}
+                defaultValue={defaultValues?.name}
               />
             </div>
           </div>
@@ -93,7 +93,7 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.link}
+                defaultValue={defaultValues?.notes}
               />
             </div>
           </div>

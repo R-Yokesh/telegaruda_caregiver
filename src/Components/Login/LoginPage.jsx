@@ -3,18 +3,59 @@ import "./Login.css";
 import Footer from "../../Layout/Footer/Footer";
 import { Assets } from "../../assets/Assets";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiKey = process.env.REACT_APP_API_KEY;
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-  const loginSec = (e) => {
-    sessionStorage.setItem("loggedIn", "true");
-    navigate("/patients");
+  const loginSec = async (e) => {
+    setLoading(true);
+    try {
+      const loginData = {
+        username,
+        password,
+        role: "hospital",
+      };
+
+      const response = await fetch(apiUrl + "users/authenticate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-KEY": apiKey,
+        },
+        body: JSON.stringify(loginData),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      if (data.code === 200) {
+        login(
+          data?.data?.info,
+          data?.data?.token,
+          data?.data?.token_expiration_time
+        );
+        console.log("Post created:", data);
+        navigate("/patients");
+        sessionStorage.setItem("loggedIn", "true");
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="login-container-logiss">
@@ -42,6 +83,8 @@ const LoginPage = () => {
                 className="login-input-logiss"
                 required
                 placeholder="User name"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="password-wrapper-logiss">
@@ -52,6 +95,8 @@ const LoginPage = () => {
                 className="login-input-logiss"
                 required
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <span
                 onClick={togglePasswordVisibility}
@@ -67,8 +112,9 @@ const LoginPage = () => {
             <button
               className="login-button-logiss"
               onClick={(e) => loginSec(e)}
+              disabled={loading}
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
             <a href="#" className="forgot-password-logiss">
               Forgot Password

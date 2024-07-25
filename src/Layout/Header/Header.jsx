@@ -5,15 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { CContainer, CModal, CModalBody } from "@coreui/react";
 import CloseButton from "../../Components/Buttons/CloseButton/CloseButton";
 import SecondaryButton from "../../Components/Buttons/SecondaryButton/SecondaryButton";
+import { useAuth } from "../../contexts/AuthContext";
 // import logo from './path/to/logo.png'; // Ensure you have the logo image in the specified path
 // import profilePic from './path/to/profilePic.png'; // Ensure you have the profile picture in the specified path
 
 const Header = () => {
   const [exit, setExit] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
   const Logout = (e) => {
     sessionStorage.setItem("loggedIn", "false");
     navigate("/");
+    logout();
   };
   return (
     <header className="header">

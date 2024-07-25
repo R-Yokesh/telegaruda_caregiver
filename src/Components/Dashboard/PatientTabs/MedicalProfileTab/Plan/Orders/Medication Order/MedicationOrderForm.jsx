@@ -10,22 +10,31 @@ import DropdownButton from "../../../../../../Buttons/DropDownButton/DropDownBut
 
 const MedicationOrderForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
-  const [medicines, setMedicines] = useState([
-    {
-      id: 1,
-      type: "",
-      name: "",
-      strength: "",
-      strengthMeasurement: "",
-      days: "",
-      totalQty: "",
-      startDate: "",
-      endDate: "",
-      instruction: "",
-      reason: "",
-      status: "",
-    },
-  ]);
+  const [medicines, setMedicines] = useState(
+    defaultValues.medicines
+      ? defaultValues.medicines
+      : [
+          {
+            id: 1,
+            type: "",
+            name: "",
+            strength: "",
+            strengthMeasurement: "",
+            days: "",
+            totalQty: "",
+            startDate: "",
+            endDate: "",
+            instruction: "",
+            reason: "",
+            status: "",
+            m: 0,
+            a: 0,
+            e: 0,
+            n: 0,
+            food: "bf"
+          },
+        ]
+  );
 
   // Function to handle adding a new medicine field
   const handleAddMedicine = () => {
@@ -84,6 +93,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
     setDate(defaultDate);
   }, [defaultValues]);
   const options = ["Morning", "Afternoon", "Evening", "Night"];
+  console.log("first", medicines);
 
   return (
     <>
@@ -120,11 +130,15 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           Medicine Type *
                         </label>
                         <input
+                          name="type"
                           type="text"
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
-                          defaultValue={defaultValues?.link}
+                          defaultValue={medicine?.type}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -140,7 +154,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
-                          defaultValue={defaultValues?.link}
+                          name="name"
+                          defaultValue={medicine?.name}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -158,7 +176,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
-                          defaultValue={defaultValues?.link}
+                          name="strength"
+                          defaultValue={medicine?.strength}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -173,6 +195,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           size="lg"
                           className="mb-3"
                           aria-label="Large select example"
+                          name="strength"
+                          defaultValue={medicine?.strength}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         >
                           <option>Select</option>
                           <option value="1">One</option>
@@ -194,6 +221,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           size="lg"
                           className="mb-3"
                           aria-label="Large select example"
+                          name="strengthMeasurement"
+                          defaultValue={medicine?.strengthMeasurement}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         >
                           <option>Select</option>
                           <option value="1">One</option>
@@ -214,6 +246,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          name="days"
+                          defaultValue={medicine?.days}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -229,6 +266,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          name="totalQty"
+                          defaultValue={medicine?.totalQty}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -246,7 +288,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
-                          defaultValue={defaultValues?.link}
+                          name="startDate"
+                          defaultValue={medicine?.startDate}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -262,6 +308,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          name="endDate"
+                          defaultValue={medicine?.endDate}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -279,6 +330,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10 text-align-center"
                           id="validationTooltip01"
                           placeholder="0"
+                          name="m"
+                          defaultValue={medicine?.m}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                       <div>
@@ -290,6 +346,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10 text-align-center"
                           id="validationTooltip01"
                           placeholder="0"
+                          name="a"
+                          defaultValue={medicine?.a}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                       <div>
@@ -301,6 +362,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10 text-align-center"
                           id="validationTooltip01"
                           placeholder="0"
+                          name="e"
+                          defaultValue={medicine?.e}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                       <div>
@@ -312,6 +378,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10 text-align-center"
                           id="validationTooltip01"
                           placeholder="0"
+                          name="n"
+                          defaultValue={medicine?.n}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -330,9 +401,8 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           className="mb-0"
                           inline
                           type="radio"
-                          name="inlineRadioOptions"
                           id="inlineCheckbox1"
-                          value="option1"
+                          value="bf"
                           label={
                             <label
                               for="validationTooltip01"
@@ -341,14 +411,18 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                               BF
                             </label>
                           }
+                          name="food"
+                          defaultChecked={medicine?.food === "bf" ? true : false}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                         <CFormCheck
                           className="mb-0"
                           inline
                           type="radio"
-                          name="inlineRadioOptions"
                           id="inlineCheckbox2"
-                          value="option2"
+                          value="af"
                           label={
                             <label
                               for="validationTooltip01"
@@ -356,6 +430,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                             >
                               AF
                             </label>
+                          }
+                          name="food"
+                          defaultChecked={medicine?.food === "af" ? true : false}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
                           }
                         />
                       </div>
@@ -372,6 +451,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          name="instruction"
+                          defaultValue={medicine?.instruction}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -389,6 +473,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          name="reason"
+                          defaultValue={medicine?.reason}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -404,6 +493,11 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           class="form-control  pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          name="status"
+                          defaultValue={medicine?.status}
+                          onChange={(e) =>
+                            handleMedicineInputChange(medicine?.id, e)
+                          }
                         />
                       </div>
                     </div>
@@ -412,7 +506,9 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
               </CCol>
               <CCol lg={1}>
                 <div style={{ width: "40px" }}>
-                  <ActiveButton onClick={() => handleRemoveMedicine(medicine.id)}>
+                  <ActiveButton
+                    onClick={() => handleRemoveMedicine(medicine.id)}
+                  >
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.whiteDel} alt="add" />
                     </div>
@@ -446,7 +542,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
         <CRow className="mb-1">
           <div style={{ width: "250px" }}>
             {/* <PrimaryButton>SEND TO PHARMACY</PrimaryButton> */}
-            <DropdownButton/>
+            <DropdownButton />
           </div>
           <div style={{ width: "128px" }}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

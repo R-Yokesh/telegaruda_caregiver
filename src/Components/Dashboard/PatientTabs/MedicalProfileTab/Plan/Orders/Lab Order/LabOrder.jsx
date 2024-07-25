@@ -146,6 +146,8 @@ const LabOrder = () => {
   ];
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
+  const [deleteView, setDeleteView] = useState(false);
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
@@ -177,6 +179,12 @@ const LabOrder = () => {
     setSelectedData(data);
     if (type === "details") {
       detailPage();
+    }
+    if (type === "edit") {
+      setAddFormView(true);
+    }
+    if (type === "delete") {
+      setDeleteView(true);
     }
   };
 
@@ -342,6 +350,35 @@ const LabOrder = () => {
                   </SecondaryButton>
                 </div>
               </CRow>
+            </CModalBody>
+          </CModal>
+        </BlurBackground>
+      )}
+
+{deleteView && (
+        <BlurBackground>
+          <CModal
+            alignment="center"
+            visible={deleteView}
+            onClose={() => setDeleteView(false)}
+            aria-labelledby="VerticallyCenteredExample"
+          >
+            <CModalBody className="p-3">
+              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                <h5>Are you sure want to delete ?</h5>
+                <div className="d-flex gap-2 mt-2">
+                  <div style={{ width: "80px" }}>
+                    <PrimaryButton onClick={() => setDeleteView(false)}>
+                      Yes
+                    </PrimaryButton>
+                  </div>
+                  <div style={{ width: "80px" }}>
+                    <SecondaryButton onClick={() => setDeleteView(false)}>
+                      No
+                    </SecondaryButton>
+                  </div>
+                </div>
+              </div>
             </CModalBody>
           </CModal>
         </BlurBackground>

@@ -71,7 +71,7 @@ function ExistingPatientView() {
           </p>
         </div>
         {/* onClick={addPatient} */}
-        <div className="patient-adding">
+        <div className="patient-adding" onClick={addPatient}>
           <button>+ ADD Patient</button>
         </div>
       </div>

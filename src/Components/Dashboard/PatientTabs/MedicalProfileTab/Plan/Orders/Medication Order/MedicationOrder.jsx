@@ -65,6 +65,27 @@ const MedicationOrder = () => {
       name: "Complete Blood Count",
       lab_status: "Received",
       lab_name: "Raj Pharmacy 1",
+      medicines: [
+        {
+          id: 1,
+          type: "lorem ipsum",
+          name: "lorem ipsum",
+          strength: "3",
+          strengthMeasurement: "1",
+          days: "12",
+          totalQty: "200",
+          startDate: "06-07-2024",
+          endDate: "06-07-2024",
+          instruction: "lorem ipsum",
+          reason: "lorem ipsum",
+          status: "lorem ipsum",
+          m: 1,
+          a: 0,
+          e: 1 / 2,
+          n: 1 / 2,
+          food: "bf",
+        },
+      ],
     },
     {
       id: 2,
@@ -132,6 +153,7 @@ const MedicationOrder = () => {
   ];
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
+  const [deleteView, setDeleteView] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
@@ -163,6 +185,12 @@ const MedicationOrder = () => {
     setSelectedData(data);
     if (type === "details") {
       detailPage();
+    }
+    if (type === "edit") {
+      setAddFormView(true);
+    }
+    if (type === "delete") {
+      setDeleteView(true);
     }
   };
 
@@ -221,7 +249,9 @@ const MedicationOrder = () => {
             <CModalBody className="p-0">
               <div
                 className="close-modal"
-                onClick={() => {setAddFormView(false)}}
+                onClick={() => {
+                  setAddFormView(false);
+                }}
               >
                 <img
                   src={Assets.CloseBtn}
@@ -263,6 +293,34 @@ const MedicationOrder = () => {
                 columns={detailsData}
                 getselectedData={getselectedData}
               />
+            </CModalBody>
+          </CModal>
+        </BlurBackground>
+      )}
+      {deleteView && (
+        <BlurBackground>
+          <CModal
+            alignment="center"
+            visible={deleteView}
+            onClose={() => setDeleteView(false)}
+            aria-labelledby="VerticallyCenteredExample"
+          >
+            <CModalBody className="p-3">
+              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                <h5>Are you sure want to delete ?</h5>
+                <div className="d-flex gap-2 mt-2">
+                  <div style={{ width: "80px" }}>
+                    <PrimaryButton onClick={() => setDeleteView(false)}>
+                      Yes
+                    </PrimaryButton>
+                  </div>
+                  <div style={{ width: "80px" }}>
+                    <SecondaryButton onClick={() => setDeleteView(false)}>
+                      No
+                    </SecondaryButton>
+                  </div>
+                </div>
+              </div>
             </CModalBody>
           </CModal>
         </BlurBackground>
