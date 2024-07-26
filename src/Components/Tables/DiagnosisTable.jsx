@@ -37,7 +37,7 @@ const DiagnosisTable = ({ columns, rowData, getselectedData }) => {
                 <span className="fs-16 fw-500">{dt?.condition}</span>
               </CTableDataCell>
               <CTableDataCell>{dt?.treatment}</CTableDataCell>
-              <CTableDataCell>{dt?.remark}</CTableDataCell>
+              {/* <CTableDataCell>{dt?.remark}</CTableDataCell> */}
               <CTableDataCell>
                 <div className="d-flex align-items-center justify-content-center gap-2">
                   <img

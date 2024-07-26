@@ -31,7 +31,7 @@ const OGHistory = () => {
     { id: 1, label: "No." },
     { id: 2, label: "LMP Date" },
     { id: 3, label: "ED Date" },
-    { id: 4, label: "Trimster" },
+    { id: 4, label: "Trimester" },
     { id: 5, label: "Gravida" },
     { id: 6, label: "Para" },
     { id: 7, label: "Fertility Treament" },
@@ -43,9 +43,9 @@ const OGHistory = () => {
       id: 1,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 3,
+      para: 5,
       fert_treatment: "Yes",
       lacating: "Yes",
     },
@@ -53,9 +53,9 @@ const OGHistory = () => {
       id: 2,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
     },
@@ -63,9 +63,9 @@ const OGHistory = () => {
       id: 3,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "No",
       lacating: "Yes",
     },
@@ -73,9 +73,9 @@ const OGHistory = () => {
       id: 4,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "Yes",
       lacating: "No",
     },
@@ -83,9 +83,9 @@ const OGHistory = () => {
       id: 5,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "No",
       lacating: "No",
     },
@@ -93,9 +93,9 @@ const OGHistory = () => {
       id: 6,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
     },
@@ -103,9 +103,9 @@ const OGHistory = () => {
       id: 7,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
     },
@@ -113,9 +113,9 @@ const OGHistory = () => {
       id: 8,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
     },
@@ -123,9 +123,9 @@ const OGHistory = () => {
       id: 9,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
     },
@@ -133,9 +133,9 @@ const OGHistory = () => {
       id: 10,
       lmp_date: "01-01-2024",
       ed_date: "05-02-2024",
-      trimster: "Lorem ipsum",
-      gravida: "Lorem ipsum",
-      para: "Lorem ipsum",
+      trimster: 1,
+      gravida: 1,
+      para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
     },
@@ -143,23 +143,25 @@ const OGHistory = () => {
 
   const MensuralcolumnData = [
     { id: 1, label: "No." },
-    { id: 2, label: "Menatche Age" },
-    { id: 3, label: "Cycles per Year" },
-    { id: 4, label: "Cycle Length in days" },
-    { id: 5, label: "Flow Duration" },
-    { id: 6, label: "Flow Type" },
-    { id: 7, label: "InterMenstrual Bleeding" },
-    { id: 8, label: "cycle irregularity" },
-    { id: 9, label: "dysmenorrhea" },
-    { id: 10, label: "LMP" },
-    { id: 11, label: "ACTIONS" },
+    { id: 2, label: "Menopause" },
+    { id: 3, label: "Menatche Age" },
+    // { id: 3, label: "Cycles per Year" },
+    // { id: 4, label: "Cycle Length in days" },
+    // { id: 5, label: "Flow Duration" },
+    // { id: 6, label: "Flow Type" },
+    // { id: 7, label: "InterMenstrual Bleeding" },
+    { id: 3, label: "cycle irregularity" },
+    { id: 4, label: "dysmenorrhea" },
+    { id: 5, label: "LMP" },
+    { id: 6, label: "ACTIONS" },
   ];
   const MenstrualrowData = [
     {
       id: 1,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "18",
+      menopause: "Yes",
+      cycle_per_year: "20",
+      cycle_in_days: "30",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -169,9 +171,10 @@ const OGHistory = () => {
     },
     {
       id: 2,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "No",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -181,9 +184,10 @@ const OGHistory = () => {
     },
     {
       id: 3,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "No",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -193,9 +197,10 @@ const OGHistory = () => {
     },
     {
       id: 4,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "Yes",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -205,9 +210,10 @@ const OGHistory = () => {
     },
     {
       id: 5,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "Yes",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -217,9 +223,10 @@ const OGHistory = () => {
     },
     {
       id: 6,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "Yes",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -229,9 +236,10 @@ const OGHistory = () => {
     },
     {
       id: 7,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "Yes",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -241,9 +249,10 @@ const OGHistory = () => {
     },
     {
       id: 8,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "Yes",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -253,9 +262,10 @@ const OGHistory = () => {
     },
     {
       id: 9,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "Yes",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -265,9 +275,10 @@ const OGHistory = () => {
     },
     {
       id: 10,
-      age: "Lorem ipsum",
-      cycle_per_year: "Lorem ipsum",
-      cycle_in_days: "Lorem ipsum",
+      age: "25",
+      menopause: "Yes",
+      cycle_per_year: "45",
+      cycle_in_days: "37",
       flow_duration: "Lorem ipsum",
       flow_type: "Lorem ipsum",
       bleeding: "Yes",
@@ -291,92 +302,92 @@ const OGHistory = () => {
     {
       id: 1,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "Yes",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "No",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "Yes",
     },
     {
       id: 2,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "Yes",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "No",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "Yes",
     },
     {
       id: 3,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "Yes",
       date_of_last_mamogram: "08-06-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "No",
       date_of_last_breast: "12-07-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "Yes",
     },
     {
       id: 4,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "Yes",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "Yes",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "Yes",
     },
     {
       id: 5,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "Yes",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "Yes",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "No",
     },
     {
       id: 6,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "No",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "Yes",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "No",
     },
     {
       id: 7,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "No",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "Yes",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "No",
     },
     {
       id: 8,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "No",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "Yes",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "No",
     },
     {
       id: 9,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "No",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "No",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "No",
     },
     {
       id: 10,
       date_of_last_pap: "02-05-2024",
-      history_of_abnormal: "Lorem ipsum",
+      history_of_abnormal: "No",
       date_of_last_mamogram: "07-05-2024",
-      history_of_mamogram: "Lorem ipsum",
+      history_of_mamogram: "No",
       date_of_last_breast: "12-05-2024",
-      history_of_breast: "Lorem ipsum",
+      history_of_breast: "Yes",
     },
   ];
   const [addFormView, setAddFormView] = useState(false);
@@ -454,6 +465,17 @@ const OGHistory = () => {
     setAddFormView(false);
   };
 
+  const getSelectedValue = (data) => {
+    console.log(data);
+  };
+
+  const getSelectedValue1 = (data) => {
+    console.log(data);
+  };
+
+  const getSelectedValue2 = (data) => {
+    console.log(data);
+  };
   return (
     <>
       <>
@@ -480,7 +502,11 @@ const OGHistory = () => {
                           boxShadow: "0px 4px 17px 0px #17171D14",
                         }}
                       >
-                        <Dropdown options={options} defaultValue={options[0]} />
+                        <Dropdown
+                          options={options}
+                          defaultValue={options[0]}
+                          getSelectedValue={getSelectedValue}
+                        />
                       </div>
                     </div>
                   </div>
@@ -497,7 +523,11 @@ const OGHistory = () => {
                           boxShadow: "0px 4px 17px 0px #17171D14",
                         }}
                       >
-                        <Dropdown options={options} defaultValue={options[1]} />
+                        <Dropdown
+                          options={options}
+                          defaultValue={options[1]}
+                          getSelectedValue={getSelectedValue1}
+                        />
                       </div>
                     </div>
                   </div>
@@ -514,7 +544,11 @@ const OGHistory = () => {
                           boxShadow: "0px 4px 17px 0px #17171D14",
                         }}
                       >
-                        <Dropdown options={options} defaultValue={options[1]} />
+                        <Dropdown
+                          options={options}
+                          defaultValue={options[1]}
+                          getSelectedValue={getSelectedValue2}
+                        />
                       </div>
                     </div>
                   </div>
@@ -549,12 +583,12 @@ const OGHistory = () => {
                   </PrimaryButton>
                 </div>
                 <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.OptionsIcon} alt="add" />
-                  </div>
-                </PrimaryButton>
-              </div>
+                  <PrimaryButton onClick={() => addFormPage()}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets.OptionsIcon} alt="add" />
+                    </div>
+                  </PrimaryButton>
+                </div>
               </CCol>
             </CRow>
             <div className="mb-2">

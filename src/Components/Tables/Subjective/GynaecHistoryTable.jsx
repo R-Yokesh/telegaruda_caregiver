@@ -20,7 +20,9 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
         <CTableHead color="dark">
           <CTableRow>
             {columns?.map((data, i) => (
-              <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+              <CTableHeaderCell key={i} className="text-align-center">
+                {data?.label}
+              </CTableHeaderCell>
             ))}
           </CTableRow>
         </CTableHead>
@@ -34,14 +36,15 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.age}</span>
+                  <span className="fs-16 fw-500">{dt?.menopause}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.cycle_per_year}</span>
+                  <span className="fs-16 fw-500">{dt?.age}</span>
                 </div>
               </CTableDataCell>
+              {/* 
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <span className="fs-16 fw-500">{dt?.cycle_in_days}</span>
@@ -61,7 +64,7 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
                 <div className="d-flex align-items-center justify-content-center h-100">
                   {dt?.bleeding}
                 </div>
-              </CTableDataCell>
+              </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.irregularity}</span>
@@ -71,12 +74,12 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.dysmenorrhea}</span>
                 </div>
-              </CTableDataCell> <CTableDataCell style={{ height: "10px" }}>
+              </CTableDataCell>{" "}
+              <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.lmp}</span>
                 </div>
               </CTableDataCell>
-
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                   <div

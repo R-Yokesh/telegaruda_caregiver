@@ -6,7 +6,6 @@ import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 
 const Spo2 = ({ addBack, defaultData }) => {
-
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -44,7 +43,7 @@ const Spo2 = ({ addBack, defaultData }) => {
   const extractNum = (data) => {
     const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-    return numbers || '';
+    return numbers || "";
   };
   return (
     <>
@@ -83,7 +82,7 @@ const Spo2 = ({ addBack, defaultData }) => {
               />
             </div>
           </CCol>
-          <CCol lg={4}>
+          {/* <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Pulse Rate(BPM) *
@@ -95,9 +94,7 @@ const Spo2 = ({ addBack, defaultData }) => {
                 defaultValue={defaultData?.["pulse_rate_(bpm)"]}
               />
             </div>
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
+          </CCol> */}
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -112,6 +109,7 @@ const Spo2 = ({ addBack, defaultData }) => {
             </div>
           </CCol>
         </CRow>
+
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
             <PrimaryButton onClick={() => addBack()}>SAVE</PrimaryButton>

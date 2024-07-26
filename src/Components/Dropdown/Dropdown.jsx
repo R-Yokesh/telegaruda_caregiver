@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-const Dropdown = ({ options, defaultValue }) => {
+const Dropdown = ({ options, defaultValue, getSelectedValue }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(
-    defaultValue || options[0]
+    defaultValue || "Select" || options[0]
   );
 
   const toggleDropdown = () => {
@@ -13,6 +13,7 @@ const Dropdown = ({ options, defaultValue }) => {
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setIsOpen(false); // Close the dropdown after selecting an option
+    getSelectedValue(option);
   };
 
   return (

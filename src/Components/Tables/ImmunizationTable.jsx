@@ -35,10 +35,30 @@ const ImmunizationTable = ({ columns, rowData, getselectedData }) => {
               <CTableDataCell>
                 <span className="fs-16 fw-500">{dt?.period}</span>
               </CTableDataCell>
-              <CTableDataCell>{dt?.status}</CTableDataCell>
+              <CTableDataCell>
+                <div className="d-flex align-items-center justify-content-center gap-2">
+                  {!dt.taken_date ? (
+                    <img
+                      alt="edit"
+                      src={Assets?.vaccined}
+                      className="cursor"
+                      style={{ width: "40px" }}
+                      onClick={() => selectedData(dt, "delete")}
+                    />
+                  ) : (
+                    <img
+                      alt="delete"
+                      style={{ width: "40px" }}
+                      src={Assets?.colorVaccined}
+                      className="cursor"
+                      // onClick={() => selectedData(dt, "edit")}
+                    />
+                  )}
+                </div>
+              </CTableDataCell>
               <CTableDataCell>{dt?.dosage_date}</CTableDataCell>
               <CTableDataCell>{dt?.taken_date}</CTableDataCell>
-              <CTableDataCell>
+              {/* <CTableDataCell>
                 <div className="d-flex align-items-center justify-content-center gap-2">
                   <img
                     alt="edit"
@@ -53,7 +73,7 @@ const ImmunizationTable = ({ columns, rowData, getselectedData }) => {
                     onClick={() => selectedData(dt, "delete")}
                   />
                 </div>
-              </CTableDataCell>
+              </CTableDataCell> */}
             </CTableRow>
           ))}
         </CTableBody>

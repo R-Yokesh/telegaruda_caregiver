@@ -24,8 +24,8 @@ const MedicalHistory = () => {
     { id: 4, label: "ICD10 (SL)" },
     { id: 5, label: "Chronic" },
     { id: 6, label: "Previous Illness" },
-    { id: 7, label: "Notes" },
-    { id: 8, label: "Actions" },
+    // { id: 7, label: "Notes" },
+    { id: 7, label: "Actions" },
   ];
   const rowData = [
     {

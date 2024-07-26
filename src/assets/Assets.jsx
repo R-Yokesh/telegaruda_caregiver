@@ -113,6 +113,11 @@ import ecgSample from "./Images/ecg-sample.png";
 import cDown from "./Images/chevron-down.svg";
 import cUp from "./Images/chevron-up.svg";
 
+import colorVaccined from "./Images/vaccinated - Colored.png";
+import vaccined from "./Images/vaccinated.png";
+import UStatus from "./Images/update-status.png";
+
+
 export const Assets = {
   BackBtn,
   logomain,
@@ -206,4 +211,7 @@ export const Assets = {
   ecgSample,
   cDown,
   cUp,
+  colorVaccined,
+  vaccined,
+  UStatus
 };

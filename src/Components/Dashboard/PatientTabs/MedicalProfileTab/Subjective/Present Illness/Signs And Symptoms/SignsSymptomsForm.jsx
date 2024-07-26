@@ -30,7 +30,9 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
     setDate(defaultDate);
   }, [defaultValues]);
   const options = ["Normal", "Mild", "Moderate"];
-
+  const getSelectedValue = (data) => {
+    console.log(data);
+  };
   return (
     <>
       <CRow className="mb-3">
@@ -163,7 +165,11 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                   borderRadius: "5px",
                 }}
               >
-                <Dropdown options={options} defaultValue={options[1]} />
+                <Dropdown
+                  options={options}
+                  defaultValue={options[1]}
+                  getSelectedValue={getSelectedValue}
+                />
               </div>
             </div>
           </div>

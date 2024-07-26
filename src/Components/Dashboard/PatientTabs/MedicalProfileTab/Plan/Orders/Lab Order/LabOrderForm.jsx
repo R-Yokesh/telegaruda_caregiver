@@ -30,7 +30,11 @@ const LabOrderForm = ({ back, defaultValues }) => {
     setDate(defaultDate);
   }, [defaultValues]);
   const options = ["Raj Scan 1", "Raj Scan 2", "Raj Scan 3"];
+  const [trimester, setTrimester] = useState("");
 
+  const getSelectedValue = (data) => {
+    setTrimester(data);
+  };
   return (
     <>
       <CRow className="mb-3">
@@ -127,7 +131,10 @@ const LabOrderForm = ({ back, defaultValues }) => {
                   borderRadius: "5px",
                 }}
               >
-                <Dropdown options={options} />
+                <Dropdown
+                  options={options}
+                  getSelectedValue={getSelectedValue}
+                />
               </div>
             </div>
           </div>

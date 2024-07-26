@@ -31,6 +31,13 @@ const SurgicalForm = ({ back, defaultValues }) => {
     setDate(defaultDate);
   }, [defaultValues]);
 
+  const gravidaoptions = ["Lorem Ipsum", "Lorem Ipsum"];
+  const findgravidaIndex = defaultValues?.gravida
+    ? gravidaoptions?.indexOf(defaultValues?.gravida)
+    : 0;
+  const getSelectedGravida = (data) => {
+    console.log(data);
+  };
   return (
     <>
       <CRow className="mb-3">
@@ -54,13 +61,26 @@ const SurgicalForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Surgery Name *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.name}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  getSelectedValue={getSelectedGravida}
+                  options={gravidaoptions}
+                  defaultValue={gravidaoptions[findgravidaIndex]}
+                />
+              </div>
             </div>
           </div>
         </CCol>

@@ -16,12 +16,12 @@ const DropdownButton = () => {
 
   return (
     <div className="dropdown">
-      <button className="dropdown-button button" onClick={toggleDropdown}>
+      <button className="dropdown-button button" >
         <div className="d-flex align-items-center justify-content-between">
           <div className="w-100">
             <span className="fs-16 fw-600">{buttonText}</span>
           </div>
-          <div>
+          <div onClick={toggleDropdown}>
             {!isOpen ? <img src={Assets.cDown} alt="down"/> : <img src={Assets.cUp} alt="up"/>}
           </div>
         </div>

@@ -1,13 +1,23 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCol, CFormTextarea, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
+import Dropdown from "../../../../../../Dropdown/Dropdown";
 
 const ScreeningHistoryForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
   const [date2, setDate2] = useState(null);
   const [date3, setDate3] = useState(null);
+  const [abnormalStatus, setAbnormalStatus] = useState(
+    defaultValues?.history_of_abnormal || "No"
+  );
+  const [mamogramStatus, setMamogramStatus] = useState(
+    defaultValues?.history_of_mamogram || "No"
+  );
+  const [breastStatus, setBreastStatus] = useState(
+    defaultValues?.history_of_breast || "No"
+  );
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -47,11 +57,35 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
     setDate2(defaultDate2);
     setDate3(defaultDate3);
   }, [defaultValues]);
+  const options = ["Yes", "No"];
 
+  const getSelectedValue2 = (data) => {
+    setAbnormalStatus(data);
+  };
+
+  const findIndex = defaultValues?.history_of_abnormal
+    ? options?.indexOf(defaultValues?.history_of_abnormal)
+    : 1;
+
+  const getSelectedValue3 = (data) => {
+    setMamogramStatus(data);
+  };
+
+  const getSelectedValue4 = (data) => {
+    setBreastStatus(data);
+  };
+
+  const findIndex3 = defaultValues?.history_of_mamogram
+    ? options?.indexOf(defaultValues?.history_of_mamogram)
+    : 1;
+
+  const findIndex4 = defaultValues?.history_of_breast
+    ? options?.indexOf(defaultValues?.history_of_breast)
+    : 1;
   return (
     <>
       <CRow className="mb-3">
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
               Date of last pap smear *
@@ -65,23 +99,53 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 History of abnormal pap smear *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.history_of_abnormal}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex]}
+                  getSelectedValue={getSelectedValue2}
+                />
+              </div>
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        {abnormalStatus === "Yes" && (
+          <CCol lg={4} className="mb-3">
+            <div style={{ width: "100%" }}>
+              <div class="position-relative">
+                <label for="validationTooltip01" class="form-label">
+                  Abnormal pap smear details*
+                </label>
+                <CFormTextarea
+                  id="exampleFormControlTextarea1"
+                  // label="Example textarea"
+                  rows={3}
+                  // text="Must be 8-20 words long."
+                ></CFormTextarea>
+              </div>
+            </div>
+          </CCol>
+        )}
+        <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
               Date of last mamogram *
@@ -95,28 +159,56 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-      </CRow>
-      <CRow className="mb-3">
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 History of mamogram *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.history_of_mamogram}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex3]}
+                  getSelectedValue={getSelectedValue3}
+                />
+              </div>
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        {mamogramStatus === "Yes" && (
+          <CCol lg={4} className="mb-3">
+            <div style={{ width: "100%" }}>
+              <div class="position-relative">
+                <label for="validationTooltip01" class="form-label">
+                  Mamogram details*
+                </label>
+                <CFormTextarea
+                  id="exampleFormControlTextarea1"
+                  // label="Example textarea"
+                  rows={3}
+                  // text="Must be 8-20 words long."
+                ></CFormTextarea>
+              </div>
+            </div>
+          </CCol>
+        )}
+        <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date of last Breast Exam *
+              Date of last breast exam *
             </label>
             <div className="date-size">
               <DatePicker
@@ -127,23 +219,54 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                History of Breast Exam *
+                History of breast exam *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.history_of_breast}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex4]}
+                  getSelectedValue={getSelectedValue4}
+                />
+              </div>
             </div>
           </div>
         </CCol>
+        {breastStatus === "Yes" && (
+          <CCol lg={4} className="mb-3">
+            <div style={{ width: "100%" }}>
+              <div class="position-relative">
+                <label for="validationTooltip01" class="form-label">
+                  Breast exam details*
+                </label>
+                <CFormTextarea
+                  id="exampleFormControlTextarea1"
+                  // label="Example textarea"
+                  rows={3}
+                  // text="Must be 8-20 words long."
+                ></CFormTextarea>
+              </div>
+            </div>
+          </CCol>
+        )}
       </CRow>
+
       <CRow className="mb-1">
         <div style={{ width: "130px" }}>
           <PrimaryButton>SAVE</PrimaryButton>

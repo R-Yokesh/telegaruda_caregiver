@@ -18,6 +18,7 @@ import ImmunizationForm from "./ImmunizationForm";
 import ImmunizationTable from "../../../../../Tables/ImmunizationTable";
 import DatePicker from "react-datepicker";
 import Dropdown from "../../../../../Dropdown/Dropdown";
+import SingleDatePicker from "../../../../../DateRangePicker/SingleDatePicker";
 
 const Immunization = ({ onClose }) => {
   const columnData = [
@@ -27,7 +28,7 @@ const Immunization = ({ onClose }) => {
     { id: 4, label: "STATUS" },
     { id: 5, label: "DOSAGE DATE" },
     { id: 6, label: "TAKEN DATE" },
-    { id: 7, label: "ACTIONS" },
+    // { id: 7, label: "ACTIONS" },
   ];
   const rowData = [
     {
@@ -52,7 +53,7 @@ const Immunization = ({ onClose }) => {
       period: "Lorem Ipsum",
       status: "Lorem Ipsum",
       dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
+      taken_date: "",
     },
     {
       id: 4,
@@ -60,7 +61,7 @@ const Immunization = ({ onClose }) => {
       period: "Lorem Ipsum",
       status: "Lorem Ipsum",
       dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
+      taken_date: "",
     },
     {
       id: 5,
@@ -100,7 +101,7 @@ const Immunization = ({ onClose }) => {
       period: "Lorem Ipsum",
       status: "Lorem Ipsum",
       dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
+      taken_date: "",
     },
     {
       id: 10,
@@ -116,6 +117,7 @@ const Immunization = ({ onClose }) => {
   const [deleteView, setDeleteView] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [tkDate, setTkDate] = useState(new Date());
 
   // Get today's date
   const today = new Date();
@@ -238,14 +240,14 @@ const Immunization = ({ onClose }) => {
               lg={4}
               className="d-flex justify-content-end align-items-center gap-2"
             >
-              <div>
+              {/* <div>
                 <PrimaryButton onClick={() => addFormPage()}>
                   <div className="d-flex align-items-center gap-2">
                     <img src={Assets.Add} alt="add" />
                     <span className="fs-16 fw-600">Add</span>
                   </div>
                 </PrimaryButton>
-              </div>
+              </div> */}
               <div>
                 <PrimaryButton onClick={() => addFormPage()}>
                   <div className="d-flex align-items-center gap-2">
@@ -300,7 +302,23 @@ const Immunization = ({ onClose }) => {
           >
             <CModalBody className="p-3">
               <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                <h5>Are you sure want to delete ?</h5>
+                <h5>Are you sure taken this Vaccine ?</h5>
+
+                <div style={{ width: "100%" }} className="mb-3">
+                  <div class="position-relative">
+                    <label for="validationTooltip01" class="form-label">
+                      Taken Date *
+                    </label>
+                    <div className="date-size">
+                      <DatePicker
+                        showIcon
+                        selected={tkDate}
+                        onChange={(date) => setTkDate(date)}
+                        maxDate={today}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
                     <PrimaryButton onClick={() => setDeleteView(false)}>

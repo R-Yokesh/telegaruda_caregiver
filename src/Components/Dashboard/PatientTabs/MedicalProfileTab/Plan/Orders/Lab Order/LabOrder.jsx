@@ -148,7 +148,6 @@ const LabOrder = () => {
   const [detailView, setDetailView] = useState(false);
   const [deleteView, setDeleteView] = useState(false);
 
-
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
 
@@ -189,7 +188,11 @@ const LabOrder = () => {
   };
 
   const options = ["Morning", "Afternoon", "Evening", "Night"];
+  const [trimester, setTrimester] = useState("");
 
+  const getSelectedValue = (data) => {
+    setTrimester(data);
+  };
   return (
     <>
       {!addFormView && (
@@ -311,7 +314,10 @@ const LabOrder = () => {
                         borderRadius: "5px",
                       }}
                     >
-                      <Dropdown options={options} />
+                      <Dropdown
+                        options={options}
+                        getSelectedValue={getSelectedValue}
+                      />
                     </div>
                   </div>
                 </CCol>
@@ -355,7 +361,7 @@ const LabOrder = () => {
         </BlurBackground>
       )}
 
-{deleteView && (
+      {deleteView && (
         <BlurBackground>
           <CModal
             alignment="center"

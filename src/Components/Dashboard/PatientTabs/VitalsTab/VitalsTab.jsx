@@ -413,10 +413,10 @@ const VitalsTab = ({ category, openModal }) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "Pulse Rate (BPM)" },
-        { id: 4, label: "SpO2" },
-        { id: 5, label: "DATE" },
-        { id: 6, label: "ACTION" },
+        // { id: 3, label: "Pulse Rate (BPM)" },
+        { id: 3, label: "SpO2" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
       ],
       tableData: [
         {
@@ -776,7 +776,17 @@ const VitalsTab = ({ category, openModal }) => {
           <CRow className="mt-3 ">
             {filteredProducts?.map((item, index) => (
               <CCol md={6} xl={4} key={index} className="mb-3">
-                <CCard className="vital-cards" onClick={() => openModal(item)}>
+                <CCard
+                  className={`vital-cards ${
+                    item.category === "Renal and Metabolic Markers" &&
+                    "cursor-default"
+                  }`}
+                  onClick={() => {
+                    if (item.category !== "Renal and Metabolic Markers") {
+                      openModal(item);
+                    }
+                  }}
+                >
                   <CCardBody>
                     <div className="vital-icon-and-title">
                       <div>

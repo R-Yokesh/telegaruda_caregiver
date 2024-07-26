@@ -190,6 +190,10 @@ const ImagingOrder = () => {
 
   const options = ["Morning", "Afternoon", "Evening", "Night"];
 
+  const getSelectedValue = (data) => {
+    console.log(data);
+  };
+
   return (
     <>
       {!addFormView && (
@@ -311,7 +315,10 @@ const ImagingOrder = () => {
                         borderRadius: "5px",
                       }}
                     >
-                      <Dropdown options={options} />
+                      <Dropdown
+                        options={options}
+                        getSelectedValue={getSelectedValue}
+                      />
                     </div>
                   </div>
                 </CCol>

@@ -53,7 +53,7 @@ const SymtomsTable = ({ columns, rowData, getselectedData }) => {
                   <span>{dt?.characteristics}</span>
                 </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
+              {/* <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.aggravating}</span>
                 </div>
@@ -67,17 +67,17 @@ const SymtomsTable = ({ columns, rowData, getselectedData }) => {
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.temporal}</span>
                 </div>
-              </CTableDataCell>
+              </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.severity}</span>
                 </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
+              {/* <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.notes}</span>
                 </div>
-              </CTableDataCell>
+              </CTableDataCell> */}
 
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">

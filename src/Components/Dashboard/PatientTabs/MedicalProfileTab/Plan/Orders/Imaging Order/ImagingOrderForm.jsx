@@ -30,7 +30,11 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
     setDate(defaultDate);
   }, [defaultValues]);
   const options = ["Raj Scan 1", "Raj Scan 2", "Raj Scan 3"];
+  const [trimester, setTrimester] = useState("");
 
+  const getSelectedValue = (data) => {
+    setTrimester(data);
+  };
   return (
     <>
       <CRow className="mb-3">
@@ -70,7 +74,7 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Imaging Order Name *
               </label>
-              <input 
+              <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
@@ -127,7 +131,10 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
                   borderRadius: "5px",
                 }}
               >
-                <Dropdown options={options} />
+                <Dropdown
+                  options={options}
+                  getSelectedValue={getSelectedValue}
+                />
               </div>
             </div>
           </div>

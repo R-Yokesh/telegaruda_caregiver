@@ -28,8 +28,16 @@ const MedHistoryForm = ({ back, defaultValues }) => {
     // Set default date in state
     setDate(defaultDate);
   }, [defaultValues]);
-  const options = ["Normal", "Mild", "Moderate"];
+  const options = ["Yes", "No"];
+  const findIndex = defaultValues?.prev_illness
+    ? options?.indexOf(defaultValues?.prev_illness)
+    : 0;
 
+  const [trimester, setTrimester] = useState("");
+
+  const getSelectedValue = (data) => {
+    setTrimester(data);
+  };
   return (
     <>
       <CRow className="mb-3">
@@ -108,13 +116,26 @@ const MedHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Previous Illness *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.prev_illness}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex]}
+                  getSelectedValue={getSelectedValue}
+                />
+              </div>
             </div>
           </div>
         </CCol>

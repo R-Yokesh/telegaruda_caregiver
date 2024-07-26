@@ -9,6 +9,7 @@ import Dropdown from "../../../../../Dropdown/Dropdown";
 const HeartRate = ({ addBack, defaultData }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [type, setType] = useState("");
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -51,6 +52,10 @@ const HeartRate = ({ addBack, defaultData }) => {
   const findIndex = defaultData?.ecg_type
     ? options?.indexOf(defaultData?.ecg_type)
     : 0;
+
+    const getSelectedValue = (data) => {
+      setType(data);
+    };
   return (
     <>
       <CContainer>
@@ -100,7 +105,11 @@ const HeartRate = ({ addBack, defaultData }) => {
                   borderRadius: "5px",
                 }}
               >
-                <Dropdown options={options} defaultValue={options[findIndex]} />
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex]}
+                  getSelectedValue={getSelectedValue}
+                />
               </div>
               {/* <input
                 type="text"
@@ -122,7 +131,11 @@ const HeartRate = ({ addBack, defaultData }) => {
 
               <div class="d-flex flex-column gap-1 justify-content-center h-100">
                 {defaultData?.ecg ? (
-                  <span className="">ECG{'('}{defaultData?.ecg?.contentType}{')'}</span>
+                  <span className="">
+                    ECG{"("}
+                    {defaultData?.ecg?.contentType}
+                    {")"}
+                  </span>
                 ) : (
                   <span className="">No File Chosen</span>
                 )}

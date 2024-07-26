@@ -28,8 +28,8 @@ const SurgicalHistory = () => {
     { id: 2, label: "Date" },
     { id: 3, label: "Surgery Name" },
     { id: 4, label: "Reason" },
-    { id: 5, label: "Notes" },
-    { id: 6, label: "ACTIONS" },
+    // { id: 5, label: "Notes" },
+    { id: 5, label: "ACTIONS" },
   ];
   const rowData = [
     {

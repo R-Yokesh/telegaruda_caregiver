@@ -57,12 +57,12 @@ const SignsSymptoms = () => {
     { id: 3, label: "LOCATION" },
     { id: 4, label: "DURATION IN DAYS" },
     { id: 5, label: "Characteristics (SL)" },
-    { id: 6, label: "aggravating factors" },
-    { id: 7, label: "Relieving factors" },
-    { id: 8, label: "Temporal factors" },
-    { id: 9, label: "Severity" },
-    { id: 10, label: "Notes" },
-    { id: 11, label: "Actions" },
+    // { id: 6, label: "aggravating factors" },
+    // { id: 7, label: "Relieving factors" },
+    // { id: 8, label: "Temporal factors" },
+    { id: 6, label: "Severity" },
+    // { id: 10, label: "Notes" },
+    { id: 6, label: "Actions" },
   ];
   const rowData = [
     {

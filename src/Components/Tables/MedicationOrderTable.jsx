@@ -14,6 +14,7 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
+  console.log("first", rowData[0]);
   return (
     <>
       <CTable className="lab-responsive-table">
@@ -39,7 +40,47 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.name}</span>
+                  <div className="d-flex flex-column">
+                    {dt?.medicines?.map((dat, i) => (
+                      <span className="fs-16 fw-500">{dat?.name}</span>
+                    ))}
+                  </div>
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center h-100">
+                  <div className="d-flex flex-column">
+                    {dt?.medicines?.map((dat, i) => (
+                      <span className="fs-16 fw-500">{dat?.strength} mg</span>
+                    ))}
+                  </div>
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center h-100">
+                  <div className="d-flex flex-column">
+                    {dt?.medicines?.map((dat, i) => (
+                      <span className="fs-16 fw-500">
+                        {dat?.m} | {dat?.a} | {dat?.e} | {dat?.n}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center h-100">
+                  <div className="d-flex flex-column">
+                    {dt?.medicines?.map((dat, i) => (
+                      <span
+                        className="fs-16 fw-500"
+                        style={{
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {dat?.food}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </CTableDataCell>
 
@@ -53,6 +94,8 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                         ? "primary"
                         : dt?.lab_status === "Delivered"
                         ? "success"
+                        : dt?.lab_status === "Prescribed"
+                        ? "warning"
                         : "error"
                     }
                   />
@@ -67,26 +110,39 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                     }}
                     className="d-flex align-items-center justify-content-center gap-3 "
                   >
-                    {dt?.lab_status === "Waiting For Approval" && (
+                    {dt?.lab_status === "Waiting For Approval" ? (
                       <img
                         alt="edit"
                         src={Assets?.UpdateIcon}
                         className="cursor"
                         onClick={() => selectedData(dt, "details")}
                       />
-                    )}
-                    <img
-                      alt="delete"
-                      src={Assets?.EditPencil}
-                      className="cursor"
-                      onClick={() => selectedData(dt, "edit")}
-                    />
-                    <img
-                      alt="delete"
-                      src={Assets?.TableDelete}
-                      className="cursor"
-                      onClick={() => selectedData(dt, "delete")}
-                    />
+                    ) : dt?.lab_status === "Prescribed" ? (
+                      <>
+                        <img
+                          alt="delete"
+                          src={Assets?.EditPencil}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "edit")}
+                        />
+                        <img
+                          alt="delete"
+                          src={Assets?.TableDelete}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "delete")}
+                        />
+                      </>
+                    ) : dt?.lab_status === "Received" ? (
+                      <>
+                        <img
+                          alt="delete"
+                          src={Assets?.UStatus}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "edit")}
+                          style={{ width: "35px" }}
+                        />
+                      </>
+                    ) : null}
                   </div>
                   {/* <div
                     style={{

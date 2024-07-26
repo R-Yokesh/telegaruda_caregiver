@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
+import Dropdown from "../../../../../../Dropdown/Dropdown";
 
 const MensturalHistoryForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -38,14 +39,89 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
     setDate2(defaultDate2);
   }, [defaultValues]);
 
+  const options = ["Yes", "No"];
+  const flow_duration = ["2-7 days", "< 2 Days", "> 7 Days"];
+  const flow_type = ["Less", "Moderate", "Severe"];
+
+  const findIndex = defaultValues?.trimster
+    ? options?.indexOf(defaultValues?.trimster)
+    : 0;
+
+  const [menopause, setMenopause] = useState(defaultValues.menopause || "No");
+  const getSelected = (data) => {
+    console.log(data);
+    setMenopause(data);
+  };
+  const getSelectedValue2 = (data) => {
+    console.log(data);
+  };
+
+  const getSelectedBleeding = (data) => {
+    console.log(data);
+  };
+
+  const getSelectedCycle = (data) => {
+    console.log(data);
+  };
+
+  const getSelectedDysmen = (data) => {
+    console.log(data);
+  };
   return (
     <>
       <CRow className="mb-3">
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Menatche Age *
+                Menopause *
+              </label>
+              {/* <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.trimster}
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[1]}
+                  getSelectedValue={getSelected}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        {menopause === "Yes" && (
+          <CCol lg={4} className="mb-3">
+            <div style={{ width: "100%" }}>
+              <div class="position-relative">
+                <label for="validationTooltip01" class="form-label">
+                  Menopause Age *
+                </label>
+                <input
+                  type="text"
+                  class="form-control  pad-10"
+                  id="validationTooltip01"
+                  placeholder="Enter"
+                  defaultValue={defaultValues?.age}
+                />
+              </div>
+            </div>
+          </CCol>
+        )}
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Menarche Age *
               </label>
               <input
                 type="text"
@@ -57,11 +133,12 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Cycles per Year *
+                Cycles per Year {menopause !== "Yes" && "*"}
               </label>
               <input
                 type="text"
@@ -73,11 +150,156 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Cycle Length in days *
+                Flow Duration {menopause !== "Yes" && "*"}
+              </label>
+              {/* <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.flow_duration}
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={flow_duration}
+                  defaultValue={flow_duration[1]}
+                  getSelectedValue={getSelectedValue2}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Flow Type {menopause !== "Yes" && "*"}
+              </label>
+              {/* <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.flow_type}
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={flow_type}
+                  defaultValue={flow_type[1]}
+                  getSelectedValue={getSelectedValue2}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                InterMenstrual Bleeding {menopause !== "Yes" && "*"}
+              </label>
+              {/* <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.bleeding}
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex]}
+                  getSelectedValue={getSelectedBleeding}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Cycle Irregularity {menopause !== "Yes" && "*"}
+              </label>
+              {/* <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.irregularity}
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex]}
+                  getSelectedValue={getSelectedCycle}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Dysmenorrhea {menopause !== "Yes" && "*"}
+              </label>
+              {/* <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.dysmenorrhea}
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex]}
+                  getSelectedValue={getSelectedDysmen}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Cycle Length in days {menopause !== "Yes" && "*"}
               </label>
               <input
                 type="text"
@@ -89,94 +311,10 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-      </CRow>
-      <CRow className="mb-3">
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Flow Duration *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.flow_duration}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Flow Type *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.flow_type}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                InterMenstrual Bleeding *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.bleeding}
-              />
-            </div>
-          </div>
-        </CCol>
-      </CRow>
-      <CRow className="mb-3">
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Cycle Irregularity *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.irregularity}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Dysmenorrhea *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.dysmenorrhea}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              LMP Date *
+              LMP Date {menopause !== "Yes" && "*"}
             </label>
             <div className="date-size">
               <DatePicker
@@ -188,6 +326,9 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
       </CRow>
+      {/* <CRow className="mb-3"></CRow>
+      <CRow className="mb-3"></CRow>
+      <CRow className="mb-3"></CRow> */}
       <CRow className="mb-1">
         <div style={{ width: "130px" }}>
           <PrimaryButton>SAVE</PrimaryButton>

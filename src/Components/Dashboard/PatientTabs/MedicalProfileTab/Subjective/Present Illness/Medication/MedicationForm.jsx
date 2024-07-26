@@ -40,7 +40,9 @@ const MedicationForm = ({ back, defaultValues }) => {
   }, [defaultValues]);
 
   const options = ["Taking", "Not Taking", "Discontinued", "Status Unknown"];
-
+  const getSelectedValue = (data) => {
+    console.log(data);
+  };
   return (
     <>
       <CRow className="mb-5">
@@ -135,7 +137,9 @@ const MedicationForm = ({ back, defaultValues }) => {
                   borderRadius: "5px",
                 }}
               >
-                <Dropdown options={options} defaultValue={options[1]} />
+                <Dropdown options={options} defaultValue={options[1]} 
+                  getSelectedValue={getSelectedValue}
+                  />
               </div>
             </div>
           </div>

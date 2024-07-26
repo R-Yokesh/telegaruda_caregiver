@@ -8,7 +8,31 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 const ObstericHistoryForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
   const [date2, setDate2] = useState(null);
+  const [fert_treatment, setFert_treatment] = useState(
+    defaultValues?.fert_treatment || "No"
+  );
+  const [para, setPara] = useState("");
+  const [lacating, setLacating] = useState("");
+  const [gravida, setGravida] = useState("");
+  const [trimester, setTrimester] = useState("");
 
+  const getSelectedTrimster = (data) => {
+    setTrimester(data);
+  };
+
+  const getSelectedGravida = (data) => {
+    setGravida(data);
+  };
+  const getSelectedLacating = (data) => {
+    setLacating(data);
+  };
+  const getSelectedPara = (data) => {
+    setPara(data);
+  };
+  const getSelectedFertValue = (data) => {
+    setFert_treatment(data);
+  };
+  
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
@@ -38,7 +62,25 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
     setDate(defaultDate);
     setDate2(defaultDate2);
   }, [defaultValues]);
-  const options = ["Morning", "Afternoon", "Evening", "Night"];
+  const options = [1, 2, 3];
+  const findIndex = defaultValues?.trimster
+    ? options?.indexOf(defaultValues?.trimster)
+    : 0;
+
+  const lacatingoptions = ["Yes", "No"];
+  const findlacatingIndex = defaultValues?.lacating
+    ? lacatingoptions?.indexOf(defaultValues?.lacating)
+    : 0;
+  const findtreatmentIndex = defaultValues?.fert_treatment
+    ? lacatingoptions?.indexOf(defaultValues?.fert_treatment)
+    : 1;
+  const gravidaoptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  const findgravidaIndex = defaultValues?.gravida
+    ? gravidaoptions?.indexOf(defaultValues?.gravida)
+    : 0;
+  const findparaIndex = defaultValues?.para
+    ? gravidaoptions?.indexOf(defaultValues?.para)
+    : 0;
 
   return (
     <>
@@ -75,86 +117,169 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Trimster *
+                Trimester *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.trimster}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex]}
+                  getSelectedValue={getSelectedTrimster}
+                />
+              </div>
             </div>
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-3">
-        <CCol lg={6}>
+        <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Gravida *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.gravida}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  getSelectedValue={getSelectedGravida}
+                  options={gravidaoptions}
+                  defaultValue={gravidaoptions[findgravidaIndex]}
+                />
+              </div>
             </div>
           </div>
         </CCol>
-        <CCol lg={6}>
+        <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Para *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.para}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  getSelectedValue={getSelectedPara}
+                  options={gravidaoptions}
+                  defaultValue={gravidaoptions[findparaIndex]}
+                />
+              </div>
             </div>
           </div>
         </CCol>
-      </CRow>
-      <CRow className="mb-3">
-        <CCol lg={6}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Fertility Treament *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.fert_treatment}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={6}>
+        <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Lacatating *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.lacating}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  getSelectedValue={getSelectedLacating}
+                  options={lacatingoptions}
+                  defaultValue={lacatingoptions[findlacatingIndex]}
+                />
+              </div>
             </div>
           </div>
         </CCol>
+      </CRow>
+      <CRow className="mb-3">
+        <CCol lg={4}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Fertility Treament *
+              </label>
+              {/* <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.fert_treatment}
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={lacatingoptions}
+                  defaultValue={lacatingoptions[findtreatmentIndex]}
+                  getSelectedValue={getSelectedFertValue}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        {fert_treatment === "Yes" && (
+          <CCol lg={8}>
+            <div style={{ width: "100%" }}>
+              <div class="position-relative">
+                <label for="validationTooltip01" class="form-label">
+                  Treament Description*
+                </label>
+                <input
+                  type="text"
+                  class="form-control  pad-10"
+                  id="validationTooltip01"
+                  placeholder="Enter"
+                  // defaultValue={defaultValues?.fert_treatment}
+                />
+              </div>
+            </div>
+          </CCol>
+        )}
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "130px" }}>
