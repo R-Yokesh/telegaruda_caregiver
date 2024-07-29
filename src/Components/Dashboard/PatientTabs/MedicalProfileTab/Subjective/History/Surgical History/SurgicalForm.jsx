@@ -90,7 +90,7 @@ const SurgicalForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Reason *
+                Reason 
               </label>
               <input
                 type="text"
@@ -106,7 +106,7 @@ const SurgicalForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes *
+                Notes 
               </label>
               <input
                 type="text"

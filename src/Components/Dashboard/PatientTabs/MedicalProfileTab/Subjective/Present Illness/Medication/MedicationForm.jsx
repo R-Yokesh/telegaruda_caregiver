@@ -1,4 +1,4 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCol, CFormCheck, CFormSelect, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -45,12 +45,12 @@ const MedicationForm = ({ back, defaultValues }) => {
   };
   return (
     <>
-      <CRow className="mb-5">
-        <CCol lg={4}>
+      <CRow className="mb-3">
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Medication Name
+                Medication Type *
               </label>
               <input
                 type="text"
@@ -62,11 +62,27 @@ const MedicationForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Strength & Dosage
+                Medication Name *
+              </label>
+              <input
+                type="text"
+                class="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.name}
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Strength & Dosage *
               </label>
               <input
                 type="text"
@@ -78,25 +94,80 @@ const MedicationForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Route
+                Strength measurement *
+              </label>
+              <CFormSelect
+                size="lg"
+                className="mb-3"
+                aria-label="Large select example"
+                name="strength"
+                // defaultValue={medicine?.strength}
+              >
+                <option>Select</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </CFormSelect>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Route of administration *
+              </label>
+              <CFormSelect
+                size="lg"
+                className="mb-3"
+                aria-label="Large select example"
+                name="strengthMeasurement"
+              >
+                <option>Select</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </CFormSelect>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                No. of Day(s) *
               </label>
               <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.route}
+                name="days"
               />
             </div>
           </div>
         </CCol>
-      </CRow>
-      <CRow className="mb-3">
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Total Qty / Taken
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                name="totalQty"
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
               Start Date *
@@ -110,7 +181,7 @@ const MedicationForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
               End Date *
@@ -124,11 +195,141 @@ const MedicationForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={4} className="mb-3" style={{ paddingRight: "0" }}>
+          <div style={{ width: "100%" }} className="d-flex gap-3">
+            <div>
+              <label for="validationTooltip01" class="form-label">
+                M
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10 text-align-center"
+                id="validationTooltip01"
+                placeholder="0"
+                name="m"
+              />
+            </div>
+            <div>
+              <label for="validationTooltip01" class="form-label">
+                A
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10 text-align-center"
+                id="validationTooltip01"
+                placeholder="0"
+                name="a"
+              />
+            </div>
+            <div>
+              <label for="validationTooltip01" class="form-label">
+                E
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10 text-align-center"
+                id="validationTooltip01"
+                placeholder="0"
+                name="e"
+              />
+            </div>
+            <div>
+              <label for="validationTooltip01" class="form-label">
+                N
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10 text-align-center"
+                id="validationTooltip01"
+                placeholder="0"
+                name="n"
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={3} className="mb-3">
+          <div className="h-100 d-flex align-items-end w-100 justify-content-start">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="inlineCheckbox1"
+                value="bf"
+                disabled={
+                  defaultValues?.lab_status === "Prescribed"
+                    ? false
+                    : defaultValues?.medicines?.length >= 1
+                    ? true
+                    : false
+                }
+                label={
+                  <label for="validationTooltip01" class="form-label mb-0">
+                    BF
+                  </label>
+                }
+                name="food"
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="inlineCheckbox2"
+                value="af"
+                label={
+                  <label for="validationTooltip01" class="form-label mb-0">
+                    AF
+                  </label>
+                }
+                name="food"
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={5} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Status
+                Instruction
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                name="instruction"
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={7} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Reason for medication
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                name="reason"
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={5} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Status *
               </label>
               <div
                 className="w-100"
@@ -137,9 +338,11 @@ const MedicationForm = ({ back, defaultValues }) => {
                   borderRadius: "5px",
                 }}
               >
-                <Dropdown options={options} defaultValue={options[1]} 
+                <Dropdown
+                  options={options}
+                  defaultValue={options[1]}
                   getSelectedValue={getSelectedValue}
-                  />
+                />
               </div>
             </div>
           </div>

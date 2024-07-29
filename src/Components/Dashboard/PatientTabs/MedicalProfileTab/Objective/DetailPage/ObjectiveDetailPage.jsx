@@ -192,25 +192,29 @@ const ObjectiveDetailPage = ({ data }) => {
                     </PrimaryButton>
                   )}
                 </CCol>
-                {!chartView && (
-                  <CCol xs={4} md={4} lg={4}>
-                    <PrimaryButton onClick={() => chartPage()}>
-                      <div className="d-flex align-items-center gap-2">
-                        <img src={Assets.Chart} alt="add" />
-                        <span className="fs-16 fw-600">Chart</span>
-                      </div>
-                    </PrimaryButton>
-                  </CCol>
-                )}
-                {chartView && (
-                  <CCol xs={4} md={4} lg={4}>
-                    <ActiveButton onClick={() => tablePage()}>
-                      <div className="d-flex align-items-center gap-2">
-                        <img src={Assets.CloseX} alt="add" />
-                        <span className="fs-16 fw-600">Chart</span>
-                      </div>
-                    </ActiveButton>
-                  </CCol>
+                {data.id !== 14 && (
+                  <>
+                    {!chartView && (
+                      <CCol xs={4} md={4} lg={4}>
+                        <PrimaryButton onClick={() => chartPage()}>
+                          <div className="d-flex align-items-center gap-2">
+                            <img src={Assets.Chart} alt="add" />
+                            <span className="fs-16 fw-600">Chart</span>
+                          </div>
+                        </PrimaryButton>
+                      </CCol>
+                    )}
+                    {chartView && (
+                      <CCol xs={4} md={4} lg={4}>
+                        <ActiveButton onClick={() => tablePage()}>
+                          <div className="d-flex align-items-center gap-2">
+                            <img src={Assets.CloseX} alt="add" />
+                            <span className="fs-16 fw-600">Chart</span>
+                          </div>
+                        </ActiveButton>
+                      </CCol>
+                    )}
+                  </>
                 )}
               </CRow>
             </CCol>
@@ -220,7 +224,7 @@ const ObjectiveDetailPage = ({ data }) => {
           <CCol xl={12}>
             {chartView ? (
               data?.name === "ECG" ? (
-                <ECGChart data={data}/>
+                <ECGChart data={data} />
               ) : (
                 <ChartTab data={data} />
               )

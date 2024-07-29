@@ -36,11 +36,6 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.menopause}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
                   <span className="fs-16 fw-500">{dt?.age}</span>
                 </div>
               </CTableDataCell>
@@ -78,6 +73,11 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.lmp}</span>
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center h-100">
+                  <span className="fs-16 fw-500">{dt?.menopause}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>

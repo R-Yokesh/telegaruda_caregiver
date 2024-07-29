@@ -56,7 +56,7 @@ const SignsSymptoms = () => {
     { id: 2, label: "ONSET" },
     { id: 3, label: "LOCATION" },
     { id: 4, label: "DURATION IN DAYS" },
-    { id: 5, label: "Characteristics (SL)" },
+    { id: 5, label: "Symptoms" },
     // { id: 6, label: "aggravating factors" },
     // { id: 7, label: "Relieving factors" },
     // { id: 8, label: "Temporal factors" },

@@ -3,6 +3,7 @@ import {
   CCardBody,
   CCol,
   CFormCheck,
+  CFormSelect,
   CModal,
   CModalBody,
   CRow,
@@ -26,10 +27,10 @@ const LabOrder = () => {
     { id: 2, label: "DATE" },
     { id: 3, label: "NAME" },
     { id: 4, label: "FILE" },
-    { id: 5, label: "NOTES" },
+    // { id: 5, label: "NOTES" },
     { id: 6, label: "LINK" },
     { id: 7, label: "ICD CODE" },
-    { id: 8, label: "STATUS" },
+    { id: 8, label: "LAB & STATUS" },
     { id: 9, label: "ACTIONS" },
   ];
   const rowData = [
@@ -37,7 +38,7 @@ const LabOrder = () => {
       id: 1,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PDF",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -48,18 +49,18 @@ const LabOrder = () => {
       id: 2,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PNG",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
-      lab_status: "Accepted",
+      lab_status: "Prescribed",
       lab_name: "Raj Lab 1",
     },
     {
       id: 3,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "",
+      file: "PNG",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -70,7 +71,7 @@ const LabOrder = () => {
       id: 4,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PDF",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -81,7 +82,7 @@ const LabOrder = () => {
       id: 5,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PDF",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -92,7 +93,7 @@ const LabOrder = () => {
       id: 6,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PDF",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -103,7 +104,7 @@ const LabOrder = () => {
       id: 7,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PDF",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -114,7 +115,7 @@ const LabOrder = () => {
       id: 8,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PNG",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -125,7 +126,7 @@ const LabOrder = () => {
       id: 9,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PDF",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -136,7 +137,7 @@ const LabOrder = () => {
       id: 10,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      file: "PDF",
+      file: "-",
       notes: "-",
       link: "-",
       icd_code: "D64.9",
@@ -309,15 +310,28 @@ const LabOrder = () => {
                     <span className="fs-14 fw-400 light-label">Slot</span>
                     <div
                       className="w-100"
-                      style={{
-                        border: "1px solid #17171D33",
-                        borderRadius: "5px",
-                      }}
+                      // style={{
+                      //   border: "1px solid #17171D33",
+                      //   borderRadius: "5px",
+                      // }}
                     >
-                      <Dropdown
+                      {/* <Dropdown
                         options={options}
                         getSelectedValue={getSelectedValue}
-                      />
+                      /> */}
+                      <CFormSelect
+                        aria-label="Default select example"
+                        disabled={
+                          selectedData.lab_status === "Uploaded" ||
+                          selectedData.lab_status === "Not Uploaded" && true
+                        }
+                      >
+                        <option>Select</option>
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Evening">Evening</option>
+                        <option value="Night">Night</option>
+                      </CFormSelect>
                     </div>
                   </div>
                 </CCol>
@@ -333,6 +347,10 @@ const LabOrder = () => {
                         value="Lab Test"
                         label="Lab Test"
                         defaultChecked
+                        disabled={
+                          selectedData.lab_status === "Uploaded" ||
+                          selectedData.lab_status === "Not Uploaded" && true
+                        }
                       />
                       <CFormCheck
                         inline
@@ -341,6 +359,10 @@ const LabOrder = () => {
                         id="inlineCheckbox2"
                         value="Home Test"
                         label="Home Test"
+                        disabled={
+                          selectedData.lab_status === "Uploaded" ||
+                          selectedData.lab_status === "Not Uploaded" && true
+                        }
                       />
                     </div>
                   </div>

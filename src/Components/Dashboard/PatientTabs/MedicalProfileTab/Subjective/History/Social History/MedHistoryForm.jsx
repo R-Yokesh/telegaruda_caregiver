@@ -69,7 +69,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Smoking *
+                Smoking 
               </label>
               {/* <input
                 type="text"
@@ -115,7 +115,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Alcohol *
+                Alcohol 
               </label>
               {/* <input
                 type="text"
@@ -161,7 +161,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Drugs *
+                Drugs 
               </label>
               {/* <input
                 type="text"

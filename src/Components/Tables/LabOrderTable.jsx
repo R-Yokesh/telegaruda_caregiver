@@ -44,14 +44,18 @@ const LabOrderTable = ({ columns, rowData, getselectedData }) => {
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <Badge label={dt?.file} color={"primary"} />
+                  {dt?.file !== "-" ? (
+                    <Badge label={dt?.file} color={"primary"} />
+                  ) : (
+                    "-"
+                  )}
                 </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
+              {/* <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   {dt?.notes}
                 </div>
-              </CTableDataCell>
+              </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   {dt?.link}
@@ -72,6 +76,8 @@ const LabOrderTable = ({ columns, rowData, getselectedData }) => {
                         ? "yellow"
                         : dt?.lab_status === "Uploaded"
                         ? "success"
+                        : dt?.lab_status === "Prescribed"
+                        ? "warning"
                         : "error"
                     }
                   />
@@ -81,31 +87,48 @@ const LabOrderTable = ({ columns, rowData, getselectedData }) => {
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                   <div
-                   style={{
-                    width: "100%",
-                  }}
-                  className="d-flex align-items-center justify-content-center gap-3 "
+                    style={{
+                      width: "100%",
+                    }}
+                    className="d-flex align-items-center justify-content-center gap-3 "
                   >
-                    {dt?.lab_status === "Accepted" && (
+                    {dt?.lab_status === "Accepted" ? (
                       <img
                         alt="edit"
-                        src={Assets?.Accept}
+                        src={Assets?.Approve}
                         className="cursor"
                         onClick={() => selectedData(dt, "details")}
                       />
+                    ) : dt?.lab_status === "Uploaded" ? (
+                      <img
+                        alt="edit"
+                        src={Assets?.visibleEye}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "details")}
+                      />
+                    ) : dt?.lab_status === "Not Uploaded" ? (
+                      <img
+                        alt="edit"
+                        src={Assets?.visibleEye}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "details")}
+                      />
+                    ) : (
+                      <>
+                        <img
+                          alt="delete"
+                          src={Assets?.EditPencil}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "edit")}
+                        />
+                        <img
+                          alt="delete"
+                          src={Assets?.TableDelete}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "delete")}
+                        />
+                      </>
                     )}
-                    <img
-                      alt="delete"
-                      src={Assets?.EditPencil}
-                      className="cursor"
-                      onClick={() => selectedData(dt, "edit")}
-                    />
-                    <img
-                      alt="delete"
-                      src={Assets?.TableDelete}
-                      className="cursor"
-                      onClick={() => selectedData(dt, "delete")}
-                    />
                   </div>
                 </div>
               </CTableDataCell>

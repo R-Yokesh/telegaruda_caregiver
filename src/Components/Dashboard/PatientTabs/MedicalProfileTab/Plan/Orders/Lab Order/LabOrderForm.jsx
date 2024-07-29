@@ -5,6 +5,7 @@ import { Assets } from "../../../../../../../assets/Assets";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import DropdownButton from "../../../../../../Buttons/DropDownButton/DropDownButton";
 
 const LabOrderForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -34,6 +35,10 @@ const LabOrderForm = ({ back, defaultValues }) => {
 
   const getSelectedValue = (data) => {
     setTrimester(data);
+  };
+
+  const getbtnNames = () => {
+    console.log("getbtnNames");
   };
   return (
     <>
@@ -141,8 +146,12 @@ const LabOrderForm = ({ back, defaultValues }) => {
         </CCol>
       </CRow>
       <CRow className="mb-1">
-        <div style={{ width: "150px" }}>
-          <PrimaryButton>SEND TO LAB</PrimaryButton>
+        <div style={{ width: "250px" }}>
+          {/* <PrimaryButton>SEND TO LAB</PrimaryButton> */}
+          <DropdownButton
+            buttonName2={"SEND TO LAB"}
+            getbtnNames={getbtnNames}
+          />
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

@@ -88,7 +88,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
         <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date of last pap smear *
+              Date of last pap smear 
             </label>
             <div className="date-size">
               <DatePicker
@@ -103,7 +103,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                History of abnormal pap smear *
+                History of abnormal pap smear 
               </label>
               {/* <input
                 type="text"
@@ -133,7 +133,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
             <div style={{ width: "100%" }}>
               <div class="position-relative">
                 <label for="validationTooltip01" class="form-label">
-                  Abnormal pap smear details*
+                  Abnormal pap smear details
                 </label>
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
@@ -148,7 +148,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
         <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date of last mamogram *
+              Date of last mamogram 
             </label>
             <div className="date-size">
               <DatePicker
@@ -163,7 +163,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                History of mamogram *
+                History of mamogram 
               </label>
               {/* <input
                 type="text"
@@ -193,7 +193,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
             <div style={{ width: "100%" }}>
               <div class="position-relative">
                 <label for="validationTooltip01" class="form-label">
-                  Mamogram details*
+                  Mamogram details
                 </label>
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
@@ -208,7 +208,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
         <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date of last breast exam *
+              Date of last breast exam 
             </label>
             <div className="date-size">
               <DatePicker
@@ -223,7 +223,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                History of breast exam *
+                History of breast exam 
               </label>
               {/* <input
                 type="text"
@@ -253,7 +253,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
             <div style={{ width: "100%" }}>
               <div class="position-relative">
                 <label for="validationTooltip01" class="form-label">
-                  Breast exam details*
+                  Breast exam details
                 </label>
                 <CFormTextarea
                   id="exampleFormControlTextarea1"

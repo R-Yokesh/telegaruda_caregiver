@@ -104,6 +104,11 @@ body {
   color: rgba(23, 23, 29, 0.6);
 }
 
+.form-select-lg {
+  font-size: 1rem !important;
+  padding-top: 0.7rem !important;
+}
+
 .badge {
   display: inline-block;
   padding: 5px 10px;
@@ -435,6 +440,7 @@ body {
   background-color: #FFFFFF !important;
   border-radius: 5px;
   outline: none;
+  overflow: hidden;
 }
 
 .dropdown-header span {
@@ -495,7 +501,7 @@ body {
   position: relative;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   display: flex;
   flex-direction: column;

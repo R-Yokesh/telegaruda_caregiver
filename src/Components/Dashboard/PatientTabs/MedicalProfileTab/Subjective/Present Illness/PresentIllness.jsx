@@ -8,7 +8,7 @@ import Medication from "./Medication/Medication";
 
 const PresentIllness = ({ OnClose }) => {
   const tabs = [
-    { id: 1, title: "Signs and Symptoms" },
+    { id: 1, title: "Symptoms" },
     { id: 2, title: "Medication" },
     { id: 3, title: "Allergies" },
   ];

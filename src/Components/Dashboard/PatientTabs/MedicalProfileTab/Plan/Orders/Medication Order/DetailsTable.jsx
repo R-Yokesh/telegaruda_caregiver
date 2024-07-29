@@ -83,6 +83,7 @@ const DetailsTable = ({ columns, rowData, getselectedData }) => {
                         src={Assets?.PlusCircle}
                         className="cursor"
                         onClick={() => selectedData(dt, "details")}
+                        style={{transform:'rotate(45deg)'}}
                       />
                     </div>
                   </div>

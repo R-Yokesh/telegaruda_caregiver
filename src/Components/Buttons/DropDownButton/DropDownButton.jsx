@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Assets } from "../../../assets/Assets";
 
-const DropdownButton = () => {
+const DropdownButton = ({ buttonName2, getbtnNames }) => {
   const [buttonText, setButtonText] = useState("SAVE");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -16,19 +16,23 @@ const DropdownButton = () => {
 
   return (
     <div className="dropdown">
-      <button className="dropdown-button button" >
-        <div className="d-flex align-items-center justify-content-between">
-          <div className="w-100">
+      <button className="dropdown-button button">
+        <div className="d-flex align-items-center justify-content-between" onClick={() => getbtnNames(buttonText)}>
+          <div className="w-100" >
             <span className="fs-16 fw-600">{buttonText}</span>
           </div>
           <div onClick={toggleDropdown}>
-            {!isOpen ? <img src={Assets.cDown} alt="down"/> : <img src={Assets.cUp} alt="up"/>}
+            {!isOpen ? (
+              <img src={Assets.cDown} alt="down" />
+            ) : (
+              <img src={Assets.cUp} alt="up" />
+            )}
           </div>
         </div>
       </button>
       {isOpen && (
         <div className="dropdown-content">
-          {buttonText === "SEND TO PHARMACY" && (
+          {buttonText === buttonName2 && (
             <span
               onClick={() => handleItemClick("SAVE")}
               className="fs-14 fw-600"
@@ -38,10 +42,10 @@ const DropdownButton = () => {
           )}
           {buttonText === "SAVE" && (
             <span
-              onClick={() => handleItemClick("SEND TO PHARMACY")}
+              onClick={() => handleItemClick(buttonName2)}
               className="fs-14 fw-600"
             >
-              SEND TO PHARMACY
+              {buttonName2}
             </span>
           )}
         </div>

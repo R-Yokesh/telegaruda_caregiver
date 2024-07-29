@@ -1,11 +1,4 @@
-import {
-  CCol,
-  CFormCheck,
-  CFormSelect,
-  CModal,
-  CModalBody,
-  CRow,
-} from "@coreui/react";
+import { CCol, CFormCheck, CFormSelect, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -14,9 +7,8 @@ import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import ActiveButton from "../../../../../../Buttons/ActiveButton/ActiveButton";
 import DropdownButton from "../../../../../../Buttons/DropDownButton/DropDownButton";
-import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 
-const MedicationOrderForm = ({ back, defaultValues }) => {
+const MedicationCompleted = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
   const [medicines, setMedicines] = useState(
     defaultValues.medicines
@@ -111,25 +103,13 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
   }, [defaultValues]);
   const options = ["Morning", "Afternoon", "Evening", "Night"];
   console.log("first", medicines);
-  const [btnValue, setBtnValue] = useState();
-  const [btnView, setBtnView] = useState(false);
 
-  const getbtnNames = (data) => {
-    setBtnValue(data);
-    if (data === "SEND TO PHARMACY") {
-      setBtnView(true);
-    }
-  };
-  console.log(btnValue, "SEND TO PHARMACY");
   return (
     <>
       <div className="mb-3 p-4">
         <CRow className="d-flex align-items-center mb-3">
           <CCol lg={6}>
-            <span className="fs-16 fw-600">
-              {defaultValues?.medicines?.length >= 1 ? "Edit " : "Add "} New
-              Medicine
-            </span>
+            <span className="fs-16 fw-600">View Medicine</span>
           </CCol>
 
           <CCol lg={5} className="d-flex justify-content-end">
@@ -143,55 +123,6 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
             </div>
           </CCol>
         </CRow>
-
-        {defaultValues?.medicines?.length >= 1 ? (
-          <>
-            <CRow className="mb-3">
-              <CCol lg={11}>
-                <div className="vertical-line"></div>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3 h-100 d-flex align-items-center justify-content-between">
-              <CCol lg={4}>
-                <div style={{ width: "100%" }}>
-                  <div class="position-relative">
-                    <label for="validationTooltip01" class="form-label">
-                      Status
-                    </label>
-                    <CFormSelect
-                      size="lg"
-                      className="mb-3"
-                      aria-label="Large select example"
-                      name="strengthMeasurement"
-                      defaultValue={defaultValues?.lab_status}
-                    >
-                      {/* <option>Select</option> */}
-                      <option value="Prescribed">Prescribed</option>
-                      <option value="Received">Received</option>
-                      <option value="Dispensed">Dispensed</option>
-                      <option value="Delivered">Delivered</option>
-                    </CFormSelect>
-                  </div>
-                </div>
-              </CCol>
-              <CCol
-                lg={8}
-                className="mt-4 d-flex justify-content-between"
-                style={{ width: "42%" }}
-              >
-                <CRow className="mb-3">
-                  <div style={{ width: "250px" }}>
-                    <PrimaryButton>SAVE</PrimaryButton>
-                    {/* <DropdownButton /> */}
-                  </div>
-                  <div style={{ width: "128px" }}>
-                    <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-                  </div>
-                </CRow>
-              </CCol>
-            </CRow>
-          </>
-        ) : null}
         <CRow className="mb-3">
           <CCol lg={11}>
             <div className="vertical-line"></div>
@@ -215,13 +146,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           id="validationTooltip01"
                           placeholder="Enter"
                           defaultValue={medicine?.type}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -246,13 +171,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="Enter"
                           name="name"
                           defaultValue={medicine?.name}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -279,13 +198,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="Enter"
                           name="strength"
                           defaultValue={medicine?.strength}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -309,13 +222,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           aria-label="Large select example"
                           name="strength"
                           defaultValue={medicine?.strength}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -346,13 +253,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           aria-label="Large select example"
                           name="strengthMeasurement"
                           defaultValue={medicine?.strengthMeasurement}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -382,13 +283,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="Enter"
                           name="days"
                           defaultValue={medicine?.days}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -413,13 +308,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="Enter"
                           name="totalQty"
                           defaultValue={medicine?.totalQty}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -536,13 +425,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="0"
                           name="m"
                           defaultValue={medicine?.m}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -563,13 +446,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="0"
                           name="a"
                           defaultValue={medicine?.a}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -590,13 +467,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="0"
                           name="e"
                           defaultValue={medicine?.e}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -617,13 +488,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="0"
                           name="n"
                           defaultValue={medicine?.n}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -652,13 +517,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           type="radio"
                           id="inlineCheckbox1"
                           value="bf"
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           label={
                             <label
                               for="validationTooltip01"
@@ -693,13 +552,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                               AF
                             </label>
                           }
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           name="food"
                           defaultChecked={
                             medicine?.food === "af" ? true : false
@@ -728,13 +581,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="Enter"
                           name="instruction"
                           defaultValue={medicine?.instruction}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -761,13 +608,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           placeholder="Enter"
                           name="reason"
                           defaultValue={medicine?.reason}
-                          disabled={
-                            defaultValues?.lab_status === "Prescribed"
-                              ? false
-                              : defaultValues?.medicines?.length >= 1
-                              ? true
-                              : false
-                          }
+                          disabled={true}
                           onChange={(e) =>
                             handleMedicineInputChange(
                               medicine?.id,
@@ -783,7 +624,6 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
               </CCol>
               {defaultValues?.medicines?.length >= 1 ? (
                 defaultValues?.lab_status === "Prescribed" && (
-                  medicine?.id === 1 ? null :
                   <CCol lg={1}>
                     <div style={{ width: "40px" }}>
                       <ActiveButton
@@ -796,7 +636,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                     </div>
                   </CCol>
                 )
-              ) : medicine.id === 1 ? null : (
+              ) : (
                 <CCol lg={1}>
                   <div style={{ width: "40px" }}>
                     <ActiveButton
@@ -888,10 +728,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
             <CRow className="mb-1">
               <div style={{ width: "250px" }}>
                 {/* <PrimaryButton>SEND TO PHARMACY</PrimaryButton> */}
-                <DropdownButton
-                  buttonName2={"SEND TO PHARMACY"}
-                  getbtnNames={getbtnNames}
-                />
+                <DropdownButton />
               </div>
               <div style={{ width: "128px" }}>
                 <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
@@ -899,52 +736,9 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
             </CRow>
           </>
         )}
-
-        {btnView && (
-          <BlurBackground>
-            <CModal
-              alignment="center"
-              visible={btnView}
-              onClose={() => setBtnView(false)}
-              aria-labelledby="VerticallyCenteredExample"
-              size="md"
-            >
-              <CModalBody className="p-3">
-                <label for="validationTooltip01" class="form-label">
-                  Select a Pharmacy
-                </label>
-                <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                  <CFormSelect
-                    size="lg"
-                    className="mb-3"
-                    aria-label="Large select example"
-                    name="strength"
-                  >
-                    <option>Select</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </CFormSelect>
-                  <div className="d-flex gap-2 mt-2">
-                    <div style={{ width: "80px" }}>
-                      <PrimaryButton onClick={() => setBtnView(false)}>
-                        Save
-                      </PrimaryButton>
-                    </div>
-                    <div style={{ width: "80px" }}>
-                      <SecondaryButton onClick={() => setBtnView(false)}>
-                        Cancel
-                      </SecondaryButton>
-                    </div>
-                  </div>
-                </div>
-              </CModalBody>
-            </CModal>
-          </BlurBackground>
-        )}
       </div>
     </>
   );
 };
 
-export default MedicationOrderForm;
+export default MedicationCompleted;

@@ -113,7 +113,8 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                     {dt?.lab_status === "Waiting For Approval" ? (
                       <img
                         alt="edit"
-                        src={Assets?.UpdateIcon}
+                        // src={Assets?.UpdateIcon}
+                        src={Assets?.Approve}
                         className="cursor"
                         onClick={() => selectedData(dt, "details")}
                       />
@@ -140,6 +141,16 @@ const MedicationOrderTable = ({ columns, rowData, getselectedData }) => {
                           className="cursor"
                           onClick={() => selectedData(dt, "edit")}
                           style={{ width: "35px" }}
+                        />
+                      </>
+                    ) : dt?.lab_status === "Delivered" ? (
+                      <>
+                        <img
+                          alt="delete"
+                          src={Assets?.visibleEye}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "completed")}
+                          style={{ width: "30px" }}
                         />
                       </>
                     ) : null}

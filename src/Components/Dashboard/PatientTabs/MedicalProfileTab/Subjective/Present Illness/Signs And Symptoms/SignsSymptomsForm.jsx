@@ -29,7 +29,14 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
     // Set default date in state
     setDate(defaultDate);
   }, [defaultValues]);
-  const options = ["Normal", "Mild", "Moderate"];
+  const options = [
+    "Normal",
+    "Mild",
+    "Moderate",
+    "Severe",
+    "Very Severe",
+    "Worst",
+  ];
   const getSelectedValue = (data) => {
     console.log(data);
   };
@@ -40,7 +47,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Onset
+                Onset *
               </label>
               <input
                 type="text"
@@ -56,7 +63,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Location
+                Location *
               </label>
               <input
                 type="text"
@@ -72,7 +79,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Duration in Days
+                Duration in Days *
               </label>
               <input
                 type="text"
@@ -86,6 +93,22 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
         </CCol>
       </CRow>
       <CRow className="mb-3">
+        <CCol lg={4}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Symptoms
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.characteristics}
+              />
+            </div>
+          </div>
+        </CCol>
         <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
@@ -118,6 +141,8 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
+      </CRow>
+      <CRow className="mb-3">
         <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
@@ -134,29 +159,11 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-      </CRow>
-      <CRow className="mb-3">
         <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Characteristics
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.characteristics}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Severity
+                Severity *
               </label>
               <div
                 className="w-100"

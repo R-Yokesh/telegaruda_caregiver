@@ -33,6 +33,20 @@ const MedHistoryForm = ({ back, defaultValues }) => {
     ? options?.indexOf(defaultValues?.prev_illness)
     : 0;
 
+  const findIndex1 = defaultValues?.chronic
+    ? options?.indexOf(defaultValues?.chronic)
+    : 0;
+
+  const icdoptions = [
+    "E11.5 - Type 2 diabetes mellitus without complications",
+    "E11.6 - Type 2 diabetes mellitus without complications",
+    "E11.7 - Type 2 diabetes mellitus without complications",
+  ];
+
+  const findIndex2 = defaultValues?.icd10
+    ? icdoptions?.indexOf(defaultValues?.icd10)
+    : 0;
+
   const [trimester, setTrimester] = useState("");
 
   const getSelectedValue = (data) => {
@@ -80,15 +94,28 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                ICD10 (SL) *
+                ICD 
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.icd10}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={icdoptions}
+                  defaultValue={icdoptions[findIndex2]}
+                  getSelectedValue={getSelectedValue}
+                />
+              </div>
             </div>
           </div>
         </CCol>
@@ -98,15 +125,28 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Chronic *
+                Chronic 
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.chronic}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex1]}
+                  getSelectedValue={getSelectedValue}
+                />
+              </div>
             </div>
           </div>
         </CCol>
@@ -114,7 +154,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Previous Illness *
+                Previous Illness 
               </label>
               {/* <input
                 type="text"
@@ -143,7 +183,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes *
+                Notes 
               </label>
               <input
                 type="text"

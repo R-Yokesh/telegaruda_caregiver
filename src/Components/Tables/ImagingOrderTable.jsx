@@ -44,14 +44,18 @@ const ImagingOrderTable = ({ columns, rowData, getselectedData }) => {
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <Badge label={dt?.file} color={"primary"} />
+                {dt?.file !== "-" ? (
+                    <Badge label={dt?.file} color={"primary"} />
+                  ) : (
+                    "-"
+                  )}
                 </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
+              {/* <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   {dt?.notes}
                 </div>
-              </CTableDataCell>
+              </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   {dt?.link}
@@ -77,8 +81,55 @@ const ImagingOrderTable = ({ columns, rowData, getselectedData }) => {
                   />
                 </div>
               </CTableDataCell>
-
               <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                  <div
+                    style={{
+                      width: "100%",
+                    }}
+                    className="d-flex align-items-center justify-content-center gap-3 "
+                  >
+                    {dt?.scan_status === "Accepted" ? (
+                      <img
+                        alt="edit"
+                        src={Assets?.Approve}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "details")}
+                      />
+                    ) : dt?.scan_status === "Uploaded" ? (
+                      <img
+                        alt="edit"
+                        src={Assets?.visibleEye}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "details")}
+                      />
+                    ) : dt?.scan_status === "Not Uploaded" ? (
+                      <img
+                        alt="edit"
+                        src={Assets?.visibleEye}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "details")}
+                      />
+                    ) : (
+                      <>
+                        <img
+                          alt="delete"
+                          src={Assets?.EditPencil}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "edit")}
+                        />
+                        <img
+                          alt="delete"
+                          src={Assets?.TableDelete}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "delete")}
+                        />
+                      </>
+                    )}
+                  </div>
+                </div>
+              </CTableDataCell>
+              {/* <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                   <div
                     style={{
@@ -108,7 +159,7 @@ const ImagingOrderTable = ({ columns, rowData, getselectedData }) => {
                     />
                   </div>
                 </div>
-              </CTableDataCell>
+              </CTableDataCell> */}
             </CTableRow>
           ))}
         </CTableBody>

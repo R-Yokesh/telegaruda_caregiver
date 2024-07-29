@@ -143,8 +143,7 @@ const OGHistory = () => {
 
   const MensuralcolumnData = [
     { id: 1, label: "No." },
-    { id: 2, label: "Menopause" },
-    { id: 3, label: "Menatche Age" },
+    { id: 3, label: "Menarche Age" },
     // { id: 3, label: "Cycles per Year" },
     // { id: 4, label: "Cycle Length in days" },
     // { id: 5, label: "Flow Duration" },
@@ -153,6 +152,7 @@ const OGHistory = () => {
     { id: 3, label: "cycle irregularity" },
     { id: 4, label: "dysmenorrhea" },
     { id: 5, label: "LMP" },
+    { id: 2, label: "Menopause" },
     { id: 6, label: "ACTIONS" },
   ];
   const MenstrualrowData = [
@@ -489,71 +489,72 @@ const OGHistory = () => {
           </CCol>
           <CCol lg={7}>
             {currentTab === 1 && (
-              <CRow>
-                <CCol lg={4}>
-                  <div style={{ width: "100%" }}>
-                    <div class="position-relative">
-                      <label for="validationTooltip01" class="form-label">
-                        Pregnant
-                      </label>
-                      <div
-                        className="w-100"
-                        style={{
-                          boxShadow: "0px 4px 17px 0px #17171D14",
-                        }}
-                      >
-                        <Dropdown
-                          options={options}
-                          defaultValue={options[0]}
-                          getSelectedValue={getSelectedValue}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </CCol>
-                <CCol lg={4}>
-                  <div style={{ width: "100%" }}>
-                    <div class="position-relative">
-                      <label for="validationTooltip01" class="form-label">
-                        Previous Cesarean Sections
-                      </label>
-                      <div
-                        className="w-100"
-                        style={{
-                          boxShadow: "0px 4px 17px 0px #17171D14",
-                        }}
-                      >
-                        <Dropdown
-                          options={options}
-                          defaultValue={options[1]}
-                          getSelectedValue={getSelectedValue1}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </CCol>
-                <CCol lg={4}>
-                  <div style={{ width: "100%" }}>
-                    <div class="position-relative">
-                      <label for="validationTooltip01" class="form-label">
-                        Bad Obstetric History
-                      </label>
-                      <div
-                        className="w-100"
-                        style={{
-                          boxShadow: "0px 4px 17px 0px #17171D14",
-                        }}
-                      >
-                        <Dropdown
-                          options={options}
-                          defaultValue={options[1]}
-                          getSelectedValue={getSelectedValue2}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </CCol>
-              </CRow>
+              // <CRow>
+              //   <CCol lg={4}>
+              //     <div style={{ width: "100%" }}>
+              //       <div class="position-relative">
+              //         <label for="validationTooltip01" class="form-label">
+              //           Pregnant
+              //         </label>
+              //         <div
+              //           className="w-100"
+              //           style={{
+              //             boxShadow: "0px 4px 17px 0px #17171D14",
+              //           }}
+              //         >
+              //           <Dropdown
+              //             options={options}
+              //             defaultValue={options[0]}
+              //             getSelectedValue={getSelectedValue}
+              //           />
+              //         </div>
+              //       </div>
+              //     </div>
+              //   </CCol>
+              //   <CCol lg={4}>
+              //     <div style={{ width: "100%" }}>
+              //       <div class="position-relative">
+              //         <label for="validationTooltip01" class="form-label">
+              //           Previous Cesarean Sections
+              //         </label>
+              //         <div
+              //           className="w-100"
+              //           style={{
+              //             boxShadow: "0px 4px 17px 0px #17171D14",
+              //           }}
+              //         >
+              //           <Dropdown
+              //             options={options}
+              //             defaultValue={options[1]}
+              //             getSelectedValue={getSelectedValue1}
+              //           />
+              //         </div>
+              //       </div>
+              //     </div>
+              //   </CCol>
+              //   <CCol lg={4}>
+              //     <div style={{ width: "100%" }}>
+              //       <div class="position-relative">
+              //         <label for="validationTooltip01" class="form-label">
+              //           Bad Obstetric History
+              //         </label>
+              //         <div
+              //           className="w-100"
+              //           style={{
+              //             boxShadow: "0px 4px 17px 0px #17171D14",
+              //           }}
+              //         >
+              //           <Dropdown
+              //             options={options}
+              //             defaultValue={options[1]}
+              //             getSelectedValue={getSelectedValue2}
+              //           />
+              //         </div>
+              //       </div>
+              //     </div>
+              //   </CCol>
+              // </CRow>
+              <></>
             )}
             {currentTab === 2 && (
               <MedicalTab

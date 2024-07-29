@@ -37,13 +37,29 @@ const ProcedurerTable = ({ columns, rowData, getselectedData }) => {
                 <span className="fs-16 fw-500">{dt?.id}</span>
               </CTableDataCell>
               <CTableDataCell>{dt?.description}</CTableDataCell>
-              <CTableDataCell>
+              {/* <CTableDataCell>
                 <div className="d-flex align-items-center justify-content-center gap-2">
                   <img
                     alt="delete"
                     src={Assets?.visibleEye}
                     className="cursor"
                     onClick={() => selectedData(dt, "details")}
+                  />
+                </div>
+              </CTableDataCell> */}
+              <CTableDataCell>
+                <div className="d-flex align-items-center justify-content-center gap-2">
+                  <img
+                    alt="edit"
+                    src={Assets?.TableEdit}
+                    className="cursor"
+                    onClick={() => selectedData(dt, "edit")}
+                  />
+                  <img
+                    alt="delete"
+                    src={Assets?.TableDelete}
+                    className="cursor"
+                    onClick={() => selectedData(dt, "delete")}
                   />
                 </div>
               </CTableDataCell>

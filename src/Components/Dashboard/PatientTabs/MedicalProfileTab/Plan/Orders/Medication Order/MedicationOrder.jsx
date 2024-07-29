@@ -21,6 +21,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import MedicationOrderForm from "./MedicationOrderForm";
 import MedicationOrderTable from "../../../../../../Tables/MedicationOrderTable";
 import DetailsTable from "./DetailsTable";
+import MedicationCompleted from "./MedicationCompleted";
 
 const MedicationOrder = () => {
   const detailsData = [
@@ -188,7 +189,7 @@ const MedicationOrder = () => {
       id: 4,
       date: "06-07-2024",
       name: "Complete Blood Count",
-      lab_status: "Prescribed",
+      lab_status: "Delivered",
       lab_name: "Raj Pharmacy 1",
       medicines: [
         {
@@ -403,6 +404,7 @@ const MedicationOrder = () => {
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [deleteView, setDeleteView] = useState(false);
+  const [completedView, setCompletedView] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
@@ -441,6 +443,9 @@ const MedicationOrder = () => {
     }
     if (type === "delete") {
       setDeleteView(true);
+    }
+    if (type === "completed") {
+      setCompletedView(true);
     }
   };
 
@@ -521,6 +526,39 @@ const MedicationOrder = () => {
         </BlurBackground>
       )}
 
+      {completedView && (
+        <BlurBackground>
+          <CModal
+            alignment="center"
+            visible={completedView}
+            onClose={() => setCompletedView(false)}
+            aria-labelledby="VerticallyCenteredExample"
+            size="xl"
+          >
+            <CModalBody className="p-0">
+              <div
+                className="close-modal"
+                onClick={() => {
+                  setCompletedView(false);
+                }}
+              >
+                <img
+                  src={Assets.CloseBtn}
+                  alt="close-btn"
+                  style={{ width: "100%" }}
+                />{" "}
+              </div>
+              <MedicationCompleted
+                back={() => {
+                  setCompletedView(false);
+                  setSelectedData({});
+                }}
+                defaultValues={selectedData}
+              />
+            </CModalBody>
+          </CModal>
+        </BlurBackground>
+      )}
       {detailView && (
         <BlurBackground>
           <CModal
