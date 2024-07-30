@@ -86,7 +86,7 @@ const Creatinine = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Creatinine(μmol/L) *
+                Creatinine(mg/dL) *
               </label>
               <input
                 type="text"
