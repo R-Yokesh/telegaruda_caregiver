@@ -192,7 +192,7 @@ const ObjectiveDetailPage = ({ data }) => {
                     </PrimaryButton>
                   )}
                 </CCol>
-                {data.id !== 14 && (
+                {/* {data.id !== 14 && ( */}
                   <>
                     {!chartView && (
                       <CCol xs={4} md={4} lg={4}>
@@ -215,7 +215,7 @@ const ObjectiveDetailPage = ({ data }) => {
                       </CCol>
                     )}
                   </>
-                )}
+                {/* )} */}
               </CRow>
             </CCol>
           </CRow>

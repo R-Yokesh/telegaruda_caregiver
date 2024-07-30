@@ -641,7 +641,7 @@ const VitalsTab = ({ category, openModal }) => {
         { label: "Protein: Trace", color: "success" },
         { label: "Glucose: Negative", color: "success" },
       ],
-      chartLabel1: "Urine (μmol/kg/d)",
+      chartLabel1: "Specific gravity",
       chartLabel2: "ph",
       columnsData: [
         { id: 1, label: "NO." },
@@ -657,7 +657,7 @@ const VitalsTab = ({ category, openModal }) => {
         {
           "no.": 1,
           color: "Straw",
-          chartValue: "100",
+          chartValue: "1.008",
           specific_gravity: "1.008",
           ph: "Normal (6-7)",
           clarity: "Clear",
@@ -669,8 +669,8 @@ const VitalsTab = ({ category, openModal }) => {
         {
           "no.": 2,
           color: "Straw",
-          chartValue: "100",
-          specific_gravity: "1.018",
+          chartValue: "1.308",
+          specific_gravity: "1.308",
           ph: "Normal (6-7)",
           clarity: "Clear",
           protein: "Trace",
@@ -686,7 +686,7 @@ const VitalsTab = ({ category, openModal }) => {
       name: "Urea",
       date: "Recently Added 27-03-2024",
       category: "Renal and Metabolic Markers",
-      badge: [{ label: "20mg/dl", color: "error" }],
+      badge: [{ label: "32mg/dl", color: "error" }],
       chartLabel1: "Urea (mg/dL)",
       columnsData: [
         { id: 1, label: "NO." },
@@ -725,8 +725,8 @@ const VitalsTab = ({ category, openModal }) => {
       name: "Creatinine",
       category: "Renal and Metabolic Markers",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "85pmol/L", color: "error" }],
-      chartLabel1: "Creatinine (μmol/L)",
+      badge: [{ label: "1.7 mg/dL", color: "error" }],
+      chartLabel1: "Creatinine (mg/dL)",
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
@@ -738,8 +738,8 @@ const VitalsTab = ({ category, openModal }) => {
         {
           "no.": 1,
           result: { status: "success", name: "Normal" },
-          creatinine: "88 μmol/L",
-          creatinine_value: "88",
+          creatinine: "1.2 mg/dL",
+          creatinine_value: "1.2",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
           name: "Creatinine",
@@ -750,8 +750,8 @@ const VitalsTab = ({ category, openModal }) => {
             status: "warning",
             name: "Normal",
           },
-          creatinine: "88 μmol/L",
-          creatinine_value: "88",
+          creatinine: "1.2 mg/dL",
+          creatinine_value: "1.2",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
           name: "Creatinine",
@@ -764,8 +764,8 @@ const VitalsTab = ({ category, openModal }) => {
       name: "GFR",
       category: "Renal and Metabolic Markers",
       date: "Recently Added 27-03-2024",
-      badge: [{ label: "90ml/min", color: "error" }],
-      chartLabel1: "GFR (ml/min)",
+      badge: [{ label: "55 mL/min/1.73m²", color: "error" }],
+      chartLabel1: "GFR (mL/min/1.73m²)",
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
@@ -777,8 +777,8 @@ const VitalsTab = ({ category, openModal }) => {
         {
           "no.": 1,
           result: { status: "success", name: "Normal" },
-          gfr: "90 mL/min",
-          gfr_value: "90",
+          gfr: "92 mL/min/1.73m²",
+          gfr_value: "92",
           date: "06-24-2024 10:15",
           action: [{ type: "warning" }],
           name: "GFR",
@@ -789,7 +789,7 @@ const VitalsTab = ({ category, openModal }) => {
             status: "warning",
             name: "Normal",
           },
-          gfr: "90 mL/min",
+          gfr: "90 mL/min/1.73m²",
           gfr_value: "90",
           date: "05-24-2024 10:15",
           action: [{ type: "edit" }, { type: "delete" }],
@@ -831,15 +831,9 @@ const VitalsTab = ({ category, openModal }) => {
             {filteredProducts?.map((item, index) => (
               <CCol md={6} xl={4} key={index} className="mb-3">
                 <CCard
-                  className={`vital-cards ${
-                    item.id === 15 || item.id === 16 || item.id === 17
-                      ? "cursor-default"
-                      : ""
-                  }`}
+                  className={`vital-cards`}
                   onClick={() => {
-                    if (item.id !== 15 && item.id !== 16 && item.id !== 17) {
-                      openModal(item);
-                    }
+                    openModal(item);
                   }}
                 >
                   <CCardBody>
