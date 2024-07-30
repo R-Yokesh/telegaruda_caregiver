@@ -94,7 +94,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                ICD 
+                ICD
               </label>
               {/* <input
                 type="text"
@@ -112,7 +112,9 @@ const MedHistoryForm = ({ back, defaultValues }) => {
               >
                 <Dropdown
                   options={icdoptions}
-                  defaultValue={icdoptions[findIndex2]}
+                  defaultValue={
+                    defaultValues?.icd10 ? icdoptions[findIndex2] : null
+                  }
                   getSelectedValue={getSelectedValue}
                 />
               </div>
@@ -125,7 +127,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Chronic 
+                Chronic
               </label>
               {/* <input
                 type="text"
@@ -143,7 +145,9 @@ const MedHistoryForm = ({ back, defaultValues }) => {
               >
                 <Dropdown
                   options={options}
-                  defaultValue={options[findIndex1]}
+                  defaultValue={
+                    defaultValues?.chronic ? options[findIndex1] : null
+                  }
                   getSelectedValue={getSelectedValue}
                 />
               </div>
@@ -154,7 +158,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Previous Illness 
+                Previous Illness
               </label>
               {/* <input
                 type="text"
@@ -172,7 +176,9 @@ const MedHistoryForm = ({ back, defaultValues }) => {
               >
                 <Dropdown
                   options={options}
-                  defaultValue={options[findIndex]}
+                  defaultValue={
+                    defaultValues?.prev_illness ? options[findIndex] : null
+                  }
                   getSelectedValue={getSelectedValue}
                 />
               </div>
@@ -183,7 +189,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes 
+                Notes
               </label>
               <input
                 type="text"

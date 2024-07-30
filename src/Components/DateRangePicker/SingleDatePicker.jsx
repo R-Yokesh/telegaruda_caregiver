@@ -2,8 +2,10 @@ import { CCol, CRow } from "@coreui/react";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 
-const SingleDatePicker = () => {
-  const [startDate, setStartDate] = useState(new Date());
+const SingleDatePicker = ({ defaultDate }) => {
+  const [startDate, setStartDate] = useState(
+    defaultDate ? new Date(defaultDate) : new Date()
+  );
 
   // Get today's date
   const today = new Date();
