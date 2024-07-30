@@ -47,6 +47,10 @@ body {
   --light-gray: #E8E8E8;
 }
 
+.primary-bg {
+  background: var(--theme-blue) !important;
+}
+
 .fs-10 {
   font-size: 10px !important;
   color: var(--text-color);

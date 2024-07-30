@@ -33,13 +33,9 @@ const PhysicalExam = ({ onClose }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const options = [
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum",
-    "Lorem ipsum 2",
+    "Appearance (well, ill, distressed, etc.)",
+    "Level of Consciousness (alert, drowsy, unresponsive, etc.)",
+    "Posture and Gait",
   ];
 
   const itemsPerPage = 9; // Number of items to display per page
@@ -103,6 +99,20 @@ const PhysicalExam = ({ onClose }) => {
 
   const heentTabClose = () => {
     setHeentOpen(false);
+  };
+
+  const [isSelected, setIsSelected] = useState(false);
+  const [labelName, setLabelname] = useState("");
+
+  const toggleSelected = (label) => {
+    setIsSelected(!isSelected);
+    setLabelname(label);
+  };
+
+  const [labelName1, setLabelname1] = useState("");
+
+  const toggleSelected1 = (label) => {
+    setLabelname1(label);
   };
 
   return (
@@ -196,7 +206,7 @@ const PhysicalExam = ({ onClose }) => {
               </CCol>
             </CRow>
             <div className="vertical-line mb-3"></div>
-            <CRow className="mb-2">
+            {/* <CRow className="mb-2">
               <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
                 {!nutritionOpen && (
                   <img
@@ -295,14 +305,14 @@ const PhysicalExam = ({ onClose }) => {
                 </>
               )}
             </CRow>
-            <div className="vertical-line mt-2 mb-3"></div>
+            <div className="vertical-line mt-2 mb-3"></div> */}
             <CRow className="mb-2">
               <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
                 {!generalOpen && (
                   <img
                     alt="plus"
                     src={Assets?.PlusIcon}
-                    onClick={generalTabOpen}
+                    // onClick={generalTabOpen}
                     className="cursor"
                   />
                 )}
@@ -310,38 +320,69 @@ const PhysicalExam = ({ onClose }) => {
                   <img
                     alt="plus"
                     src={Assets?.MinusIcon}
-                    onClick={generalTabClose}
+                    // onClick={generalTabClose}
                     className="cursor"
                   />
                 )}
-                <span className="fs-16 fw-600">General</span>
+                <span className="fs-16 fw-600">General Appearance</span>
               </CCol>
+              <CRow>
+                <CCol>
+                  <div className="d-flex justify-content-center align-items-center">
+                    <label class="form-label">Status:</label>
+                    <div
+                      className={`option-item ${
+                        labelName === "Normal" ? "selected primary-bg" : ""
+                      }`}
+                      onClick={() => {
+                        toggleSelected("Normal");
+                        setGeneralOpen(false);
+                      }}
+                    >
+                      {"Normal"}
+                    </div>
+                    <div
+                      className={`option-item ${
+                        labelName === "Abnormal" ? "selected primary-bg" : ""
+                      }`}
+                      onClick={() => {
+                        toggleSelected("Abnormal");
+                        setGeneralOpen(true);
+                      }}
+                    >
+                      {"Abnormal"}
+                    </div>
+                  </div>
+                </CCol>
+              </CRow>
               {generalOpen && (
                 <>
+                  {labelName === "Abnormal" && (
+                    <CRow>
+                      {options?.map((option, index) => (
+                        <CCol lg={"auto"}>
+                          <OptionItem
+                            key={index}
+                            label={option}
+                            onSelect={handleSelect}
+                          />
+                        </CCol>
+                      ))}
+                    </CRow>
+                  )}
                   <CCol lg={12} className="mb-2">
                     <div class="position-relative">
                       <label for="validationTooltip01" class="form-label">
-                        Custom Entry
+                        Notes
                       </label>
                       <input
                         type="text"
                         class="form-control"
                         id="validationTooltip01"
-                        placeholder="Custom Entry"
+                        placeholder="Enter"
                       />
                     </div>
                   </CCol>
-                  <CRow>
-                    {options?.map((option, index) => (
-                      <CCol lg={"auto"}>
-                        <OptionItem
-                          key={index}
-                          label={option}
-                          onSelect={handleSelect}
-                        />
-                      </CCol>
-                    ))}
-                  </CRow>
                 </>
               )}
             </CRow>
@@ -352,7 +393,7 @@ const PhysicalExam = ({ onClose }) => {
                   <img
                     alt="plus"
                     src={Assets?.PlusIcon}
-                    onClick={heentTabOpen}
+                    // onClick={heentTabOpen}
                     className="cursor"
                   />
                 )}
@@ -360,38 +401,94 @@ const PhysicalExam = ({ onClose }) => {
                   <img
                     alt="plus"
                     src={Assets?.MinusIcon}
-                    onClick={heentTabClose}
+                    // onClick={heentTabClose}
                     className="cursor"
                   />
                 )}
-                <span className="fs-16 fw-600">HEENT</span>
+                <span className="fs-16 fw-600">Skin</span>
               </CCol>
+              <CRow>
+                <CCol>
+                  <div className="d-flex justify-content-center align-items-center">
+                    <label class="form-label">Status:</label>
+                    <div
+                      className={`option-item ${
+                        labelName1 === "Normal" ? "selected primary-bg" : ""
+                      }`}
+                      onClick={() => {
+                        toggleSelected1("Normal");
+                        setHeentOpen(false);
+                      }}
+                    >
+                      {"Normal"}
+                    </div>
+                    <div
+                      className={`option-item ${
+                        labelName1 === "Abnormal" ? "selected primary-bg" : ""
+                      }`}
+                      onClick={() => {
+                        toggleSelected1("Abnormal");
+                        setHeentOpen(true);
+                      }}
+                    >
+                      {"Abnormal"}
+                    </div>
+                  </div>
+                </CCol>
+              </CRow>
               {heentOpen && (
                 <>
+                  {/* <CRow>
+                    <CCol>
+                      <div className="d-flex justify-content-center align-items-center">
+                        <label class="form-label">Status:</label>
+                        <div
+                          className={`option-item ${
+                            labelName1 === "Normal" ? "selected primary-bg" : ""
+                          }`}
+                          onClick={() => toggleSelected1("Normal")}
+                        >
+                          {"Normal"}
+                        </div>
+                        <div
+                          className={`option-item ${
+                            labelName1 === "Abnormal"
+                              ? "selected primary-bg"
+                              : ""
+                          }`}
+                          onClick={() => toggleSelected1("Abnormal")}
+                        >
+                          {"Abnormal"}
+                        </div>
+                      </div>
+                    </CCol>
+                  </CRow> */}
+                  {labelName1=== "Abnormal"  && (
+                    <CRow>
+                      {options?.map((option, index) => (
+                        <CCol lg={"auto"}>
+                          <OptionItem
+                            key={index}
+                            label={option}
+                            onSelect={handleSelect}
+                          />
+                        </CCol>
+                      ))}
+                    </CRow>
+                  )}
                   <CCol lg={12} className="mb-2">
                     <div class="position-relative">
                       <label for="validationTooltip01" class="form-label">
-                        Custom Entry
+                        Notes
                       </label>
                       <input
                         type="text"
                         class="form-control"
                         id="validationTooltip01"
-                        placeholder="Custom Entry"
+                        placeholder="Enter"
                       />
                     </div>
                   </CCol>
-                  <CRow>
-                    {options?.map((option, index) => (
-                      <CCol lg={"auto"}>
-                        <OptionItem
-                          key={index}
-                          label={option}
-                          onSelect={handleSelect}
-                        />
-                      </CCol>
-                    ))}
-                  </CRow>
                 </>
               )}
             </CRow>
