@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Dropdown = ({ options, defaultValue, getSelectedValue }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const [selectedOption, setSelectedOption] = useState(
     defaultValue || "Select" || options[0]
   );
@@ -16,8 +18,23 @@ const Dropdown = ({ options, defaultValue, getSelectedValue }) => {
     getSelectedValue(option);
   };
 
+  const handleClickOutside = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    // Attach the event listener for clicks outside
+    document.addEventListener("mousedown", handleClickOutside);
+    
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="dropdown-container">
+    <div className="dropdown-container" ref={dropdownRef}>
       <div className="dropdown-header" onClick={toggleDropdown}>
         <span>{selectedOption || "Select an option"}</span>
         <span className={`arrow ${isOpen ? "open" : ""}`}></span>

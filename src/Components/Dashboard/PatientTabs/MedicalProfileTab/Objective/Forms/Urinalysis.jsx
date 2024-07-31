@@ -176,11 +176,8 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <label for="validationTooltip01" class="form-label">
                 Color *
               </label>
-              <select
-                class="form-select"
-                aria-label="Disabled select example"
-                defaultValue={"straw"}
-              >
+              <select class="form-select" aria-label="Disabled select example">
+                <option>Select</option>
                 <option value="straw">Straw</option>
                 <option value="yellow">Yellow</option>
                 <option value="amber">Amber</option>
@@ -198,8 +195,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"clear"}
+                // defaultValue={"clear"}
               >
+                <option>Select</option>
                 <option value="clear">Clear</option>
                 <option value="slightly cloudy">Slightly Cloudy</option>
                 <option value="cloudy">Cloudy</option>
@@ -229,8 +227,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Normal"}
+                // defaultValue={"Normal"}
               >
+                <option>Select</option>
                 <option value="Normal (6-7)">Normal (6-7)</option>
                 <option value="Acidic(<6)">Acidic ({"<"}6)</option>
                 <option value="Alkaline(>7)">Alkaline ({">"}7)</option>
@@ -245,8 +244,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Trace"}
+                // defaultValue={"Trace"}
               >
+                <option>Select</option>
                 <option value="Trace">Trace</option>
                 <option value="1+ (30 mg/dL)">1+ (30 mg/dL)</option>
                 <option value="2+ (100 mg/dL)">2+ (100 mg/dL)</option>
@@ -263,8 +263,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Negative"}
+                // defaultValue={"Negative"}
               >
+                <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
                 <option value="1+ (100 mg/dL)">1+ (100 mg/dL)</option>
@@ -282,8 +283,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Negative"}
+                // defaultValue={"Negative"}
               >
+                <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
                 <option value="Small (1+)">Small (1+)</option>
@@ -300,8 +302,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Negative"}
+                // defaultValue={"Negative"}
               >
+                <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
                 <option value="Small (1+)">Small (1+)</option>
@@ -318,8 +321,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Negative"}
+                // defaultValue={"Negative"}
               >
+                <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
                 <option value="Small (1+)">Small (1+)</option>
@@ -336,8 +340,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Negative"}
+                // defaultValue={"Negative"}
               >
+                <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Positive">Positive</option>
               </select>
@@ -365,8 +370,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Negative"}
+                // defaultValue={"Negative"}
               >
+                <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Positive">Positive</option>
               </select>
@@ -383,9 +389,10 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Red Blood Cell"}
+                // defaultValue={"Red Blood Cell"}
                 onChange={(e) => setCell(e.target.value)}
               >
+                <option>Select</option>
                 <option value="Red Blood Cell">Red Blood Cell</option>
                 <option value="White Blood Cell">White Blood Cell</option>
                 <option value="Epithelial Cell">Epithelial Cell</option>
@@ -400,8 +407,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Uric Acid Crystals"}
+                // defaultValue={"Uric Acid Crystals"}
               >
+                <option>Select</option>
                 <option value="Uric Acid Crystals">Uric Acid Crystals</option>
                 <option value="Calcium Oxalate Crystals">
                   Calcium Oxalate Crystals
@@ -419,8 +427,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                defaultValue={"Bacteria"}
+                // defaultValue={"Bacteria"}
               >
+                <option>Select</option>
                 <option value="Bacteria">Bacteria</option>
                 <option value="Yeast">Yeast</option>
                 <option value="Parasites">Parasites</option>
@@ -436,8 +445,10 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 <select
                   class="form-select"
                   aria-label="Disabled select example"
-                  defaultValue={"Squamous Epithelial Cells"}
+                  // defaultValue={"Squamous Epithelial Cells"}
                 >
+                  <option>Select</option>
+
                   <option value="Squamous Epithelial Cells">
                     Squamous Epithelial Cells
                   </option>

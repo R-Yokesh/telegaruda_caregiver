@@ -47,6 +47,15 @@ body {
   --light-gray: #E8E8E8;
 }
 
+.disabled {
+  pointer-events: none;
+  /* Prevent any mouse interactions */
+  opacity: 0.5;
+  /* Change appearance to indicate disabled state */
+  cursor: default;
+  /* Change cursor to indicate disabled state */
+}
+
 .primary-bg {
   background: var(--theme-blue) !important;
 }

@@ -71,13 +71,20 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
 
   // Function to handle input change in medicine fields
   const handleMedicineInputChange = (id, value, fieldName) => {
-    // Handle date values differently
+    console.log(fieldName, value);
+    const newValue = value?.replace(/[^0-9]/g, "");
     const processedValue =
       fieldName === "startDate" || fieldName === "endDate"
         ? value
           ? value.toISOString()
           : "" // Convert date to ISO string
-        : value; // For non-date fields, just use the value directly
+        : fieldName === "strength"
+        ? newValue
+        : fieldName === "totalQty"
+        ? newValue
+        : fieldName === "days"
+        ? newValue
+        : value;
 
     const newMedicines = medicines.map((medicine) => {
       if (medicine.id === id) {
@@ -121,6 +128,27 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
     }
   };
   console.log(btnValue, "SEND TO PHARMACY");
+
+  const [strength, setStrength] = useState(defaultValues?.strength || "");
+  const [qty, setQty] = useState(defaultValues?.strength || "");
+  const [timeTaken, setTimeTaken] = useState(defaultValues?.strength || "");
+
+  const numCheck = (e) => {
+    const input = e.target.value;
+    const name = e.target.name;
+
+    const newValue = input.replace(/[^0-9]/g, "");
+    if (name === "strength") {
+      setStrength(newValue);
+    }
+    if (name === "totalQty") {
+      setQty(newValue);
+    }
+    if (name === "days") {
+      setTimeTaken(newValue);
+    }
+  };
+
   return (
     <>
       <div className="mb-3 p-4">
@@ -208,7 +236,32 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                         <label for="validationTooltip01" class="form-label">
                           Medicine Type *
                         </label>
-                        <input
+                        <CFormSelect
+                          size="lg"
+                          className="mb-3"
+                          aria-label="Large select example"
+                          name="type"
+                          defaultValue={medicine?.type}
+                          disabled={
+                            defaultValues?.lab_status === "Prescribed"
+                              ? false
+                              : defaultValues?.medicines?.length >= 1
+                              ? true
+                              : false
+                          }
+                          onChange={(e) =>
+                            handleMedicineInputChange(
+                              medicine?.id,
+                              e.target.value,
+                              e.target.name
+                            )
+                          }
+                        >
+                          <option>Select</option>
+                          <option value="Brand">Brand</option>
+                          <option value="Generic">Generic</option>
+                        </CFormSelect>
+                        {/* <input
                           name="type"
                           type="text"
                           class="form-control  pad-10"
@@ -229,7 +282,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                               e.target.name
                             )
                           }
-                        />
+                        /> */}
                       </div>
                     </div>
                   </CCol>
@@ -276,9 +329,9 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           type="text"
                           class="form-control  pad-10"
                           id="validationTooltip01"
-                          placeholder="Enter"
+                          placeholder="00"
                           name="strength"
-                          defaultValue={medicine?.strength}
+                          value={medicine?.strength}
                           disabled={
                             defaultValues?.lab_status === "Prescribed"
                               ? false
@@ -379,9 +432,9 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           type="text"
                           class="form-control  pad-10"
                           id="validationTooltip01"
-                          placeholder="Enter"
+                          placeholder="00"
                           name="days"
-                          defaultValue={medicine?.days}
+                          value={medicine?.days}
                           disabled={
                             defaultValues?.lab_status === "Prescribed"
                               ? false
@@ -410,9 +463,9 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                           type="text"
                           class="form-control  pad-10"
                           id="validationTooltip01"
-                          placeholder="Enter"
+                          placeholder="00"
                           name="totalQty"
-                          defaultValue={medicine?.totalQty}
+                          value={medicine?.totalQty}
                           disabled={
                             defaultValues?.lab_status === "Prescribed"
                               ? false
@@ -453,7 +506,9 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                             disabled={
                               defaultValues?.lab_status === "Prescribed"
                                 ? false
-                                : true
+                                : defaultValues?.medicines?.length >= 1
+                                ? true
+                                : false
                             }
                             name="startDate"
                             showIcon
@@ -500,7 +555,9 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                             disabled={
                               defaultValues?.lab_status === "Prescribed"
                                 ? false
-                                : true
+                                : defaultValues?.medicines?.length >= 1
+                                ? true
+                                : false
                             }
                             name="endDate"
                             showIcon
@@ -782,8 +839,8 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                 </CRow>
               </CCol>
               {defaultValues?.medicines?.length >= 1 ? (
-                defaultValues?.lab_status === "Prescribed" && (
-                  medicine?.id === 1 ? null :
+                defaultValues?.lab_status === "Prescribed" &&
+                (medicine?.id === 1 ? null : (
                   <CCol lg={1}>
                     <div style={{ width: "40px" }}>
                       <ActiveButton
@@ -795,7 +852,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                       </ActiveButton>
                     </div>
                   </CCol>
-                )
+                ))
               ) : medicine.id === 1 ? null : (
                 <CCol lg={1}>
                   <div style={{ width: "40px" }}>

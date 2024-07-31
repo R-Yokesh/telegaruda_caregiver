@@ -43,6 +43,32 @@ const MedicationForm = ({ back, defaultValues }) => {
   const getSelectedValue = (data) => {
     console.log(data);
   };
+
+  const options1 = ["Brand", "Generic"];
+  const getSelectedValue1 = (data) => {
+    console.log(data);
+  };
+
+  const [strength, setStrength] = useState(defaultValues?.strength || "");
+  const [qty, setQty] = useState(defaultValues?.strength || "");
+  const [timeTaken, setTimeTaken] = useState(defaultValues?.strength || "");
+
+  const numCheck = (e) => {
+    const input = e.target.value;
+    const name = e.target.name;
+
+    const newValue = input.replace(/[^0-9]/g, "");
+    if (name === "str&dos") {
+      setStrength(newValue);
+    }
+    if (name === "totalQty") {
+      setQty(newValue);
+    }
+    if (name === "days") {
+      setTimeTaken(newValue);
+    }
+  };
+  
   return (
     <>
       <CRow className="mb-3">
@@ -52,13 +78,26 @@ const MedicationForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Medication Type *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.name}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options1}
+                  // defaultValue={options[1]}
+                  getSelectedValue={getSelectedValue1}
+                />
+              </div>
             </div>
           </div>
         </CCol>
@@ -88,8 +127,11 @@ const MedicationForm = ({ back, defaultValues }) => {
                 type="text"
                 class="form-control pad-10"
                 id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.strength}
+                placeholder="00"
+                name="str&dos"
+                // defaultValue={defaultValues?.strength}
+                value={strength}
+                onChange={numCheck}
               />
             </div>
           </div>
@@ -145,8 +187,10 @@ const MedicationForm = ({ back, defaultValues }) => {
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
-                placeholder="Enter"
+                placeholder="00"
                 name="days"
+                value={timeTaken}
+                onChange={numCheck}
               />
             </div>
           </div>
@@ -161,8 +205,10 @@ const MedicationForm = ({ back, defaultValues }) => {
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
-                placeholder="Enter"
+                placeholder="00"
                 name="totalQty"
+                value={qty}
+                onChange={numCheck}
               />
             </div>
           </div>

@@ -40,6 +40,8 @@ const LabOrderForm = ({ back, defaultValues }) => {
   const getbtnNames = () => {
     console.log("getbtnNames");
   };
+  const eoptions = ["E11.8", "E11.9", "E12.0", "E12.1", "E12.2"];
+
   return (
     <>
       <CRow className="mb-3">
@@ -63,13 +65,25 @@ const LabOrderForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 ICD Code *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.icd_code}
-              />
+              /> */}
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={eoptions}
+                  getSelectedValue={getSelectedValue}
+                />
+              </div>
             </div>
           </div>
         </CCol>

@@ -86,7 +86,7 @@ const GFR = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                GFR(mL/min) *
+                GFR(mL/min/1.73m²) *
               </label>
               <input
                 type="text"

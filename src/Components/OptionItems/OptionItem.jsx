@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const OptionItem = ({ label, onSelect }) => {
-  const [isSelected, setIsSelected] = useState(false);
-
+const OptionItem = ({ label, onSelect, selected, disabled }) => {
+  const [isSelected, setIsSelected] = useState(selected);
+  useEffect(() => {
+    setIsSelected(selected);
+  }, [selected]);
   const toggleSelected = () => {
     setIsSelected(!isSelected);
     onSelect(label, !isSelected); // Notify parent component of selection change
@@ -10,7 +12,9 @@ const OptionItem = ({ label, onSelect }) => {
 
   return (
     <div
-      className={`option-item ${isSelected ? "selected" : ""}`}
+      className={`option-item ${isSelected ? "selected" : ""} ${
+        disabled ? "disabled" : ""
+      }`}
       onClick={toggleSelected}
     >
       {label}

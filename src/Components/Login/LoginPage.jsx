@@ -4,6 +4,7 @@ import Footer from "../../Layout/Footer/Footer";
 import { Assets } from "../../assets/Assets";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -38,7 +39,7 @@ const LoginPage = () => {
         body: JSON.stringify(loginData),
       });
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("These credentials do not match our records.");
       }
       const data = await response.json();
       if (data.code === 200) {
@@ -47,12 +48,14 @@ const LoginPage = () => {
           data?.data?.token,
           data?.data?.token_expiration_time
         );
-        console.log("Post created:", data);
+        // console.log("Post created:", data);
+        toast.success("Login Successful");
         navigate("/patients");
         sessionStorage.setItem("loggedIn", "true");
       }
     } catch (error) {
       setError(error.message);
+      toast.error("Login Failed");
     } finally {
       setLoading(false);
     }

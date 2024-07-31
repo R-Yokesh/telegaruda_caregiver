@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
-import { CCard, CCardBody, CCol, CRow } from "@coreui/react";
+import {
+  CCard,
+  CCardBody,
+  CCol,
+  CModal,
+  CModalBody,
+  CRow,
+} from "@coreui/react";
 import { Assets } from "../../../../../../assets/Assets";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import DateSelector from "../../../../../DateRangePicker/DateSelector";
@@ -10,17 +17,122 @@ import ActiveButton from "../../../../../Buttons/ActiveButton/ActiveButton";
 import SingleDatePicker from "../../../../../DateRangePicker/SingleDatePicker";
 import OptionItem from "../../../../../OptionItems/OptionItem";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
+import BlurBackground from "../../../../../BlurBackground/BlurBackground";
 
 const PhysicalExam = ({ onClose }) => {
   const dateCards = [
-    { id: 1, date: "06/07/2024" },
-    { id: 2, date: "06/07/2024" },
-    { id: 3, date: "06/07/2024" },
-    { id: 4, date: "06/07/2024" },
-    { id: 5, date: "06/07/2024" },
-    { id: 6, date: "06/07/2024" },
-    { id: 7, date: "06/07/2024" },
-    { id: 8, date: "06/07/2024" },
+    {
+      id: 1,
+      date: "06/07/2024",
+      ga: {
+        status: "Abnormal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+      skin: {
+        status: "Normal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+    },
+    {
+      id: 2,
+      date: "06/07/2024",
+      ga: {
+        status: "Normal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+      skin: {
+        status: "Abnormal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+    },
+    {
+      id: 3,
+      date: "06/07/2024",
+      ga: {
+        status: "Normal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+      skin: {
+        status: "Abnormal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+    },
+    {
+      id: 4,
+      date: "06/07/2024",
+      ga: {
+        status: "Normal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+      skin: {
+        status: "Abnormal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+    },
+    {
+      id: 5,
+      date: "06/07/2024",
+      ga: {
+        status: "Normal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+      skin: {
+        status: "Abnormal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+    },
+    {
+      id: 6,
+      date: "06/07/2024",
+      ga: {
+        status: "Normal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+      skin: {
+        status: "Abnormal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+    },
+    {
+      id: 7,
+      date: "06/07/2024",
+      ga: {
+        status: "Normal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+      skin: {
+        status: "Abnormal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+    },
+    {
+      id: 8,
+      date: "06/07/2024",
+      ga: {
+        status: "Normal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+      skin: {
+        status: "Abnormal",
+        notes: "Lorem ipsum",
+        select: ["Posture and Gait"],
+      },
+    },
     { id: 9, date: "06/07/2024" },
     { id: 10, date: "06/07/2024" },
     { id: 11, date: "06/07/2024" },
@@ -29,10 +141,24 @@ const PhysicalExam = ({ onClose }) => {
     { id: 14, date: "06/07/2024" },
   ];
   const [currentPage, setCurrentPage] = useState(1);
-  const [addFormView, setAddFormView] = useState(false);
+  const [addFormView, setAddFormView] = useState(true);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [skinselectedOptions, setSkinSelectedOptions] = useState([]);
+
+  const [labelName1, setLabelname1] = useState("");
+  const [deleteView, setDeleteView] = useState(false);
+  const [selectedData, setSelectedData] = useState({});
+  const [isSelected, setIsSelected] = useState(false);
+  const [labelName, setLabelname] = useState(selectedData?.ga?.status || "");
+  const [editView, setEditView] = useState(false);
 
   const options = [
+    "Appearance (well, ill, distressed, etc.)",
+    "Level of Consciousness (alert, drowsy, unresponsive, etc.)",
+    "Posture and Gait",
+  ];
+
+  const skinoptions = [
     "Appearance (well, ill, distressed, etc.)",
     "Level of Consciousness (alert, drowsy, unresponsive, etc.)",
     "Posture and Gait",
@@ -61,6 +187,16 @@ const PhysicalExam = ({ onClose }) => {
       setSelectedOptions([...selectedOptions, option]);
     } else {
       setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    }
+  };
+
+  const handleSelectSkin = (option, isSelected) => {
+    if (isSelected) {
+      setSkinSelectedOptions([...skinselectedOptions, option]);
+    } else {
+      setSkinSelectedOptions(
+        skinselectedOptions.filter((item) => item !== option)
+      );
     }
   };
 
@@ -101,15 +237,42 @@ const PhysicalExam = ({ onClose }) => {
     setHeentOpen(false);
   };
 
-  const [isSelected, setIsSelected] = useState(false);
-  const [labelName, setLabelname] = useState("");
-
   const toggleSelected = (label) => {
     setIsSelected(!isSelected);
     setLabelname(label);
   };
 
-  const [labelName1, setLabelname1] = useState("");
+  useEffect(() => {
+    if (editView) {
+      setLabelname(selectedData?.ga?.status);
+      setLabelname1(selectedData?.skin?.status);
+      setSelectedOptions(selectedData?.ga?.select);
+      setSkinSelectedOptions(selectedData?.skin?.select);
+      if (selectedData?.ga?.status === "Abnormal") {
+        setGeneralOpen(true);
+      }
+      if (selectedData?.skin?.status === "Abnormal") {
+        setHeentOpen(true);
+      }
+    } else {
+      setLabelname("");
+      setLabelname1("");
+      setGeneralOpen(false);
+      setHeentOpen(false);
+      setSelectedOptions([]);
+    }
+  }, [editView]);
+
+  const getselected = (data, method) => {
+    setSelectedData(data);
+    if (method === "delete") {
+      setDeleteView(true);
+    }
+    if (method === "edit") {
+      addFormPage();
+      setEditView(true);
+    }
+  };
 
   const toggleSelected1 = (label) => {
     setLabelname1(label);
@@ -156,7 +319,12 @@ const PhysicalExam = ({ onClose }) => {
               className="d-flex justify-content-end align-items-center"
             >
               <div>
-                <PrimaryButton onClick={() => addFormPage()}>
+                <PrimaryButton
+                  onClick={() => {
+                    addFormPage();
+                    setSelectedData({});
+                  }}
+                >
                   <div className="d-flex align-items-center gap-2">
                     <img src={Assets.Add} alt="add" />
                     <span className="fs-16 fw-600">Add</span>
@@ -169,7 +337,7 @@ const PhysicalExam = ({ onClose }) => {
             <CRow>
               {getCurrentPageItems()?.map((item, i) => (
                 <CCol lg={4} className="mb-3" key={i}>
-                  <DateCards data={item} />
+                  <DateCards data={item} onClick={getselected} />
                 </CCol>
               ))}
             </CRow>
@@ -186,17 +354,51 @@ const PhysicalExam = ({ onClose }) => {
           </div>
         </>
       )}
+      {deleteView && (
+        <BlurBackground>
+          <CModal
+            alignment="center"
+            visible={deleteView}
+            onClose={() => setDeleteView(false)}
+            aria-labelledby="VerticallyCenteredExample"
+          >
+            <CModalBody className="p-3">
+              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                <h5>Are you sure want to delete ?</h5>
+                <div className="d-flex gap-2 mt-2">
+                  <div style={{ width: "80px" }}>
+                    <PrimaryButton onClick={() => setDeleteView(false)}>
+                      Yes
+                    </PrimaryButton>
+                  </div>
+                  <div style={{ width: "80px" }}>
+                    <SecondaryButton onClick={() => setDeleteView(false)}>
+                      No
+                    </SecondaryButton>
+                  </div>
+                </div>
+              </div>
+            </CModalBody>
+          </CModal>
+        </BlurBackground>
+      )}
       {addFormView && (
         <CCard className="p-2 cursor-default mb-5">
           <CCardBody className="mb-3">
             <CRow className="mb-2">
               <CCol className="d-flex align-items-center gap-2">
                 <span>Date</span>
-                <SingleDatePicker />
+                <SingleDatePicker defaultDate={selectedData?.date} />
               </CCol>
               <CCol className="d-flex justify-content-end">
                 <div style={{ width: "120px" }}>
-                  <ActiveButton onClick={() => setAddFormView(false)}>
+                  <ActiveButton
+                    onClick={() => {
+                      setAddFormView(false);
+                      setEditView(false);
+                      setSelectedData({});
+                    }}
+                  >
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets?.listview} alt="close" />
                       <span>List View</span>
@@ -333,7 +535,7 @@ const PhysicalExam = ({ onClose }) => {
                     <div
                       className={`option-item ${
                         labelName === "Normal" ? "selected primary-bg" : ""
-                      }`}
+                      } ${editView ? "disabled" : ""}`}
                       onClick={() => {
                         toggleSelected("Normal");
                         setGeneralOpen(false);
@@ -344,7 +546,7 @@ const PhysicalExam = ({ onClose }) => {
                     <div
                       className={`option-item ${
                         labelName === "Abnormal" ? "selected primary-bg" : ""
-                      }`}
+                      } ${editView ? "disabled" : ""}`}
                       onClick={() => {
                         toggleSelected("Abnormal");
                         setGeneralOpen(true);
@@ -365,24 +567,28 @@ const PhysicalExam = ({ onClose }) => {
                             key={index}
                             label={option}
                             onSelect={handleSelect}
+                            selected={selectedOptions.includes(option)}
+                            disabled={editView}
                           />
                         </CCol>
                       ))}
+                      <CCol lg={12} className="mb-2">
+                        <div class="position-relative">
+                          <label for="validationTooltip01" class="form-label">
+                            Notes
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="validationTooltip01"
+                            placeholder="Enter"
+                            defaultValue={selectedData?.ga?.notes}
+                            disabled={editView}
+                          />
+                        </div>
+                      </CCol>
                     </CRow>
                   )}
-                  <CCol lg={12} className="mb-2">
-                    <div class="position-relative">
-                      <label for="validationTooltip01" class="form-label">
-                        Notes
-                      </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="validationTooltip01"
-                        placeholder="Enter"
-                      />
-                    </div>
-                  </CCol>
                 </>
               )}
             </CRow>
@@ -414,7 +620,7 @@ const PhysicalExam = ({ onClose }) => {
                     <div
                       className={`option-item ${
                         labelName1 === "Normal" ? "selected primary-bg" : ""
-                      }`}
+                      } ${editView ? "disabled" : ""}`}
                       onClick={() => {
                         toggleSelected1("Normal");
                         setHeentOpen(false);
@@ -425,7 +631,7 @@ const PhysicalExam = ({ onClose }) => {
                     <div
                       className={`option-item ${
                         labelName1 === "Abnormal" ? "selected primary-bg" : ""
-                      }`}
+                      } ${editView ? "disabled" : ""}`}
                       onClick={() => {
                         toggleSelected1("Abnormal");
                         setHeentOpen(true);
@@ -463,44 +669,61 @@ const PhysicalExam = ({ onClose }) => {
                       </div>
                     </CCol>
                   </CRow> */}
-                  {labelName1=== "Abnormal"  && (
-                    <CRow>
-                      {options?.map((option, index) => (
-                        <CCol lg={"auto"}>
-                          <OptionItem
-                            key={index}
-                            label={option}
-                            onSelect={handleSelect}
+                  {labelName1 === "Abnormal" && (
+                    <>
+                      <CRow>
+                        {skinoptions?.map((option, index) => (
+                          <CCol lg={"auto"}>
+                            <OptionItem
+                              key={index}
+                              label={option}
+                              onSelect={handleSelectSkin}
+                              selected={skinselectedOptions?.includes(option)}
+                              disabled={editView}
+                            />
+                          </CCol>
+                        ))}
+                      </CRow>
+                      <CCol lg={12} className="mb-2">
+                        <div class="position-relative">
+                          <label for="validationTooltip01" class="form-label">
+                            Notes
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="validationTooltip01"
+                            placeholder="Enter"
+                            disabled={editView}
+                            defaultValue={selectedData?.skin?.notes}
                           />
-                        </CCol>
-                      ))}
-                    </CRow>
+                        </div>
+                      </CCol>
+                    </>
                   )}
-                  <CCol lg={12} className="mb-2">
-                    <div class="position-relative">
-                      <label for="validationTooltip01" class="form-label">
-                        Notes
-                      </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="validationTooltip01"
-                        placeholder="Enter"
-                      />
-                    </div>
-                  </CCol>
                 </>
               )}
             </CRow>
-            <div className="vertical-line mt-2 mb-3"></div>
-            <CRow className="mb-1">
-              <div style={{ width: "128px" }}>
-                <PrimaryButton>SAVE</PrimaryButton>
-              </div>
-              <div style={{ width: "128px" }}>
-                <SecondaryButton>CANCEL</SecondaryButton>
-              </div>
-            </CRow>
+            {!editView && (
+              <>
+                <div className="vertical-line mt-2 mb-3"></div>
+                <CRow className="mb-1">
+                  <div style={{ width: "128px" }}>
+                    <PrimaryButton>SAVE</PrimaryButton>
+                  </div>
+                  <div style={{ width: "128px" }}>
+                    <SecondaryButton
+                      onClick={() => {
+                        setAddFormView(false);
+                        setEditView(false);
+                      }}
+                    >
+                      CANCEL
+                    </SecondaryButton>
+                  </div>
+                </CRow>
+              </>
+            )}
           </CCardBody>
         </CCard>
       )}
