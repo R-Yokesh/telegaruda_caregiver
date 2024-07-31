@@ -12,8 +12,8 @@ import { useAuth } from "../../contexts/AuthContext";
 const Header = () => {
   const [exit, setExit] = useState(false);
   const navigate = useNavigate();
-  const { logout } = useAuth();
-
+  const { logout, user } = useAuth();
+  console.log("first user", user);
   const Logout = (e) => {
     sessionStorage.setItem("loggedIn", "false");
     navigate("/");
@@ -30,9 +30,9 @@ const Header = () => {
           </button>
         </div>
         <div className="profile-info">
-          <img src={Assets.user} alt="Profile" />
+          <img src={user?.profileImage || Assets.user} alt="Profile" />
           <div className="profile-text">
-            <span className="profile-name">Merry Jane</span>
+            <span className="profile-name">{user?.name || ""}</span>
             <span className="profile-location">
               Caregiver{" "}
               <button className="signout-btn" onClick={() => setExit(true)}>
