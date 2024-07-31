@@ -26,6 +26,11 @@ const PatientTabs = ({ getCurrentTab }) => {
       title: "Pair",
       image: Assets.Qr,
     },
+    {
+      id: 5,
+      title: "Call2",
+      image: Assets.Call,
+    },
   ];
 
 

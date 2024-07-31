@@ -9,6 +9,7 @@ import { Assets } from "../../../assets/Assets";
 import MedicalProfile from "../../../Components/Dashboard/PatientTabs/MedicalProfileTab/MedicalProfile";
 import PairTab from "../../../Components/Dashboard/PatientTabs/PairTab/PairTab";
 import CallHistoryView from "../../CallHistory/CallHistoryView";
+import CallTab from "../../../Components/Dashboard/PatientTabs/CallTab/CallTab";
 
 const PatientDetailsView = () => {
   const [currentTab, setCurrentTab] = useState(() => {
@@ -45,6 +46,13 @@ const PatientDetailsView = () => {
         <CRow>
           <CCol md={12}>
             <PairTab />
+          </CCol>
+        </CRow>
+      )}
+        {currentTab === 5 && (
+        <CRow>
+          <CCol md={12}>
+            <CallTab/>
           </CCol>
         </CRow>
       )}
