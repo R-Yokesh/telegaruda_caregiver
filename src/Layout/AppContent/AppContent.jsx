@@ -7,7 +7,7 @@ const AppContent = () => {
     <Suspense>
       <Routes>
         {routes.map((route, idx) => {
-          console.log("path", routes.path)
+          // console.log("path", routes.path)
           if (route.element) {
             return (
               <Route

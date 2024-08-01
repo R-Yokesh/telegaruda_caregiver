@@ -23,19 +23,17 @@ function App() {
     <div className="App">
       <Router basename="/telegaruda-caregiver">
         <Suspense>
-          <AuthProvider>
-            <Routes>
-              {/* <Route path='/' name='Login' element={<Login />} /> */}
-              {/* {loggedIn !== 'true' ? */}
-              {/* ( */}
-              <Route path="/" name="home" element={<LogIn />} />
-              {/* ) : */}
-              {/* ( */}
-              <Route path="/*" name="Home" element={<DefaultLayout />} />
-              {/* ) */}
-              {/* } */}
-            </Routes>
-          </AuthProvider>
+          <Routes>
+            {/* <Route path='/' name='Login' element={<Login />} /> */}
+            {/* {loggedIn !== 'true' ? */}
+            {/* ( */}
+            <Route path="/" name="home" element={<LogIn />} />
+            {/* ) : */}
+            {/* ( */}
+            <Route path="/*" name="Home" element={<DefaultLayout />} />
+            {/* ) */}
+            {/* } */}
+          </Routes>
         </Suspense>
         {/* <DefaultLayout /> */}
       </Router>

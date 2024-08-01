@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "../../Components/Breadcrumb/Breadcrumb";
 import PatientCard from "../../Components/PatientCard/PatientCard";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,44 +6,59 @@ import { Assets } from "../../assets/Assets";
 import { CCol, CContainer, CModal, CModalBody, CRow } from "@coreui/react";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../Components/Buttons/SecondaryButton/SecondaryButton";
+import useApi from "../../ApiServices/useApi";
+import Pagination from "../../Components/Pagination/Pagination";
+import Loader from "../../Components/Loader/Loader";
 
 function ExistingPatientView() {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
-  const PatientDetail = [
-    {
-      name: "Ram Mohan S R",
-      email: "rammohan@cure.com",
-      mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
-      profile: Assets.Patient,
-    },
-    {
-      name: "Ram Mohan S R",
-      email: "rammohan@cure.com",
-      mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
-      profile: Assets.Patient,
-    },
-    {
-      name: "Ram Mohan S R",
-      email: "rammohan@cure.com",
-      mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
-      profile: Assets.Patient,
-    },
-    {
-      name: "Ram Mohan S R",
-      email: "rammohan@cure.com",
-      mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
-      profile: Assets.Patient,
-    },
-  ];
+  const [PatientDetail, setPatientDetail] = useState([]);
+  const [totalItems, setTotalItems] = useState(0);
+
+  const { loading, error, get, post } = useApi();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20; // Number of items to display per page
+
+  // Function to handle page change
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // const PatientDetail = [
+  //   {
+  //     name: "Ram Mohan S R",
+  //     email: "rammohan@cure.com",
+  //     mobile: "+91 98765 43210",
+  //     mrn: "MRN 3",
+  //     age: "34 yrs (M)",
+  //     profile: Assets.Patient,
+  //   },
+  //   {
+  //     name: "Ram Mohan S R",
+  //     email: "rammohan@cure.com",
+  //     mobile: "+91 98765 43210",
+  //     mrn: "MRN 3",
+  //     age: "34 yrs (M)",
+  //     profile: Assets.Patient,
+  //   },
+  //   {
+  //     name: "Ram Mohan S R",
+  //     email: "rammohan@cure.com",
+  //     mobile: "+91 98765 43210",
+  //     mrn: "MRN 3",
+  //     age: "34 yrs (M)",
+  //     profile: Assets.Patient,
+  //   },
+  //   {
+  //     name: "Ram Mohan S R",
+  //     email: "rammohan@cure.com",
+  //     mobile: "+91 98765 43210",
+  //     mrn: "MRN 3",
+  //     age: "34 yrs (M)",
+  //     profile: Assets.Patient,
+  //   },
+  // ];
 
   const DetailSec = () => {
     localStorage.removeItem("patiendDetailTab");
@@ -59,6 +74,27 @@ function ExistingPatientView() {
     setVisible(false);
   };
 
+  const getPatients = async () => {
+    try {
+      const response = await get(
+        `resource/patients?limit=${itemsPerPage}&page=${currentPage}`
+      );
+      console.log(response); // Handle the data as needed
+      if (response.code === 200) {
+        setPatientDetail(response?.data?.patients);
+        setTotalItems(response?.data?.pagination?.total);
+      } else {
+        setPatientDetail([]);
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    }
+  };
+  useEffect(() => {
+    getPatients();
+  }, [currentPage]);
+
+  console.log("first", loading);
   return (
     <section className="existing-patient">
       <div className="flex-sec top-sec">
@@ -75,17 +111,38 @@ function ExistingPatientView() {
           <button>+ ADD Patient</button>
         </div>
       </div>
-      <div className="row">
-        {PatientDetail.map((data, i) => (
-          <div className="col-4" onClick={() => DetailSec()}>
-            <Link
-              //   to={"/patients/history"}
-              className="card-link"
-            >
-              <PatientCard PatientDetail={data} />
-            </Link>
+      <div className="row mb-3">
+        {!loading ? (
+          <>
+            {PatientDetail.map((data, i) => (
+              <div className="col-4" onClick={() => DetailSec()}>
+                <Link
+                  //   to={"/patients/history"}
+                  className="card-link"
+                >
+                  <PatientCard PatientDetail={data} />
+                </Link>
+              </div>
+            ))}
+          </>
+        ) : (
+          <div
+            className="d-flex w-100 justify-content-center mb-3 align-items-center"
+            style={{ height: "350px", maxHeight: "100%" }}
+          >
+            <Loader />
           </div>
-        ))}
+        )}
+        <CRow className="mb-3">
+          <CCol lg={12} className="d-flex justify-content-center">
+            <Pagination
+              currentPage={currentPage}
+              onPageChange={onPageChange}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+            />
+          </CCol>
+        </CRow>
       </div>
 
       <CModal

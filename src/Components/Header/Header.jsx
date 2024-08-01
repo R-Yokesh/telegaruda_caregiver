@@ -1,9 +1,11 @@
-import React from 'react';
-import './Header.css';
+import React from "react";
+import "./Header.css";
+import { useAuth } from "../../contexts/AuthContext";
 // import logo from './path/to/logo.png'; // Ensure you have the logo image in the specified path
 // import profilePic from './path/to/profilePic.png'; // Ensure you have the profile picture in the specified path
 
 const Header = () => {
+
   return (
     <header className="header">
       <div className="logo">
@@ -20,11 +22,12 @@ const Header = () => {
           <img src={""} alt="Profile" />
           <div className="profile-text">
             <span className="profile-name">Merry Jane</span>
-            <span className="profile-location">Apollo Hospitals, Chennai, Tamilnadu</span>
+            <span className="profile-location">
+              Apollo Hospitals, Chennai, Tamilnadu
+            </span>
           </div>
         </div>
       </div>
-
     </header>
   );
 };

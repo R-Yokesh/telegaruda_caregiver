@@ -16,7 +16,7 @@ const PatientDetailsView = () => {
     // Initial state setup using localStorage
     const storedCount = localStorage.getItem("patiendDetailTab");
     const parsedData = storedCount && JSON.parse(storedCount);
-    return storedCount ? parsedData?.id : 1;
+    return storedCount ? parsedData?.id : null;
   });
   const getCurrentTab = (data) => {
     setCurrentTab(data);
@@ -33,7 +33,7 @@ const PatientDetailsView = () => {
           <PatientTabs getCurrentTab={getCurrentTab} />
         </CCol>
       </CRow>
-      {currentTab === 1 && <CallHistoryView />}
+      {!currentTab && <CallHistoryView />}
 
       {currentTab === 2 && (
         <CRow>
@@ -49,10 +49,10 @@ const PatientDetailsView = () => {
           </CCol>
         </CRow>
       )}
-        {currentTab === 5 && (
+      {currentTab === 1 && (
         <CRow>
           <CCol md={12}>
-            <CallTab/>
+            <CallTab />
           </CCol>
         </CRow>
       )}

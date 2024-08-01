@@ -26,24 +26,27 @@ const PatientTabs = ({ getCurrentTab }) => {
       title: "Pair",
       image: Assets.Qr,
     },
-    {
-      id: 5,
-      title: "Call2",
-      image: Assets.Call,
-    },
+    // {
+    //   id: 5,
+    //   title: "Call2",
+    //   image: Assets.Call,
+    // },
   ];
-
 
   const [currentTab, setCurrentTab] = useState(() => {
     // Initial state setup using localStorage
     const storedCount = localStorage.getItem("patiendDetailTab");
-    return storedCount ? JSON.parse(storedCount) : tabs[0];
+    return storedCount ? JSON.parse(storedCount) : null;
   });
 
   const switchTab = (data) => {
     localStorage.setItem("patiendDetailTab", JSON.stringify(data));
     setCurrentTab(data);
     getCurrentTab(data.id);
+    if (data?.id === currentTab?.id) {
+      getCurrentTab(null);
+      setCurrentTab(null);
+    }
   };
   return (
     <CCard className="card-tabs">
