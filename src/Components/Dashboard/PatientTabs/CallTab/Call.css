@@ -34,17 +34,20 @@
 .invite-doc-sec{
     padding: 3%;
     background-color: #ffff;
-    display: flex;
-    justify-content: space-between;
+   
     margin-bottom: 5%;
     border-radius: 10px;
+}
+.invite-doc-sec-inside{
+    display: flex;
+    justify-content: space-between;
 }
 
 .mobi-mail-btn-sec{
     display: flex;
     gap: 20px;
 }
-.mobile-icon button {
+.cliked-icon button {
     background-color: #000000;
     border: 0px;
     color: var(--white);
@@ -52,11 +55,20 @@
     border-radius: 8px;
     font-weight: 600;
 }
-.email-icon button {
+.mobile-icon button {
     background-color: var(--theme-blue);
     border: 0px;
     color: var(--white);
     padding: 8px 22px;
     border-radius: 8px;
     font-weight: 600;
+}
+
+.mobile-input-section{
+    display: flex;
+    gap: 20px;
+    align-items: end;
+}
+.start-btn{
+    background-color: var(--theme-blue);
 }
