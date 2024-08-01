@@ -101,7 +101,7 @@ const CallTab = () => {
       </div>
       <div className="doctor-card-sec">
         <div className="row">
-          {DoctorDetail.map((data, i) => (
+          {DoctorDetail?.map((data, i) => (
             <div className="col-4" onClick={() => DetailSec()} >
               <Link className="card-link">
                 <DoctorCards DoctorDetail={data} />

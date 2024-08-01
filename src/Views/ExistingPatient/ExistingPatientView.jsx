@@ -61,7 +61,7 @@ function ExistingPatientView() {
   // ];
 
   const DetailSec = () => {
-    localStorage.removeItem("patiendDetailTab");
+    // localStorage.removeItem("patiendDetailTab");
     navigate("/patients/history");
   };
 
@@ -94,7 +94,6 @@ function ExistingPatientView() {
     getPatients();
   }, [currentPage]);
 
-  console.log("first", loading);
   return (
     <section className="existing-patient">
       <div className="flex-sec top-sec">
@@ -113,18 +112,20 @@ function ExistingPatientView() {
       </div>
       <div className="row mb-3">
         {!loading ? (
-          <>
-            {PatientDetail.map((data, i) => (
-              <div className="col-4" onClick={() => DetailSec()}>
-                <Link
+          PatientDetail.length <= 0 ? null : (
+            <>
+              {PatientDetail.map((data, i) => (
+                <div className="col-4">
+                  {/* <Link
                   //   to={"/patients/history"}
                   className="card-link"
-                >
+                > */}
                   <PatientCard PatientDetail={data} />
-                </Link>
-              </div>
-            ))}
-          </>
+                  {/* </Link> */}
+                </div>
+              ))}
+            </>
+          )
         ) : (
           <div
             className="d-flex w-100 justify-content-center mb-3 align-items-center"

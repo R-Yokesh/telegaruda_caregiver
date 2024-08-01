@@ -42,7 +42,7 @@ const PatientTabs = ({ getCurrentTab }) => {
   const switchTab = (data) => {
     localStorage.setItem("patiendDetailTab", JSON.stringify(data));
     setCurrentTab(data);
-    getCurrentTab(data.id);
+    getCurrentTab(data?.id);
     if (data?.id === currentTab?.id) {
       getCurrentTab(null);
       setCurrentTab(null);
@@ -55,12 +55,12 @@ const PatientTabs = ({ getCurrentTab }) => {
           <div
             key={index}
             className={`tab-items ${
-              data.id === currentTab?.id ? "tab-active" : ""
+              data?.id === currentTab?.id ? "tab-active" : ""
             }`}
             onClick={() => switchTab(data)}
           >
-            <img src={data.image} alt="call" className="tab-icon" />
-            <span className="tab-title">{data.title}</span>
+            <img src={data?.image} alt="call" className="tab-icon" />
+            <span className="tab-title">{data?.title}</span>
           </div>
         ))}
       </CCardBody>

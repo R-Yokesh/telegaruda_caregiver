@@ -10,6 +10,7 @@ import MedicalProfile from "../../../Components/Dashboard/PatientTabs/MedicalPro
 import PairTab from "../../../Components/Dashboard/PatientTabs/PairTab/PairTab";
 import CallHistoryView from "../../CallHistory/CallHistoryView";
 import CallTab from "../../../Components/Dashboard/PatientTabs/CallTab/CallTab";
+import { useLocation } from "react-router-dom";
 
 const PatientDetailsView = () => {
   const [currentTab, setCurrentTab] = useState(() => {
@@ -21,6 +22,8 @@ const PatientDetailsView = () => {
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
+
+
   return (
     <div className="">
       {/* <CContainer> */}

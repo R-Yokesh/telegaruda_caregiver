@@ -117,6 +117,7 @@ import colorVaccined from "./Images/vaccinated - Colored.png";
 import vaccined from "./Images/vaccinated.png";
 import UStatus from "./Images/update-status.png";
 import Approve from "./Images/Approve.png";
+import NoImg from "./Images/No-Img.png";
 
 export const Assets = {
   BackBtn,
@@ -215,4 +216,5 @@ export const Assets = {
   vaccined,
   UStatus,
   Approve,
+  NoImg,
 };

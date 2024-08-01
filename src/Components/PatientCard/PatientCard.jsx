@@ -6,19 +6,22 @@ function PatientCard({ PatientDetail }) {
   const navigate = useNavigate();
 
   const goTo = () => {
-    navigate("/patients/history");
+    navigate("/patients/history", { state: { PatientDetail } });
+    localStorage.removeItem("patiendDetailTab");
   };
   return (
     <div className="card-sec">
       <div className="row align-items-center">
         <div className="profile col-4">
           <img
-            src={PatientDetail?.user?.profile_image || Assets.Patient}
+            src={PatientDetail?.user?.profile_image || Assets.NoImg}
             alt="Patient-image"
           />
         </div>
         <div className="patient-details col-8">
-          <h5>{PatientDetail?.user?.first_name}{' '}{PatientDetail?.user?.last_name} </h5>
+          <h5>
+            {PatientDetail?.user?.first_name} {PatientDetail?.user?.last_name}{" "}
+          </h5>
           <p className="gap-sec d-flex flex-wrap">
             <small className="fs-10 fw-500">
               {PatientDetail?.user?.email ?? "--"}
@@ -43,7 +46,7 @@ function PatientCard({ PatientDetail }) {
         src={Assets.Edit}
         className="edit-icon cursor"
         alt="edit-icon"
-        onClick={goTo}
+        onClick={() => goTo()}
       />
     </div>
   );
