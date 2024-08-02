@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import PatentProfile from "../../Components/Dashboard/PatentProfile/PatentProfile";
 import PatientTabs from "../../Components/Dashboard/PatientTabs/PatientTabs";
 import { CCol, CRow } from "@coreui/react";
@@ -14,8 +14,14 @@ import Loader from "../../Components/Loader/Loader";
 function CallHistoryView() {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
+  const [RegDoctors, setRegDoctors] = useState([]);
   const [DoctorDetail, setDoctorDetail] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
+  const [filter, setFilter] = useState({
+    id: null,
+    startDate: null,
+    endDate: null,
+  });
 
   const { loading, error, get, post } = useApi();
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,7 +72,11 @@ function CallHistoryView() {
   const getDoctors = async () => {
     try {
       const response = await get(
-        `resource/consults?limit=${itemsPerPage}&page=${currentPage}&participant_ref_number=10`
+        `resource/consults?limit=${itemsPerPage}&page=${currentPage}${
+          filter.id !== null ? `&participant_ref_number=${filter.id}` : ""
+        }${filter.startDate !== null ? `&from_date=${filter.startDate}` : ""}${
+          filter.endDate !== null ? `&to_date=${filter.endDate}` : ""
+        }`
       );
       console.log(response); // Handle the data as needed
       if (response.code === 200) {
@@ -81,7 +91,33 @@ function CallHistoryView() {
   };
   useEffect(() => {
     getDoctors();
-  }, [currentPage]);
+  }, [currentPage, filter]);
+
+  const getRegisteredDoctors = useCallback(async () => {
+    try {
+      const response = await get(`resource/providers?order_by=id&dir=1`);
+      console.log(response); // Handle the data as needed
+      if (response.code === 200) {
+        setRegDoctors(response?.data?.providers);
+        // setTotalItems(response?.data?.pagination?.total);
+      } else {
+        setRegDoctors([]);
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    }
+  }, [get]);
+
+  useEffect(() => {
+    getRegisteredDoctors();
+  }, [getRegisteredDoctors]);
+
+  const getFilter = (data) => {
+    setFilter(data);
+  };
+
+  console.log("getFilter", filter);
+
   return (
     <section className="call-history-sec">
       <div className="flex-sec top-sec">
@@ -104,15 +140,24 @@ function CallHistoryView() {
       <div className="doctor-card-sec">
         <div className="row">
           {!loading ? (
-            <>
-              {DoctorDetail.map((data, i) => (
-                <div className="col-4" onClick={() => DetailSec()}>
-                  <Link className="card-link">
-                    <DoctorCards DoctorDetail={data} />
-                  </Link>
-                </div>
-              ))}
-            </>
+            DoctorDetail.length <= 0 ? (
+              <div
+                className="d-flex w-100 justify-content-center mb-3 align-items-center"
+                style={{ height: "350px", maxHeight: "100%" }}
+              >
+                <h5>No Data Found</h5>
+              </div>
+            ) : (
+              <>
+                {DoctorDetail.map((data, i) => (
+                  <div className="col-4" onClick={() => DetailSec()}>
+                    <Link className="card-link">
+                      <DoctorCards DoctorDetail={data} />
+                    </Link>
+                  </div>
+                ))}
+              </>
+            )
           ) : (
             <div
               className="d-flex w-100 justify-content-center mb-3 align-items-center"
@@ -134,7 +179,12 @@ function CallHistoryView() {
         </div>
       </div>
       <div className="modal-sec">
-        <FilterModal visible={visible} setVisible={setVisible} />
+        <FilterModal
+          visible={visible}
+          setVisible={setVisible}
+          RegDoctors={RegDoctors}
+          getFilter={getFilter}
+        />
       </div>
     </section>
   );

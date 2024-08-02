@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../assets/Assets";
 import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import { DATE_FORMAT } from "../../Config/config";
 
 const DateSelector = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -22,6 +23,7 @@ const DateSelector = () => {
               onChange={(date) => setStartDate(date)}
               className="date-range-selector"
               maxDate={today}
+              dateFormat={DATE_FORMAT}
             />
           </div>
         </CCol>
@@ -34,6 +36,7 @@ const DateSelector = () => {
               onChange={(date) => setEndDate(date)}
               className="date-range-selector"
               maxDate={today}
+              dateFormat={DATE_FORMAT}
             />
           </div>
         </CCol>

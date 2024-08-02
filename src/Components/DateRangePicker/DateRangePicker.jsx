@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../assets/Assets";
 import ActiveButton from "../Buttons/ActiveButton/ActiveButton";
+import { DATE_FORMAT } from "../../Config/config";
 
 const DateRangePicker = ({ onClose }) => {
   const [startDate, setStartDate] = useState(null);
@@ -22,6 +23,7 @@ const DateRangePicker = ({ onClose }) => {
             isClearable
             className="date-range-picker"
             maxDate={today}
+            dateFormat={DATE_FORMAT}
           />
         </CCol>
         <CCol md={4} className="d-flex flex-column gap-1">
@@ -33,6 +35,7 @@ const DateRangePicker = ({ onClose }) => {
             isClearable
             className="date-range-picker"
             maxDate={today}
+            dateFormat={DATE_FORMAT}
           />
         </CCol>
         <CCol

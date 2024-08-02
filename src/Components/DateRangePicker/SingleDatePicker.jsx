@@ -1,6 +1,7 @@
 import { CCol, CRow } from "@coreui/react";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
+import { DATE_FORMAT } from "../../Config/config";
 
 const SingleDatePicker = ({ defaultDate }) => {
   const [startDate, setStartDate] = useState(
@@ -20,6 +21,7 @@ const SingleDatePicker = ({ defaultDate }) => {
               onChange={(date) => setStartDate(date)}
               className="date-range-selector"
               maxDate={today}
+              dateFormat={DATE_FORMAT}
             />
           </div>
         </CCol>

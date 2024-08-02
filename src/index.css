@@ -29,6 +29,11 @@ code {
   cursor: default !important;
 }
 
+.error-text {
+  color: red;
+  font-size: 12px;
+}
+
 html,
 body {
   overflow-y: hidden;

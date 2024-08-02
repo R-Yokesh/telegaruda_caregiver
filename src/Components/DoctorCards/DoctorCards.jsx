@@ -1,5 +1,6 @@
 import React from "react";
 import { Assets } from "../../assets/Assets";
+import { formatDateTime } from "../../Utils/dateUtils";
 
 function DoctorCards({ DoctorDetail }) {
   //   console.log("DoctorDetail", DoctorDetail);
@@ -33,9 +34,13 @@ function DoctorCards({ DoctorDetail }) {
             </small>
           </p>
           <p className="flex-sec-wrap gap-sec">
-            <small className="fs-10 fw-600">Oncology</small>
-            <small className="fs-10 fw-600">|</small>
-            <small className="fs-10 fw-600">02-04-2024 12:13PM</small>
+            <small className="fs-10 fw-600">{DoctorDetail?.participants
+                ? DoctorDetail?.participants[1]?.participant_info?.additional_info?.consult_speciality
+                : "--"}</small>
+            <small className="fs-10 fw-600">|</small> 
+            <small className="fs-10 fw-600">{DoctorDetail?.scheduled_at
+                ? formatDateTime(DoctorDetail?.scheduled_at)
+                : "--"}</small>
           </p>
         </div>
       </div>

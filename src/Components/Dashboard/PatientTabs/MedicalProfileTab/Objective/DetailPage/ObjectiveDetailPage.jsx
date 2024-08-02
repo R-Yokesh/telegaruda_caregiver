@@ -14,7 +14,7 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../assets/Assets";
 import Table from "../../../../../Tables/Table";
@@ -43,75 +43,13 @@ import Urinalysis from "../Forms/Urinalysis";
 import BlurBackground from "../../../../../BlurBackground/BlurBackground";
 import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 import ECGChart from "../ECG Chart/ECGChart";
+import useApi from "../../../../../../ApiServices/useApi";
 
 const ObjectiveDetailPage = ({ data }) => {
+  console.log("first data", data);
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
   const [filterView, setFilterView] = useState(false);
-
-  const columns = [
-    { id: 1, label: "NO." },
-    { id: 2, label: "RESULT" },
-    { id: 3, label: "SYSTOLIC" },
-    { id: 4, label: "DIASTOLIC" },
-    { id: 5, label: "PLUSE (IN BPM" },
-    { id: 6, label: "DATE" },
-    { id: 7, label: "ACTION" },
-  ];
-
-  const rowData = [
-    {
-      id: 1,
-      result: { status: "success", name: "Normal" },
-      systolic: "112",
-      diastolic: "25",
-      pluse: "89",
-      date: "02-04-2024 12:13PM",
-      action: [{ type: "warning" }],
-    },
-    {
-      id: 2,
-      result: {
-        status: "error",
-        name: "High Blood Pressure (Hypertension) Stage 1",
-      },
-      systolic: "112",
-      diastolic: "25",
-      pluse: "89",
-      date: "02-04-2024 12:13PM",
-      action: [{ type: "edit" }, { type: "delete" }],
-    },
-    {
-      id: 3,
-      result: { status: "error", name: "Normal" },
-      systolic: "118",
-      diastolic: "12",
-      pluse: "-",
-      date: "02-04-2024 12:13PM",
-      action: [{ type: "edit" }, { type: "delete" }],
-    },
-    {
-      id: 4,
-      result: {
-        status: "error",
-        name: "High Blood Pressure (Hypertension) Stage 1",
-      },
-      systolic: "112",
-      diastolic: "25",
-      pluse: "89",
-      date: "02-04-2024 12:13PM",
-      action: [{ type: "edit" }, { type: "delete" }],
-    },
-    {
-      id: 5,
-      result: { status: "success", name: "Normal" },
-      systolic: "118",
-      diastolic: "12",
-      pluse: "45",
-      date: "02-04-2024 12:13PM",
-      action: [{ type: "edit" }, { type: "delete" }],
-    },
-  ];
 
   const chartPage = () => {
     setChartView(true);
@@ -132,6 +70,7 @@ const ObjectiveDetailPage = ({ data }) => {
   const filterBack = () => {
     setFilterView(false);
   };
+
   return (
     <>
       <CContainer className="p-0">
@@ -193,28 +132,28 @@ const ObjectiveDetailPage = ({ data }) => {
                   )}
                 </CCol>
                 {/* {data.id !== 14 && ( */}
-                  <>
-                    {!chartView && (
-                      <CCol xs={4} md={4} lg={4}>
-                        <PrimaryButton onClick={() => chartPage()}>
-                          <div className="d-flex align-items-center gap-2">
-                            <img src={Assets.Chart} alt="add" />
-                            <span className="fs-16 fw-600">Chart</span>
-                          </div>
-                        </PrimaryButton>
-                      </CCol>
-                    )}
-                    {chartView && (
-                      <CCol xs={4} md={4} lg={4}>
-                        <ActiveButton onClick={() => tablePage()}>
-                          <div className="d-flex align-items-center gap-2">
-                            <img src={Assets.CloseX} alt="add" />
-                            <span className="fs-16 fw-600">Chart</span>
-                          </div>
-                        </ActiveButton>
-                      </CCol>
-                    )}
-                  </>
+                <>
+                  {!chartView && (
+                    <CCol xs={4} md={4} lg={4}>
+                      <PrimaryButton onClick={() => chartPage()}>
+                        <div className="d-flex align-items-center gap-2">
+                          <img src={Assets.Chart} alt="add" />
+                          <span className="fs-16 fw-600">Chart</span>
+                        </div>
+                      </PrimaryButton>
+                    </CCol>
+                  )}
+                  {chartView && (
+                    <CCol xs={4} md={4} lg={4}>
+                      <ActiveButton onClick={() => tablePage()}>
+                        <div className="d-flex align-items-center gap-2">
+                          <img src={Assets.CloseX} alt="add" />
+                          <span className="fs-16 fw-600">Chart</span>
+                        </div>
+                      </ActiveButton>
+                    </CCol>
+                  )}
+                </>
                 {/* )} */}
               </CRow>
             </CCol>
