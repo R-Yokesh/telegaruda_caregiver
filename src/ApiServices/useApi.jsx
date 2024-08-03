@@ -11,7 +11,12 @@ const useApi = () => {
   const fetchData = useCallback(
     async (url, options) => {
       setLoading(true);
-      if (cache.current[url]) {
+
+      if (cache?.current[url] && url.startsWith("resource/vitals")) {
+        setLoading(true);
+        cache.current = {};
+      }
+      if (cache?.current[url]) {
         setLoading(false);
         return cache.current[url];
       }
@@ -55,6 +60,7 @@ const useApi = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "X-API-KEY": apiKey,
         },
         body: JSON.stringify(body),
       };
@@ -70,6 +76,7 @@ const useApi = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "X-API-KEY": apiKey,
         },
         body: JSON.stringify(body),
       };
@@ -84,12 +91,31 @@ const useApi = () => {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "X-API-KEY": apiKey,
         },
       };
-      return await fetchData(url, options);
+      setLoading(true);
+      try {
+        const response = await fetch(apiUrl + url, options);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setLoading(false);
+        return data;
+      } catch (error) {
+        setLoading(false);
+        setError(`Error: ${error.message}`);
+        throw error;
+      }
     },
-    [fetchData]
+    [apiKey, apiUrl]
   );
+
+  // Function to clear all cache entries
+  const clearCache = useCallback(() => {
+    cache.current = {}; // Clear all entries from cache
+  }, []);
   return {
     loading,
     error,
@@ -97,6 +123,7 @@ const useApi = () => {
     post,
     patch,
     del,
+    clearCache,
   };
 };
 

@@ -45,8 +45,8 @@ import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 import ECGChart from "../ECG Chart/ECGChart";
 import useApi from "../../../../../../ApiServices/useApi";
 
-const ObjectiveDetailPage = ({ data }) => {
-  console.log("first data", data);
+const ObjectiveDetailPage = ({ data, getTableDatas }) => {
+
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
   const [filterView, setFilterView] = useState(false);
@@ -173,6 +173,7 @@ const ObjectiveDetailPage = ({ data }) => {
                 <DynamicTable
                   columnsData={data?.columnsData}
                   tableData={data?.tableData}
+                  getTableDatas={getTableDatas}
                 />
               </>
             )}
@@ -194,7 +195,7 @@ const ObjectiveDetailPage = ({ data }) => {
               </CModalHeader>
               <CModalBody className="p-4">
                 {data?.name === "Blood Pressure" && (
-                  <BPForm addBack={addBack} />
+                  <BPForm addBack={addBack}  getTableDatas={getTableDatas}/>
                 )}
                 {data?.name === "ECG" && <HeartRate addBack={addBack} />}
                 {data?.name === "Lung Function Test (LFT)" && (

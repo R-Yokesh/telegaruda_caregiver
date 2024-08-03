@@ -4,12 +4,39 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
+import useApi from "../../../../../../ApiServices/useApi";
+import { toast } from "react-toastify";
 
-const BPForm = ({ addBack, defaultData }) => {
-  console.log("first", defaultData);
+const BPForm = ({ addBack, defaultData, getTableDatas }) => {
+  const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [systolic, setSystolic] = useState(
+    (defaultData?.systolic || "").toString()
+  );
+  const [diastolic, setDiastolic] = useState(
+    (defaultData?.diastolic || "").toString()
+  );
+  const [pulse, setPulse] = useState(
+    (defaultData?.["pulse_(in_bpm)"] || "").toString()
+  );
+  const [errors, setErrors] = useState({});
+  const convertISOToTime = (isoString) => {
+    // Parse the ISO string into a Date object
+    const date = new Date(isoString);
 
+    // Ensure the Date object is valid
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid ISO string");
+    }
+
+    // Extract hours and minutes
+    const hours = String(date.getUTCHours()).padStart(2, "0");
+    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+
+    // Return the formatted time
+    return `${hours}:${minutes}`;
+  };
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
@@ -29,9 +56,15 @@ const BPForm = ({ addBack, defaultData }) => {
       ? parseDateString(defaultDateString)
       : new Date();
 
+    // Example default date string
+    const defaultDateString1 = defaultData?.time;
+
+    // Parse default date string to Date object
+    const defaultDate1 = defaultData ? defaultDateString1 : new Date();
+
     // Set default date in state
     setSelectedDate(defaultDate);
-    setSelectedTime(defaultDate);
+    // setSelectedTime(defaultDate1);
   }, [defaultData]);
 
   const handleDateChange = (date) => {
@@ -39,12 +72,112 @@ const BPForm = ({ addBack, defaultData }) => {
   };
 
   const handleTimeChange = (date) => {
-    setSelectedTime(date);
+    if (date instanceof Date && !isNaN(date)) {
+      setSelectedTime(date);
+    }
   };
+
   const extractNum = (data) => {
     const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
     return numbers || "";
+  };
+
+  const validate = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    if (!selectedDate) {
+      newErrors.date = "Date is required.";
+      isValid = false;
+    }
+    if (!selectedTime) {
+      newErrors.time = "Time is required.";
+      isValid = false;
+    }
+    if (!systolic?.trim()) {
+      newErrors.systolic = "Systolic is required.";
+      isValid = false;
+    } else if (isNaN(systolic)) {
+      newErrors.systolic = "Systolic must be a number.";
+      isValid = false;
+    }
+    if (!diastolic?.trim()) {
+      newErrors.diastolic = "Diastolic is required.";
+      isValid = false;
+    } else if (isNaN(diastolic)) {
+      newErrors.diastolic = "Diastolic must be a number.";
+      isValid = false;
+    }
+    if (!pulse?.trim()) {
+      newErrors.pulse = "Pulse is required.";
+      isValid = false;
+    } else if (isNaN(pulse)) {
+      newErrors.pulse = "Pulse must be a number.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const onSubmit = () => {
+    if (validate()) {
+      if (defaultData) {
+        console.log("Edit clicked");
+        onEdit();
+      }
+      if (!defaultData) {
+        console.log("Add clicked");
+        onAdd();
+      }
+    }
+  };
+
+  const onAdd = async () => {
+    try {
+      const url = `resource/vitals`; // Replace with your API endpoint
+      const body = {
+        details: {
+          date: selectedDate,
+          time: convertISOToTime(selectedTime),
+          systolic: systolic,
+          diastolic: diastolic,
+          pulse: pulse,
+        },
+        user_id: "10",
+        slug: "blood-pressure",
+      };
+      await post(url, body);
+      await getTableDatas(defaultData);
+      toast.success("Added successfully");
+      addBack();
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+
+  const onEdit = async () => {
+    try {
+      const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
+      const body = {
+        details: {
+          date: selectedDate,
+          time: convertISOToTime(selectedTime),
+          systolic: systolic,
+          diastolic: diastolic,
+          pulse: pulse,
+        },
+        user_id: "10",
+        slug: "blood-pressure",
+      };
+      await patch(url, body);
+      await getTableDatas(defaultData);
+      toast.success("Updated successfully");
+      addBack();
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
   };
   return (
     <>
@@ -63,6 +196,7 @@ const BPForm = ({ addBack, defaultData }) => {
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
               />
+              {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </CCol>
           <CCol lg={4}>
@@ -81,6 +215,7 @@ const BPForm = ({ addBack, defaultData }) => {
                 timeIntervals={5}
                 dateFormat="h:mm aa"
               />
+              {errors.time && <div className="error-text">{errors.time}</div>}
             </div>
           </CCol>
           <CCol lg={4}>
@@ -91,9 +226,13 @@ const BPForm = ({ addBack, defaultData }) => {
               <input
                 type="text"
                 class="form-control"
-                id="validationTooltip01"
-                defaultValue={defaultData?.systolic}
+                id="systolic"
+                value={systolic}
+                onChange={(e) => setSystolic(e.target.value)}
               />
+              {errors.systolic && (
+                <div className="error-text">{errors.systolic}</div>
+              )}
             </div>
           </CCol>
         </CRow>
@@ -106,9 +245,13 @@ const BPForm = ({ addBack, defaultData }) => {
               <input
                 type="text"
                 class="form-control"
-                id="validationTooltip01"
-                defaultValue={defaultData?.diastolic}
+                id="diastolic"
+                value={diastolic}
+                onChange={(e) => setDiastolic(e.target.value)}
               />
+              {errors.diastolic && (
+                <div className="error-text">{errors.diastolic}</div>
+              )}
             </div>
           </CCol>
           <CCol lg={6}>
@@ -119,15 +262,17 @@ const BPForm = ({ addBack, defaultData }) => {
               <input
                 type="text"
                 class="form-control"
-                id="validationTooltip01"
-                defaultValue={defaultData?.["pulse_(in_bpm)"]}
+                id="pulse"
+                value={pulse}
+                onChange={(e) => setPulse(e.target.value)}
               />
+              {errors.pulse && <div className="error-text">{errors.pulse}</div>}
             </div>
           </CCol>
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => addBack()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
             <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>

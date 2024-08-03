@@ -22,13 +22,17 @@ import Urea from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/Ure
 import Urinalysis from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/Urinalysis";
 import BMI from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BMI";
 import BPForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BPForm";
+import useApi from "../../ApiServices/useApi";
+import { toast } from "react-toastify";
 
-const DynamicTable = ({ columnsData, tableData }) => {
+const DynamicTable = ({ columnsData, tableData, getTableDatas }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [selectedData, setSelectedData] = useState("");
+  const { loading, del, clearCache } = useApi();
 
   const deleteData = (data) => {
+    setSelectedData(data);
     if (data) {
       setDeleteModal(true);
     }
@@ -38,6 +42,18 @@ const DynamicTable = ({ columnsData, tableData }) => {
     setSelectedData(data);
     if (data) {
       setEditModal(true);
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      const url = `resource/vitals/${selectedData?.id}`; // Replace with your API endpoint
+      await del(url);
+      await getTableDatas(selectedData);
+      toast.success("Deleted successfully");
+      setDeleteModal(false);
+    } catch (error) {
+      console.error("Failed to delete:", error);
     }
   };
   return (
@@ -79,7 +95,7 @@ const DynamicTable = ({ columnsData, tableData }) => {
                 <h5>Are you sure want to delete ?</h5>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDeleteModal(false)}>
+                    <PrimaryButton onClick={() => onDelete()}>
                       Yes
                     </PrimaryButton>
                   </div>
@@ -119,6 +135,7 @@ const DynamicTable = ({ columnsData, tableData }) => {
                 <BPForm
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={getTableDatas}
                 />
               )}
 
@@ -237,11 +254,11 @@ const DynamicTable = ({ columnsData, tableData }) => {
   function renderCell(row, column) {
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
-    console.log("first", value);
+    // console.log("first", value);
     if (columnKey === "ecg") {
       // Function to render PDF content
       const renderPdf = (contentUrl) => {
-        window.open(contentUrl, '_blank');
+        window.open(contentUrl, "_blank");
       };
       return (
         <div style={{ width: "80px" }} onClick={() => renderPdf(value.link)}>

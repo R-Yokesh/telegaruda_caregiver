@@ -36,7 +36,6 @@ const VitalSign = ({ setVitalView }) => {
 
   const transformData = (originalData) => {
     if (!Array.isArray(originalData) || originalData.length === 0) {
-      console.error("No data to transform.");
       return null;
     }
 
@@ -51,8 +50,13 @@ const VitalSign = ({ setVitalView }) => {
       diastolic: item.details.diastolic || "N/A",
       "pulse_(in_bpm)": item.details.pulse || "N/A",
       date: `${item.details.date} ${item.details.time || ""}`,
-      action: [{ type: "warning" }],
+      action:
+        item.freeze === 1
+          ? [{ type: "warning" }]
+          : [{ type: "edit" }, { type: "delete" }],
       name: "Blood Pressure",
+      id: item.id,
+      user_id: item.user_id,
     }));
 
     // Create badge and other static information
@@ -96,7 +100,6 @@ const VitalSign = ({ setVitalView }) => {
       const response = await get(
         `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=10&slug=blood-pressure`
       );
-      console.log(response?.data?.vitals);
       setIsModalOpen(true);
       if (response.code === 200) {
         const formattedData = transformData(response?.data?.vitals);
@@ -117,7 +120,6 @@ const VitalSign = ({ setVitalView }) => {
     setIsModalOpen(false);
   };
 
-  console.log("entities", entities);
   return (
     <>
       <CRow>
@@ -168,7 +170,10 @@ const VitalSign = ({ setVitalView }) => {
           <CRow>
             <CCol className="mb-3">
               {/* <ObjectiveDetailPage data={cardSelectedData} /> */}
-              <ObjectiveDetailPage data={entities} />
+              <ObjectiveDetailPage
+                data={entities}
+                getTableDatas={(data) => TableDatas(data)}
+              />
             </CCol>
           </CRow>
         </CContainer>
