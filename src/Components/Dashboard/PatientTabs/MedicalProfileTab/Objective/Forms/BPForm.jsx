@@ -6,6 +6,8 @@ import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import useApi from "../../../../../../ApiServices/useApi";
 import { toast } from "react-toastify";
+import { format, isValid, parse } from "date-fns";
+import { DATE_FORMAT } from "../../../../../../Config/config";
 
 const BPForm = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
@@ -37,45 +39,97 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
     // Return the formatted time
     return `${hours}:${minutes}`;
   };
+  const getFormattedDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+  
+    return `${day}-${month}-${year}`;
+  };
+  
+  const currentDate = new Date();
+  const formattedDate = getFormattedDate(currentDate);
+  
+  console.log(formattedDate); // e.g., 25-08-2024
+
+  const defaultDateTime = defaultData?.date || '';
+
+  // Split date and time
+  const defaultDate = defaultDateTime.split(' ')[0] || '';
+  const defaultTime = defaultDateTime.split(' ')[1] || '00:00';
   useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const timePart = parts[1];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      const [hours, minutes] = timePart?.split(":")?.map(Number);
-      return new Date(year, month - 1, day, hours, minutes);
-    };
+    // Combine default date and time into a single Date object
+    let date = new Date();
 
-    // Example default date string
-    const defaultDateString = defaultData?.date;
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, 'yyyy-MM-dd', new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
 
-    // Parse default date string to Date object
-    const defaultDate = defaultData
-      ? parseDateString(defaultDateString)
-      : new Date();
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(':').map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
 
-    // Example default date string
-    const defaultDateString1 = defaultData?.time;
-
-    // Parse default date string to Date object
-    const defaultDate1 = defaultData ? defaultDateString1 : new Date();
-
-    // Set default date in state
-    setSelectedDate(defaultDate);
-    // setSelectedTime(defaultDate1);
-  }, [defaultData]);
+    setSelectedDate(date);
+    setSelectedTime(date); // Initialize time picker with the same Date object
+  }, [defaultDate, defaultTime]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-  };
-
-  const handleTimeChange = (date) => {
-    if (date instanceof Date && !isNaN(date)) {
-      setSelectedTime(date);
+    if (date) {
+      setSelectedTime(date); // Sync time picker with the updated date
     }
   };
+
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(selectedDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
+
+      setSelectedDate(updatedDateTime); // Optionally update date as well
+      setSelectedTime(time);
+    }
+  };
+
+
+  // useEffect(() => {
+  //   // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
+  //   const parseDateString = (dateString) => {
+  //     const parts = dateString?.split(" ");
+  //     const datePart = parts[0];
+  //     const timePart = parts[1];
+  //     const [month, day, year] = datePart?.split("-")?.map(Number);
+  //     const [hours, minutes] = timePart?.split(":")?.map(Number);
+  //     return new Date(year, month - 1, day, hours, minutes);
+  //   };
+
+  //   // Example default date string
+  //   const defaultDateString = defaultData?.date;
+
+  //   // Parse default date string to Date object
+  //   const defaultDate = defaultData
+  //     ? parseDateString(defaultDateString)
+  //     : new Date();
+
+  //   // Example default date string
+  //   const defaultDateString1 = defaultData?.time;
+
+  //   // Parse default date string to Date object
+  //   const defaultDate1 = defaultData ? defaultDateString1 : new Date();
+
+  //   // Set default date in state
+  //   setSelectedDate(defaultDate);
+  //   // setSelectedTime(defaultDate1);
+  // }, [defaultData]);
+
+
 
   const extractNum = (data) => {
     const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
@@ -139,8 +193,8 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
         details: {
-          date: selectedDate,
-          time: convertISOToTime(selectedTime),
+          date: format(selectedDate, "dd-MM-yyyy"),
+          time: format(selectedTime, "HH:mm"),
           systolic: systolic,
           diastolic: diastolic,
           pulse: pulse,
@@ -162,8 +216,8 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
       const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
       const body = {
         details: {
-          date: selectedDate,
-          time: convertISOToTime(selectedTime),
+          date: format(selectedDate, "dd-MM-yyyy"),
+          time: format(selectedTime, "HH:mm"),
           systolic: systolic,
           diastolic: diastolic,
           pulse: pulse,
@@ -195,6 +249,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
                 isClearable
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
+                dateFormat={DATE_FORMAT}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

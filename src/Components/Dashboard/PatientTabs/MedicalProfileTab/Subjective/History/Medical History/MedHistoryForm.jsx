@@ -1,4 +1,4 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCol, CFormCheck, CFormTextarea, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
@@ -59,7 +59,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
-                Onset *
+                Onset Date *
               </label>
               <div className="date-size">
                 <DatePicker
@@ -129,6 +129,19 @@ const MedHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Chronic
               </label>
+              <CFormCheck
+                type="radio"
+                label="Yes"
+                value="Yes"
+                checked={defaultValues?.chronic === "Yes"}
+                // onChange={handleChange}
+              />
+              <CFormCheck
+                type="radio"
+                label="No"
+                value="No"
+                checked={defaultValues?.chronic === "No"}
+              />
               {/* <input
                 type="text"
                 class="form-control  pad-10"
@@ -136,7 +149,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                 placeholder="Enter"
                 defaultValue={defaultValues?.chronic}
               /> */}
-              <div
+              {/* <div
                 className="w-100"
                 style={{
                   border: "1px solid #17171D33",
@@ -150,7 +163,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                   }
                   getSelectedValue={getSelectedValue}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </CCol>
@@ -160,6 +173,23 @@ const MedHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Previous Illness
               </label>
+              <CFormCheck
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault1"
+                label="Yes"
+                value="Yes"
+                checked={defaultValues?.prev_illness === "Yes"}
+                // onChange={handleChange}
+              />
+              <CFormCheck
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault2"
+                label="No"
+                value="No"
+                checked={defaultValues?.prev_illness === "No"}
+              />
               {/* <input
                 type="text"
                 class="form-control  pad-10"
@@ -167,7 +197,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                 placeholder="Enter"
                 defaultValue={defaultValues?.prev_illness}
               /> */}
-              <div
+              {/* <div
                 className="w-100"
                 style={{
                   border: "1px solid #17171D33",
@@ -181,7 +211,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                   }
                   getSelectedValue={getSelectedValue}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </CCol>
@@ -191,7 +221,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Notes
               </label>
-              <input
+              <CFormTextarea
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"

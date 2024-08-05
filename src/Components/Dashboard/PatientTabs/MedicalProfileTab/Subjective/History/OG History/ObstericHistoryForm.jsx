@@ -1,4 +1,4 @@
-import { CCol, CFormTextarea, CRow } from "@coreui/react";
+import { CCol, CFormCheck, CFormTextarea, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
@@ -62,7 +62,7 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
     setDate(defaultDate);
     setDate2(defaultDate2);
   }, [defaultValues]);
-  const options = [1, 2, 3];
+  const options = ["First", "Second", "Third"];
   const findIndex = defaultValues?.trimster
     ? options?.indexOf(defaultValues?.trimster)
     : 0;
@@ -95,12 +95,52 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
     setBad(data);
   };
 
-  const [preg, setPreg] = useState("No");
+  const [preg, setPreg] = useState(defaultValues?.pregnant || "No");
+  const [fertTreat, setFertTreat] = useState(
+    defaultValues?.fert_treatment || "No"
+  );
+  const [lact, setLact] = useState(defaultValues?.lacating || "No");
+  const [cesarean, setCesarean] = useState(defaultValues?.cesarean || "No");
+  const [obstetric, setObsteric] = useState(defaultValues?.obstetric || "No");
+
+  const handleChangeObste = (e) => {
+    setObsteric(e.target.value);
+  };
+
+  const handleChangeCesa = (e) => {
+    setCesarean(e.target.value);
+  };
+  const handleChangeLact = (e) => {
+    setLact(e.target.value);
+  };
+  const handleChangeFert = (e) => {
+    setFertTreat(e.target.value);
+  };
   const findingIndex7 = defaultValues?.bad
     ? lacatingoptions?.indexOf(defaultValues?.bad)
     : 1;
   const getSelectedValue7 = (data) => {
     setPreg(data);
+  };
+  const handleChange = (e) => {
+    setPreg(e.target.value);
+  };
+  const [gravidaValue, setGravidaValue] = useState(
+    defaultValues?.gravida || ""
+  );
+  const [paraValue, setParaValue] = useState(defaultValues?.para || "");
+  const numCheck = (e) => {
+    const input = e.target.value;
+    const name = e.target.name;
+
+    const newstrValue = input.replace(/[^0-9]/g, "").slice(0, 2);
+
+    if (name === "gravida") {
+      setGravidaValue(newstrValue);
+    }
+    if (name === "para") {
+      setParaValue(newstrValue);
+    }
   };
   return (
     <>
@@ -111,19 +151,23 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Pregnant *
               </label>
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={lacatingoptions}
-                  defaultValue={lacatingoptions[findingIndex7]}
-                  getSelectedValue={getSelectedValue7}
-                />
-              </div>
+
+              <CFormCheck
+                type="radio"
+                name="exampleRadios"
+                id="exampleRadios1"
+                label="Yes"
+                value="Yes"
+                checked={preg === "Yes"}
+                onChange={handleChange}
+              />
+              <CFormCheck
+                type="radio"
+                label="No"
+                value="No"
+                checked={preg === "No"}
+                onChange={handleChange}
+              />
             </div>
           </div>
         </CCol>
@@ -192,14 +236,17 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                   <label for="validationTooltip01" class="form-label">
                     Gravida *
                   </label>
-                  {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.gravida}
-              /> */}
-                  <div
+                  <input
+                    type="text"
+                    class="form-control  pad-10"
+                    id="validationTooltip01"
+                    name="gravida"
+                    placeholder="00"
+                    defaultValue={defaultValues?.gravida}
+                    value={gravidaValue}
+                    onChange={numCheck}
+                  />
+                  {/* <div
                     className="w-100"
                     style={{
                       border: "1px solid #17171D33",
@@ -211,7 +258,7 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                       options={gravidaoptions}
                       defaultValue={gravidaoptions[findgravidaIndex]}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </CCol>
@@ -221,14 +268,17 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                   <label for="validationTooltip01" class="form-label">
                     Para *
                   </label>
-                  {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.para}
-              /> */}
-                  <div
+                  <input
+                    type="text"
+                    class="form-control  pad-10"
+                    id="validationTooltip01"
+                    placeholder="00"
+                    defaultValue={defaultValues?.para}
+                    name="para"
+                    value={paraValue}
+                    onChange={numCheck}
+                  />
+                  {/* <div
                     className="w-100"
                     style={{
                       border: "1px solid #17171D33",
@@ -240,36 +290,7 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                       options={gravidaoptions}
                       defaultValue={gravidaoptions[findparaIndex]}
                     />
-                  </div>
-                </div>
-              </div>
-            </CCol>
-            <CCol lg={4} className="mb-3">
-              <div style={{ width: "100%" }}>
-                <div class="position-relative">
-                  <label for="validationTooltip01" class="form-label">
-                    Lacatating
-                  </label>
-                  {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.lacating}
-              /> */}
-                  <div
-                    className="w-100"
-                    style={{
-                      border: "1px solid #17171D33",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Dropdown
-                      getSelectedValue={getSelectedLacating}
-                      options={lacatingoptions}
-                      defaultValue={lacatingoptions[findlacatingIndex]}
-                    />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </CCol>
@@ -286,7 +307,7 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                 placeholder="Enter"
                 defaultValue={defaultValues?.fert_treatment}
               /> */}
-                  <div
+                  {/* <div
                     className="w-100"
                     style={{
                       border: "1px solid #17171D33",
@@ -298,11 +319,25 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                       defaultValue={lacatingoptions[findtreatmentIndex]}
                       getSelectedValue={getSelectedFertValue}
                     />
-                  </div>
+                  </div> */}
+                  <CFormCheck
+                    type="radio"
+                    label="Yes"
+                    value="Yes"
+                    checked={fertTreat === "Yes"}
+                    onChange={handleChangeFert}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    label="No"
+                    value="No"
+                    checked={fertTreat === "No"}
+                    onChange={handleChangeFert}
+                  />
                 </div>
               </div>
             </CCol>
-            {fert_treatment === "Yes" && (
+            {fertTreat === "Yes" && (
               <CCol lg={4} className="mb-3">
                 <div style={{ width: "100%" }}>
                   <div class="position-relative">
@@ -320,15 +355,60 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                 </div>
               </CCol>
             )}
+            <CCol lg={4} className="mb-3">
+              <div style={{ width: "100%" }}>
+                <div class="position-relative">
+                  <label for="validationTooltip01" class="form-label">
+                    Lacatating
+                  </label>
+                  {/* <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.lacating}
+              /> */}
+                  {/* <div
+                    className="w-100"
+                    style={{
+                      border: "1px solid #17171D33",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <Dropdown
+                      getSelectedValue={getSelectedLacating}
+                      options={lacatingoptions}
+                      defaultValue={lacatingoptions[findlacatingIndex]}
+                    />
+                  </div> */}
+                  <CFormCheck
+                    type="radio"
+                    label="Yes"
+                    value="Yes"
+                    checked={lact === "Yes"}
+                    onChange={handleChangeLact}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    label="No"
+                    value="No"
+                    checked={lact === "No"}
+                    onChange={handleChangeLact}
+                  />
+                </div>
+              </div>
+            </CCol>
           </>
         )}
-        <CCol lg={4} className="mb-3">
+      </CRow>
+      <CRow>
+        <CCol lg={6} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Previous Cesarean Sections
               </label>
-              <div
+              {/* <div
                 className="w-100"
                 style={{
                   border: "1px solid #17171D33",
@@ -340,17 +420,33 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                   defaultValue={lacatingoptions[findingIndex5]}
                   getSelectedValue={getSelectedValue5}
                 />
-              </div>
+              </div> */}
+              <CFormCheck
+                type="radio"
+                label="Yes"
+                value="Yes"
+                checked={cesarean === "Yes"}
+                onChange={handleChangeCesa}
+              />
+              <CFormCheck
+                type="radio"
+                label="No"
+                value="No"
+                checked={cesarean === "No"}
+                onChange={handleChangeCesa}
+              />
             </div>
           </div>
         </CCol>
-        <CCol lg={4} className="mb-3">
+      </CRow>
+      <CRow>
+        <CCol lg={6} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Bad Obstetric History
               </label>
-              <div
+              {/* <div
                 className="w-100"
                 style={{
                   border: "1px solid #17171D33",
@@ -362,12 +458,26 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                   defaultValue={lacatingoptions[findingIndex6]}
                   getSelectedValue={getSelectedValue6}
                 />
-              </div>
+              </div> */}
+              <CFormCheck
+                type="radio"
+                label="Yes"
+                value="Yes"
+                checked={obstetric === "Yes"}
+                onChange={handleChangeObste}
+              />
+              <CFormCheck
+                type="radio"
+                label="No"
+                value="No"
+                checked={obstetric === "No"}
+                onChange={handleChangeObste}
+              />
             </div>
           </div>
         </CCol>
-        {bad === "Yes" && (
-          <CCol lg={4} className="mb-3">
+        {obstetric === "Yes" && (
+          <CCol lg={6} className="mb-3">
             <div style={{ width: "100%" }}>
               <div class="position-relative">
                 <label for="validationTooltip01" class="form-label">

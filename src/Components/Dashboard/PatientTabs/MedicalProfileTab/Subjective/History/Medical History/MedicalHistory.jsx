@@ -19,7 +19,7 @@ import MedicalHistoryTable from "../../../../../../Tables/Subjective/MedicalHist
 const MedicalHistory = () => {
   const columnData = [
     { id: 1, label: "NO." },
-    { id: 2, label: "ONSET" },
+    { id: 2, label: "ONSET DATE" },
     { id: 3, label: "CONDITIONS" },
     { id: 4, label: "ICD" },
     { id: 5, label: "Chronic" },

@@ -1,4 +1,4 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCol, CFormTextarea, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -6,30 +6,30 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { toast } from "react-toastify";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
+import { isValid, parse } from "date-fns";
 
 const SignsSymptomsForm = ({ back, defaultValues }) => {
-  const [date, setDate] = useState(null);
+  // useEffect(() => {
+  //   // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
+  //   const parseDateString = (dateString) => {
+  //     const parts = dateString?.split(" ");
+  //     const datePart = parts[0];
+  //     const [month, day, year] = datePart?.split("-")?.map(Number);
+  //     return new Date(year, month - 1, day);
+  //   };
 
-  useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      return new Date(year, month - 1, day);
-    };
+  //   // Example default date string
+  //   const defaultDateString = defaultValues?.date;
 
-    // Example default date string
-    const defaultDateString = defaultValues?.date;
+  //   // Parse default date string to Date object
+  //   const defaultDate = defaultValues?.date
+  //     ? parseDateString(defaultDateString)
+  //     : new Date();
 
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.date
-      ? parseDateString(defaultDateString)
-      : new Date();
-
-    // Set default date in state
-    setDate(defaultDate);
-  }, [defaultValues]);
+  //   // Set default date in state
+  //   setDate(defaultDate);
+  // }, [defaultValues]);
   const options = [
     "Normal",
     "Mild",
@@ -45,20 +45,32 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
   const getSelectedValue1 = (data) => {
     console.log(data);
   };
-  const [value3, setValue3] = useState("");
+  const [value3, setValue3] = useState(defaultValues?.duration_days || "");
   const [error, setError] = useState("");
   const handleChange = (e) => {
     const input = e.target.value;
 
     // Remove non-digit characters and limit to two digits
     const newValue = input.replace(/[^0-9]/g, "").slice(0, 2);
+    const newValueDuration = input.replace(/[^0-9]/g, "").slice(0, 4);
+
+    if (
+      e.target.name === "dur_in_days" &&
+      input.length > 4 &&
+      newValueDuration.length > 4
+    ) {
+      setError("Input should not exceed 4 digits.");
+    } else {
+      setValue3(newValueDuration);
+      setError("");
+    }
 
     if (input.length > 2 && newValue.length > 2) {
       setError("Input should not exceed 2 digits.");
     } else {
-      if (e.target.name === "dur_in_days") {
-        setValue3(newValue);
-      }
+      // if (e.target.name === "dur_in_days") {
+      //   setValue3(newValue);
+      // }
       setError("");
     }
   };
@@ -78,10 +90,58 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
     }
   };
 
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const defaultDateTime = defaultValues?.onset || "";
+
+  // Split date and time
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  useEffect(() => {
+    // Combine default date and time into a single Date object
+    let date = new Date();
+
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
+
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
+
+    setSelectedDate(date);
+    setSelectedTime(date); // Initialize time picker with the same Date object
+  }, [defaultDate, defaultTime, defaultValues]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    if (date) {
+      setSelectedTime(date); // Sync time picker with the updated date
+    }
+  };
+
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(selectedDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
+
+      setSelectedDate(updatedDateTime); // Optionally update date as well
+      setSelectedTime(time);
+    }
+  };
   return (
     <>
       <CRow className="mb-3">
-        <CCol lg={4}>
+        {/* <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -96,8 +156,42 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
               />
             </div>
           </div>
+        </CCol> */}
+        <CCol lg={3}>
+          <div class="position-relative d-flex flex-column gap-1">
+            <label for="validationTooltip01" class="form-label">
+              Onset Date *
+            </label>
+            <DatePicker
+              showIcon
+              selected={selectedDate}
+              onChange={handleDateChange}
+              isClearable
+              closeOnScroll={true}
+              wrapperClassName="date-picker-wrapper"
+              dateFormat={DATE_FORMAT}
+            />
+          </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={3}>
+          <div class="position-relative d-flex flex-column gap-1">
+            <label for="validationTooltip01" class="form-label">
+              Onset Time *
+            </label>
+            <DatePicker
+              showIcon
+              selected={selectedTime}
+              onChange={handleTimeChange}
+              showTimeSelect
+              showTimeSelectOnly
+              isClearable
+              closeOnScroll={true}
+              timeIntervals={5}
+              dateFormat="h:mm aa"
+            />
+          </div>
+        </CCol>
+        <CCol lg={3}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -113,7 +207,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
-        <CCol lg={4}>
+        <CCol lg={3}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -123,7 +217,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
-                placeholder="00"
+                placeholder="0000"
                 defaultValue={defaultValues?.duration_days}
                 name="dur_in_days"
                 value={value3}
@@ -139,7 +233,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Symptoms
+                Symptoms *
               </label>
               {/* <input
                 type="text"
@@ -170,7 +264,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Aggravating factors
               </label>
-              <input
+              <CFormTextarea
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
@@ -186,7 +280,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Relieving factors
               </label>
-              <input
+              <CFormTextarea
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
@@ -204,7 +298,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Temporal factors
               </label>
-              <input
+              <CFormTextarea
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
@@ -242,7 +336,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Notes
               </label>
-              <input
+              <CFormTextarea
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"

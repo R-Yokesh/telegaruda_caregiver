@@ -5,6 +5,7 @@ import { Assets } from "../../../../../../../assets/Assets";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const MedicationForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -49,26 +50,84 @@ const MedicationForm = ({ back, defaultValues }) => {
     console.log(data);
   };
 
+  const options2 = [
+    "Tablet",
+    "Chewable tablet",
+    "Sublingual tablet",
+    "Buccal tablet",
+    "Capsule",
+    "Hard capsule",
+    "Soft gelatin capsule",
+    "Powder",
+    "Oral powder",
+    "Topical powder",
+    "Liquid",
+    "Syrup",
+    "Elixir",
+    "Suspension",
+    "Solution",
+    "Tincture",
+    "Ointment",
+    "Cream",
+    "Gel",
+    "Paste",
+    "Suppository",
+    "Patch",
+    "Inhaler",
+    "Metered-dose inhaler (MDI)",
+    "Dry powder inhaler (DPI)",
+    "Nasal Spray",
+    "Eye Drop",
+    "Ear Drop",
+    "Intravenous (IV) solution",
+    "Intramuscular (IM) injection",
+    "Subcutaneous (SC) injection",
+    "Intradermal (ID) injection",
+    "Implant",
+  ];
+  const getSelectedValue2 = (data) => {
+    console.log(data);
+  };
+
   const [strength, setStrength] = useState(defaultValues?.strength || "");
-  const [qty, setQty] = useState(defaultValues?.strength || "");
-  const [timeTaken, setTimeTaken] = useState(defaultValues?.strength || "");
+  const [qty, setQty] = useState(defaultValues?.qty || "");
+  const [timeTaken, setTimeTaken] = useState(defaultValues?.time_taken || "");
 
   const numCheck = (e) => {
     const input = e.target.value;
     const name = e.target.name;
 
-    const newValue = input.replace(/[^0-9]/g, "");
+    const newDaysValue = input.replace(/[^0-9]/g, "").slice(0, 3);
+    const newstrValue = input.replace(/[^0-9]/g, "").slice(0, 4);
+    const newQtyValue = input.replace(/[^0-9]/g, "").slice(0, 4);
+
     if (name === "str&dos") {
-      setStrength(newValue);
+      setStrength(newstrValue);
     }
     if (name === "totalQty") {
-      setQty(newValue);
+      setQty(newQtyValue);
     }
     if (name === "days") {
-      setTimeTaken(newValue);
+      setTimeTaken(newDaysValue);
     }
   };
-  
+  useEffect(() => {
+    if (date && timeTaken) {
+      // Convert numDays to an integer
+      const days = parseInt(timeTaken, 10);
+
+      if (!isNaN(days)) {
+        // Calculate the end date
+        const end = new Date(date);
+        end.setDate(end.getDate() + days);
+        setDate1(end);
+      } else {
+        setDate1(null);
+      }
+    } else {
+      setDate1(null);
+    }
+  }, [date, timeTaken]);
   return (
     <>
       <CRow className="mb-3">
@@ -121,13 +180,35 @@ const MedicationForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Strength & Dosage *
+                Dosage *
+              </label>
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options2}
+                  // defaultValue={options[1]}
+                  getSelectedValue={getSelectedValue2}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Strength *
               </label>
               <input
                 type="text"
                 class="form-control pad-10"
                 id="validationTooltip01"
-                placeholder="00"
+                placeholder="0000"
                 name="str&dos"
                 // defaultValue={defaultValues?.strength}
                 value={strength}
@@ -147,13 +228,47 @@ const MedicationForm = ({ back, defaultValues }) => {
                 className="mb-3"
                 aria-label="Large select example"
                 name="strength"
-                // defaultValue={medicine?.strength}
+                defaultValue={'mg'}
               >
                 <option>Select</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="cfu/ml">
+                  Colony forming units per milliliter (cfu/ml)
+                </option>
+                <option value="iu">International unit (iu) </option>
+                <option value="meq/ml">
+                  Milliequivalent per liter (meq/ml)
+                </option>
+                <option value="meq">Milliequivalent(meq)</option>
+                <option value="Milligram per milliliter">
+                  Milligram per milliliter{" "}
+                </option>
+                <option value="mg">Milligram(mg)</option>{" "}
+                <option value="ml">milliliter(ml)</option>
+                <option value="%">percentage(%) </option>
+                <option value="unt">Unit (unt)</option>
+                <option value="unt/ml">Unit per milliliter (unt/ml)</option>
+                <option value="kg">Kilogram (kg) </option>
+                <option value="mcg">Microgram (mcg)</option>
               </CFormSelect>
+            </div>
+          </div>
+        </CCol>
+
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Total Qty / Taken *
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="0000"
+                name="totalQty"
+                value={qty}
+                onChange={numCheck}
+              />
             </div>
           </div>
         </CCol>
@@ -170,10 +285,41 @@ const MedicationForm = ({ back, defaultValues }) => {
                 name="strengthMeasurement"
               >
                 <option>Select</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="Oral">Oral</option>{" "}
+                <option value="Sublingual">Sublingual</option>
+                <option value="Buccal">Buccal </option>
+                <option value="Intravenous">Intravenous </option>
+                <option value="Intramuscular">Intramuscular</option>
+                <option value="Subcutaneous">Subcutaneous</option>
+                <option value="Intradermal">Intradermal</option>
+                <option value="Topical">Topical</option>{" "}
+                <option value="Transdermal">Transdermal</option>
+                <option value="Ocular">Ocular </option>
+                <option value="Otic">Otic </option>
+                <option value="Nasal">Nasal</option>
+                <option value="Inhalation">Inhalation</option>
+                <option value="Rectal">Rectal</option>
+                <option value="Vaginal">Vaginal </option>
+                <option value="Implant">Implant </option>
+                <option value="Intrathecal">Intrathecal</option>
+                <option value="Epidural">Epidural</option>
               </CFormSelect>
+            </div>
+          </div>
+        </CCol>
+
+        <CCol lg={4} className="mb-3">
+          <div class="position-relative">
+            <label for="validationTooltip01" class="form-label">
+              Start Date *
+            </label>
+            <div className="date-size">
+              <DatePicker
+                showIcon
+                selected={date}
+                onChange={(date) => setDate(date)}
+                dateFormat={DATE_FORMAT}
+              />
             </div>
           </div>
         </CCol>
@@ -187,42 +333,10 @@ const MedicationForm = ({ back, defaultValues }) => {
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
-                placeholder="00"
+                placeholder="000"
                 name="days"
                 value={timeTaken}
                 onChange={numCheck}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Total Qty / Taken
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="00"
-                name="totalQty"
-                value={qty}
-                onChange={numCheck}
-              />
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4} className="mb-3">
-          <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
-              Start Date *
-            </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={date}
-                onChange={(date) => setDate(date)}
               />
             </div>
           </div>
@@ -237,6 +351,8 @@ const MedicationForm = ({ back, defaultValues }) => {
                 showIcon
                 selected={date1}
                 onChange={(date) => setDate1(date)}
+                dateFormat={DATE_FORMAT}
+                disabled
               />
             </div>
           </div>

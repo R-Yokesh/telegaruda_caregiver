@@ -24,6 +24,7 @@ import BMI from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BMI"
 import BPForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/BPForm";
 import useApi from "../../ApiServices/useApi";
 import { toast } from "react-toastify";
+import { format, isValid, parse } from "date-fns";
 
 const DynamicTable = ({ columnsData, tableData, getTableDatas }) => {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -255,6 +256,7 @@ const DynamicTable = ({ columnsData, tableData, getTableDatas }) => {
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
     // console.log("first", value);
+
     if (columnKey === "ecg") {
       // Function to render PDF content
       const renderPdf = (contentUrl) => {
@@ -269,6 +271,34 @@ const DynamicTable = ({ columnsData, tableData, getTableDatas }) => {
       return (
         <div style={{ width: "180px" }}>
           <Badge label={value?.name} color={value?.status} />
+        </div>
+      );
+    } else if (columnKey === "date") {
+      // Function to format date-time string
+      const formatDateTime = (dateTimeString) => {
+        if (!dateTimeString) {
+          return "Invalid date-time"; // Handle empty or invalid input
+        }
+
+        // Parse the date and time string
+        const parsedDate = parse(
+          dateTimeString,
+          "yyyy-MM-dd HH:mm",
+          new Date()
+        );
+
+        // Check if the parsed date is valid
+        if (!isValid(parsedDate)) {
+          return "Invalid date-time"; // Handle invalid date
+        }
+
+        // Format the date and time into 'dd-MM-yyyy HH:mm'
+        return format(parsedDate, "dd-MM-yyyy HH:mm");
+      };
+
+      return (
+        <div style={{ width: "180px" }}>
+          <span>{formatDateTime(value)} </span>
         </div>
       );
     } else if (columnKey === "action") {

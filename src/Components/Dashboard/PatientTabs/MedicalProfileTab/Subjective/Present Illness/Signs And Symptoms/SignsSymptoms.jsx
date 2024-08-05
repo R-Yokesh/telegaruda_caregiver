@@ -53,10 +53,10 @@ const SignsSymptoms = () => {
 
   const columnData = [
     { id: 1, label: "NO." },
-    { id: 2, label: "ONSET" },
+    { id: 2, label: "DATE" },
     { id: 3, label: "LOCATION" },
-    { id: 4, label: "DURATION IN DAYS" },
     { id: 5, label: "Symptoms" },
+    { id: 4, label: "DURATION IN DAYS" },
     // { id: 6, label: "aggravating factors" },
     // { id: 7, label: "Relieving factors" },
     // { id: 8, label: "Temporal factors" },
@@ -67,7 +67,7 @@ const SignsSymptoms = () => {
   const rowData = [
     {
       id: 1,
-      onset: "06-07-2024",
+      onset: "2024-07-15 03:15",
       location: "Knee",
       duration_days: "20",
       characteristics: "Fracture",
@@ -79,9 +79,9 @@ const SignsSymptoms = () => {
     },
     {
       id: 2,
-      onset: "06-07-2024",
+      onset: "2024-08-15 10:15",
       location: "Knee",
-      duration_days: "20",
+      duration_days: "150",
       characteristics: "Fracture",
       aggravating: "Fracture",
       relieving: "Fracture",
@@ -91,7 +91,7 @@ const SignsSymptoms = () => {
     },
     {
       id: 3,
-      onset: "06-07-2024",
+      onset: "2024-07-18 20:15",
       location: "Knee",
       duration_days: "20",
       characteristics: "Fracture",
@@ -103,9 +103,9 @@ const SignsSymptoms = () => {
     },
     {
       id: 4,
-      onset: "06-07-2024",
+      onset: "2024-07-15 18:15",
       location: "Knee",
-      duration_days: "20",
+      duration_days: "120",
       characteristics: "Fracture",
       aggravating: "Fracture",
       relieving: "Fracture",
@@ -115,7 +115,7 @@ const SignsSymptoms = () => {
     },
     {
       id: 5,
-      onset: "06-07-2024",
+      onset: "2024-07-15 18:15",
       location: "Knee",
       duration_days: "20",
       characteristics: "Fracture",
@@ -127,7 +127,7 @@ const SignsSymptoms = () => {
     },
     {
       id: 6,
-      onset: "06-07-2024",
+      onset: "2024-07-15 18:15",
       location: "Knee",
       duration_days: "20",
       characteristics: "Fracture",
@@ -139,7 +139,7 @@ const SignsSymptoms = () => {
     },
     {
       id: 7,
-      onset: "06-07-2024",
+      onset: "2024-07-15 18:15",
       location: "Knee",
       duration_days: "20",
       characteristics: "Fracture",
@@ -151,7 +151,7 @@ const SignsSymptoms = () => {
     },
     {
       id: 8,
-      onset: "06-07-2024",
+      onset: "2024-07-15 18:15",
       location: "Knee",
       duration_days: "20",
       characteristics: "Fracture",
@@ -163,7 +163,7 @@ const SignsSymptoms = () => {
     },
     {
       id: 9,
-      onset: "06-07-2024",
+      onset: "2024-07-15 18:15",
       location: "Knee",
       duration_days: "20",
       characteristics: "Fracture",
@@ -175,7 +175,7 @@ const SignsSymptoms = () => {
     },
     {
       id: 10,
-      onset: "06-07-2024",
+      onset: "2024-07-15 18:15",
       location: "Knee",
       duration_days: "20",
       characteristics: "Fracture",

@@ -44,17 +44,36 @@ const MedicationTable = ({ columns, rowData, getselectedData }) => {
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.route}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.strength_measurement}
+                  </span>
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center h-100">
+                  <span className="fs-16 fw-500">{dt?.dosage}</span>
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center h-100">
+                  <span className="fs-16 fw-500">
+                    {dt?.m} | {dt?.a} | {dt?.e} | {dt?.n}
+                  </span>
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center h-100">
+                  <span className="fs-16 fw-500">{dt?.food_times}</span>
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center h-100">
+                  <span className="fs-16 fw-500">{dt?.qty}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <span className="fs-16 fw-500">{dt?.start_date}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.end_date}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>

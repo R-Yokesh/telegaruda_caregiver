@@ -105,10 +105,12 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import ChiefComplaintTable from "../../../../../Tables/Subjective/ChiefComplaintTable";
 import ChiefComplaintsForm from "./ChiefComplaintsForm";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
+import DateSelector from "../../../../../DateRangePicker/DateSelector";
 
 const ChiefComplaints = ({ OnClose }) => {
   const columnData = [
     { label: "No." },
+    { label: "Date" },
     { label: "Complaints" },
     { label: "Notes" },
     { label: "Actions" },
@@ -119,48 +121,56 @@ const ChiefComplaints = ({ OnClose }) => {
       complaints:
         "Abdominal pain, radiating to right shoulder and shoulder blades",
       notes: "Taking dole",
+      date: "2024-07-05 17:52",
     },
     {
       id: 2,
       complaints:
         "Abdominal pain, radiating to right shoulder and shoulder blades",
       notes: "Taking dole",
+      date: "2024-07-05 18:15",
     },
     {
       id: 3,
       complaints:
         "Abdominal pain, radiating to right shoulder and shoulder blades",
       notes: "Taking dole",
+      date: "2024-08-05 03:15",
     },
     {
       id: 4,
       complaints:
         "Abdominal pain, radiating to right shoulder and shoulder blades",
       notes: "Taking dole",
+      date: "2024-08-05 18:15",
     },
     {
       id: 5,
       complaints:
         "Abdominal pain, radiating to right shoulder and shoulder blades",
       notes: "Taking dole",
+      date: "2024-08-05 18:15",
     },
     {
       id: 6,
       complaints:
         "Abdominal pain, radiating to right shoulder and shoulder blades",
       notes: "Taking dole",
+      date: "2024-08-05 18:15",
     },
     {
       id: 7,
       complaints:
         "Abdominal pain, radiating to right shoulder and shoulder blades",
       notes: "Taking dole",
+      date: "2024-08-05 18:15",
     },
     {
       id: 8,
       complaints:
         "Abdominal pain, radiating to right shoulder and shoulder blades",
       notes: "Taking dole",
+      date: "2024-08-05 18:15",
     },
   ];
   const [addFormView, setAddFormView] = useState(false);
@@ -235,17 +245,18 @@ const ChiefComplaints = ({ OnClose }) => {
       {!addFormView && (
         <>
           <CRow>
-            <CCol md={6} xl={6} className="mb-3 chief-complaints">
-              <div className="search-bar">
+            <CCol md={7} xl={7} className="mb-3 chief-complaints">
+              {/* <div className="search-bar">
                 <input type="text" placeholder="Search" />
                 <button type="submit">
                   <i className="fas fa-search"></i>
                 </button>
-              </div>
+              </div> */}
+              <DateSelector />
             </CCol>
             <CCol
-              md={6}
-              xl={6}
+              md={5}
+              xl={5}
               className="mb-3 d-flex justify-content-end align-items-center gap-15"
             >
               <div className="patient-adding" onClick={() => addFormPage()}>

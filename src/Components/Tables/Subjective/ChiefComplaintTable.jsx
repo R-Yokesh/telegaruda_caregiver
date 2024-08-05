@@ -9,11 +9,13 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
+import { tableDateTime } from "../../../Utils/dateUtils";
 
 const ChiefComplaintTable = ({ columns, rowData, getselectedData }) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
+
   return (
     <>
       <CTable className="lab-responsive-table">
@@ -29,6 +31,9 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData }) => {
             <CTableRow key={i}>
               <CTableHeaderCell>
                 <span className="fs-16 fw-500">{dt?.id}</span>
+              </CTableHeaderCell>
+              <CTableHeaderCell>
+                <span className="fs-16 fw-500">{tableDateTime(dt?.date)}</span>
               </CTableHeaderCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">{dt?.complaints}</span>

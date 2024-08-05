@@ -45,12 +45,12 @@ const SymtomsTable = ({ columns, rowData, getselectedData }) => {
 
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.duration_days}</span>
+                  <span>{dt?.characteristics}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.characteristics}</span>
+                  <span>{dt?.duration_days}</span>
                 </div>
               </CTableDataCell>
               {/* <CTableDataCell style={{ height: "10px" }}>
