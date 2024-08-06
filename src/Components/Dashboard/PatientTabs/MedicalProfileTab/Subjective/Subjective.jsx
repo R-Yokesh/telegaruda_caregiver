@@ -8,6 +8,7 @@ import Table from "../../../../Tables/Table";
 import ChiefComplaints from "./Chief Complaints/ChiefComplaints";
 import PresentIllness from "./Present Illness/PresentIllness";
 import History from "./History/History";
+import WellnessProfile from "./WellnessProfile/WellnessProfile";
 
 const Subjective = () => {
   const cardData = [
@@ -22,6 +23,7 @@ const Subjective = () => {
   const [cardView, setCardView] = useState(false);
   const [presentIll, setPresentIll] = useState(false);
   const [historyView, setHistoryView] = useState(false);
+  const [wellnessView, setWellnessView] = useState(false);
 
   const getSelectedData = (data) => {
     setSelectedData(data);
@@ -34,12 +36,15 @@ const Subjective = () => {
     if (data?.id === 3) {
       setHistoryView(true);
     }
+    if (data?.id === 4) {
+      setWellnessView(true);
+    }
   };
 
   return (
     <>
       <div className="mt-3">
-        {!cardView && !presentIll && !historyView ? (
+        {!cardView && !presentIll && !historyView  && !wellnessView ? (
           <CRow>
             {cardData.map((dt, i) => (
               <CCol md={4} xl={3} className="mb-3">
@@ -62,6 +67,10 @@ const Subjective = () => {
         ) : historyView ? (
           <>
             <History OnClose={() => setHistoryView(false)} />
+          </>
+        ) : wellnessView ? (
+          <>
+          <WellnessProfile OnClose={() => setWellnessView(false)}/>
           </>
         ) : null}
       </div>
