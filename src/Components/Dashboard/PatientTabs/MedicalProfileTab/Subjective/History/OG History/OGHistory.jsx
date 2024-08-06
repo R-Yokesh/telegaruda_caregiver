@@ -34,9 +34,8 @@ const OGHistory = () => {
     { id: 4, label: "Trimester" },
     { id: 5, label: "Gravida" },
     { id: 6, label: "Para" },
-    { id: 7, label: "Fertility Treament" },
-    { id: 8, label: "Lacatating" },
-    { id: 9, label: "ACTIONS" },
+    { id: 7, label: "Bad Obstetric History" },
+    { id: 8, label: "ACTIONS" },
   ];
   const rowData = [
     {
@@ -50,6 +49,7 @@ const OGHistory = () => {
       lacating: "Yes",
       pregnant: "Yes",
       cesarean: "Yes",
+      boh: "Yes",
     },
     {
       id: 2,
@@ -61,6 +61,7 @@ const OGHistory = () => {
       fert_treatment: "Yes",
       lacating: "Yes",
       cesarean: "Yes",
+      boh: "No",
     },
     {
       id: 3,
@@ -71,6 +72,7 @@ const OGHistory = () => {
       para: 1,
       fert_treatment: "No",
       lacating: "Yes",
+      boh: "No",
     },
     {
       id: 4,
@@ -81,6 +83,7 @@ const OGHistory = () => {
       para: 1,
       fert_treatment: "Yes",
       lacating: "No",
+      boh: "No",
     },
     {
       id: 5,
@@ -91,6 +94,7 @@ const OGHistory = () => {
       para: 1,
       fert_treatment: "No",
       lacating: "No",
+      boh: "Yes",
     },
     {
       id: 6,
@@ -101,6 +105,7 @@ const OGHistory = () => {
       para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
+      boh: "Yes",
     },
     {
       id: 7,
@@ -111,6 +116,7 @@ const OGHistory = () => {
       para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
+      boh: "Yes",
     },
     {
       id: 8,
@@ -121,6 +127,7 @@ const OGHistory = () => {
       para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
+      boh: "Yes",
     },
     {
       id: 9,
@@ -131,6 +138,7 @@ const OGHistory = () => {
       para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
+      boh: "Yes",
     },
     {
       id: 10,
@@ -141,6 +149,7 @@ const OGHistory = () => {
       para: 1,
       fert_treatment: "Yes",
       lacating: "Yes",
+      boh: "Yes",
     },
   ];
 

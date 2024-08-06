@@ -33,11 +33,14 @@ const MedicationTable = ({ columns, rowData, getselectedData }) => {
                 </div>
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
+                <div className="d-flex align-items-center justify-content-center h-100 flex-column">
                   <span className="fs-16 fw-500">{dt?.name}</span>
+                  <small>
+                    {dt?.strength} {dt?.strength_measurement} {dt?.dosage}
+                  </small>
                 </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
+              {/* <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <span className="fs-16 fw-500">{dt?.strength}</span>
                 </div>
@@ -53,7 +56,7 @@ const MedicationTable = ({ columns, rowData, getselectedData }) => {
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <span className="fs-16 fw-500">{dt?.dosage}</span>
                 </div>
-              </CTableDataCell>
+              </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <span className="fs-16 fw-500">
