@@ -351,6 +351,12 @@ body {
   font-size: 14px;
   font-weight: 400;
 }
+.radio-label{
+  color: #17171D99;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
 
 .form-control:focus {
   border-color: var(--theme-blue);
