@@ -19,13 +19,27 @@ const Subjective = () => {
     { id: 4, name: "Wellness Profile", image: Assets.WellnessProfile },
     { id: 5, name: "Review of Systems (ROS)", image: Assets.ReviewSytm },
   ];
+  const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-2");
+  const ParsedPatientSubMenu = PatientSubMenu2
+    ? JSON.parse(PatientSubMenu2)
+    : 0;
 
   const [selectedData, setSelectedData] = useState();
-  const [cardView, setCardView] = useState(false);
-  const [presentIll, setPresentIll] = useState(false);
-  const [historyView, setHistoryView] = useState(false);
-  const [wellnessView, setWellnessView] = useState(false);
-  const [rosView, setRosView] = useState(false);
+  const [cardView, setCardView] = useState(
+    ParsedPatientSubMenu === 1 ? true : false
+  );
+  const [presentIll, setPresentIll] = useState(
+    ParsedPatientSubMenu === 2 ? true : false
+  );
+  const [historyView, setHistoryView] = useState(
+    ParsedPatientSubMenu === 3 ? true : false
+  );
+  const [wellnessView, setWellnessView] = useState(
+    ParsedPatientSubMenu === 4 ? true : false
+  );
+  const [rosView, setRosView] = useState(
+    ParsedPatientSubMenu === 5 ? true : false
+  );
 
   const getSelectedData = (data) => {
     setSelectedData(data);

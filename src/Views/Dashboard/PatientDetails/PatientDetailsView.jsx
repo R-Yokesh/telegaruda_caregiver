@@ -16,8 +16,9 @@ const PatientDetailsView = () => {
   const [currentTab, setCurrentTab] = useState(() => {
     // Initial state setup using localStorage
     const storedCount = localStorage.getItem("patiendDetailTab");
+    const storedFrom = localStorage.getItem("PatientMenu");
     const parsedData = storedCount && JSON.parse(storedCount);
-    return storedCount ? parsedData?.id : null;
+    return storedCount ? parsedData?.id : storedFrom ? Number(storedFrom) : null;
   });
   const getCurrentTab = (data) => {
     setCurrentTab(data);

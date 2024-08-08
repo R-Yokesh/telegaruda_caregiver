@@ -17,7 +17,11 @@ const History = ({ OnClose }) => {
     { id: 4, title: "Family History" },
     { id: 5, title: "Social History" },
   ];
-  const [currentTab, setCurrentTab] = useState(1);
+  const PatientSubMenu3 = localStorage.getItem("PatientSubMenu-3");
+  const ParsedPatientSubMenu = PatientSubMenu3
+    ? JSON.parse(PatientSubMenu3)
+    : 1;
+  const [currentTab, setCurrentTab] = useState(ParsedPatientSubMenu);
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
@@ -58,7 +62,7 @@ const History = ({ OnClose }) => {
           <MedicalTab
             tabs={tabs}
             getCurrentTab={getCurrentTab}
-            defaultTab={0}
+            defaultTab={ParsedPatientSubMenu - 1}
           />
         </CCol>
       </CRow>

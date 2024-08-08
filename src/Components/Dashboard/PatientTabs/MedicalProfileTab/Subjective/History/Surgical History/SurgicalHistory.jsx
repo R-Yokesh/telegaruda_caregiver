@@ -22,7 +22,7 @@ import SurgicalForm from "./SurgicalForm";
 import MedicationTable from "../../../../../../Tables/Subjective/MedicationTable";
 import SurgicalTable from "../../../../../../Tables/Subjective/SurgicalTable";
 
-const SurgicalHistory = () => {
+const SurgicalHistory = ({ from }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "Date" },
@@ -148,47 +148,52 @@ const SurgicalHistory = () => {
     <>
       {!addFormView && (
         <>
-          <CRow className="mb-2">
-            <CCol lg={8} className="">
-              <DateSelector />
-            </CCol>
-            <CCol
-              lg={4}
-              className="d-flex justify-content-end align-items-center gap-2"
-            >
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.Add} alt="add" />
-                    <span className="fs-16 fw-600">Add</span>
-                  </div>
-                </PrimaryButton>
-              </div>
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.OptionsIcon} alt="add" />
-                  </div>
-                </PrimaryButton>
-              </div>
-            </CCol>
-          </CRow>
+          {from !== "Consult" && (
+            <CRow className="mb-2">
+              <CCol lg={8} className="">
+                <DateSelector />
+              </CCol>
+              <CCol
+                lg={4}
+                className="d-flex justify-content-end align-items-center gap-2"
+              >
+                <div>
+                  <PrimaryButton onClick={() => addFormPage()}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets.Add} alt="add" />
+                      <span className="fs-16 fw-600">Add</span>
+                    </div>
+                  </PrimaryButton>
+                </div>
+                <div>
+                  <PrimaryButton onClick={() => addFormPage()}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets.OptionsIcon} alt="add" />
+                    </div>
+                  </PrimaryButton>
+                </div>
+              </CCol>
+            </CRow>
+          )}
           <div className="mb-2">
             <SurgicalTable
               rowData={getCurrentPageItems()}
               columns={columnData}
               getselectedData={getselectedData}
+              from={from}
             />
-            <CRow className="mb-3">
-              <CCol lg={12} className="d-flex justify-content-center">
-                <Pagination
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                  totalItems={rowData?.length}
-                  itemsPerPage={itemsPerPage}
-                />
-              </CCol>
-            </CRow>
+            {from !== "Consult" && (
+              <CRow className="mb-3">
+                <CCol lg={12} className="d-flex justify-content-center">
+                  <Pagination
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                    totalItems={rowData?.length}
+                    itemsPerPage={itemsPerPage}
+                  />
+                </CCol>
+              </CRow>
+            )}
           </div>
         </>
       )}

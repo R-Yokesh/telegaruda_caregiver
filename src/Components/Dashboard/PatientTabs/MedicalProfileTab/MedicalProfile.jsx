@@ -12,7 +12,10 @@ const MedicalProfile = () => {
     { id: 3, title: "Assesment" },
     { id: 4, title: "Plan" },
   ];
-  const [currentTab, setCurrentTab] = useState(2);
+  const PatientSubMenu = localStorage.getItem("PatientSubMenu-1");
+  const ParsedPatientSubMenu = PatientSubMenu ? JSON.parse(PatientSubMenu) : 1;
+
+  const [currentTab, setCurrentTab] = useState(ParsedPatientSubMenu);
 
   const getCurrentTab = (data) => {
     setCurrentTab(data);
@@ -21,7 +24,7 @@ const MedicalProfile = () => {
   return (
     <>
       <div>
-        <MedicalTab tabs={tabs} getCurrentTab={getCurrentTab} defaultTab={1} />
+        <MedicalTab tabs={tabs} getCurrentTab={getCurrentTab} defaultTab={0} />
         {currentTab === 1 && <Subjective />}
         {currentTab === 2 && <Objective />}
         {currentTab === 3 && <Assesment />}

@@ -36,10 +36,24 @@ const PatientTabs = ({ getCurrentTab }) => {
   const [currentTab, setCurrentTab] = useState(() => {
     // Initial state setup using localStorage
     const storedCount = localStorage.getItem("patiendDetailTab");
-    return storedCount ? JSON.parse(storedCount) : null;
+    const storedFrom = localStorage.getItem("PatientMenu");
+
+    const findObjectById = () => {
+      const findedObj = tabs?.find(
+        (option) => option?.id === Number(storedFrom)
+      );
+      return findedObj;
+    };
+    console.log(findObjectById());
+    return storedCount
+      ? JSON.parse(storedCount)
+      : storedFrom
+      ? findObjectById()
+      : null;
   });
 
   const switchTab = (data) => {
+    localStorage.removeItem("PatientMenu");
     localStorage.setItem("patiendDetailTab", JSON.stringify(data));
     setCurrentTab(data);
     getCurrentTab(data?.id);

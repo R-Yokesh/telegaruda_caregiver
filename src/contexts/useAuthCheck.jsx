@@ -5,7 +5,7 @@ import { useAuth } from "./AuthContext";
 const useAuthCheck = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const storedExpTime = JSON.parse(localStorage.getItem("expTime"));
+  const storedExpTime = JSON.parse(sessionStorage.getItem("expTime"));
 
   useEffect(() => {
     const checkTokenExpiry = () => {

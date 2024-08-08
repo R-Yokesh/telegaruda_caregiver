@@ -1,0 +1,40 @@
+/* DropdownInput.css */
+.input-dropdown-group {
+    display: flex !important;
+    width: 100% !important;
+}
+
+.input-dropdown-25 {
+    width: 25% !important;
+}
+
+.input-dropdown-75 {
+    width: 75% !important;
+}
+
+.dropdown-input-group .form-select,
+.dropdown-input-group .form-control {
+    border-radius: 0;
+}
+
+.dropdown-input-group .form-select {
+    border-right: 0;
+}
+
+.dropdown-input-group .form-control {
+    border-left: 1;
+}
+
+.dropdown-input-group .form-select:first-of-type {
+    /* border-top-right-radius: .25rem; */
+    /* border-bottom-right-radius: .25rem; */
+}
+
+.dropdown-input-group .form-control:last-of-type {
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+
+.border-none {
+    border-radius: 0 !important;
+}

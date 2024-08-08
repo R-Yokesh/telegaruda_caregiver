@@ -12,7 +12,11 @@ const PresentIllness = ({ OnClose }) => {
     { id: 2, title: "Medication" },
     { id: 3, title: "Allergies" },
   ];
-  const [currentTab, setCurrentTab] = useState(1);
+  const PatientSubMenu3 = localStorage.getItem("PatientSubMenu-3");
+  const ParsedPatientSubMenu = PatientSubMenu3
+    ? JSON.parse(PatientSubMenu3)
+    : 1;
+  const [currentTab, setCurrentTab] = useState(ParsedPatientSubMenu);
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
@@ -55,7 +59,7 @@ const PresentIllness = ({ OnClose }) => {
           <MedicalTab
             tabs={tabs}
             getCurrentTab={getCurrentTab}
-            defaultTab={0}
+            defaultTab={currentTab - 1}
           />
         </CCol>
       </CRow>

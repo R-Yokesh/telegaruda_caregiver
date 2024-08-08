@@ -7,7 +7,6 @@ import { useLocation } from "react-router-dom";
 const PatentProfile = () => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
-  console.log(data, "data");
   return (
     <>
       <CCard className="card-profile">

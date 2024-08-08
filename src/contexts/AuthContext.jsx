@@ -5,26 +5,26 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  const storedToken = JSON.parse(localStorage.getItem("token"));
-  const storedExpTime = JSON.parse(localStorage.getItem("exp_time"));
+  const storedUser = JSON.parse(sessionStorage.getItem("user"));
+  const storedToken = JSON.parse(sessionStorage.getItem("token"));
+  const storedExpTime = JSON.parse(sessionStorage.getItem("exp_time"));
 
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [ses_exp, setSes_exp] = useState(false);
 
   const login = (userData, token, exp_time) => {
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", JSON.stringify(token));
-    localStorage.setItem("exp_time", JSON.stringify(exp_time));
+    sessionStorage.setItem("user", JSON.stringify(userData));
+    sessionStorage.setItem("token", JSON.stringify(token));
+    sessionStorage.setItem("exp_time", JSON.stringify(exp_time));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    localStorage.removeItem("exp_time");
-    localStorage.removeItem("patiendDetailTab");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("exp_time");
+    sessionStorage.removeItem("patiendDetailTab");
   };
 
   useEffect(() => {
@@ -41,9 +41,6 @@ export const AuthProvider = ({ children }) => {
 
         const currentTime = getCurrentTimeInSeconds();
         const expirationTime = new Date(storedExpTime).getTime();
-
-        console.log(currentTime, "currentTime");
-        console.log(expirationTime, "expirationTime");
 
         if (currentTime >= expirationTime) {
           sessionStorage.setItem("loggedIn", "false");

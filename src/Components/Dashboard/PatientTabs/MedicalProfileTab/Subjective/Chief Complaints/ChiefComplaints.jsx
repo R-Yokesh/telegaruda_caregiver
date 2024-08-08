@@ -107,7 +107,7 @@ import ChiefComplaintsForm from "./ChiefComplaintsForm";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import DateSelector from "../../../../../DateRangePicker/DateSelector";
 
-const ChiefComplaints = ({ OnClose }) => {
+const ChiefComplaints = ({ OnClose, from }) => {
   const columnData = [
     { label: "No." },
     { label: "Date" },
@@ -211,80 +211,87 @@ const ChiefComplaints = ({ OnClose }) => {
       detailPage();
     }
   };
-
+  console.log("from", from);
   return (
     <>
-      <CRow>
-        <CCol md={6} className="mb-2">
-          <div className="d-flex gap-2">
-            <img
-              alt="BackBtn"
-              src={Assets.BackBtn}
-              style={{ width: "35px" }}
-              onClick={OnClose}
-              className="cursor"
-            />
-            <span className="Obj-name d-flex align-items-center">
-              Chief Complaints
-            </span>
-          </div>
-        </CCol>
-        <CCol md={6} className="mb-2 d-flex justify-content-end">
-          <div className="d-flex mt-2">
-            <Breadcrumb
-              paths={[
-                { label: "Home", to: "/patients" },
-                { label: "Patient List", to: "/patients" },
-                { label: "Medical Profile", to: "/patients/history" },
-                { label: "Chief Complaints", to: "/patients/history" },
-              ]}
-            />
-          </div>
-        </CCol>
-      </CRow>
+      {from !== "Consult" && (
+        <CRow>
+          <CCol md={6} className="mb-2">
+            <div className="d-flex gap-2">
+              <img
+                alt="BackBtn"
+                src={Assets.BackBtn}
+                style={{ width: "35px" }}
+                onClick={OnClose}
+                className="cursor"
+              />
+              <span className="Obj-name d-flex align-items-center">
+                Chief Complaints
+              </span>
+            </div>
+          </CCol>
+          <CCol md={6} className="mb-2 d-flex justify-content-end">
+            <div className="d-flex mt-2">
+              <Breadcrumb
+                paths={[
+                  { label: "Home", to: "/patients" },
+                  { label: "Patient List", to: "/patients" },
+                  { label: "Medical Profile", to: "/patients/history" },
+                  { label: "Chief Complaints", to: "/patients/history" },
+                ]}
+              />
+            </div>
+          </CCol>
+        </CRow>
+      )}
       {!addFormView && (
         <>
-          <CRow>
-            <CCol md={7} xl={7} className="mb-3 chief-complaints">
-              {/* <div className="search-bar">
+          {from !== "Consult" && (
+            <CRow>
+              <CCol md={7} xl={7} className="mb-3 chief-complaints">
+                {/* <div className="search-bar">
                 <input type="text" placeholder="Search" />
                 <button type="submit">
                   <i className="fas fa-search"></i>
                 </button>
               </div> */}
-              <DateSelector />
-            </CCol>
-            <CCol
-              md={5}
-              xl={5}
-              className="mb-3 d-flex justify-content-end align-items-center gap-15"
-            >
-              <div className="patient-adding" onClick={() => addFormPage()}>
-                <button>+ ADD</button>
-              </div>
-              <div className="patient-adding">
-                <button>
-                  <img src={Assets.ThreeDots} alt="settings" />
-                </button>
-              </div>
-            </CCol>
-          </CRow>
+                <DateSelector />
+              </CCol>
+              <CCol
+                md={5}
+                xl={5}
+                className="mb-3 d-flex justify-content-end align-items-center gap-15"
+              >
+                <div className="patient-adding" onClick={() => addFormPage()}>
+                  <button>+ ADD</button>
+                </div>
+                <div className="patient-adding">
+                  <button>
+                    <img src={Assets.ThreeDots} alt="settings" />
+                  </button>
+                </div>
+              </CCol>
+            </CRow>
+          )}
           <div className="mb-2">
             <ChiefComplaintTable
               rowData={getCurrentPageItems()}
               columns={columnData}
               getselectedData={getselectedData}
+              from={from}
             />
-            <CRow className="mb-3">
-              <CCol lg={12} className="d-flex justify-content-center">
-                <Pagination
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                  totalItems={rowData?.length}
-                  itemsPerPage={itemsPerPage}
-                />
-              </CCol>
-            </CRow>
+            {from !== "Consult" && (
+              <CRow className="mb-3">
+                <CCol lg={12} className="d-flex justify-content-center">
+                  <Pagination
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                    totalItems={rowData?.length}
+                    itemsPerPage={itemsPerPage}
+                  />
+                </CCol>
+              </CRow>
+            )}
           </div>
         </>
       )}

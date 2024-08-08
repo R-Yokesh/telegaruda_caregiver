@@ -19,7 +19,7 @@ import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import FamilyHistoryTable from "../../../../../../Tables/Subjective/FamilyHistoryTable";
 
-const FamilyHistory = () => {
+const FamilyHistory = ({ from }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "Disease" },
@@ -132,41 +132,43 @@ const FamilyHistory = () => {
   return (
     <>
       <>
-        <CRow className="mb-2">
-          <CCol lg={8} className="">
-            <DateSelector />
-          </CCol>
-          <CCol
-            lg={4}
-            className="d-flex justify-content-end align-items-center gap-2"
-          >
-            <div>
-              {!addFormView ? (
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.EditPencil} alt="add" />
-                    <span className="fs-16 fw-600">Edit</span>
-                  </div>
-                </PrimaryButton>
-              ) : (
-                <div style={{ width: "100px" }}>
-                  <PrimaryButton onClick={() => setAddFormView(false)}>
-                    <div className="d-flex justify-content-center gap-2 w-100">
-                      <span className="fs-16 fw-600">Save</span>
+        {from !== "Consult" && (
+          <CRow className="mb-2">
+            <CCol lg={8} className="">
+              <DateSelector />
+            </CCol>
+            <CCol
+              lg={4}
+              className="d-flex justify-content-end align-items-center gap-2"
+            >
+              <div>
+                {!addFormView ? (
+                  <PrimaryButton onClick={() => addFormPage()}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets.EditPencil} alt="add" />
+                      <span className="fs-16 fw-600">Edit</span>
                     </div>
                   </PrimaryButton>
-                </div>
-              )}
-            </div>
-            <div>
-              <PrimaryButton onClick={() => addFormPage()}>
-                <div className="d-flex align-items-center gap-2">
-                  <img src={Assets.OptionsIcon} alt="add" />
-                </div>
-              </PrimaryButton>
-            </div>
-          </CCol>
-        </CRow>
+                ) : (
+                  <div style={{ width: "100px" }}>
+                    <PrimaryButton onClick={() => setAddFormView(false)}>
+                      <div className="d-flex justify-content-center gap-2 w-100">
+                        <span className="fs-16 fw-600">Save</span>
+                      </div>
+                    </PrimaryButton>
+                  </div>
+                )}
+              </div>
+              <div>
+                <PrimaryButton onClick={() => addFormPage()}>
+                  <div className="d-flex align-items-center gap-2">
+                    <img src={Assets.OptionsIcon} alt="add" />
+                  </div>
+                </PrimaryButton>
+              </div>
+            </CCol>
+          </CRow>
+        )}
         <div className="mb-2">
           <FamilyHistoryTable
             rowData={getCurrentPageItems()}
@@ -174,16 +176,18 @@ const FamilyHistory = () => {
             getselectedData={getselectedData}
             addFormView={addFormView}
           />
-          <CRow className="mb-3">
-            <CCol lg={12} className="d-flex justify-content-center">
-              <Pagination
-                currentPage={currentPage}
-                onPageChange={onPageChange}
-                totalItems={rowData?.length}
-                itemsPerPage={itemsPerPage}
-              />
-            </CCol>
-          </CRow>
+          {from !== "Consult" && (
+            <CRow className="mb-3">
+              <CCol lg={12} className="d-flex justify-content-center">
+                <Pagination
+                  currentPage={currentPage}
+                  onPageChange={onPageChange}
+                  totalItems={rowData?.length}
+                  itemsPerPage={itemsPerPage}
+                />
+              </CCol>
+            </CRow>
+          )}
         </div>
       </>
 

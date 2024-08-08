@@ -5,7 +5,7 @@ import { CCol, CRow } from "@coreui/react";
 import { Assets } from "../../assets/Assets";
 import { useState } from "react";
 import DoctorCards from "../../Components/DoctorCards/DoctorCards";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import FilterModal from "../../Components/FilterModal/FilterModal";
 import useApi from "../../ApiServices/useApi";
 import Pagination from "../../Components/Pagination/Pagination";
@@ -60,9 +60,12 @@ function CallHistoryView() {
   //     profile: Assets.Patient,
   //   },
   // ];
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
 
   const DetailSec = () => {
-    navigate("/patients/summary");
+    navigate("/patients/summary", { state: { PatientDetail: data } });
   };
 
   // Function to handle page change

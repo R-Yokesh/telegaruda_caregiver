@@ -118,6 +118,7 @@ import vaccined from "./Images/vaccinated.png";
 import UStatus from "./Images/update-status.png";
 import Approve from "./Images/Approve.png";
 import NoImg from "./Images/No-Img.png";
+import ProfileImg from "./Images/Profile-Image.svg";
 
 export const Assets = {
   BackBtn,
@@ -217,4 +218,5 @@ export const Assets = {
   UStatus,
   Approve,
   NoImg,
+  ProfileImg,
 };

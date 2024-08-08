@@ -44,7 +44,7 @@ const useApi = () => {
       const options = {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           "X-API-KEY": apiKey,
         },
       };
@@ -59,7 +59,7 @@ const useApi = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           "X-API-KEY": apiKey,
         },
         body: JSON.stringify(body),
@@ -75,7 +75,7 @@ const useApi = () => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           "X-API-KEY": apiKey,
         },
         body: JSON.stringify(body),
@@ -90,7 +90,7 @@ const useApi = () => {
       const options = {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           "X-API-KEY": apiKey,
         },
       };

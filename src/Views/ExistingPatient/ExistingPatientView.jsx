@@ -3,18 +3,34 @@ import Breadcrumb from "../../Components/Breadcrumb/Breadcrumb";
 import PatientCard from "../../Components/PatientCard/PatientCard";
 import { Link, useNavigate } from "react-router-dom";
 import { Assets } from "../../assets/Assets";
-import { CCol, CContainer, CModal, CModalBody, CRow } from "@coreui/react";
+import {
+  CCol,
+  CContainer,
+  CFormCheck,
+  CModal,
+  CModalBody,
+  CRow,
+} from "@coreui/react";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../Components/Buttons/SecondaryButton/SecondaryButton";
 import useApi from "../../ApiServices/useApi";
 import Pagination from "../../Components/Pagination/Pagination";
 import Loader from "../../Components/Loader/Loader";
+import PhoneNumberInput from "../../Components/PhoneNumberInput/PhoneNumberInput";
 
 function ExistingPatientView() {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [PatientDetail, setPatientDetail] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
+
+  const [mobile, setMobile] = useState("");
+  const [iso, setIso] = useState("");
+
+  const getPhone = (isoCode, mobilenum) => {
+    setIso(isoCode);
+    setMobile(mobilenum);
+  };
 
   const { loading, error, get, post } = useApi();
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,7 +109,22 @@ function ExistingPatientView() {
   useEffect(() => {
     getPatients();
   }, [currentPage]);
+  const [image, setImage] = useState(null);
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("Please select a valid image file.");
+    }
+  };
+
+  console.log(mobile, "iso", iso);
   return (
     <section className="existing-patient">
       <div className="flex-sec top-sec">
@@ -158,9 +189,34 @@ function ExistingPatientView() {
             <div className="mb-2">
               <span className="fs-20 fw-600">New Patient</span>
             </div>
-            <CRow className="g-3 mb-2">
-              <CCol lg={5} className="mb-2"></CCol>
-              <CCol lg={7} className="mb-2">
+            <CRow className="mb-2">
+              <CCol lg={4} className="mb-2">
+                <label className="profile-pic">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="file-input"
+                  />
+                  {image && (
+                    <img
+                      alt="profile"
+                      src={image}
+                      className="profile-uploaded"
+                    />
+                  )}
+                  {!image && (
+                    <>
+                      <img
+                        alt="profile"
+                        src={Assets.ProfileImg}
+                        className="profile-uploaded"
+                      />
+                    </>
+                  )}
+                </label>
+              </CCol>
+              <CCol lg={8} className="mb-2">
                 <CRow className="g-3">
                   <CCol lg={6}>
                     <div style={{ width: "100%" }}>
@@ -213,6 +269,32 @@ function ExistingPatientView() {
                         <label for="validationTooltip01" class="form-label">
                           Gender *
                         </label>
+                        <div>
+                          <CFormCheck
+                            inline
+                            type="radio"
+                            name="inlineRadioOptions"
+                            id="inlineCheckbox1"
+                            value="Male"
+                            label="Male"
+                          />
+                          <CFormCheck
+                            inline
+                            type="radio"
+                            name="inlineRadioOptions"
+                            id="inlineCheckbox2"
+                            value="Female"
+                            label="Female"
+                          />
+                          <CFormCheck
+                            inline
+                            type="radio"
+                            name="inlineRadioOptions"
+                            id="inlineCheckbox3"
+                            value="Other"
+                            label="Other"
+                          />
+                        </div>
                       </div>
                     </div>
                   </CCol>
@@ -222,12 +304,13 @@ function ExistingPatientView() {
                         <label for="validationTooltip01" class="form-label">
                           Mobile Number *
                         </label>
-                        <input
+                        {/* <input
                           type="text"
                           class="form-control pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
-                        />
+                        /> */}
+                        <PhoneNumberInput getPhone={getPhone} />
                       </div>
                     </div>
                   </CCol>
