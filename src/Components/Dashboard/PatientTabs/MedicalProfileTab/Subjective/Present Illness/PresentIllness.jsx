@@ -5,6 +5,7 @@ import { Assets } from "../../../../../../assets/Assets";
 import MedicalTab from "../../MedicalTab";
 import SignsSymptoms from "./Signs And Symptoms/SignsSymptoms";
 import Medication from "./Medication/Medication";
+import Allergies from "./Allergies/Allergies";
 
 const PresentIllness = ({ OnClose }) => {
   const tabs = [
@@ -74,7 +75,11 @@ const PresentIllness = ({ OnClose }) => {
             <Medication />
           </>
         )}
-        {currentTab === 3 && <></>}
+        {currentTab === 3 && (
+        <> 
+        <Allergies />
+        </>
+        )}
       </CRow>
     </>
   );

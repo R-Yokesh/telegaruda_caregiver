@@ -4,6 +4,7 @@ import { CCol, CRow } from "@coreui/react";
 import Card from "../../../../Cards/Card";
 import Orders from "./Orders/Orders";
 import Cpt from "./Procedure CPT/Cpt";
+import Therapies from "./Therapies/Therapies";
 
 const Plan = () => {
   const cardData = [
@@ -15,11 +16,15 @@ const Plan = () => {
   ];
   const [ordersView, setOrdersView] = useState(false);
   const [cptView, setCptView] = useState(false);
+  const [therapiesView, setTherapiesView] = useState(false);
 
   const getSelectedData = (data) => {
     // setSelectedData(data);
     if (data?.id === 1) {
       setOrdersView(true);
+    }
+    if (data?.id === 2) {
+      setTherapiesView(true);
     }
     if (data?.id === 4) {
       setCptView(true);
@@ -27,7 +32,7 @@ const Plan = () => {
   };
   return (
     <div className="mt-3">
-      {!ordersView && !cptView ? (
+      {!ordersView && !cptView && !therapiesView ? (
         <CRow>
           {cardData.map((dt, i) => (
             <CCol md={4} xl={3} className="mb-3">
@@ -37,9 +42,13 @@ const Plan = () => {
         </CRow>
       ) : ordersView ? (
         <Orders onClose={() => setOrdersView(false)} />
-      ) : cptView ? (
+      )  : therapiesView ? (
+        <Therapies onClose={() => setTherapiesView(false)} />
+     ) : cptView ? (
         <Cpt onClose={() => setCptView(false)} />
       ) : null}
+      
+      
     </div>
   );
 };

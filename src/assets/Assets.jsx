@@ -119,6 +119,10 @@ import UStatus from "./Images/update-status.png";
 import Approve from "./Images/Approve.png";
 import NoImg from "./Images/No-Img.png";
 import ProfileImg from "./Images/Profile-Image.svg";
+ 
+import testSubIcon from "./Images/testSubIcon.svg";
+import testUnSubIcon from "./Images/testUnSubIcon.svg";
+import testViewIcon from "./Images/testViewIcon.svg";
 
 export const Assets = {
   BackBtn,
@@ -219,4 +223,7 @@ export const Assets = {
   Approve,
   NoImg,
   ProfileImg,
+  testSubIcon,
+  testUnSubIcon,
+  testViewIcon,
 };
