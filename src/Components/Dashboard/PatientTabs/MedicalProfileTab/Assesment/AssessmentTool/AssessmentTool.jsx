@@ -3,31 +3,28 @@ import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import { CCol, CRow } from "@coreui/react";
 import { Assets } from "../../../../../../assets/Assets";
 import MedicalTab from "../../MedicalTab";
-import ExcerciseHabit from "./ExerciseHabit/ExerciseHabit";
-import Mood from "./Mood/Mood";
-import Nutrition from "./Nutrition/Nutrition";
-import SexualStatus from "./SexualStatus/SexualStatus";
-import Sleep from "./Sleep/Sleep";
+import Psychiatric from "./Psychiatric/Psychiatric";
+import Neurological from "./Neurological/Neurological";
+import Peadiatric from "./Peadiatric/Peadiatric";
+import Ophthalmic from "./Ophthalmic/Ophthalmic";
 
 
-const WellnessProfile = ({OnClose}) => {
+const AssessmentTool = ({onClose}) => {
 
-
+ 
     const tabs = [
-        { id: 1, title: "Exercise Habit" },
-        { id: 2, title: "Nutrition" },
-        { id: 3, title: "Sleep" },
-        { id: 4, title: "Mood" },
-        { id: 5, title: "Sexual Status" },
+        { id: 1, title: "psychiatric" },
+        { id: 2, title: "Neurological" },
+        { id: 3, title: "Peadiatric" },
+        { id: 4, title: "Ophthalmic" },
       ];
       const [currentTab, setCurrentTab] = useState(1);
       const getCurrentTab = (data) => {
         setCurrentTab(data);
       };
 
-
   return (
-    <>
+      <>
     <CRow className="mb-0">
       <CCol md={4} className="mb-2">
         <div className="d-flex gap-2">
@@ -35,10 +32,10 @@ const WellnessProfile = ({OnClose}) => {
             alt="BackBtn"
             src={Assets.BackBtn}
             style={{ width: "35px" }}
-            onClick={OnClose}
+            onClick={onClose}
             className="cursor"
           />
-          <span className="Obj-name d-flex align-items-center">Wellness</span>
+          <span className="Obj-name d-flex align-items-center">Assessment Tools</span>
         </div>
       </CCol>
       <CCol md={8} className="mb-2 d-flex justify-content-end">
@@ -49,7 +46,7 @@ const WellnessProfile = ({OnClose}) => {
               { label: "Patient List", to: "/patients" },
               { label: "Medical Profile", to: "/patients/history" },
               {
-                label: "Wellness",
+                label: "Assessment Tools",
                 to: "/patients/history",
               },
             ]}
@@ -69,27 +66,22 @@ const WellnessProfile = ({OnClose}) => {
     <CRow className="mt-3">
       {currentTab === 1 && (
         <>
-          <ExcerciseHabit />
+          <Psychiatric />
         </>
       )}
       {currentTab === 2 && (
         <>
-          <Nutrition />
+          <Neurological />
         </>
       )}
       {currentTab === 3 && (
         <>
-          <Sleep />
+          <Peadiatric />
         </>
       )}
       {currentTab === 4 && (
         <>
-          <Mood />
-        </>
-      )}
-      {currentTab === 5 && (
-        <>
-          <SexualStatus />
+          <Ophthalmic />
         </>
       )}
     </CRow>
@@ -97,4 +89,4 @@ const WellnessProfile = ({OnClose}) => {
   )
 }
 
-export default WellnessProfile
+export default AssessmentTool

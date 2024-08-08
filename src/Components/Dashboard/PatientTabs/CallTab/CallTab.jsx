@@ -154,9 +154,9 @@ const CallTab = () => {
                     label={"ISD Code"}
                     options={[
                       '+91 India',
-                      { label: 'Doctor One', value: '1' },
-                      { label: 'Doctor Two', value: '2' },
-                      { label: 'Dcotor Three', value: '3' }
+                      { label: ' One', value: '1' },
+                      { label: ' Two', value: '2' },
+                      { label: ' Three', value: '3' }
                     ]}
                   />
                 </div>

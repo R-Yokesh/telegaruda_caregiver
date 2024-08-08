@@ -4,6 +4,7 @@ import { CCol, CRow } from "@coreui/react";
 import Card from "../../../../Cards/Card";
 import Diagnosis from "./Diagnosis/Diagnosis";
 import Immunization from "./Immunization/Immunization";
+import AssessmentTool from "./AssessmentTool/AssessmentTool";
 
 const Assesment = () => {
   const cardData = [
@@ -13,6 +14,7 @@ const Assesment = () => {
   ];
   const [diagnosisView, setDiagnosisView] = useState(false);
   const [immunizationView, setImmunizationView] = useState(false);
+  const [assessmentView, setAssessmentView] = useState(false);
 
   const getSelectedData = (data) => {
     console.log("first data", data);
@@ -23,10 +25,13 @@ const Assesment = () => {
     if (data?.id === 2) {
       setImmunizationView(true);
     }
+    if (data?.id === 3) {
+      setAssessmentView(true);
+    }
   };
   return (
     <div className="mt-3">
-      {!diagnosisView && !immunizationView ? (
+      {!diagnosisView && !immunizationView && !assessmentView ? (
         <CRow>
           {cardData.map((dt, i) => (
             <CCol md={4} xl={3} className="mb-3">
@@ -38,6 +43,8 @@ const Assesment = () => {
         <Diagnosis onClose={() => setDiagnosisView(false)} />
       ) : immunizationView ? (
         <Immunization onClose={() => setImmunizationView(false)} />
+      ) : assessmentView ? (
+        <AssessmentTool onClose={() => setAssessmentView(false)} />
       ) : null}
     </div>
   );

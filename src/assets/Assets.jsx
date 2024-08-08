@@ -118,6 +118,10 @@ import vaccined from "./Images/vaccinated.png";
 import UStatus from "./Images/update-status.png";
 import Approve from "./Images/Approve.png";
 import NoImg from "./Images/No-Img.png";
+ 
+import testSubIcon from "./Images/testSubIcon.svg";
+import testUnSubIcon from "./Images/testUnSubIcon.svg";
+import testViewIcon from "./Images/testViewIcon.svg";
 
 export const Assets = {
   BackBtn,
@@ -217,4 +221,7 @@ export const Assets = {
   UStatus,
   Approve,
   NoImg,
+  testSubIcon,
+  testUnSubIcon,
+  testViewIcon,
 };

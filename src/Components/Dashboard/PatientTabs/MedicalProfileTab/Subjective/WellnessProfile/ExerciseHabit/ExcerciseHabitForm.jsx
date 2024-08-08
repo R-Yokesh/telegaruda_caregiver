@@ -51,6 +51,11 @@ const ExcerciseHabitForm = ({ back, defaultValues }) => {
       {exercises.map((exercise, index) => (
         <div key={index}>
           <CRow className="mb-3">
+             <CCol lg={12}>
+               <div className="vertical-line"></div>
+             </CCol>
+           </CRow>
+          <CRow className="mb-3">
             <CCol lg={4}>
               <div className="position-relative">
                 <label htmlFor="validationTooltip01" className="form-label">
@@ -169,18 +174,12 @@ const ExcerciseHabitForm = ({ back, defaultValues }) => {
                     </div>
                   </CCol>
             </CRow>
-            <CRow className="mb-3">
-             <CCol lg={12}>
-               <div className="vertical-line"></div>
-             </CCol>
-           </CRow>
            </>
             
           )}
         </div>
       ))}
 
-      
       <>
             <CRow className="mb-3">
               <CCol lg={12}>
