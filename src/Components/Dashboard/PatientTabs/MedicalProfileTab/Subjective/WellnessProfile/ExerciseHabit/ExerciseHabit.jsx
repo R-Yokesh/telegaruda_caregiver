@@ -15,6 +15,7 @@ import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import ExerciseHabitTable from "../../../../../../Tables/Subjective/WellnessProfileTable/ExerciseHabitTable";
 import ExcerciseHabitForm from "./ExcerciseHabitForm";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 
 const ExerciseHabit = () => {
@@ -117,7 +118,7 @@ const ExerciseHabit = () => {
         <>
           <CRow className="mb-2">
             <CCol lg={8} className="">
-              <DateSelector />
+              <DateSearch />
             </CCol>
             <CCol
               lg={4}

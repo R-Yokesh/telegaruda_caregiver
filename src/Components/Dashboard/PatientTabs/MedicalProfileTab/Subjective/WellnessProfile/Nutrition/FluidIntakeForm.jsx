@@ -117,7 +117,11 @@ const FluidIntakeForm = ({ back, defaultValues }) => {
               class="form-control pad-10"
               id="validationTooltip01"
               placeholder="0000"
+              maxLength={4}
               defaultValue={defaultValues?.name}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+              }}
             />
           </div>
         </div>

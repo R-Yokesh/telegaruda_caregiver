@@ -16,6 +16,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import ExcerciseHabitForm from "../ExerciseHabit/ExcerciseHabitForm";
 import MoodTable from "../../../../../../Tables/Subjective/WellnessProfileTable/MoodTable";
 import MoodForm from "./MoodForm";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 const Mood = () => {
   const columnData = [
@@ -102,7 +103,7 @@ const Mood = () => {
         <>
           <CRow className="mb-2">
             <CCol lg={8} className="">
-              <DateSelector />
+              <DateSearch />
             </CCol>
             <CCol
               lg={4}

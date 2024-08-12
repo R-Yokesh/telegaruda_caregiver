@@ -1,4 +1,4 @@
-import { CCol, CRow, CFormCheck } from "@coreui/react";
+import { CCol, CRow, CFormCheck ,CFormTextarea} from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
@@ -123,12 +123,13 @@ const SexualStatusForm = ({ back, defaultValues }) => {
                             <div style={{ width: "100%" }}>
                                 <div className="position-relative">
                                     <label className="form-label">STI History Notes</label>
-                                    <input
-                                        type="text"
-                                        className="form-control pad-10"
-                                        placeholder="Enter"
-                                        defaultValue={defaultValues?.name}
-                                    />
+                                    <CFormTextarea
+                                            type="text"
+                                            class="form-control  pad-10"
+                                            id="validationTooltip01"
+                                            placeholder="Enter"
+                                            defaultValue={defaultValues?.name}
+                                        />
                                 </div>
                             </div>
                         </CCol>
@@ -186,9 +187,10 @@ const SexualStatusForm = ({ back, defaultValues }) => {
                                 <div style={{ width: "100%" }}>
                                     <div className="position-relative">
                                         <label className="form-label">Current STI Notes</label>
-                                        <input
+                                        <CFormTextarea
                                             type="text"
-                                            className="form-control pad-10"
+                                            class="form-control  pad-10"
+                                            id="validationTooltip01"
                                             placeholder="Enter"
                                             defaultValue={defaultValues?.name}
                                         />

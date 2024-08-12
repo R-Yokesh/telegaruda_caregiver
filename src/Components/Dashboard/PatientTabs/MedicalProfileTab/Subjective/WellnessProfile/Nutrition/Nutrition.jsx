@@ -20,6 +20,7 @@ import NutritionDietTable from "../../../../../../Tables/Subjective/WellnessProf
 import NutritionFluidTable from "../../../../../../Tables/Subjective/WellnessProfileTable/NutritionFluidTable";
 import DietForm from "./DietForm";
 import FluidIntakeForm from "./FluidIntakeForm";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 const Nutrition = () => {
 
@@ -154,7 +155,7 @@ const Nutrition = () => {
           <>
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSelector />
+                <DateSearch />
               </CCol>
               <CCol
                 lg={4}
