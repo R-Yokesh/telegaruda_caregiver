@@ -24,9 +24,16 @@ import SignsSymptoms from "../../Components/Dashboard/PatientTabs/MedicalProfile
 import Medication from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/Present Illness/Medication/Medication";
 import SurgicalHistory from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/History/Surgical History/SurgicalHistory";
 import FamilyHistory from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/History/Family History/FamilyHistory";
+import SocialHistory from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/History/Social History/SocialHistory";
+import OGHistory from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/History/OG History/OGHistory";
+import Diagnosis from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Assesment/Diagnosis/Diagnosis";
+import Immunization from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Assesment/Immunization/Immunization";
 
 function PatientSummaryView() {
-  const [ActiveKey, setActiveKey] = useState("Vitals");
+  const getConsultTab = localStorage.getItem("ConsultTab");
+  const parsedTab = getConsultTab ? JSON.parse(getConsultTab) : "Subjective";
+
+  const [ActiveKey, setActiveKey] = useState(parsedTab);
   // BMI Data
   const VitalsColumns = [
     {
@@ -561,21 +568,53 @@ function PatientSummaryView() {
   const navigate = useNavigate();
   const locdata = location.state.PatientDetail;
 
+  const goBack = () => {
+    navigate("/patients/history", { state: { PatientDetail: locdata } });
+  };
   const goTo = (
     PatientMenu,
     PatientSubMenu1,
     PatientSubMenu2,
-    PatientSubMenu3
+    PatientSubMenu3,
+    PatientSubMenu4,
+    PatientSubMenu5
   ) => {
     // PatientMenu -> Medical Profile Tab
     // PatientSubMenu1 -> Subjective Tab
     // PatientSubMenu2 -> Chief Complaints Tab
     navigate("/patients/history", { state: { PatientDetail: locdata } });
     localStorage.removeItem("patiendDetailTab");
+    localStorage.setItem("PatientConsultTab", JSON.stringify(true));
     localStorage.setItem("PatientMenu", JSON.stringify(PatientMenu));
     localStorage.setItem("PatientSubMenu-1", JSON.stringify(PatientSubMenu1));
-    localStorage.setItem("PatientSubMenu-2", JSON.stringify(PatientSubMenu2));
-    localStorage.setItem("PatientSubMenu-3", JSON.stringify(PatientSubMenu3));
+    if (PatientSubMenu2) {
+      localStorage.setItem("PatientSubMenu-2", JSON.stringify(PatientSubMenu2));
+    }
+    if (PatientSubMenu3) {
+      localStorage.setItem("PatientSubMenu-3", JSON.stringify(PatientSubMenu3));
+    }
+    if (PatientSubMenu4) {
+      localStorage.setItem("PatientSubMenu-4", JSON.stringify(PatientSubMenu4));
+    }
+    if (PatientSubMenu5) {
+      localStorage.setItem("PatientSubMenu-5", JSON.stringify(PatientSubMenu5));
+    }
+  };
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
+  const handleLinkClick = () => {
+    localStorage.removeItem("patiendDetailTab");
+    localStorage.removeItem("PatientConsultTab");
+    localStorage.removeItem("PatientMenu");
+    localStorage.removeItem("PatientSubMenu-1");
+    localStorage.removeItem("PatientSubMenu-2");
+    localStorage.removeItem("PatientSubMenu-3");
+
+    // Navigate to the desired route with state
+    navigate("/patients/history", { state: { PatientDetail: locdata } });
   };
   return (
     // <section className='patient-summary-sec'>
@@ -641,7 +680,13 @@ function PatientSummaryView() {
         <PatientDetailCard />
       </div>
       <div className="tab-sec mt-4 mb-4">
-        <CTabs activeItemKey={"Subjective"} onChange={(k) => setActiveKey(k)}>
+        <CTabs
+          activeItemKey={parsedTab}
+          onChange={(k) => {
+            setActiveKey(k);
+            localStorage.setItem("ConsultTab", JSON.stringify(k));
+          }}
+        >
           <CTabList variant="pills">
             <CTab aria-controls="home-tab-pane" itemKey={"Subjective"}>
               Subjective
@@ -659,7 +704,17 @@ function PatientSummaryView() {
           <div className="bread-crumbs mt-4">
             <p>
               <Link to="/patients">Patients</Link> /{" "}
-              <Link to="/patients/history"> Patient History </Link> /{" "}
+              <Link
+                to={"/patients/history"}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default link behavior
+                  handleLinkClick(); // Call the custom handler
+                }}
+              >
+                {" "}
+                Patient History{" "}
+              </Link>{" "}
+              /{" "}
               <Link to="/patients/summary" className="active">
                 {" "}
                 {ActiveKey}
@@ -672,75 +727,154 @@ function PatientSummaryView() {
               aria-labelledby="home-tab-pane"
               itemKey={"Subjective"}
             >
-              <div>
-                <h4
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
                   onClick={() => {
                     goTo(2, 1, 1);
                   }}
                 >
-                  Chief Complaints
-                </h4>
-                <ChiefComplaints from={"Consult"} />
+                  <h4>Chief Complaints</h4>
+                </div>
+                <ChiefComplaints from={"Consult"} OnClose={handleGoBack} />
               </div>
-              <div>
-                <h4
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
                   onClick={() => {
                     goTo(2, 1, 2, 1);
                   }}
                 >
-                  History of Present Illness (HPI) - SYMPTOMS
-                </h4>
+                  <h4>History of Present Illness (HPI) - SYMPTOMS</h4>
+                </div>
+
                 <SignsSymptoms from={"Consult"} />
               </div>
-              <div>
-                <h4
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
                   onClick={() => {
                     goTo(2, 1, 2, 2);
                   }}
                 >
-                  History of Present Illness (HPI) - Medication
-                </h4>
+                  <h4>History of Present Illness (HPI) - Medication</h4>
+                </div>
+
                 <Medication from={"Consult"} />
               </div>
-              <div>
-                <h4
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
                   onClick={() => {
                     goTo(2, 1, 3, 1);
                   }}
                 >
-                  History - Medical History
-                </h4>
+                  <h4>History - Medical History</h4>
+                </div>
                 <MedicalHistory from={"Consult"} />
               </div>
-              <div>
-                <h4
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
                   onClick={() => {
                     goTo(2, 1, 3, 3);
                   }}
                 >
-                  History - Surgical History
-                </h4>
+                  <h4>History - Surgical History</h4>
+                </div>
+
                 <SurgicalHistory from={"Consult"} />
               </div>
-              <div>
-                <h4
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
                   onClick={() => {
                     goTo(2, 1, 3, 4);
                   }}
                 >
-                  History - Family History
-                </h4>
+                  <h4>History - Family History</h4>
+                </div>
+
                 <FamilyHistory from={"Consult"} />
               </div>
-              <div>
-                <h4
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
                   onClick={() => {
                     goTo(2, 1, 3, 5);
                   }}
                 >
-                  History - Social History
-                </h4>
-                <FamilyHistory from={"Consult"} />
+                  <h4>History - Social History</h4>
+                </div>
+
+                <SocialHistory from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 3, 2, 1);
+                  }}
+                >
+                  <h4>History - OG History - Obstetric History</h4>
+                </div>
+
+                <OGHistory from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 3, 2, 2, 1);
+                  }}
+                >
+                  <h4>History - OG History - Gynaec History</h4>
+                </div>
+
+                <OGHistory from={"Consult-Gynaec"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 3, 2, 2, 2);
+                  }}
+                >
+                  <h4>
+                    History - OG History - Gynaec History- Screening and
+                    Diagnostic History
+                  </h4>
+                </div>
+
+                <OGHistory from={"Consult-Screen"} />
+              </div>
+            </CTabPanel>
+            <CTabPanel
+              className="p-2"
+              aria-labelledby="home-tab-pane"
+              itemKey={"Assessment"}
+            >
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 3, 1);
+                  }}
+                >
+                  <h4>Diagnosis (Including ICD)</h4>
+                </div>
+                <Diagnosis from={"Consult"} OnClose={handleGoBack} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 3, 2);
+                  }}
+                >
+                  <h4>Immunization Status</h4>
+                </div>
+                <Immunization from={"Consult"} OnClose={handleGoBack} />
               </div>
             </CTabPanel>
           </CTabContent>

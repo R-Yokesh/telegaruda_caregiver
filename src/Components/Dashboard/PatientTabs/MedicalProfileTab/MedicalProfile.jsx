@@ -24,7 +24,7 @@ const MedicalProfile = () => {
   return (
     <>
       <div>
-        <MedicalTab tabs={tabs} getCurrentTab={getCurrentTab} defaultTab={0} />
+        <MedicalTab tabs={tabs} getCurrentTab={getCurrentTab} defaultTab={currentTab - 1} />
         {currentTab === 1 && <Subjective />}
         {currentTab === 2 && <Objective />}
         {currentTab === 3 && <Assesment />}

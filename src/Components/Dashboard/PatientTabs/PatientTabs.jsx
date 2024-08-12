@@ -53,8 +53,14 @@ const PatientTabs = ({ getCurrentTab }) => {
   });
 
   const switchTab = (data) => {
+    
+    localStorage.removeItem("PatientSubMenu-1");
+    localStorage.removeItem("PatientSubMenu-2");
+    localStorage.removeItem("PatientSubMenu-3");
     localStorage.removeItem("PatientMenu");
+    
     localStorage.setItem("patiendDetailTab", JSON.stringify(data));
+
     setCurrentTab(data);
     getCurrentTab(data?.id);
     if (data?.id === currentTab?.id) {

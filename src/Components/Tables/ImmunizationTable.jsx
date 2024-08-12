@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { Assets } from "../../assets/Assets";
 
-const ImmunizationTable = ({ columns, rowData, getselectedData }) => {
+const ImmunizationTable = ({ columns, rowData, getselectedData, from }) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
@@ -43,7 +43,11 @@ const ImmunizationTable = ({ columns, rowData, getselectedData }) => {
                       src={Assets?.vaccined}
                       className="cursor"
                       style={{ width: "40px" }}
-                      onClick={() => selectedData(dt, "delete")}
+                      onClick={() => {
+                        if (from !== "Consult") {
+                          selectedData(dt, "delete");
+                        }
+                      }}
                     />
                   ) : (
                     <img

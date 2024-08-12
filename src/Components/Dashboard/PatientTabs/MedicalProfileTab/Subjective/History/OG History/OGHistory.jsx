@@ -26,7 +26,7 @@ import ScreeningHistory from "../../../../../../Tables/Subjective/ScreeningHisto
 import MensturalHistoryForm from "./MensturalHistoryForm";
 import ScreeningHistoryForm from "./ScreeningHistoryForm";
 
-const OGHistory = () => {
+const OGHistory = ({ from }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "LMP Date" },
@@ -455,12 +455,23 @@ const OGHistory = () => {
   };
 
   const options = ["Yes", "No"];
+  const PatientSubMenu4 = localStorage.getItem("PatientSubMenu-4");
+  const ParsedPatientSubMenu = PatientSubMenu4
+    ? JSON.parse(PatientSubMenu4)
+    : 1;
   const tabs = [
     { id: 1, title: "Obstetric History" },
     { id: 2, title: "Gynaec History" },
   ];
-  const [currentTab, setCurrentTab] = useState(1);
-  const [currentHistoryTab, setCurrentHistoryTab] = useState(1);
+  const [currentTab, setCurrentTab] = useState(ParsedPatientSubMenu);
+
+  const PatientSubMenu5 = localStorage.getItem("PatientSubMenu-5");
+  const ParsedPatientSubMenu5 = PatientSubMenu5
+    ? JSON.parse(PatientSubMenu5)
+    : 1;
+  const [currentHistoryTab, setCurrentHistoryTab] = useState(
+    ParsedPatientSubMenu5
+  );
 
   const GynaecTabs = [
     { id: 1, title: "Menstrual History" },
@@ -490,188 +501,224 @@ const OGHistory = () => {
   };
   return (
     <>
-      <>
-        <CRow className="mb-2">
-          <CCol lg={5} className="">
-            <MedicalTab
-              tabs={tabs}
-              getCurrentTab={getCurrentTab}
-              defaultTab={0}
-            />
-          </CCol>
-          <CCol lg={7}>
-            {currentTab === 1 && (
-              // <CRow>
-              //   <CCol lg={4}>
-              //     <div style={{ width: "100%" }}>
-              //       <div class="position-relative">
-              //         <label for="validationTooltip01" class="form-label">
-              //           Pregnant
-              //         </label>
-              //         <div
-              //           className="w-100"
-              //           style={{
-              //             boxShadow: "0px 4px 17px 0px #17171D14",
-              //           }}
-              //         >
-              //           <Dropdown
-              //             options={options}
-              //             defaultValue={options[0]}
-              //             getSelectedValue={getSelectedValue}
-              //           />
-              //         </div>
-              //       </div>
-              //     </div>
-              //   </CCol>
-              //   <CCol lg={4}>
-              //     <div style={{ width: "100%" }}>
-              //       <div class="position-relative">
-              //         <label for="validationTooltip01" class="form-label">
-              //           Previous Cesarean Sections
-              //         </label>
-              //         <div
-              //           className="w-100"
-              //           style={{
-              //             boxShadow: "0px 4px 17px 0px #17171D14",
-              //           }}
-              //         >
-              //           <Dropdown
-              //             options={options}
-              //             defaultValue={options[1]}
-              //             getSelectedValue={getSelectedValue1}
-              //           />
-              //         </div>
-              //       </div>
-              //     </div>
-              //   </CCol>
-              //   <CCol lg={4}>
-              //     <div style={{ width: "100%" }}>
-              //       <div class="position-relative">
-              //         <label for="validationTooltip01" class="form-label">
-              //           Bad Obstetric History
-              //         </label>
-              //         <div
-              //           className="w-100"
-              //           style={{
-              //             boxShadow: "0px 4px 17px 0px #17171D14",
-              //           }}
-              //         >
-              //           <Dropdown
-              //             options={options}
-              //             defaultValue={options[1]}
-              //             getSelectedValue={getSelectedValue2}
-              //           />
-              //         </div>
-              //       </div>
-              //     </div>
-              //   </CCol>
-              // </CRow>
-              <></>
-            )}
-            {currentTab === 2 && (
-              <MedicalTab
-                tabs={GynaecTabs}
-                getCurrentTab={getHistoryCurrentTab}
-                defaultTab={0}
-              />
-            )}
-          </CCol>
+      {from === "Consult" && (
+        <CRow>
+          <ObstetricHistoryTable
+            rowData={getCurrentPageItems()}
+            columns={columnData}
+            getselectedData={getselectedData}
+            from={from}
+          />
         </CRow>
-        {!addFormView && (
-          <>
-            <CRow className="mb-2">
-              <CCol lg={8} className="">
-                <DateSelector />
-              </CCol>
-              <CCol
-                lg={4}
-                className="d-flex justify-content-end align-items-center gap-2"
-              >
-                <div>
-                  <PrimaryButton onClick={() => addFormPage()}>
-                    <div className="d-flex align-items-center gap-2">
-                      <img src={Assets.Add} alt="add" />
-                      <span className="fs-16 fw-600">Add</span>
-                    </div>
-                  </PrimaryButton>
-                </div>
-                <div>
-                  <PrimaryButton onClick={() => addFormPage()}>
-                    <div className="d-flex align-items-center gap-2">
-                      <img src={Assets.OptionsIcon} alt="add" />
-                    </div>
-                  </PrimaryButton>
-                </div>
-              </CCol>
-            </CRow>
-            <div className="mb-2">
+      )}
+      {from === "Consult-Gynaec" && (
+        <CRow>
+          <GynaecHistoryTable
+            rowData={getCurrentMenstrualPageItems()}
+            columns={MensuralcolumnData}
+            getselectedData={getselectedData}
+            from={from}
+          />
+        </CRow>
+      )}
+      {from === "Consult-Screen" && (
+        <CRow>
+          <ScreeningHistory
+            rowData={getCurrentScreeningItem()}
+            columns={ScreeningcolumnData}
+            getselectedData={getselectedData}
+            from={from}
+          />
+        </CRow>
+      )}
+      {from === "" && (
+        <>
+          <CRow className="mb-2">
+            <CCol lg={5} className="">
+              <MedicalTab
+                tabs={tabs}
+                getCurrentTab={getCurrentTab}
+                defaultTab={currentTab - 1}
+              />
+            </CCol>
+            <CCol lg={7}>
               {currentTab === 1 && (
-                <>
-                  <CRow>
-                    <ObstetricHistoryTable
-                      rowData={getCurrentPageItems()}
-                      columns={columnData}
-                      getselectedData={getselectedData}
-                    />
-                  </CRow>
-                  <CRow className="mb-3">
-                    <CCol lg={12} className="d-flex justify-content-center">
-                      <Pagination
-                        currentPage={currentPage}
-                        onPageChange={onPageChange}
-                        totalItems={rowData?.length}
-                        itemsPerPage={itemsPerPage}
-                      />
-                    </CCol>
-                  </CRow>
-                </>
+                // <CRow>
+                //   <CCol lg={4}>
+                //     <div style={{ width: "100%" }}>
+                //       <div class="position-relative">
+                //         <label for="validationTooltip01" class="form-label">
+                //           Pregnant
+                //         </label>
+                //         <div
+                //           className="w-100"
+                //           style={{
+                //             boxShadow: "0px 4px 17px 0px #17171D14",
+                //           }}
+                //         >
+                //           <Dropdown
+                //             options={options}
+                //             defaultValue={options[0]}
+                //             getSelectedValue={getSelectedValue}
+                //           />
+                //         </div>
+                //       </div>
+                //     </div>
+                //   </CCol>
+                //   <CCol lg={4}>
+                //     <div style={{ width: "100%" }}>
+                //       <div class="position-relative">
+                //         <label for="validationTooltip01" class="form-label">
+                //           Previous Cesarean Sections
+                //         </label>
+                //         <div
+                //           className="w-100"
+                //           style={{
+                //             boxShadow: "0px 4px 17px 0px #17171D14",
+                //           }}
+                //         >
+                //           <Dropdown
+                //             options={options}
+                //             defaultValue={options[1]}
+                //             getSelectedValue={getSelectedValue1}
+                //           />
+                //         </div>
+                //       </div>
+                //     </div>
+                //   </CCol>
+                //   <CCol lg={4}>
+                //     <div style={{ width: "100%" }}>
+                //       <div class="position-relative">
+                //         <label for="validationTooltip01" class="form-label">
+                //           Bad Obstetric History
+                //         </label>
+                //         <div
+                //           className="w-100"
+                //           style={{
+                //             boxShadow: "0px 4px 17px 0px #17171D14",
+                //           }}
+                //         >
+                //           <Dropdown
+                //             options={options}
+                //             defaultValue={options[1]}
+                //             getSelectedValue={getSelectedValue2}
+                //           />
+                //         </div>
+                //       </div>
+                //     </div>
+                //   </CCol>
+                // </CRow>
+                <></>
               )}
-              {currentTab === 2 && currentHistoryTab === 1 && (
-                <>
-                  <CRow>
-                    <GynaecHistoryTable
-                      rowData={getCurrentMenstrualPageItems()}
-                      columns={MensuralcolumnData}
-                      getselectedData={getselectedData}
-                    />
-                  </CRow>
-                  <CRow className="mb-3">
-                    <CCol lg={12} className="d-flex justify-content-center">
-                      <Pagination
-                        currentPage={currentPage}
-                        onPageChange={onPageChange}
-                        totalItems={rowData?.length}
-                        itemsPerPage={itemsPerPage}
-                      />
-                    </CCol>
-                  </CRow>
-                </>
+              {currentTab === 2 && (
+                <MedicalTab
+                  tabs={GynaecTabs}
+                  getCurrentTab={getHistoryCurrentTab}
+                  defaultTab={currentHistoryTab - 1}
+                />
               )}
-              {currentTab === 2 && currentHistoryTab === 2 && (
-                <>
-                  <CRow>
-                    <ScreeningHistory
-                      rowData={getCurrentScreeningItem()}
-                      columns={ScreeningcolumnData}
-                      getselectedData={getselectedData}
-                    />
-                  </CRow>
-                  <CRow className="mb-3">
-                    <CCol lg={12} className="d-flex justify-content-center">
-                      <Pagination
-                        currentPage={currentPage}
-                        onPageChange={onPageChange}
-                        totalItems={rowData?.length}
-                        itemsPerPage={itemsPerPage}
+            </CCol>
+          </CRow>
+
+          {!addFormView && (
+            <>
+              <CRow className="mb-2">
+                <CCol lg={8} className="">
+                  <DateSelector />
+                </CCol>
+                <CCol
+                  lg={4}
+                  className="d-flex justify-content-end align-items-center gap-2"
+                >
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Add} alt="add" />
+                        <span className="fs-16 fw-600">Add</span>
+                      </div>
+                    </PrimaryButton>
+                  </div>
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.OptionsIcon} alt="add" />
+                      </div>
+                    </PrimaryButton>
+                  </div>
+                </CCol>
+              </CRow>
+
+              <div className="mb-2">
+                {currentTab === 1 && (
+                  <>
+                    <CRow>
+                      <ObstetricHistoryTable
+                        rowData={getCurrentPageItems()}
+                        columns={columnData}
+                        getselectedData={getselectedData}
+                        from={from}
                       />
-                    </CCol>
-                  </CRow>
-                </>
-              )}
-            </div>
-          </>
-        )}
-      </>
+                    </CRow>
+
+                    <CRow className="mb-3">
+                      <CCol lg={12} className="d-flex justify-content-center">
+                        <Pagination
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                          totalItems={rowData?.length}
+                          itemsPerPage={itemsPerPage}
+                        />
+                      </CCol>
+                    </CRow>
+                  </>
+                )}
+                {currentTab === 2 && currentHistoryTab === 1 && (
+                  <>
+                    <CRow>
+                      <GynaecHistoryTable
+                        rowData={getCurrentMenstrualPageItems()}
+                        columns={MensuralcolumnData}
+                        getselectedData={getselectedData}
+                      />
+                    </CRow>
+                    <CRow className="mb-3">
+                      <CCol lg={12} className="d-flex justify-content-center">
+                        <Pagination
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                          totalItems={rowData?.length}
+                          itemsPerPage={itemsPerPage}
+                        />
+                      </CCol>
+                    </CRow>
+                  </>
+                )}
+                {currentTab === 2 && currentHistoryTab === 2 && (
+                  <>
+                    <CRow>
+                      <ScreeningHistory
+                        rowData={getCurrentScreeningItem()}
+                        columns={ScreeningcolumnData}
+                        getselectedData={getselectedData}
+                      />
+                    </CRow>
+                    <CRow className="mb-3">
+                      <CCol lg={12} className="d-flex justify-content-center">
+                        <Pagination
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                          totalItems={rowData?.length}
+                          itemsPerPage={itemsPerPage}
+                        />
+                      </CCol>
+                    </CRow>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+        </>
+      )}
 
       {addFormView && (
         <CRow className="mb-2">

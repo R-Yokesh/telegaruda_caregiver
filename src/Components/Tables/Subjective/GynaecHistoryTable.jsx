@@ -10,7 +10,7 @@ import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
 
-const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
+const GynaecHistoryTable = ({ columns, rowData, getselectedData, from }) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
@@ -19,11 +19,11 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
       <CTable className="lab-responsive-table-screening">
         <CTableHead color="dark">
           <CTableRow>
-            {columns?.map((data, i) => (
-              <CTableHeaderCell key={i} className="text-align-center">
-                {data?.label}
-              </CTableHeaderCell>
-            ))}
+            {columns?.map((data, i) =>
+              from === "Consult-Gynaec" && i === columns.length - 1 ? null : (
+                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+              )
+            )}
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -80,36 +80,38 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData }) => {
                   <span className="fs-16 fw-500">{dt?.menopause}</span>
                 </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                  <div
-                    style={{
-                      width: "50%",
-                    }}
-                  >
-                    <img
-                      alt="edit"
-                      src={Assets?.EditPencil}
-                      className="cursor"
-                      onClick={() => selectedData(dt, "edit")}
-                    />
+              {from !== "Consult-Gynaec" && (
+                <CTableDataCell style={{ height: "10px" }}>
+                  <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                    <div
+                      style={{
+                        width: "50%",
+                      }}
+                    >
+                      <img
+                        alt="edit"
+                        src={Assets?.EditPencil}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "edit")}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        width: "50%",
+                        display: "flex",
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      <img
+                        alt="delete"
+                        src={Assets?.Delete}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "delete")}
+                      />
+                    </div>
                   </div>
-                  <div
-                    style={{
-                      width: "50%",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <img
-                      alt="delete"
-                      src={Assets?.Delete}
-                      className="cursor"
-                      onClick={() => selectedData(dt, "delete")}
-                    />
-                  </div>
-                </div>
-              </CTableDataCell>
+                </CTableDataCell>
+              )}
             </CTableRow>
           ))}
         </CTableBody>

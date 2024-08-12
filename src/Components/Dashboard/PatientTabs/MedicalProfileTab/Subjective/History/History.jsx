@@ -74,7 +74,7 @@ const History = ({ OnClose }) => {
         )}
         {currentTab === 2 && (
           <>
-            <OGHistory />
+            <OGHistory from={""}/>
           </>
         )}
         {currentTab === 3 && (

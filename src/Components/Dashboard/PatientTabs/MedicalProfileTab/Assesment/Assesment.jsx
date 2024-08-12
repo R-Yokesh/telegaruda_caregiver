@@ -5,6 +5,7 @@ import Card from "../../../../Cards/Card";
 import Diagnosis from "./Diagnosis/Diagnosis";
 import Immunization from "./Immunization/Immunization";
 import AssessmentTool from "./AssessmentTool/AssessmentTool";
+import { useNavigate } from "react-router-dom";
 
 const Assesment = () => {
   const cardData = [
@@ -12,9 +13,23 @@ const Assesment = () => {
     { id: 2, name: "Immunization Status", image: Assets.Immunizaion },
     { id: 3, name: "Assessment Tool", image: Assets.AssesmentTool },
   ];
-  const [diagnosisView, setDiagnosisView] = useState(false);
-  const [immunizationView, setImmunizationView] = useState(false);
-  const [assessmentView, setAssessmentView] = useState(false);
+  const navigate = useNavigate();
+  const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-2");
+  const ParsedPatientSubMenu = PatientSubMenu2
+    ? JSON.parse(PatientSubMenu2)
+    : 0;
+  const GoTOConsultPage = localStorage.getItem("PatientConsultTab");
+  const parsedConsult = GoTOConsultPage ? JSON.parse(GoTOConsultPage) : false;
+
+  const [diagnosisView, setDiagnosisView] = useState(
+    ParsedPatientSubMenu === 1 ? true : false
+  );
+  const [immunizationView, setImmunizationView] = useState(
+    ParsedPatientSubMenu === 2 ? true : false
+  );
+  const [assessmentView, setAssessmentView] = useState(
+    ParsedPatientSubMenu === 3 ? true : false
+  );
 
   const getSelectedData = (data) => {
     console.log("first data", data);
@@ -40,11 +55,41 @@ const Assesment = () => {
           ))}
         </CRow>
       ) : diagnosisView ? (
-        <Diagnosis onClose={() => setDiagnosisView(false)} />
+        <Diagnosis
+          onClose={() => {
+            if (parsedConsult) {
+              navigate(-1);
+              setDiagnosisView(false);
+              localStorage.setItem("PatientConsultTab", JSON.stringify(false));
+            } else {
+              setDiagnosisView(false);
+            }
+          }}
+        />
       ) : immunizationView ? (
-        <Immunization onClose={() => setImmunizationView(false)} />
+        <Immunization
+          onClose={() => {
+            if (parsedConsult) {
+              navigate(-1);
+              setImmunizationView(false);
+              localStorage.setItem("PatientConsultTab", JSON.stringify(false));
+            } else {
+              setImmunizationView(false);
+            }
+          }}
+        />
       ) : assessmentView ? (
-        <AssessmentTool onClose={() => setAssessmentView(false)} />
+        <AssessmentTool
+          onClose={() => {
+            if (parsedConsult) {
+              navigate(-1);
+              setAssessmentView(false);
+              localStorage.setItem("PatientConsultTab", JSON.stringify(false));
+            } else {
+              setAssessmentView(false);
+            }
+          }}
+        />
       ) : null}
     </div>
   );

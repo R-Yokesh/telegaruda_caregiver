@@ -10,6 +10,7 @@ import PresentIllness from "./Present Illness/PresentIllness";
 import History from "./History/History";
 import WellnessProfile from "./WellnessProfile/WellnessProfile";
 import Ros from "./Ros/Ros";
+import { useNavigate } from "react-router-dom";
 
 const Subjective = () => {
   const cardData = [
@@ -19,11 +20,14 @@ const Subjective = () => {
     { id: 4, name: "Wellness Profile", image: Assets.WellnessProfile },
     { id: 5, name: "Review of Systems (ROS)", image: Assets.ReviewSytm },
   ];
+  const navigate = useNavigate();
   const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-2");
   const ParsedPatientSubMenu = PatientSubMenu2
     ? JSON.parse(PatientSubMenu2)
     : 0;
-
+  const GoTOConsultPage = localStorage.getItem("PatientConsultTab");
+  const parsedConsult = GoTOConsultPage ? JSON.parse(GoTOConsultPage) : false;
+ 
   const [selectedData, setSelectedData] = useState();
   const [cardView, setCardView] = useState(
     ParsedPatientSubMenu === 1 ? true : false
@@ -81,23 +85,88 @@ const Subjective = () => {
           </CRow>
         ) : cardView ? (
           <>
-            <ChiefComplaints OnClose={() => setCardView(false)} />
+            <ChiefComplaints
+              OnClose={() => {
+                if (parsedConsult) {
+                  navigate(-1);
+                  setCardView(false);
+                  localStorage.setItem(
+                    "PatientConsultTab",
+                    JSON.stringify(false)
+                  );
+                } else {
+                  setCardView(false);
+                }
+              }}
+            />
           </>
         ) : presentIll ? (
           <>
-            <PresentIllness OnClose={() => setPresentIll(false)} />
+            <PresentIllness
+              OnClose={() => {
+                if (parsedConsult) {
+                  navigate(-1);
+                  setPresentIll(false);
+                  localStorage.setItem(
+                    "PatientConsultTab",
+                    JSON.stringify(false)
+                  );
+                } else {
+                  setPresentIll(false);
+                }
+              }}
+            />
           </>
         ) : historyView ? (
           <>
-            <History OnClose={() => setHistoryView(false)} />
+            <History
+              OnClose={() => {
+                if (parsedConsult) {
+                  navigate(-1);
+                  setHistoryView(false);
+                  localStorage.setItem(
+                    "PatientConsultTab",
+                    JSON.stringify(false)
+                  );
+                } else {
+                  setHistoryView(false);
+                }
+              }}
+            />
           </>
         ) : wellnessView ? (
           <>
-            <WellnessProfile OnClose={() => setWellnessView(false)} />
+            <WellnessProfile
+              OnClose={() => {
+                if (parsedConsult) {
+                  navigate(-1);
+                  setWellnessView(false);
+                  localStorage.setItem(
+                    "PatientConsultTab",
+                    JSON.stringify(false)
+                  );
+                } else {
+                  setWellnessView(false);
+                }
+              }}
+            />
           </>
         ) : rosView ? (
           <>
-            <Ros onClose={() => setRosView(false)} />
+            <Ros
+              onClose={() => {
+                if (parsedConsult) {
+                  navigate(-1);
+                  setRosView(false);
+                  localStorage.setItem(
+                    "PatientConsultTab",
+                    JSON.stringify(false)
+                  );
+                } else {
+                  setRosView(false);
+                }
+              }}
+            />
           </>
         ) : null}
       </div>

@@ -63,9 +63,9 @@ function CallHistoryView() {
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
-
   const DetailSec = () => {
     navigate("/patients/summary", { state: { PatientDetail: data } });
+    localStorage.removeItem("patiendDetailTab");
   };
 
   // Function to handle page change

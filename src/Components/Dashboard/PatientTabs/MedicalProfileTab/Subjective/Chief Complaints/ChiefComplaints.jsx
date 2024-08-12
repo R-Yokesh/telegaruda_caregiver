@@ -106,6 +106,7 @@ import ChiefComplaintTable from "../../../../../Tables/Subjective/ChiefComplaint
 import ChiefComplaintsForm from "./ChiefComplaintsForm";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import DateSelector from "../../../../../DateRangePicker/DateSelector";
+import { useNavigate } from "react-router-dom";
 
 const ChiefComplaints = ({ OnClose, from }) => {
   const columnData = [
@@ -211,7 +212,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
       detailPage();
     }
   };
-  console.log("from", from);
+
   return (
     <>
       {from !== "Consult" && (
@@ -222,7 +223,9 @@ const ChiefComplaints = ({ OnClose, from }) => {
                 alt="BackBtn"
                 src={Assets.BackBtn}
                 style={{ width: "35px" }}
-                onClick={OnClose}
+                onClick={() => {
+                  OnClose();
+                }}
                 className="cursor"
               />
               <span className="Obj-name d-flex align-items-center">

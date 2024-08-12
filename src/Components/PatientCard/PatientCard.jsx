@@ -12,6 +12,8 @@ function PatientCard({ PatientDetail }) {
     localStorage.removeItem("PatientSubMenu-1");
     localStorage.removeItem("PatientSubMenu-2");
     localStorage.removeItem("PatientSubMenu-3");
+    localStorage.removeItem("PatientSubMenu-4");
+    localStorage.removeItem("PatientSubMenu-5");
   };
   return (
     <div className="card-sec">
