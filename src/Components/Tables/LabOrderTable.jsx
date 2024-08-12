@@ -10,7 +10,7 @@ import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
 
-const LabOrderTable = ({ columns, rowData, getselectedData }) => {
+const LabOrderTable = ({ columns, rowData, getselectedData, from }) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
@@ -19,9 +19,11 @@ const LabOrderTable = ({ columns, rowData, getselectedData }) => {
       <CTable className="lab-responsive-table">
         <CTableHead color="dark">
           <CTableRow>
-            {columns?.map((data, i) => (
-              <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
-            ))}
+            {columns?.map((data, i) =>
+              from === "Consult" && i === columns.length - 1 ? null : (
+                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+              )
+            )}
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -84,54 +86,56 @@ const LabOrderTable = ({ columns, rowData, getselectedData }) => {
                 </div>
               </CTableDataCell>
 
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                  <div
-                    style={{
-                      width: "100%",
-                    }}
-                    className="d-flex align-items-center justify-content-center gap-3 "
-                  >
-                    {dt?.lab_status === "Accepted" ? (
-                      <img
-                        alt="edit"
-                        src={Assets?.Approve}
-                        className="cursor"
-                        onClick={() => selectedData(dt, "details")}
-                      />
-                    ) : dt?.lab_status === "Uploaded" ? (
-                      <img
-                        alt="edit"
-                        src={Assets?.visibleEye}
-                        className="cursor"
-                        onClick={() => selectedData(dt, "details")}
-                      />
-                    ) : dt?.lab_status === "Not Uploaded" ? (
-                      <img
-                        alt="edit"
-                        src={Assets?.visibleEye}
-                        className="cursor"
-                        onClick={() => selectedData(dt, "details")}
-                      />
-                    ) : (
-                      <>
+              {from !== "Consult" && (
+                <CTableDataCell style={{ height: "10px" }}>
+                  <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                    <div
+                      style={{
+                        width: "100%",
+                      }}
+                      className="d-flex align-items-center justify-content-center gap-3 "
+                    >
+                      {dt?.lab_status === "Accepted" ? (
                         <img
-                          alt="delete"
-                          src={Assets?.EditPencil}
+                          alt="edit"
+                          src={Assets?.Approve}
                           className="cursor"
-                          onClick={() => selectedData(dt, "edit")}
+                          onClick={() => selectedData(dt, "details")}
                         />
+                      ) : dt?.lab_status === "Uploaded" ? (
                         <img
-                          alt="delete"
-                          src={Assets?.TableDelete}
+                          alt="edit"
+                          src={Assets?.visibleEye}
                           className="cursor"
-                          onClick={() => selectedData(dt, "delete")}
+                          onClick={() => selectedData(dt, "details")}
                         />
-                      </>
-                    )}
+                      ) : dt?.lab_status === "Not Uploaded" ? (
+                        <img
+                          alt="edit"
+                          src={Assets?.visibleEye}
+                          className="cursor"
+                          onClick={() => selectedData(dt, "details")}
+                        />
+                      ) : (
+                        <>
+                          <img
+                            alt="delete"
+                            src={Assets?.EditPencil}
+                            className="cursor"
+                            onClick={() => selectedData(dt, "edit")}
+                          />
+                          <img
+                            alt="delete"
+                            src={Assets?.TableDelete}
+                            className="cursor"
+                            onClick={() => selectedData(dt, "delete")}
+                          />
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </CTableDataCell>
+                </CTableDataCell>
+              )}
             </CTableRow>
           ))}
         </CTableBody>

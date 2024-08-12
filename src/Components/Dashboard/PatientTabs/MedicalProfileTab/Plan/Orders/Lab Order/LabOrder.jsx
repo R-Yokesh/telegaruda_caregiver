@@ -21,7 +21,7 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import LabOrderForm from "./LabOrderForm";
 
-const LabOrder = () => {
+const LabOrder = ({ from }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "DATE" },
@@ -196,220 +196,243 @@ const LabOrder = () => {
   };
   return (
     <>
-      {!addFormView && (
+      {from === "Consult" && (
+        <CRow>
+          <LabOrderTable
+            rowData={getCurrentPageItems()}
+            columns={columnData}
+            getselectedData={getselectedData}
+            from={from}
+          />
+        </CRow>
+      )}
+      {from !== "Consult" && (
         <>
-          <CRow className="mb-2">
-            <CCol lg={8} className="">
-              <DateSelector />
-            </CCol>
-            <CCol
-              lg={4}
-              className="d-flex justify-content-end align-items-center gap-2"
-            >
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.Add} alt="add" />
-                    <span className="fs-16 fw-600">Add</span>
+          {!addFormView && (
+            <>
+              <CRow className="mb-2">
+                <CCol lg={8} className="">
+                  <DateSelector />
+                </CCol>
+                <CCol
+                  lg={4}
+                  className="d-flex justify-content-end align-items-center gap-2"
+                >
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Add} alt="add" />
+                        <span className="fs-16 fw-600">Add</span>
+                      </div>
+                    </PrimaryButton>
                   </div>
-                </PrimaryButton>
-              </div>
-            </CCol>
-          </CRow>
-          <div className="mb-2">
-            <CRow>
-              <LabOrderTable
-                rowData={getCurrentPageItems()}
-                columns={columnData}
-                getselectedData={getselectedData}
-              />
-            </CRow>
-            <CRow className="mb-3">
-              <CCol lg={12} className="d-flex justify-content-center">
-                <Pagination
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                  totalItems={rowData?.length}
-                  itemsPerPage={itemsPerPage}
-                />
-              </CCol>
-            </CRow>
-          </div>
-        </>
-      )}
-      {addFormView && (
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            <LabOrderForm
-              back={() => {
-                setAddFormView(false);
-                setSelectedData({});
-              }}
-              defaultValues={selectedData}
-            />
-          </CCardBody>
-        </CCard>
-      )}
-
-      {detailView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={detailView}
-            onClose={() => setDetailView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-            size="lg"
-          >
-            <CModalBody className="p-5">
-              <CRow className="mb-3">
-                <CCol lg={12}>
-                  <span className="fs-20 fw-600">Slot Confirmation​</span>
                 </CCol>
               </CRow>
-              <CRow>
-                <CCol lg={3} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Date​</span>
-                    <span className="fs-18 fw-400 dark-label">
-                      {selectedData?.date}
-                    </span>
-                  </div>
-                </CCol>
-                <CCol lg={3} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Test Name</span>
-                    <span className="fs-18 fw-400 dark-label">
-                      {selectedData?.name}
-                    </span>
-                  </div>
-                </CCol>
-                <CCol lg={3} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">ICD Code</span>
-                    <span className="fs-18 fw-400 dark-label">D64.9</span>
-                  </div>
-                </CCol>
-                <CCol lg={3} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Notes</span>
-                    <span className="fs-18 fw-400 dark-label">-</span>
-                  </div>
-                </CCol>
-                <CCol lg={4} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">
-                      Lab/Scan Center
-                    </span>
-                    <span className="fs-18 fw-400 dark-label">
-                      {selectedData?.lab_name}
-                    </span>
-                  </div>
-                </CCol>
-                <CCol lg={4} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Slot</span>
-                    <div
-                      className="w-100"
-                      // style={{
-                      //   border: "1px solid #17171D33",
-                      //   borderRadius: "5px",
-                      // }}
-                    >
-                      {/* <Dropdown
+              <div className="mb-2">
+                <CRow>
+                  <LabOrderTable
+                    rowData={getCurrentPageItems()}
+                    columns={columnData}
+                    getselectedData={getselectedData}
+                  />
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol lg={12} className="d-flex justify-content-center">
+                    <Pagination
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={rowData?.length}
+                      itemsPerPage={itemsPerPage}
+                    />
+                  </CCol>
+                </CRow>
+              </div>
+            </>
+          )}
+          {addFormView && (
+            <CCard className="p-2 cursor-default mb-5">
+              <CCardBody className="mb-3">
+                <LabOrderForm
+                  back={() => {
+                    setAddFormView(false);
+                    setSelectedData({});
+                  }}
+                  defaultValues={selectedData}
+                />
+              </CCardBody>
+            </CCard>
+          )}
+
+          {detailView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={detailView}
+                onClose={() => setDetailView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+                size="lg"
+              >
+                <CModalBody className="p-5">
+                  <CRow className="mb-3">
+                    <CCol lg={12}>
+                      <span className="fs-20 fw-600">Slot Confirmation​</span>
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol lg={3} className="mb-3">
+                      <div className="d-flex flex-column gap-2">
+                        <span className="fs-14 fw-400 light-label">Date​</span>
+                        <span className="fs-18 fw-400 dark-label">
+                          {selectedData?.date}
+                        </span>
+                      </div>
+                    </CCol>
+                    <CCol lg={3} className="mb-3">
+                      <div className="d-flex flex-column gap-2">
+                        <span className="fs-14 fw-400 light-label">
+                          Test Name
+                        </span>
+                        <span className="fs-18 fw-400 dark-label">
+                          {selectedData?.name}
+                        </span>
+                      </div>
+                    </CCol>
+                    <CCol lg={3} className="mb-3">
+                      <div className="d-flex flex-column gap-2">
+                        <span className="fs-14 fw-400 light-label">
+                          ICD Code
+                        </span>
+                        <span className="fs-18 fw-400 dark-label">D64.9</span>
+                      </div>
+                    </CCol>
+                    <CCol lg={3} className="mb-3">
+                      <div className="d-flex flex-column gap-2">
+                        <span className="fs-14 fw-400 light-label">Notes</span>
+                        <span className="fs-18 fw-400 dark-label">-</span>
+                      </div>
+                    </CCol>
+                    <CCol lg={4} className="mb-3">
+                      <div className="d-flex flex-column gap-2">
+                        <span className="fs-14 fw-400 light-label">
+                          Lab/Scan Center
+                        </span>
+                        <span className="fs-18 fw-400 dark-label">
+                          {selectedData?.lab_name}
+                        </span>
+                      </div>
+                    </CCol>
+                    <CCol lg={4} className="mb-3">
+                      <div className="d-flex flex-column gap-2">
+                        <span className="fs-14 fw-400 light-label">Slot</span>
+                        <div
+                          className="w-100"
+                          // style={{
+                          //   border: "1px solid #17171D33",
+                          //   borderRadius: "5px",
+                          // }}
+                        >
+                          {/* <Dropdown
                         options={options}
                         getSelectedValue={getSelectedValue}
                       /> */}
-                      <CFormSelect
-                        aria-label="Default select example"
-                        disabled={
-                          selectedData.lab_status === "Uploaded" ||
-                          selectedData.lab_status === "Not Uploaded" && true
-                        }
-                      >
-                        <option>Select</option>
-                        <option value="Morning">Morning</option>
-                        <option value="Afternoon">Afternoon</option>
-                        <option value="Evening">Evening</option>
-                        <option value="Night">Night</option>
-                      </CFormSelect>
+                          <CFormSelect
+                            aria-label="Default select example"
+                            disabled={
+                              selectedData.lab_status === "Uploaded" ||
+                              (selectedData.lab_status === "Not Uploaded" &&
+                                true)
+                            }
+                          >
+                            <option>Select</option>
+                            <option value="Morning">Morning</option>
+                            <option value="Afternoon">Afternoon</option>
+                            <option value="Evening">Evening</option>
+                            <option value="Night">Night</option>
+                          </CFormSelect>
+                        </div>
+                      </div>
+                    </CCol>
+                    <CCol lg={4} className="mb-3">
+                      <div className="d-flex flex-column gap-2">
+                        <span className="fs-14 fw-400 light-label">
+                          Test Type
+                        </span>
+                        <div>
+                          <CFormCheck
+                            inline
+                            type="radio"
+                            name="inlineRadioOptions"
+                            id="inlineCheckbox1"
+                            value="Lab Test"
+                            label="Lab Test"
+                            defaultChecked
+                            disabled={
+                              selectedData.lab_status === "Uploaded" ||
+                              (selectedData.lab_status === "Not Uploaded" &&
+                                true)
+                            }
+                          />
+                          <CFormCheck
+                            inline
+                            type="radio"
+                            name="inlineRadioOptions"
+                            id="inlineCheckbox2"
+                            value="Home Test"
+                            label="Home Test"
+                            disabled={
+                              selectedData.lab_status === "Uploaded" ||
+                              (selectedData.lab_status === "Not Uploaded" &&
+                                true)
+                            }
+                          />
+                        </div>
+                      </div>
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <div style={{ width: "128px" }}>
+                      <PrimaryButton>SAVE</PrimaryButton>
                     </div>
-                  </div>
-                </CCol>
-                <CCol lg={4} className="mb-3">
-                  <div className="d-flex flex-column gap-2">
-                    <span className="fs-14 fw-400 light-label">Test Type</span>
-                    <div>
-                      <CFormCheck
-                        inline
-                        type="radio"
-                        name="inlineRadioOptions"
-                        id="inlineCheckbox1"
-                        value="Lab Test"
-                        label="Lab Test"
-                        defaultChecked
-                        disabled={
-                          selectedData.lab_status === "Uploaded" ||
-                          selectedData.lab_status === "Not Uploaded" && true
-                        }
-                      />
-                      <CFormCheck
-                        inline
-                        type="radio"
-                        name="inlineRadioOptions"
-                        id="inlineCheckbox2"
-                        value="Home Test"
-                        label="Home Test"
-                        disabled={
-                          selectedData.lab_status === "Uploaded" ||
-                          selectedData.lab_status === "Not Uploaded" && true
-                        }
-                      />
+                    <div style={{ width: "128px" }}>
+                      <SecondaryButton onClick={() => setDetailView(false)}>
+                        CANCEL
+                      </SecondaryButton>
                     </div>
-                  </div>
-                </CCol>
-              </CRow>
-              <CRow>
-                <div style={{ width: "128px" }}>
-                  <PrimaryButton>SAVE</PrimaryButton>
-                </div>
-                <div style={{ width: "128px" }}>
-                  <SecondaryButton onClick={() => setDetailView(false)}>
-                    CANCEL
-                  </SecondaryButton>
-                </div>
-              </CRow>
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
-      )}
+                  </CRow>
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
 
-      {deleteView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={deleteView}
-            onClose={() => setDeleteView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-          >
-            <CModalBody className="p-3">
-              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                <h5>Are you sure want to delete ?</h5>
-                <div className="d-flex gap-2 mt-2">
-                  <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDeleteView(false)}>
-                      Yes
-                    </PrimaryButton>
+          {deleteView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={deleteView}
+                onClose={() => setDeleteView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+              >
+                <CModalBody className="p-3">
+                  <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                    <h5>Are you sure want to delete ?</h5>
+                    <div className="d-flex gap-2 mt-2">
+                      <div style={{ width: "80px" }}>
+                        <PrimaryButton onClick={() => setDeleteView(false)}>
+                          Yes
+                        </PrimaryButton>
+                      </div>
+                      <div style={{ width: "80px" }}>
+                        <SecondaryButton onClick={() => setDeleteView(false)}>
+                          No
+                        </SecondaryButton>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ width: "80px" }}>
-                    <SecondaryButton onClick={() => setDeleteView(false)}>
-                      No
-                    </SecondaryButton>
-                  </div>
-                </div>
-              </div>
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+        </>
       )}
     </>
   );

@@ -7,6 +7,7 @@ import Cpt from "./Procedure CPT/Cpt";
 import Therapies from "./Therapies/Therapies";
 import PatientEducation from "./PatientEducation/PatientEducation";
 import NextAppointment from "./NextAppointment/NextAppointment";
+import { useNavigate } from "react-router-dom";
 
 const Plan = () => {
   const cardData = [
@@ -17,11 +18,28 @@ const Plan = () => {
     { id: 5, name: "Patient Education", image: Assets.PatEdu },
     { id: 6, name: "Next Appointment", image: Assets.PatEdu },
   ];
-  const [ordersView, setOrdersView] = useState(false);
-  const [cptView, setCptView] = useState(false);
-  const [therapiesView, setTherapiesView] = useState(false);
-  const [patientView, setPatientView] = useState(false);
-  const [appointView, setAppointmentView] = useState(false);
+  const navigate = useNavigate();
+  const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-2");
+  const ParsedPatientSubMenu = PatientSubMenu2
+    ? JSON.parse(PatientSubMenu2)
+    : 0;
+  const GoTOConsultPage = localStorage.getItem("PatientConsultTab");
+  const parsedConsult = GoTOConsultPage ? JSON.parse(GoTOConsultPage) : false;
+  const [ordersView, setOrdersView] = useState(
+    ParsedPatientSubMenu === 1 ? true : false
+  );
+  const [cptView, setCptView] = useState(
+    ParsedPatientSubMenu === 1 ? true : false
+  );
+  const [therapiesView, setTherapiesView] = useState(
+    ParsedPatientSubMenu === 2 ? true : false
+  );
+  const [patientView, setPatientView] = useState(
+    ParsedPatientSubMenu === 4 ? true : false
+  );
+  const [appointView, setAppointmentView] = useState(
+    ParsedPatientSubMenu === 5 ? true : false
+  );
 
   const getSelectedData = (data) => {
     // setSelectedData(data);
@@ -43,7 +61,11 @@ const Plan = () => {
   };
   return (
     <div className="mt-3">
-      {!ordersView && !cptView && !therapiesView && !patientView  && !appointView ? (
+      {!ordersView &&
+      !cptView &&
+      !therapiesView &&
+      !patientView &&
+      !appointView ? (
         <CRow>
           {cardData.map((dt, i) => (
             <CCol md={4} xl={3} className="mb-3">
@@ -52,19 +74,66 @@ const Plan = () => {
           ))}
         </CRow>
       ) : ordersView ? (
-        <Orders onClose={() => setOrdersView(false)} />
-      )  : therapiesView ? (
-        <Therapies onClose={() => setTherapiesView(false)} />
-     ) : cptView ? (
-        <Cpt onClose={() => setCptView(false)} />
+        <Orders
+          onClose={() => {
+            if (parsedConsult) {
+              navigate(-1);
+              setOrdersView(false);
+              localStorage.setItem("PatientConsultTab", JSON.stringify(false));
+            } else {
+              setOrdersView(false);
+            }
+          }}
+        />
+      ) : therapiesView ? (
+        <Therapies
+          onClose={() => {
+            if (parsedConsult) {
+              navigate(-1);
+              setTherapiesView(false);
+              localStorage.setItem("PatientConsultTab", JSON.stringify(false));
+            } else {
+              setTherapiesView(false);
+            }
+          }}
+        />
+      ) : cptView ? (
+        <Cpt
+          onClose={() => {
+            if (parsedConsult) {
+              navigate(-1);
+              setCptView(false);
+              localStorage.setItem("PatientConsultTab", JSON.stringify(false));
+            } else {
+              setCptView(false);
+            }
+          }}
+        />
       ) : patientView ? (
-      <PatientEducation onClose={() => setPatientView(false)} />
-     ) : appointView ? (
-      <NextAppointment onClose={() => setAppointmentView(false)} />
-     )  : null}
-    
-      
-      
+        <PatientEducation
+          onClose={() => {
+            if (parsedConsult) {
+              navigate(-1);
+              setPatientView(false);
+              localStorage.setItem("PatientConsultTab", JSON.stringify(false));
+            } else {
+              setPatientView(false);
+            }
+          }}
+        />
+      ) : appointView ? (
+        <NextAppointment
+          onClose={() => {
+            if (parsedConsult) {
+              navigate(-1);
+              setAppointmentView(false);
+              localStorage.setItem("PatientConsultTab", JSON.stringify(false));
+            } else {
+              setAppointmentView(false);
+            }
+          }}
+        />
+      ) : null}
     </div>
   );
 };

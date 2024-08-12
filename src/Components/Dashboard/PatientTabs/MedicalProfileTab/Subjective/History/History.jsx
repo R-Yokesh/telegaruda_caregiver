@@ -25,7 +25,6 @@ const History = ({ OnClose }) => {
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
-  console.log("first", currentTab);
   return (
     <>
       <CRow className="mb-0">

@@ -18,7 +18,7 @@ import Pagination from "../../../../../../Pagination/Pagination";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import ProcedurerTable from "../../../../../../Tables/ProcedurerTable";
 
-const ProcedureTab = ({ onClose }) => {
+const ProcedureTab = ({ onClose, from }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "DATE" },
@@ -31,61 +31,71 @@ const ProcedureTab = ({ onClose }) => {
       no: 1,
       date: "06-07-2024",
       id: "93000",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 2,
       date: "06-07-2024",
       id: "93000",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 3,
       date: "06-07-2024",
       id: "93008",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 4,
       date: "06-07-2024",
       id: "93006",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 5,
       date: "06-07-2024",
       id: "93005",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 6,
       date: "06-07-2024",
       id: "93002",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 7,
       date: "06-07-2024",
       id: "93000",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 8,
       date: "06-07-2024",
       id: "93000",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 9,
       date: "06-07-2024",
       id: "93000",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     {
       no: 10,
       date: "06-07-2024",
       id: "93000",
-      description: "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
+      description:
+        "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
     // {
     //   no: 11,
@@ -143,89 +153,102 @@ const ProcedureTab = ({ onClose }) => {
 
   return (
     <>
-      {!addFormView && (
+      {from === "Consult" && (
+        <CRow>
+          <ProcedurerTable
+            rowData={getCurrentPageItems()}
+            columns={columnData}
+            getselectedData={getselectedData}
+            from={from}
+          />
+        </CRow>
+      )}
+      {from !== "Consult" && (
         <>
-          <CRow className="mb-2">
-            <CCol lg={8} className="">
-              <DateSelector />
-            </CCol>
-            <CCol
-              lg={4}
-              className="d-flex justify-content-end align-items-center gap-2"
-            >
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.Add} alt="add" />
-                    <span className="fs-16 fw-600">Add</span>
-                  </div>
-                </PrimaryButton>
-              </div>
-              
-            </CCol>
-          </CRow>
-          <div className="mb-2">
-            <CRow>
-              <ProcedurerTable
-                rowData={getCurrentPageItems()}
-                columns={columnData}
-                getselectedData={getselectedData}
-              />
-            </CRow>
-            <CRow className="mb-3">
-              <CCol lg={12} className="d-flex justify-content-center">
-                <Pagination
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                  totalItems={rowData?.length}
-                  itemsPerPage={itemsPerPage}
-                />
-              </CCol>
-            </CRow>
-          </div>
-        </>
-      )}
-      {addFormView && (
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            <ProcedureForm
-              back={() => {
-                setAddFormView(false);
-                setSelectedData({});
-              }}
-              defaultValues={selectedData}
-            />
-          </CCardBody>
-        </CCard>
-      )}
-
-      {deleteView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={deleteView}
-            onClose={() => setDeleteView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-          >
-            <CModalBody className="p-3">
-              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                <h5>Are you sure want to delete ?</h5>
-                <div className="d-flex gap-2 mt-2">
-                  <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDeleteView(false)}>
-                      Yes
+          {!addFormView && (
+            <>
+              <CRow className="mb-2">
+                <CCol lg={8} className="">
+                  <DateSelector />
+                </CCol>
+                <CCol
+                  lg={4}
+                  className="d-flex justify-content-end align-items-center gap-2"
+                >
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Add} alt="add" />
+                        <span className="fs-16 fw-600">Add</span>
+                      </div>
                     </PrimaryButton>
                   </div>
-                  <div style={{ width: "80px" }}>
-                    <SecondaryButton onClick={() => setDeleteView(false)}>
-                      No
-                    </SecondaryButton>
-                  </div>
-                </div>
+                </CCol>
+              </CRow>
+              <div className="mb-2">
+                <CRow>
+                  <ProcedurerTable
+                    rowData={getCurrentPageItems()}
+                    columns={columnData}
+                    getselectedData={getselectedData}
+                  />
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol lg={12} className="d-flex justify-content-center">
+                    <Pagination
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={rowData?.length}
+                      itemsPerPage={itemsPerPage}
+                    />
+                  </CCol>
+                </CRow>
               </div>
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
+            </>
+          )}
+          {addFormView && (
+            <CCard className="p-2 cursor-default mb-5">
+              <CCardBody className="mb-3">
+                <ProcedureForm
+                  back={() => {
+                    setAddFormView(false);
+                    setSelectedData({});
+                  }}
+                  defaultValues={selectedData}
+                />
+              </CCardBody>
+            </CCard>
+          )}
+
+          {deleteView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={deleteView}
+                onClose={() => setDeleteView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+              >
+                <CModalBody className="p-3">
+                  <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                    <h5>Are you sure want to delete ?</h5>
+                    <div className="d-flex gap-2 mt-2">
+                      <div style={{ width: "80px" }}>
+                        <PrimaryButton onClick={() => setDeleteView(false)}>
+                          Yes
+                        </PrimaryButton>
+                      </div>
+                      <div style={{ width: "80px" }}>
+                        <SecondaryButton onClick={() => setDeleteView(false)}>
+                          No
+                        </SecondaryButton>
+                      </div>
+                    </div>
+                  </div>
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+        </>
       )}
     </>
   );

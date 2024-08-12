@@ -13,11 +13,14 @@ const Orders = ({ onClose }) => {
     { id: 2, title: "Lab Order" },
     { id: 3, title: "Imaging Order" },
   ];
-  const [currentTab, setCurrentTab] = useState(1);
+  const PatientSubMenu3 = localStorage.getItem("PatientSubMenu-3");
+  const ParsedPatientSubMenu = PatientSubMenu3
+    ? JSON.parse(PatientSubMenu3)
+    : 1;
+  const [currentTab, setCurrentTab] = useState(ParsedPatientSubMenu);
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
-  console.log("first", currentTab);
   return (
     <>
       <CRow className="mb-0">
@@ -51,7 +54,7 @@ const Orders = ({ onClose }) => {
           <MedicalTab
             tabs={tabs}
             getCurrentTab={getCurrentTab}
-            defaultTab={0}
+            defaultTab={ParsedPatientSubMenu - 1}
           />
         </CCol>
       </CRow>

@@ -28,6 +28,12 @@ import SocialHistory from "../../Components/Dashboard/PatientTabs/MedicalProfile
 import OGHistory from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/History/OG History/OGHistory";
 import Diagnosis from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Assesment/Diagnosis/Diagnosis";
 import Immunization from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Assesment/Immunization/Immunization";
+import MedicationOrder from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/Orders/Medication Order/MedicationOrder";
+import LabOrder from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/Orders/Lab Order/LabOrder";
+import ImagingOrder from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/Orders/Imaging Order/ImagingOrder";
+import Therapies from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/Therapies/Therapies";
+import Cpt from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/Procedure CPT/Cpt";
+import PatientEducation from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/PatientEducation/PatientEducation";
 
 function PatientSummaryView() {
   const getConsultTab = localStorage.getItem("ConsultTab");
@@ -875,6 +881,78 @@ function PatientSummaryView() {
                   <h4>Immunization Status</h4>
                 </div>
                 <Immunization from={"Consult"} OnClose={handleGoBack} />
+              </div>
+            </CTabPanel>
+            <CTabPanel
+              className="p-2"
+              aria-labelledby="home-tab-pane"
+              itemKey={"Plan"}
+            >
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 4, 1, 1);
+                  }}
+                >
+                  <h4>Orders - Medication Order </h4>
+                </div>
+                <MedicationOrder from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 4, 1, 2);
+                  }}
+                >
+                  <h4>Orders - Lab Order </h4>
+                </div>
+                <LabOrder from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 4, 1, 3);
+                  }}
+                >
+                  <h4>Orders - Imaging Order </h4>
+                </div>
+                <ImagingOrder from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 4, 2);
+                  }}
+                >
+                  <h4>Therapies</h4>
+                </div>
+                <Therapies from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 4, 3);
+                  }}
+                >
+                  <h4>Procedure (CPT Code)</h4>
+                </div>
+                <Cpt from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 4, 4);
+                  }}
+                >
+                  <h4>Patient Education</h4>
+                </div>
+                <PatientEducation from={"Consult"} />
               </div>
             </CTabPanel>
           </CTabContent>

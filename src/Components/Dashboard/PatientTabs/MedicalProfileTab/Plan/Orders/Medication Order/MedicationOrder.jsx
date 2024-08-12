@@ -23,7 +23,7 @@ import MedicationOrderTable from "../../../../../../Tables/MedicationOrderTable"
 import DetailsTable from "./DetailsTable";
 import MedicationCompleted from "./MedicationCompleted";
 
-const MedicationOrder = () => {
+const MedicationOrder = ({ from }) => {
   const detailsData = [
     { id: 1, label: "" },
     { id: 2, label: "RX" },
@@ -453,165 +453,182 @@ const MedicationOrder = () => {
 
   return (
     <>
-      <>
-        <CRow className="mb-2">
-          <CCol lg={8} className="">
-            <DateSelector />
-          </CCol>
-          <CCol
-            lg={4}
-            className="d-flex justify-content-end align-items-center gap-2"
-          >
-            <div>
-              <PrimaryButton onClick={() => addFormPage()}>
-                <div className="d-flex align-items-center gap-2">
-                  <img src={Assets.Add} alt="add" />
-                  <span className="fs-16 fw-600">Add</span>
-                </div>
-              </PrimaryButton>
-            </div>
-          </CCol>
+      {from === "Consult" && (
+        <CRow>
+          <MedicationOrderTable
+            rowData={getCurrentPageItems()}
+            columns={columnData}
+            getselectedData={getselectedData}
+            from={from}
+          />
         </CRow>
-        <div className="mb-2">
-          <CRow>
-            <MedicationOrderTable
-              rowData={getCurrentPageItems()}
-              columns={columnData}
-              getselectedData={getselectedData}
-            />
-          </CRow>
-          <CRow className="mb-3">
-            <CCol lg={12} className="d-flex justify-content-center">
-              <Pagination
-                currentPage={currentPage}
-                onPageChange={onPageChange}
-                totalItems={rowData?.length}
-                itemsPerPage={itemsPerPage}
-              />
-            </CCol>
-          </CRow>
-        </div>
-      </>
-      {addFormView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={addFormView}
-            onClose={() => setAddFormView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-            size="xl"
-          >
-            <CModalBody className="p-0">
-              <div
-                className="close-modal"
-                onClick={() => {
-                  setAddFormView(false);
-                }}
+      )}
+      {from !== "Consult" && (
+        <>
+          <>
+            <CRow className="mb-2">
+              <CCol lg={8} className="">
+                <DateSelector />
+              </CCol>
+              <CCol
+                lg={4}
+                className="d-flex justify-content-end align-items-center gap-2"
               >
-                <img
-                  src={Assets.CloseBtn}
-                  alt="close-btn"
-                  style={{ width: "100%" }}
-                />{" "}
-              </div>
-              <MedicationOrderForm
-                back={() => {
-                  setAddFormView(false);
-                  setSelectedData({});
-                }}
-                defaultValues={selectedData}
-              />
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
-      )}
-
-      {completedView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={completedView}
-            onClose={() => setCompletedView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-            size="xl"
-          >
-            <CModalBody className="p-0">
-              <div
-                className="close-modal"
-                onClick={() => {
-                  setCompletedView(false);
-                }}
-              >
-                <img
-                  src={Assets.CloseBtn}
-                  alt="close-btn"
-                  style={{ width: "100%" }}
-                />{" "}
-              </div>
-              <MedicationCompleted
-                back={() => {
-                  setCompletedView(false);
-                  setSelectedData({});
-                }}
-                defaultValues={selectedData}
-              />
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
-      )}
-      {detailView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={detailView}
-            onClose={() => setDetailView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-            size="lg"
-          >
-            <CModalBody className="p-0">
-              <div className="close-modal" onClick={() => setDetailView(false)}>
-                <img
-                  src={Assets.CloseBtn}
-                  alt="close-btn"
-                  style={{ width: "100%" }}
-                />{" "}
-              </div>
-              <DetailsTable
-                rowData={detailsValue}
-                columns={detailsData}
-                getselectedData={getselectedData}
-              />
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
-      )}
-      {deleteView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={deleteView}
-            onClose={() => setDeleteView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-          >
-            <CModalBody className="p-3">
-              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                <h5>Are you sure want to delete ?</h5>
-                <div className="d-flex gap-2 mt-2">
-                  <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDeleteView(false)}>
-                      Yes
-                    </PrimaryButton>
-                  </div>
-                  <div style={{ width: "80px" }}>
-                    <SecondaryButton onClick={() => setDeleteView(false)}>
-                      No
-                    </SecondaryButton>
-                  </div>
+                <div>
+                  <PrimaryButton onClick={() => addFormPage()}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets.Add} alt="add" />
+                      <span className="fs-16 fw-600">Add</span>
+                    </div>
+                  </PrimaryButton>
                 </div>
-              </div>
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
+              </CCol>
+            </CRow>
+            <div className="mb-2">
+              <CRow>
+                <MedicationOrderTable
+                  rowData={getCurrentPageItems()}
+                  columns={columnData}
+                  getselectedData={getselectedData}
+                />
+              </CRow>
+              <CRow className="mb-3">
+                <CCol lg={12} className="d-flex justify-content-center">
+                  <Pagination
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                    totalItems={rowData?.length}
+                    itemsPerPage={itemsPerPage}
+                  />
+                </CCol>
+              </CRow>
+            </div>
+          </>
+          {addFormView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={addFormView}
+                onClose={() => setAddFormView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+                size="xl"
+              >
+                <CModalBody className="p-0">
+                  <div
+                    className="close-modal"
+                    onClick={() => {
+                      setAddFormView(false);
+                    }}
+                  >
+                    <img
+                      src={Assets.CloseBtn}
+                      alt="close-btn"
+                      style={{ width: "100%" }}
+                    />{" "}
+                  </div>
+                  <MedicationOrderForm
+                    back={() => {
+                      setAddFormView(false);
+                      setSelectedData({});
+                    }}
+                    defaultValues={selectedData}
+                  />
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+
+          {completedView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={completedView}
+                onClose={() => setCompletedView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+                size="xl"
+              >
+                <CModalBody className="p-0">
+                  <div
+                    className="close-modal"
+                    onClick={() => {
+                      setCompletedView(false);
+                    }}
+                  >
+                    <img
+                      src={Assets.CloseBtn}
+                      alt="close-btn"
+                      style={{ width: "100%" }}
+                    />{" "}
+                  </div>
+                  <MedicationCompleted
+                    back={() => {
+                      setCompletedView(false);
+                      setSelectedData({});
+                    }}
+                    defaultValues={selectedData}
+                  />
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+          {detailView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={detailView}
+                onClose={() => setDetailView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+                size="lg"
+              >
+                <CModalBody className="p-0">
+                  <div
+                    className="close-modal"
+                    onClick={() => setDetailView(false)}
+                  >
+                    <img
+                      src={Assets.CloseBtn}
+                      alt="close-btn"
+                      style={{ width: "100%" }}
+                    />{" "}
+                  </div>
+                  <DetailsTable
+                    rowData={detailsValue}
+                    columns={detailsData}
+                    getselectedData={getselectedData}
+                  />
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+          {deleteView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={deleteView}
+                onClose={() => setDeleteView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+              >
+                <CModalBody className="p-3">
+                  <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                    <h5>Are you sure want to delete ?</h5>
+                    <div className="d-flex gap-2 mt-2">
+                      <div style={{ width: "80px" }}>
+                        <PrimaryButton onClick={() => setDeleteView(false)}>
+                          Yes
+                        </PrimaryButton>
+                      </div>
+                      <div style={{ width: "80px" }}>
+                        <SecondaryButton onClick={() => setDeleteView(false)}>
+                          No
+                        </SecondaryButton>
+                      </div>
+                    </div>
+                  </div>
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+        </>
       )}
     </>
   );
