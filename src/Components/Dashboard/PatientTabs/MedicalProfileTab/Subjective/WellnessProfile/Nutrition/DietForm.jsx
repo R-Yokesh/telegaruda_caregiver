@@ -1,4 +1,4 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCol, CRow,CFormTextarea } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -112,13 +112,13 @@ const DietForm = ({ back, defaultValues }) => {
             <label for="validationTooltip01" class="form-label">
             Notes
             </label>
-            <input
-              type="text"
-              class="form-control pad-10"
-              id="validationTooltip01"
-              placeholder="Enter"
-              defaultValue={defaultValues?.name}
-            />
+            <CFormTextarea
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.name}
+              />
           </div>
         </div>
       </CCol>

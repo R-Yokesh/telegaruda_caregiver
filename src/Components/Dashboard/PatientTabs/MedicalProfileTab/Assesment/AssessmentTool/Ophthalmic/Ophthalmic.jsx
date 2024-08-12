@@ -28,79 +28,79 @@ const Ophthalmic = () => {
       result: "6 Score Medium",
       questions: [
         {
-          label: "As a teacher or parent are you concerned with this student’s vision?",
+          label: "1. As a teacher or parent are you concerned with this student’s vision?",
           options: ["Yes", "No"]
         },
         {
-          label: "Tilts head, squints, closes or covers one eye when reading?",
+          label: "2. Tilts head, squints, closes or covers one eye when reading?",
           options: ["Yes", "No"]
         },
         {
-          label: "Gaze issues, eyes turn in or out, crossed eyes, eyes wander",
+          label: "3. Gaze issues, eyes turn in or out, crossed eyes, eyes wander",
           options: ["Yes", "No"]
         },
         {
-          label: "Different size pupils or eyes",
+          label: "4. Different size pupils or eyes",
           options: ["Yes", "No"]
         },
         {
-          label: "Watery eyes, eyes appear hazy or clouded",
+          label: "5. Watery eyes, eyes appear hazy or clouded",
           options: ["Yes", "No"]
         },
         {
-          label: "Words float, move, or jump around when reading",
+          label: "6. Words float, move, or jump around when reading",
           options: ["Yes", "No"]
         },
         {
-          label: "Complains of headaches, dizziness, or nausea when reading",
+          label: "7. Complains of headaches, dizziness, or nausea when reading",
           options: ["Yes", "No"]
         },
         {
-          label: "Complains of itching, burning, or scratchy eyes",
+          label: "8. Complains of itching, burning, or scratchy eyes",
           options: ["Yes", "No"]
         },
         {
-          label: "Complains of blurred or double vision, unusual sensitivity to light, or difficulty seeing",
+          label: "9. Complains of blurred or double vision, unusual sensitivity to light, or difficulty seeing",
           options: ["Yes", "No"]
         },
         {
-          label: "History of head injury with vision complaints",
+          label: "10. History of head injury with vision complaints",
           options: ["Yes", "No"]
         },
         {
-          label: "Loses place when reading",
+          label: "11. Loses place when reading",
           options: ["Yes", "No"]
         },
         {
-          label: "Skips over or leaves out small words when reading",
+          label: "12. Skips over or leaves out small words when reading",
           options: ["Yes", "No"]
         },
         {
-          label: "Writes uphill or downhill; difficulty writing in a straight line",
+          label: "13. Writes uphill or downhill; difficulty writing in a straight line",
           options: ["Yes", "No"]
         },
         {
-          label: "Has difficulty copying from the board",
+          label: "14. Has difficulty copying from the board",
           options: ["Yes", "No"]
         },
         {
-          label: "Avoids near work, such as reading or writing",
+          label: "15. Avoids near work, such as reading or writing",
           options: ["Yes", "No"]
         },
         {
-          label: "Has difficulty lining up numbers when doing math",
+          label: "16. Has difficulty lining up numbers when doing math",
           options: ["Yes", "No"]
         },
         {
-          label: "Has difficulty finishing assignments on time",
+          label: "17. Has difficulty finishing assignments on time",
           options: ["Yes", "No"]
         },
         {
-          label: "Holds books too close; leans too close to a computer screen",
+          label: "18. Holds books too close; leans too close to a computer screen",
           options: ["Yes", "No"]
         },
         {
-          label: "Clumsy; bumps into things; knocks things over",
+          label: "19. Clumsy; bumps into things; knocks things over",
           options: ["Yes", "No"]
         },
       ],

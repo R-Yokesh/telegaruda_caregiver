@@ -46,7 +46,7 @@ const MoodTable = ({ columns, rowData, getselectedData }) => {
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                   <div
                     style={{
-                      width: "50%",
+                      width: "20%",
                     }}
                   >
                     <img
@@ -58,7 +58,7 @@ const MoodTable = ({ columns, rowData, getselectedData }) => {
                   </div>
                   <div
                     style={{
-                      width: "50%",
+                      width: "20%",
                       display: "flex",
                       justifyContent: "flex-start",
                     }}

@@ -48,7 +48,7 @@ const AllergiesForm = ({ back, defaultValues }) => {
         console.log(data);
       };
 
-      const options2 = ["Active", "In Active"];
+      const options2 = ["Active", "Inactive"];
       
       const getSelectedValue2 = (data) => {
         console.log(data);

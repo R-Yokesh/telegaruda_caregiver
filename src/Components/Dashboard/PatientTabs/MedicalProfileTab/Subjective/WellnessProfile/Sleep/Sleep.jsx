@@ -16,6 +16,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import ExcerciseHabitForm from "../ExerciseHabit/ExcerciseHabitForm";
 import SleepTable from "../../../../../../Tables/Subjective/WellnessProfileTable/SleepTable";
 import SleepForm from "./SleepForm";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 const Sleep = () => {
 
@@ -110,7 +111,7 @@ const Sleep = () => {
         <>
           <CRow className="mb-2">
             <CCol lg={8} className="">
-              <DateSelector />
+              <DateSearch />
             </CCol>
             <CCol
               lg={4}

@@ -12,8 +12,8 @@ const ExcerciseHabitForm = ({ back, defaultValues }) => {
     {
       id: 1,
       type: "",
-      date: null,
-      time: "",
+      date:  new Date(),
+      time: new Date(),
       duration: "",
       intensity: "",
     },
@@ -25,8 +25,8 @@ const ExcerciseHabitForm = ({ back, defaultValues }) => {
       {
         id: exercises.length + 1,
         type: "",
-        date: null,
-        time: "",
+        date: new Date(),
+        time: new Date(),
         duration: "",
         intensity: "",
       },
@@ -126,10 +126,12 @@ const ExcerciseHabitForm = ({ back, defaultValues }) => {
                     className="form-control pad-10"
                     id="validationTooltip01"
                     placeholder="000"
-                    value={exercise.duration}
-                    onChange={(e) =>
-                      handleChange(exercise.id, { duration: e.target.value })
-                    }
+                    maxLength={3}
+                    defaultValue={defaultValues?.duration}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                    }}
+                  
                   />
                 </div>
               </div>

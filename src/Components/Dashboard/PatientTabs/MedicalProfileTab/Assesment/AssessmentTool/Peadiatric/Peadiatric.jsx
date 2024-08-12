@@ -28,23 +28,23 @@ const Peadiatric = () => {
       result:"12 Score Medium",
       questions : [
         {
-            label: "Activity (muscle tone)",
+            label: "1. Activity (muscle tone)",
             options: ["Absent", "Flex arms and legs", "Active"]
         },
         {
-            label: "Pulse",
+            label: "2. Pulse",
             options: ["Absent", "Below 100 bpm", "Over 100 bpm"]
         },
         {
-            label: "Grimace (reflex irritability)",
+            label: "3. Grimace (reflex irritability)",
             options: ["Floppy", "Minimal response to stimulation", "Prompt response to stimulation"]
         },
         {
-            label: "Appearance (skin color)",
+            label: "4. Appearance (skin color)",
             options: ["Blue, Pale", "Pink body, Blue Extremities", "Pink"]
         },
         {
-          label: "Respiration",
+          label: "5. Respiration",
           options: ["Absent", "Slow and irregular", "Vigorous cry"]
       }
     ],

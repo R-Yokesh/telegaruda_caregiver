@@ -6,7 +6,8 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 
-const SleepForm = ({ back, defaultValues }) => {
+const NextAppointmentForm = ({ back, defaultValues }) => {
+
   const [date, setDate] = useState(null);
   
   useEffect(() => {
@@ -32,8 +33,9 @@ const SleepForm = ({ back, defaultValues }) => {
     // Set default date in state
     setDate(defaultDate);
   }, [defaultValues]);
+
   
-    const options = ["Disturbed", "Undisturbed","Excess Dreams",];
+    const options = ["one", "Two","Three"];
     const findIndex = defaultValues?.prev_illness
       ? options?.indexOf(defaultValues?.prev_illness)
       : 0;
@@ -83,7 +85,7 @@ const SleepForm = ({ back, defaultValues }) => {
         <div style={{ width: "100%" }}>
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-            Type * 
+            Provider Name *
             </label>
             <div
               className="w-100"
@@ -95,7 +97,7 @@ const SleepForm = ({ back, defaultValues }) => {
                <Dropdown
                 options={options}
                 defaultValue={
-                  defaultValues?.chronic ? options[findIndex] : null
+                  defaultValues? options[findIndex] : null
                 }
                 getSelectedValue={getSelectedValue}
               />
@@ -109,18 +111,14 @@ const SleepForm = ({ back, defaultValues }) => {
         <div style={{ width: "100%" }}>
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-           Duration (mins)
+            Reason *
             </label>
             <input
               type="text"
               class="form-control pad-10"
               id="validationTooltip01"
-              placeholder="0000"
-              maxLength={4}
-              defaultValue={defaultValues?.name}
-              onInput={(e) => {
-                e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
-              }}
+              placeholder="Enter"
+              defaultValue={defaultValues?.reason}
             />
           </div>
         </div>
@@ -138,4 +136,4 @@ const SleepForm = ({ back, defaultValues }) => {
   )
 }
 
-export default SleepForm
+export default NextAppointmentForm
