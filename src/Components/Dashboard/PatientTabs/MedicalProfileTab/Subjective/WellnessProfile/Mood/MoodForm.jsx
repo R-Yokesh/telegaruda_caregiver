@@ -10,30 +10,30 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 const MoodForm = ({ back, defaultValues }) => {
 
     const [date, setDate] = useState(null);
-  
-  useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const timePart = parts[1];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      const [hours, minutes] = timePart?.split(":")?.map(Number);
-      const date = new Date(year, month - 1, day, hours, minutes);
-      return date;
-    };
 
-    // Example default date string
-    const defaultDateString = defaultValues?.date;
+    useEffect(() => {
+        // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
+        const parseDateString = (dateString) => {
+            const parts = dateString?.split(" ");
+            const datePart = parts[0];
+            const timePart = parts[1];
+            const [month, day, year] = datePart?.split("-")?.map(Number);
+            const [hours, minutes] = timePart?.split(":")?.map(Number);
+            const date = new Date(year, month - 1, day, hours, minutes);
+            return date;
+        };
 
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.date
-      ? parseDateString(defaultDateString)
-      : new Date();
+        // Example default date string
+        const defaultDateString = defaultValues?.date;
 
-    // Set default date in state
-    setDate(defaultDate);
-  }, [defaultValues]);
+        // Parse default date string to Date object
+        const defaultDate = defaultValues?.date
+            ? parseDateString(defaultDateString)
+            : new Date();
+
+        // Set default date in state
+        setDate(defaultDate);
+    }, [defaultValues]);
 
 
 
@@ -42,39 +42,39 @@ const MoodForm = ({ back, defaultValues }) => {
     return (
         <>
             <CRow className="mb-3">
-            <CCol lg={6}>
-            <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
-              Date *
-            </label>
-            <div className="date-size">
-              <DatePicker
-               showIcon
-               selected={date}
-               onChange={(date) => setDate(date)}
-              //  dateFormat="MM-dd-yyyy"
-              />
-            </div>
-          </div>
-          </CCol>
                 <CCol lg={6}>
-                <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
-              Time *
-            </label>
-            <div className="date-size">
-              <DatePicker
-               showIcon
-               selected={date}
-               onChange={(date) => setDate(date)}
-               showTimeSelect
-               showTimeSelectOnly
-               timeIntervals={15}
-               timeCaption="Time"
-               dateFormat="h:mm aa"
-              />
-            </div>
-          </div>
+                    <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                            Date *
+                        </label>
+                        <div className="date-size">
+                            <DatePicker
+                                showIcon
+                                selected={date}
+                                onChange={(date) => setDate(date)}
+                            //  dateFormat="MM-dd-yyyy"
+                            />
+                        </div>
+                    </div>
+                </CCol>
+                <CCol lg={6}>
+                    <div class="position-relative">
+                        <label for="validationTooltip01" class="form-label">
+                            Time *
+                        </label>
+                        <div className="date-size">
+                            <DatePicker
+                                showIcon
+                                selected={date}
+                                onChange={(date) => setDate(date)}
+                                showTimeSelect
+                                showTimeSelectOnly
+                                timeIntervals={15}
+                                timeCaption="Time"
+                                dateFormat="h:mm aa"
+                            />
+                        </div>
+                    </div>
                 </CCol>
 
             </CRow>

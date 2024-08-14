@@ -46,14 +46,19 @@ const SurgicalTable = ({ columns, rowData, getselectedData, from }) => {
 
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.reason}</span>
+                  <span>{dt?.icd_code}</span>
                 </div>
               </CTableDataCell>
-              {/* <CTableDataCell style={{ height: "10px" }}>
+              <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.notes}</span>
+                  <span>{dt?.Performed_by}</span>
                 </div>
-              </CTableDataCell> */}
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex flex-column align-items-center">
+                  <span>{dt?.hospital}</span>
+                </div>
+              </CTableDataCell>
 
               {from !== "Consult" && (
                 <CTableDataCell style={{ height: "10px" }}>

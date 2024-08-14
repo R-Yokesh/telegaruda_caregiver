@@ -89,7 +89,7 @@ const WellnessProfile = ({ OnClose }) => {
         )}
         {currentTab === 5 && (
           <>
-            <SexualStatus />
+            <SexualStatus back={OnClose}/>
           </>
         )}
       </CRow>

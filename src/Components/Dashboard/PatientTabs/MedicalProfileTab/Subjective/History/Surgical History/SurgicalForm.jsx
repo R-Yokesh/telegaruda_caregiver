@@ -1,4 +1,4 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCol, CRow ,CFormTextarea} from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -7,16 +7,19 @@ import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 
 const SurgicalForm = ({ back, defaultValues }) => {
+
   const [date, setDate] = useState(null);
-  const [date1, setDate1] = useState(null);
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
       const parts = dateString?.split(" ");
       const datePart = parts[0];
+      const timePart = parts[1];
       const [month, day, year] = datePart?.split("-")?.map(Number);
-      return new Date(year, month - 1, day);
+      const [hours, minutes] = timePart?.split(":")?.map(Number);
+      const date = new Date(year, month - 1, day, hours, minutes);
+      return date;
     };
 
     // Example default date string
@@ -56,18 +59,34 @@ const SurgicalForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={6}>
+          <div class="position-relative">
+            <label for="validationTooltip01" class="form-label">
+              Time *
+            </label>
+            <div className="date-size">
+              <DatePicker
+                showIcon
+                selected={date}
+                onChange={(date) => setDate(date)}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="h:mm aa"
+              />
+            </div>
+          </div>
+        </CCol>
+      </CRow>
+
+      <CRow className="mb-3">
+        <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Surgery Name *
               </label>
-              {/* <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.name}
-              /> */}
+
               <div
                 className="w-100"
                 style={{
@@ -78,19 +97,17 @@ const SurgicalForm = ({ back, defaultValues }) => {
                 <Dropdown
                   getSelectedValue={getSelectedGravida}
                   options={gravidaoptions}
-                  defaultValue={gravidaoptions[findgravidaIndex]}
+                  // defaultValue={gravidaoptions[findgravidaIndex]}
                 />
               </div>
             </div>
           </div>
         </CCol>
-      </CRow>
-      <CRow className="mb-3">
         <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Reason 
+                Surgery Reason *
               </label>
               <input
                 type="text"
@@ -102,11 +119,70 @@ const SurgicalForm = ({ back, defaultValues }) => {
             </div>
           </div>
         </CCol>
+      </CRow>
+      <CRow className="mb-3">
         <CCol lg={6}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes 
+                ICD Code
+              </label>
+
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  getSelectedValue={getSelectedGravida}
+                  options={gravidaoptions}
+                  // defaultValue={gravidaoptions[findgravidaIndex]}
+                />
+              </div>
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={6}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Performed by Doctor *
+              </label>
+              <input
+                type="text"
+                class="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.name}
+              />
+            </div>
+          </div>
+        </CCol>
+      </CRow>
+      <CRow className="mb-3">
+        <CCol lg={6}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Referred by Doctor
+              </label>
+              <input
+                type="text"
+                class="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.notes}
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={6}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Hospital *
               </label>
               <input
                 type="text"
@@ -119,6 +195,24 @@ const SurgicalForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
       </CRow>
+      <CRow className="mb-3">
+      <CCol lg={6}>
+        <div style={{ width: "100%" }}>
+          <div class="position-relative">
+            <label for="validationTooltip01" class="form-label">
+              Notes
+            </label>
+            <CFormTextarea
+                  id="exampleFormControlTextarea1"
+                  // label="Example textarea"
+                  rows={3} >
+                
+                </CFormTextarea>
+          </div>
+        </div>
+        </CCol>
+      </CRow>
+
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
           <PrimaryButton>SAVE</PrimaryButton>

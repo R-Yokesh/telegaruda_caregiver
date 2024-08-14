@@ -10,26 +10,47 @@ import { DATE_FORMAT } from "../../../../../../../Config/config";
 import { isValid, parse } from "date-fns";
 
 const SignsSymptomsForm = ({ back, defaultValues }) => {
-  // useEffect(() => {
-  //   // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-  //   const parseDateString = (dateString) => {
-  //     const parts = dateString?.split(" ");
-  //     const datePart = parts[0];
-  //     const [month, day, year] = datePart?.split("-")?.map(Number);
-  //     return new Date(year, month - 1, day);
-  //   };
 
-  //   // Example default date string
-  //   const defaultDateString = defaultValues?.date;
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
 
-  //   // Parse default date string to Date object
-  //   const defaultDate = defaultValues?.date
-  //     ? parseDateString(defaultDateString)
-  //     : new Date();
+  useEffect(() => {
+    // Function to parse date string "MM-DD-YYYY HH:mm" to Date and Time objects
+    const parseDateString = (dateString) => {
+      const parts = dateString?.split(" ");
+      const datePart = parts[0];
+      const timePart = parts[1];
+      const [month, day, year] = datePart?.split("-")?.map(Number);
+      const [hours, minutes] = timePart?.split(":")?.map(Number);
 
-  //   // Set default date in state
-  //   setDate(defaultDate);
-  // }, [defaultValues]);
+      // Create Date and Time objects
+      const parsedDate = new Date(year, month - 1, day);
+      const parsedTime = new Date();
+      parsedTime.setHours(hours, minutes, 0, 0);
+
+      return { parsedDate, parsedTime };
+    };
+
+    // Example default date string
+    const defaultDateString = defaultValues?.date;
+
+    // Parse default date string to Date and Time objects
+    const { parsedDate, parsedTime } = defaultValues?.date
+      ? parseDateString(defaultDateString)
+      : { parsedDate: new Date(), parsedTime: new Date() };
+
+    // Set default date and time in state
+    setDate(parsedDate);
+    setTime(parsedTime);
+  }, [defaultValues]);
+
+  const today = new Date();
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
+  const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+
+
+
+
   const options = [
     "Normal",
     "Mild",
@@ -90,54 +111,55 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
     }
   };
 
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  // const [selectedTime, setSelectedTime] = useState(null);
+  // const [selectedDate, setSelectedDate] = useState(null);
 
-  const defaultDateTime = defaultValues?.onset || "";
+  // const defaultDateTime = defaultValues?.onset || "";
 
-  // Split date and time
-  const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
-  useEffect(() => {
-    // Combine default date and time into a single Date object
-    let date = new Date();
+  // // Split date and time
+  // const defaultDate = defaultDateTime.split(" ")[0] || "";
+  // const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  // useEffect(() => {
+  //   // Combine default date and time into a single Date object
+  //   let date = new Date();
 
-    if (defaultDate) {
-      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
-      if (isValid(parsedDate)) {
-        date = parsedDate;
-      }
-    }
+  //   if (defaultDate) {
+  //     const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+  //     if (isValid(parsedDate)) {
+  //       date = parsedDate;
+  //     }
+  //   }
 
-    if (defaultTime) {
-      const [hours, minutes] = defaultTime.split(":").map(Number);
-      date.setHours(hours);
-      date.setMinutes(minutes);
-      date.setSeconds(0); // Reset seconds
-    }
+  //   if (defaultTime) {
+  //     const [hours, minutes] = defaultTime.split(":").map(Number);
+  //     date.setHours(hours);
+  //     date.setMinutes(minutes);
+  //     date.setSeconds(0); // Reset seconds
+  //   }
 
-    setSelectedDate(date);
-    setSelectedTime(date); // Initialize time picker with the same Date object
-  }, [defaultDate, defaultTime, defaultValues]);
+  //   setSelectedDate(date);
+  //   setSelectedTime(date); // Initialize time picker with the same Date object
+  // }, [defaultDate, defaultTime, defaultValues]);
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    if (date) {
-      setSelectedTime(date); // Sync time picker with the updated date
-    }
-  };
+  // const handleDateChange = (date) => {
+  //   setSelectedDate(date);
+  //   if (date) {
+  //     setSelectedTime(date); // Sync time picker with the updated date
+  //   }
+  // };
 
-  const handleTimeChange = (time) => {
-    if (time) {
-      const updatedDateTime = new Date(selectedDate || time);
-      updatedDateTime.setHours(time.getHours());
-      updatedDateTime.setMinutes(time.getMinutes());
-      updatedDateTime.setSeconds(0); // Reset seconds
+  // const handleTimeChange = (time) => {
+  //   if (time) {
+  //     const updatedDateTime = new Date(selectedDate || time);
+  //     updatedDateTime.setHours(time.getHours());
+  //     updatedDateTime.setMinutes(time.getMinutes());
+  //     updatedDateTime.setSeconds(0); // Reset seconds
 
-      setSelectedDate(updatedDateTime); // Optionally update date as well
-      setSelectedTime(time);
-    }
-  };
+  //     setSelectedDate(updatedDateTime); // Optionally update date as well
+  //     setSelectedTime(time);
+  //   }
+  // };
+
   return (
     <>
       <CRow className="mb-3">
@@ -158,37 +180,39 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
           </div>
         </CCol> */}
         <CCol lg={3}>
-          <div class="position-relative d-flex flex-column gap-1">
+          <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Onset Date *
+              Date *
             </label>
-            <DatePicker
-              showIcon
-              selected={selectedDate}
-              onChange={handleDateChange}
-              isClearable
-              closeOnScroll={true}
-              wrapperClassName="date-picker-wrapper"
-              dateFormat={DATE_FORMAT}
-            />
+            <div className="date-size">
+              <DatePicker
+                showIcon
+                selected={date}
+                onChange={(date) => setDate(date)}
+                dateFormat="MM-dd-yyyy"
+                disabled
+              />
+            </div>
           </div>
         </CCol>
         <CCol lg={3}>
-          <div class="position-relative d-flex flex-column gap-1">
+          <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Onset Time *
+              Time *
             </label>
-            <DatePicker
-              showIcon
-              selected={selectedTime}
-              onChange={handleTimeChange}
-              showTimeSelect
-              showTimeSelectOnly
-              isClearable
-              closeOnScroll={true}
-              timeIntervals={5}
-              dateFormat="h:mm aa"
-            />
+            <div className="date-size">
+              <DatePicker
+                 showIcon
+                 selected={time}
+                 onChange={(time) => setTime(time)}
+                 showTimeSelect
+                 showTimeSelectOnly
+                 timeIntervals={15}
+                 timeCaption="Time"
+                 dateFormat="h:mm aa"
+                 
+              />
+            </div>
           </div>
         </CCol>
         <CCol lg={3}>
