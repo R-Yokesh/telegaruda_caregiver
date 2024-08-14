@@ -1,4 +1,4 @@
-import { CCol, CFormCheck, CFormSelect, CRow } from "@coreui/react";
+import { CCol, CFormCheck, CFormSelect,CFormTextarea, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -319,6 +319,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 selected={date}
                 onChange={(date) => setDate(date)}
                 dateFormat={DATE_FORMAT}
+                disabled
               />
             </div>
           </div>
@@ -352,7 +353,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 selected={date1}
                 onChange={(date) => setDate1(date)}
                 dateFormat={DATE_FORMAT}
-                disabled
+                
               />
             </div>
           </div>
@@ -459,19 +460,16 @@ const MedicationForm = ({ back, defaultValues }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Instruction
+                Notes
               </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                name="instruction"
-              />
+              <CFormTextarea
+                  id="exampleFormControlTextarea1"
+                  rows={3} >
+                </CFormTextarea>
             </div>
           </div>
         </CCol>
-        <CCol lg={7} className="mb-3">
+        {/* <CCol lg={7} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -486,7 +484,7 @@ const MedicationForm = ({ back, defaultValues }) => {
               />
             </div>
           </div>
-        </CCol>
+        </CCol> */}
         <CCol lg={5} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">

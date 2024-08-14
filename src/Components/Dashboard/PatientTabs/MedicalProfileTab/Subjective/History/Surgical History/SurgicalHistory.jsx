@@ -21,86 +21,98 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import SurgicalForm from "./SurgicalForm";
 import MedicationTable from "../../../../../../Tables/Subjective/MedicationTable";
 import SurgicalTable from "../../../../../../Tables/Subjective/SurgicalTable";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 const SurgicalHistory = ({ from }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "Date" },
     { id: 3, label: "Surgery Name" },
-    { id: 4, label: "Reason" },
-    // { id: 5, label: "Notes" },
-    { id: 5, label: "ACTIONS" },
+    { id: 4, label: " ICD Code" },
+    { id: 5, label: "Performed by" },
+    { id: 5, label: "Hospital" },
+    { id: 6, label: "ACTIONS" },
   ];
   const rowData = [
     {
       id: 1,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 2,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 3,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 4,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 5,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 6,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 7,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 8,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 9,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
     {
       id: 10,
-      date: "06-07-2024",
+      date: "06-07-2024 12:10",
       name: "Lorem Ipsum",
-      reason: "Lorem Ipsum",
-      notes: "Lorem ipsum",
+      icd_code: "56788",
+      Performed_by: "Lorem ipsum",
+      hospital: "Lorem ipsum",
     },
   ];
   const [addFormView, setAddFormView] = useState(false);
@@ -151,7 +163,7 @@ const SurgicalHistory = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSelector />
+                <DateSearch />
               </CCol>
               <CCol
                 lg={4}

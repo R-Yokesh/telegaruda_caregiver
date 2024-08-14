@@ -1,4 +1,4 @@
-import { CCol, CFormTextarea, CRow } from "@coreui/react";
+import { CCol, CFormTextarea,CFormCheck, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
@@ -16,6 +16,19 @@ const MedHistoryForm = ({ back, defaultValues }) => {
   );
 
   const [drugStatus, setDrugStatus] = useState(defaultValues?.drugs || "No");
+
+  
+  const handleSmokingStatus = (event) => {
+    setSmokingStatus(event.target.value === "yes" ? "Yes" : "No");
+  };
+
+  const handleAlcoholStatus = (event) => {
+    setAlcoholStatus(event.target.value === "yes" ? "Yes" : "No");
+  };
+
+  const handleDrugStatus = (event) => {
+    setDrugStatus(event.target.value === "yes" ? "Yes" : "No");
+  };
 
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -66,31 +79,38 @@ const MedHistoryForm = ({ back, defaultValues }) => {
     <>
       <CRow className="mb-3">
         <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Smoking 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.smoking}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex]}
-                  getSelectedValue={getSelectedValue1}
-                />
-              </div>
+        <p className="radio-label">Smoking</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="smokingYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="smoking"
+                checked={smokingStatus === "Yes"}
+                onChange={handleSmokingStatus}
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="smokingNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="smoking"
+                checked={smokingStatus === "No"}
+                onChange={handleSmokingStatus}
+              />
             </div>
           </div>
         </CCol>
@@ -112,31 +132,38 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           </CCol>
         )}
         <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Alcohol 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.alcohol}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex2]}
-                  getSelectedValue={getSelectedValue2}
-                />
-              </div>
+        <p className="radio-label">Alcohol</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="alcoholYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="alcohol"
+                checked={alcoholStatus === "Yes"}
+                onChange={handleAlcoholStatus}
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="alcoholNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="alcohol"
+                checked={alcoholStatus === "No"}
+                onChange={handleAlcoholStatus}
+              />
             </div>
           </div>
         </CCol>
@@ -158,31 +185,38 @@ const MedHistoryForm = ({ back, defaultValues }) => {
           </CCol>
         )}
         <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Drugs 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.drugs}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex3]}
-                  getSelectedValue={getSelectedValue3}
-                />
-              </div>
+        <p className="radio-label">Drugs</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="drugsYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="drugs"
+                checked={drugStatus === "Yes"}
+                onChange={handleDrugStatus}
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="drugsNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="drugs"
+                checked={drugStatus === "No"}
+                onChange={handleDrugStatus}
+              />
             </div>
           </div>
         </CCol>

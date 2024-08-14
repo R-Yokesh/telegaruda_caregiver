@@ -15,6 +15,7 @@ import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import MedHistoryForm from "./MedHistoryForm";
 import MedicalHistoryTable from "../../../../../../Tables/Subjective/MedicalHistoryTable";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 const MedicalHistory = ({ from }) => {
   const columnData = [
@@ -165,7 +166,7 @@ const MedicalHistory = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSelector />
+                <DateSearch />
               </CCol>
               <CCol
                 lg={4}

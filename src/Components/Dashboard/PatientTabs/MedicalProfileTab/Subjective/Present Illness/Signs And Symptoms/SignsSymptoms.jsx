@@ -21,6 +21,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import SignsSymptomsForm from "./SignsSymptomsForm";
 import MedicationOrderTable from "../../../../../../Tables/MedicationOrderTable";
 import SymtomsTable from "../../../../../../Tables/Subjective/SymtomsTable";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 const SignsSymptoms = ({ from }) => {
   const detailsData = [
@@ -232,7 +233,7 @@ const SignsSymptoms = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSelector />
+                <DateSearch />
               </CCol>
               <CCol
                 lg={4}

@@ -1,4 +1,4 @@
-import { CCol, CFormTextarea, CRow } from "@coreui/react";
+import { CCol, CFormTextarea,CFormCheck, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
@@ -19,6 +19,17 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
     defaultValues?.history_of_breast || "No"
   );
 
+  const handleAbnormalStatus = (event) => {
+    setAbnormalStatus(event.target.value === "yes" ? "Yes" : "No");
+  };
+
+  const handleMamogramStatus = (event) => {
+    setMamogramStatus(event.target.value === "yes" ? "Yes" : "No");
+  };
+
+  const handleBreastStatus = (event) => {
+    setBreastStatus(event.target.value === "yes" ? "Yes" : "No");
+  };
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
@@ -100,31 +111,38 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                History of abnormal pap smear 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.history_of_abnormal}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex]}
-                  getSelectedValue={getSelectedValue2}
-                />
-              </div>
+        <p className="radio-label">History of abnormal pap smear</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="abnormalYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="abnormal"
+                checked={abnormalStatus === "Yes"}
+                onChange={handleAbnormalStatus}
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="abnormalNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="abnormal"
+                checked={abnormalStatus === "No"}
+                onChange={handleAbnormalStatus}
+              />
             </div>
           </div>
         </CCol>
@@ -160,31 +178,38 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                History of mamogram 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.history_of_mamogram}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex3]}
-                  getSelectedValue={getSelectedValue3}
-                />
-              </div>
+        <p className="radio-label">History of mamogram</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="mamogramYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="mamogram"
+                checked={mamogramStatus === "Yes"}
+                onChange={handleMamogramStatus}
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="mamogramNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="mamogram"
+                checked={mamogramStatus === "No"}
+                onChange={handleMamogramStatus}
+              />
             </div>
           </div>
         </CCol>
@@ -220,31 +245,38 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                History of breast exam 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.history_of_breast}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex4]}
-                  getSelectedValue={getSelectedValue4}
-                />
-              </div>
+        <p className="radio-label">History of breast exam</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="breastYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="breast"
+                checked={breastStatus === "Yes"}
+                onChange={handleBreastStatus}
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="breastNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="breast"
+                checked={breastStatus === "No"}
+                onChange={handleBreastStatus}
+              />
             </div>
           </div>
         </CCol>

@@ -25,8 +25,9 @@ import GynaecHistoryTable from "../../../../../../Tables/Subjective/GynaecHistor
 import ScreeningHistory from "../../../../../../Tables/Subjective/ScreeningHistory";
 import MensturalHistoryForm from "./MensturalHistoryForm";
 import ScreeningHistoryForm from "./ScreeningHistoryForm";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
-const OGHistory = ({ from }) => {
+const OGHistory = ({ from,back }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "LMP Date" },
@@ -620,11 +621,11 @@ const OGHistory = ({ from }) => {
             </CCol>
           </CRow>
 
-          {!addFormView && (
+          {!addFormView && currentTab === 1 && (
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSelector />
+                  <DateSearch />
                 </CCol>
                 <CCol
                   lg={4}
@@ -672,7 +673,7 @@ const OGHistory = ({ from }) => {
                     </CRow>
                   </>
                 )}
-                {currentTab === 2 && currentHistoryTab === 1 && (
+                {/* {currentTab === 2 && currentHistoryTab === 1 && (
                   <>
                     <CRow>
                       <GynaecHistoryTable
@@ -713,7 +714,7 @@ const OGHistory = ({ from }) => {
                       </CCol>
                     </CRow>
                   </>
-                )}
+                )} */}
               </div>
             </>
           )}
@@ -733,7 +734,7 @@ const OGHistory = ({ from }) => {
                   defaultValues={selectedData}
                 />
               )}
-              {currentTab === 2 && currentHistoryTab === 1 && (
+              {/* {currentTab === 2 && currentHistoryTab === 1 && (
                 <MensturalHistoryForm
                   back={() => {
                     setAddFormView(false);
@@ -750,11 +751,31 @@ const OGHistory = ({ from }) => {
                   }}
                   defaultValues={selectedData}
                 />
-              )}
+              )} */}
             </CCardBody>
           </CCard>
         </CRow>
       )}
+
+      <CRow className="mb-2">
+        <CCard className="p-2 cursor-default mb-5">
+          <CCardBody className="mb-3">
+            {currentTab === 2 && currentHistoryTab === 1 && (
+              <MensturalHistoryForm
+                back={back}
+                defaultValues={selectedData}
+              />
+            )}
+            {currentTab === 2 && currentHistoryTab === 2 && (
+              <ScreeningHistoryForm
+              back={back}
+                defaultValues={selectedData}
+              />
+            )}
+          </CCardBody>
+        </CCard>
+      </CRow>
+
 
       {detailView && (
         <BlurBackground>
@@ -783,7 +804,8 @@ const OGHistory = ({ from }) => {
             </CModalBody>
           </CModal>
         </BlurBackground>
-      )}
+      )
+      }
     </>
   );
 };

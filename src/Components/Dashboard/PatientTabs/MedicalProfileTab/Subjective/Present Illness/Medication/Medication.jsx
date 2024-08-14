@@ -20,6 +20,7 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import MedicationForm from "./MedicationForm";
 import MedicationTable from "../../../../../../Tables/Subjective/MedicationTable";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 const Medication = ({ from }) => {
   const columnData = [
@@ -255,7 +256,7 @@ const Medication = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSelector />
+                <DateSearch />
               </CCol>
               <CCol
                 lg={4}

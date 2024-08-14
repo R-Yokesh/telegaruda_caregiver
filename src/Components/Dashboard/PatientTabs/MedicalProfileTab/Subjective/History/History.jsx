@@ -74,7 +74,7 @@ const History = ({ OnClose }) => {
         )}
         {currentTab === 2 && (
           <>
-            <OGHistory from={""}/>
+            <OGHistory from={""} back={OnClose}/>
           </>
         )}
         {currentTab === 3 && (
@@ -89,7 +89,7 @@ const History = ({ OnClose }) => {
         )}
         {currentTab === 5 && (
           <>
-            <SocialHistory />
+            <SocialHistory back={OnClose}/>
           </>
         )}
       </CRow>

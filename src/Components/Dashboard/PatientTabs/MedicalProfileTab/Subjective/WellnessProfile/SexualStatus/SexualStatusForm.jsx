@@ -128,7 +128,7 @@ const SexualStatusForm = ({ back, defaultValues }) => {
                                             class="form-control  pad-10"
                                             id="validationTooltip01"
                                             placeholder="Enter"
-                                            defaultValue={defaultValues?.name}
+                                            defaultValue={defaultValues?.sti_current_notes}
                                         />
                                 </div>
                             </div>

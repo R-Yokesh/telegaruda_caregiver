@@ -1,4 +1,4 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCol, CRow, CFormCheck } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
@@ -48,6 +48,10 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
     : 1;
 
   const [menopause, setMenopause] = useState(defaultValues.menopause || "No");
+
+  const handleClick = (event) => {
+    setMenopause(event.target.value === "yes" ? "Yes" : "No");
+  };
   const getSelected = (data) => {
     console.log(data);
     setMenopause(data);
@@ -194,13 +198,6 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Flow Duration {menopause !== "Yes" && "*"}
               </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.flow_duration}
-              /> */}
               <div
                 className="w-100"
                 style={{
@@ -210,7 +207,6 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
               >
                 <Dropdown
                   options={flow_duration}
-                  defaultValue={flow_duration[0]}
                   getSelectedValue={getSelectedValue2}
                 />
               </div>
@@ -223,13 +219,6 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Flow Type {menopause !== "Yes" && "*"}
               </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.flow_type}
-              /> */}
               <div
                 className="w-100"
                 style={{
@@ -239,7 +228,6 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
               >
                 <Dropdown
                   options={flow_type}
-                  defaultValue={flow_type[1]}
                   getSelectedValue={getSelectedValue2}
                 />
               </div>
@@ -247,89 +235,98 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                InterMenstrual Bleeding 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.bleeding}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex]}
-                  getSelectedValue={getSelectedBleeding}
-                />
-              </div>
+          <p className="radio-label">  InterMenstrual Bleeding </p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="menstrualYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="menstrual"
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="menstrualNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="menstrual"
+              />
             </div>
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Cycle Irregularity 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.irregularity}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex]}
-                  getSelectedValue={getSelectedCycle}
-                />
-              </div>
+          <p className="radio-label"> Cycle Irregularity </p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="irregularityYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="irregularity"
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="irregularityNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="irregularity"
+              />
             </div>
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Dysmenorrhea 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.dysmenorrhea}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[findIndex]}
-                  getSelectedValue={getSelectedDysmen}
-                />
-              </div>
+          <p className="radio-label">Dysmenorrhea</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="dysmenorrheaYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="dysmenorrhea"
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="dysmenorrheaNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="dysmenorrhea"
+              />
             </div>
           </div>
         </CCol>
@@ -348,31 +345,38 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Menopause 
-              </label>
-              {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.trimster}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={options[1]}
-                  getSelectedValue={getSelected}
-                />
-              </div>
+          <p className="radio-label">Menopause</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="menopauseYes"
+                value="yes"
+                label={<label className="form-label mb-0">Yes</label>}
+                name="menopause"
+                checked={menopause === "Yes"}
+                onChange={handleClick}
+              />
+              <CFormCheck
+                className="mb-0"
+                inline
+                type="radio"
+                id="menopauseNo"
+                value="no"
+                label={<label className="form-label mb-0">No</label>}
+                name="menopause"
+                checked={menopause === "No"}
+                onChange={handleClick}
+              />
             </div>
           </div>
         </CCol>
@@ -381,7 +385,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
             <div style={{ width: "100%" }}>
               <div class="position-relative">
                 <label for="validationTooltip01" class="form-label">
-                  Menopause Age 
+                  Menopause Age
                 </label>
                 <input
                   type="text"
