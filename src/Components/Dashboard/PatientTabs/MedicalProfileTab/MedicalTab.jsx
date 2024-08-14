@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./MedicalProfile.css";
 
 const MedicalTab = ({ tabs, getCurrentTab, defaultTab }) => {
+  console.log("first", tabs, getCurrentTab, defaultTab);
   const [currentTab, setCurrentTab] = useState(tabs[defaultTab]);
 
   const switchTab = (data) => {

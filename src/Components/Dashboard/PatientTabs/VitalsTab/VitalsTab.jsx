@@ -6,6 +6,7 @@ import Badge from "../../../Badge/Badge";
 import CardChart from "../../../Charts/CardChart";
 
 const VitalsTab = ({ category, openModal }) => {
+  console.log("category", category);
   const data = [
     {
       id: 1,
