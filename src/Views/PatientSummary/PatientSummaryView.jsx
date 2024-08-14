@@ -34,6 +34,16 @@ import ImagingOrder from "../../Components/Dashboard/PatientTabs/MedicalProfileT
 import Therapies from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/Therapies/Therapies";
 import Cpt from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/Procedure CPT/Cpt";
 import PatientEducation from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/PatientEducation/PatientEducation";
+import NextAppointment from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Plan/NextAppointment/NextAppointment";
+import PsychiatricTable from "../../Components/Tables/AssessmentTools/PsychiatricTable";
+import Psychiatric from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Assesment/AssessmentTool/Psychiatric/Psychiatric";
+import Neurological from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Assesment/AssessmentTool/Neurological/Neurological";
+import Ophthalmic from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Assesment/AssessmentTool/Ophthalmic/Ophthalmic";
+import Peadiatric from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Assesment/AssessmentTool/Peadiatric/Peadiatric";
+import ExerciseHabit from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/WellnessProfile/ExerciseHabit/ExerciseHabit";
+import Sleep from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/WellnessProfile/Sleep/Sleep";
+import Mood from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/WellnessProfile/Mood/Mood";
+import SexualStatus from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/WellnessProfile/SexualStatus/SexualStatus";
 
 function PatientSummaryView() {
   const getConsultTab = localStorage.getItem("ConsultTab");
@@ -854,6 +864,54 @@ function PatientSummaryView() {
 
                 <OGHistory from={"Consult-Screen"} />
               </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 4, 1);
+                  }}
+                >
+                  <h4>Wellness - Exercise Habit</h4>
+                </div>
+
+                <ExerciseHabit from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 4, 3);
+                  }}
+                >
+                  <h4>Wellness - Sleep</h4>
+                </div>
+
+                <Sleep from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 4, 4);
+                  }}
+                >
+                  <h4>Wellness - Mood</h4>
+                </div>
+
+                <Mood from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 4, 5);
+                  }}
+                >
+                  <h4>Wellness - Sexual Status</h4>
+                </div>
+
+                <SexualStatus from={"Consult"} />
+              </div>
             </CTabPanel>
             <CTabPanel
               className="p-2"
@@ -881,6 +939,50 @@ function PatientSummaryView() {
                   <h4>Immunization Status</h4>
                 </div>
                 <Immunization from={"Consult"} OnClose={handleGoBack} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 3, 3, 1);
+                  }}
+                >
+                  <h4>Assessment Tools - Psychiatric</h4>
+                </div>
+                <Psychiatric from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 3, 3, 2);
+                  }}
+                >
+                  <h4>Assessment Tools - Neurological</h4>
+                </div>
+                <Neurological from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 3, 3, 3);
+                  }}
+                >
+                  <h4>Assessment Tools - Peadiatric</h4>
+                </div>
+                <Peadiatric from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 3, 3, 4);
+                  }}
+                >
+                  <h4>Assessment Tools - Ophthalmic</h4>
+                </div>
+                <Ophthalmic from={"Consult"} />
               </div>
             </CTabPanel>
             <CTabPanel
@@ -953,6 +1055,17 @@ function PatientSummaryView() {
                   <h4>Patient Education</h4>
                 </div>
                 <PatientEducation from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 4, 5);
+                  }}
+                >
+                  <h4>Next Appointment</h4>
+                </div>
+                <NextAppointment from={"Consult"} />
               </div>
             </CTabPanel>
           </CTabContent>

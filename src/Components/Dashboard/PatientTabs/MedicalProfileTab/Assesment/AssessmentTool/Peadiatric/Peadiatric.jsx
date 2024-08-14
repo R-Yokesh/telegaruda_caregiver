@@ -11,43 +11,46 @@ import Pagination from "../../../../../../Pagination/Pagination";
 import PsychiatricTable from "../../../../../../Tables/AssessmentTools/PsychiatricTable";
 import PsychiatricForm from "../Psychiatric/PsychiatricForm";
 
-const Peadiatric = () => {
-
+const Peadiatric = ({ from }) => {
   const columnData = [
-    {  label: "NO" },
-    {  label: "Name" },
-    {  label: "Taken" },
-    {  label: "result" },
-    {  label: "Actions" },
+    { label: "NO" },
+    { label: "Name" },
+    { label: "Taken" },
+    { label: "result" },
+    { label: "Actions" },
   ];
   const rowData = [
     {
       id: 1,
       name: "APGAR Score",
       date: "26-07-2024 ",
-      result:"12 Score Medium",
-      questions : [
+      result: "12 Score Medium",
+      questions: [
         {
-            label: "1. Activity (muscle tone)",
-            options: ["Absent", "Flex arms and legs", "Active"]
+          label: "1. Activity (muscle tone)",
+          options: ["Absent", "Flex arms and legs", "Active"],
         },
         {
-            label: "2. Pulse",
-            options: ["Absent", "Below 100 bpm", "Over 100 bpm"]
+          label: "2. Pulse",
+          options: ["Absent", "Below 100 bpm", "Over 100 bpm"],
         },
         {
-            label: "3. Grimace (reflex irritability)",
-            options: ["Floppy", "Minimal response to stimulation", "Prompt response to stimulation"]
+          label: "3. Grimace (reflex irritability)",
+          options: [
+            "Floppy",
+            "Minimal response to stimulation",
+            "Prompt response to stimulation",
+          ],
         },
         {
-            label: "4. Appearance (skin color)",
-            options: ["Blue, Pale", "Pink body, Blue Extremities", "Pink"]
+          label: "4. Appearance (skin color)",
+          options: ["Blue, Pale", "Pink body, Blue Extremities", "Pink"],
         },
         {
           label: "5. Respiration",
-          options: ["Absent", "Slow and irregular", "Vigorous cry"]
-      }
-    ],
+          options: ["Absent", "Slow and irregular", "Vigorous cry"],
+        },
+      ],
     },
   ];
 
@@ -76,49 +79,45 @@ const Peadiatric = () => {
     setAddFormView(true);
   };
 
- 
-
   const getselectedData = (data, type) => {
     console.log(type, "first", data);
     setSelectedData(data);
     if (type === "view") {
-        viewFormPage();
+      viewFormPage();
     }
   };
 
   return (
     <>
-    {!addFormView && (
-      <>
-        <div className="mb-2">
-          <PsychiatricTable
-            rowData={getCurrentPageItems()}
-            columns={columnData}
-            getselectedData={getselectedData}
-          />
+      {!addFormView && (
+        <>
+          <div className="mb-2">
+            <PsychiatricTable
+              rowData={getCurrentPageItems()}
+              columns={columnData}
+              getselectedData={getselectedData}
+              from={from}
+            />
+          </div>
+        </>
+      )}
+      {addFormView && (
+        <CCard className="p-2 cursor-default mb-5">
+          <CCardBody className="mb-3">
+            <PsychiatricForm
+              back={() => {
+                setAddFormView(false);
+                setSelectedData({});
+              }}
+              defaultValues={selectedData}
+              questions={selectedData.questions || []}
+              formTitle={formTitle}
+            />
+          </CCardBody>
+        </CCard>
+      )}
+    </>
+  );
+};
 
-        </div>
-      </>
-    )}
-    {addFormView && (
-      <CCard className="p-2 cursor-default mb-5">
-        <CCardBody className="mb-3">
-          <PsychiatricForm
-            back={() => {
-              setAddFormView(false);
-              setSelectedData({});
-            }}
-            defaultValues={selectedData}
-            questions={selectedData.questions || []} 
-            formTitle={formTitle}
-          />
-        </CCardBody>
-      </CCard>
-    )}
-
-   
-  </>
-  )
-}
-
-export default Peadiatric
+export default Peadiatric;

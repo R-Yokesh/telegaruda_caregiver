@@ -1,29 +1,30 @@
 import {
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
-  } from "@coreui/react";
-  import React from "react";
-  import Badge from "../../Badge/Badge";
-  import { Assets } from "../../../assets/Assets";
-  
-const PsychiatricTable = ({ columns, rowData, getselectedData }) => {
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+} from "@coreui/react";
+import React from "react";
+import Badge from "../../Badge/Badge";
+import { Assets } from "../../../assets/Assets";
 
-    const selectedData = (data, type) => {
-        getselectedData(data, type);
-      };
+const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
+  const selectedData = (data, type) => {
+    getselectedData(data, type);
+  };
 
   return (
     <>
       <CTable className="lab-responsive-table">
         <CTableHead color="dark">
           <CTableRow>
-            {columns?.map((data, i) => (
-              <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
-            ))}
+            {columns?.map((data, i) =>
+              from === "Consult" && i === columns.length - 1 ? null : (
+                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+              )
+            )}
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -43,42 +44,37 @@ const PsychiatricTable = ({ columns, rowData, getselectedData }) => {
               </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <Badge
-                    label={dt?.result}
-                    color={
-                      dt?.result 
-                        ? "error"
-                        : ""
-                      
-                    }
-                  />
+                  <Badge label={dt?.result} color={dt?.result ? "error" : ""} />
                 </div>
               </CTableDataCell>
-            
-              <CTableDataCell>
-                <div className="d-flex align-items-center justify-content-center gap-2">
-                    
-                  <img
-                    alt="edit"
-                    src={i === 0 ? Assets?.testSubIcon : Assets?.testUnSubIcon}
-                    className="cursor"
-                  />
-                   {/* {i === 0 && ( */}
+
+              {from !== "Consult" && (
+                <CTableDataCell>
+                  <div className="d-flex align-items-center justify-content-center gap-2">
+                    <img
+                      alt="edit"
+                      src={
+                        i === 0 ? Assets?.testSubIcon : Assets?.testUnSubIcon
+                      }
+                      className="cursor"
+                    />
+                    {/* {i === 0 && ( */}
                     <img
                       alt="delete"
                       src={Assets?.testViewIcon}
                       className="cursor"
                       onClick={() => selectedData(dt, "view")}
                     />
-                  {/* )} */}
-                </div>
-              </CTableDataCell>
+                    {/* )} */}
+                  </div>
+                </CTableDataCell>
+              )}
             </CTableRow>
           ))}
         </CTableBody>
       </CTable>
     </>
-  )
-}
+  );
+};
 
-export default PsychiatricTable
+export default PsychiatricTable;

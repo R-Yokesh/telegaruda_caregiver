@@ -11,8 +11,7 @@ import Pagination from "../../../../../../Pagination/Pagination";
 import PsychiatricTable from "../../../../../../Tables/AssessmentTools/PsychiatricTable";
 import PsychiatricForm from "../Psychiatric/PsychiatricForm";
 
-const Ophthalmic = () => {
-
+const Ophthalmic = ({ from }) => {
   const columnData = [
     { label: "NO" },
     { label: "Name" },
@@ -28,84 +27,89 @@ const Ophthalmic = () => {
       result: "6 Score Medium",
       questions: [
         {
-          label: "1. As a teacher or parent are you concerned with this student’s vision?",
-          options: ["Yes", "No"]
+          label:
+            "1. As a teacher or parent are you concerned with this student’s vision?",
+          options: ["Yes", "No"],
         },
         {
-          label: "2. Tilts head, squints, closes or covers one eye when reading?",
-          options: ["Yes", "No"]
+          label:
+            "2. Tilts head, squints, closes or covers one eye when reading?",
+          options: ["Yes", "No"],
         },
         {
-          label: "3. Gaze issues, eyes turn in or out, crossed eyes, eyes wander",
-          options: ["Yes", "No"]
+          label:
+            "3. Gaze issues, eyes turn in or out, crossed eyes, eyes wander",
+          options: ["Yes", "No"],
         },
         {
           label: "4. Different size pupils or eyes",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "5. Watery eyes, eyes appear hazy or clouded",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "6. Words float, move, or jump around when reading",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "7. Complains of headaches, dizziness, or nausea when reading",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "8. Complains of itching, burning, or scratchy eyes",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
-          label: "9. Complains of blurred or double vision, unusual sensitivity to light, or difficulty seeing",
-          options: ["Yes", "No"]
+          label:
+            "9. Complains of blurred or double vision, unusual sensitivity to light, or difficulty seeing",
+          options: ["Yes", "No"],
         },
         {
           label: "10. History of head injury with vision complaints",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "11. Loses place when reading",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "12. Skips over or leaves out small words when reading",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
-          label: "13. Writes uphill or downhill; difficulty writing in a straight line",
-          options: ["Yes", "No"]
+          label:
+            "13. Writes uphill or downhill; difficulty writing in a straight line",
+          options: ["Yes", "No"],
         },
         {
           label: "14. Has difficulty copying from the board",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "15. Avoids near work, such as reading or writing",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "16. Has difficulty lining up numbers when doing math",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
           label: "17. Has difficulty finishing assignments on time",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
         {
-          label: "18. Holds books too close; leans too close to a computer screen",
-          options: ["Yes", "No"]
+          label:
+            "18. Holds books too close; leans too close to a computer screen",
+          options: ["Yes", "No"],
         },
         {
           label: "19. Clumsy; bumps into things; knocks things over",
-          options: ["Yes", "No"]
+          options: ["Yes", "No"],
         },
       ],
     },
-
   ];
 
   const formTitle = "Vision Symptoms";
@@ -133,8 +137,6 @@ const Ophthalmic = () => {
     setAddFormView(true);
   };
 
-
-
   const getselectedData = (data, type) => {
     console.log(type, "first", data);
     setSelectedData(data);
@@ -152,6 +154,7 @@ const Ophthalmic = () => {
               rowData={getCurrentPageItems()}
               columns={columnData}
               getselectedData={getselectedData}
+              from={from}
             />
           </div>
         </>
@@ -171,10 +174,8 @@ const Ophthalmic = () => {
           </CCardBody>
         </CCard>
       )}
-
-
     </>
-  )
-}
+  );
+};
 
-export default Ophthalmic
+export default Ophthalmic;

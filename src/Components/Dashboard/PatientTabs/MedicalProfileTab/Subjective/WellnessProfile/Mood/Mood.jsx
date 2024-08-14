@@ -18,12 +18,12 @@ import MoodTable from "../../../../../../Tables/Subjective/WellnessProfileTable/
 import MoodForm from "./MoodForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
-const Mood = () => {
+const Mood = ({ from }) => {
   const columnData = [
-    {  label: "NO." },
-    {  label: "Date" },
-    {  label: "Type" },
-    {  label: "Actions" },
+    { label: "NO." },
+    { label: "Date" },
+    { label: "Type" },
+    { label: "Actions" },
   ];
   const rowData = [
     {
@@ -41,7 +41,7 @@ const Mood = () => {
       date: "02-04-2024 12:13",
       type: "Happy ",
     },
-    { 
+    {
       id: 4,
       date: "02-04-2024 12:13",
       type: "Happy ",
@@ -55,8 +55,7 @@ const Mood = () => {
       id: 6,
       date: "02-04-2024 12:13",
       type: "Happy ",
-    }
-
+    },
   ];
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
@@ -98,98 +97,110 @@ const Mood = () => {
   };
 
   return (
-        <>
-      {!addFormView && (
-        <>
-          <CRow className="mb-2">
-            <CCol lg={8} className="">
-              <DateSearch />
-            </CCol>
-            <CCol
-              lg={4}
-              className="d-flex justify-content-end align-items-center gap-2"
-            >
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.Add} alt="add" />
-                    <span className="fs-16 fw-600">Add</span>
-                  </div>
-                </PrimaryButton>
-              </div>
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.OptionsIcon} alt="add" />
-                  </div>
-                </PrimaryButton>
-              </div>
-            </CCol>
-          </CRow>
-          <div className="mb-2">
-            <MoodTable
-              rowData={getCurrentPageItems()}
-              columns={columnData}
-              getselectedData={getselectedData}
-            />
-
-            <CRow className="mb-3">
-              <CCol lg={12} className="d-flex justify-content-center">
-                <Pagination
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                  totalItems={rowData?.length}
-                  itemsPerPage={itemsPerPage}
-                />
-              </CCol>
-            </CRow>
-          </div>
-        </>
+    <>
+      {from === "Consult" && (
+        <MoodTable
+          rowData={getCurrentPageItems()}
+          columns={columnData}
+          getselectedData={getselectedData}
+          from={from}
+        />
       )}
-      {addFormView && (
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            <MoodForm
-              back={() => {
-                setAddFormView(false);
-                setSelectedData({});
-              }}
-              //  defaultValues={selectedData}
-            />
-          </CCardBody>
-        </CCard>
-      )}
-
-      {detailView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={detailView}
-            onClose={() => setDetailView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-          >
-            <CModalBody className="p-3">
-              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                <h5>Are you sure want to delete ?</h5>
-                <div className="d-flex gap-2 mt-2">
-                  <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDetailView(false)}>
-                      Yes
+      {from !== "Consult" && (
+        <>
+          {!addFormView && (
+            <>
+              <CRow className="mb-2">
+                <CCol lg={8} className="">
+                  <DateSearch />
+                </CCol>
+                <CCol
+                  lg={4}
+                  className="d-flex justify-content-end align-items-center gap-2"
+                >
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Add} alt="add" />
+                        <span className="fs-16 fw-600">Add</span>
+                      </div>
                     </PrimaryButton>
                   </div>
-                  <div style={{ width: "80px" }}>
-                    <SecondaryButton onClick={() => setDetailView(false)}>
-                      No
-                    </SecondaryButton>
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.OptionsIcon} alt="add" />
+                      </div>
+                    </PrimaryButton>
                   </div>
-                </div>
+                </CCol>
+              </CRow>
+              <div className="mb-2">
+                <MoodTable
+                  rowData={getCurrentPageItems()}
+                  columns={columnData}
+                  getselectedData={getselectedData}
+                />
+
+                <CRow className="mb-3">
+                  <CCol lg={12} className="d-flex justify-content-center">
+                    <Pagination
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={rowData?.length}
+                      itemsPerPage={itemsPerPage}
+                    />
+                  </CCol>
+                </CRow>
               </div>
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
+            </>
+          )}
+          {addFormView && (
+            <CCard className="p-2 cursor-default mb-5">
+              <CCardBody className="mb-3">
+                <MoodForm
+                  back={() => {
+                    setAddFormView(false);
+                    setSelectedData({});
+                  }}
+                  //  defaultValues={selectedData}
+                />
+              </CCardBody>
+            </CCard>
+          )}
+
+          {detailView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={detailView}
+                onClose={() => setDetailView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+              >
+                <CModalBody className="p-3">
+                  <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                    <h5>Are you sure want to delete ?</h5>
+                    <div className="d-flex gap-2 mt-2">
+                      <div style={{ width: "80px" }}>
+                        <PrimaryButton onClick={() => setDetailView(false)}>
+                          Yes
+                        </PrimaryButton>
+                      </div>
+                      <div style={{ width: "80px" }}>
+                        <SecondaryButton onClick={() => setDetailView(false)}>
+                          No
+                        </SecondaryButton>
+                      </div>
+                    </div>
+                  </div>
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+        </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Mood
+export default Mood;

@@ -18,53 +18,51 @@ import SleepTable from "../../../../../../Tables/Subjective/WellnessProfileTable
 import SleepForm from "./SleepForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
-const Sleep = () => {
-
+const Sleep = ({ from }) => {
   const columnData = [
-    {  label: "NO." },
-    {  label: "Date" },
-    {  label: "Type" },
-    {  label: "DURATION (IN MINS)" },
-    {  label: "Actions" },
+    { label: "NO." },
+    { label: "Date" },
+    { label: "Type" },
+    { label: "DURATION (IN MINS)" },
+    { label: "Actions" },
   ];
   const rowData = [
     {
       id: 1,
       date: "02-04-2024 12:13",
       type: "Undisturbed ",
-      duration:"360",
+      duration: "360",
     },
     {
       id: 2,
       date: "02-04-2024 12:13",
       type: "Undisturbed ",
-      duration:"360",
+      duration: "360",
     },
     {
       id: 3,
       date: "02-04-2024 12:13",
       type: "Undisturbed ",
-      duration:"360",
+      duration: "360",
     },
-    { 
+    {
       id: 4,
       date: "02-04-2024 12:13",
       type: "Undisturbed ",
-      duration:"360",
+      duration: "360",
     },
     {
       id: 5,
       date: "02-04-2024 12:13",
       type: "Undisturbed ",
-      duration:"360",
+      duration: "360",
     },
     {
       id: 6,
       date: "02-04-2024 12:13",
       type: "Undisturbed ",
-      duration:"360",
-    }
-
+      duration: "360",
+    },
   ];
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
@@ -106,98 +104,110 @@ const Sleep = () => {
   };
 
   return (
-        <>
-      {!addFormView && (
-        <>
-          <CRow className="mb-2">
-            <CCol lg={8} className="">
-              <DateSearch />
-            </CCol>
-            <CCol
-              lg={4}
-              className="d-flex justify-content-end align-items-center gap-2"
-            >
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.Add} alt="add" />
-                    <span className="fs-16 fw-600">Add</span>
-                  </div>
-                </PrimaryButton>
-              </div>
-              <div>
-                <PrimaryButton onClick={() => addFormPage()}>
-                  <div className="d-flex align-items-center gap-2">
-                    <img src={Assets.OptionsIcon} alt="add" />
-                  </div>
-                </PrimaryButton>
-              </div>
-            </CCol>
-          </CRow>
-          <div className="mb-2">
-            <SleepTable
-              rowData={getCurrentPageItems()}
-              columns={columnData}
-              getselectedData={getselectedData}
-            />
-
-            <CRow className="mb-3">
-              <CCol lg={12} className="d-flex justify-content-center">
-                <Pagination
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                  totalItems={rowData?.length}
-                  itemsPerPage={itemsPerPage}
-                />
-              </CCol>
-            </CRow>
-          </div>
-        </>
+    <>
+      {from === "Consult" && (
+        <SleepTable
+          rowData={getCurrentPageItems()}
+          columns={columnData}
+          getselectedData={getselectedData}
+          from={from}
+        />
       )}
-      {addFormView && (
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            <SleepForm
-              back={() => {
-                setAddFormView(false);
-                setSelectedData({});
-              }}
-              // defaultValues={selectedData}
-            />
-          </CCardBody>
-        </CCard>
-      )}
-
-      {detailView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={detailView}
-            onClose={() => setDetailView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-          >
-            <CModalBody className="p-3">
-              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                <h5>Are you sure want to delete ?</h5>
-                <div className="d-flex gap-2 mt-2">
-                  <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDetailView(false)}>
-                      Yes
+      {from !== "Consult" && (
+        <>
+          {!addFormView && (
+            <>
+              <CRow className="mb-2">
+                <CCol lg={8} className="">
+                  <DateSearch />
+                </CCol>
+                <CCol
+                  lg={4}
+                  className="d-flex justify-content-end align-items-center gap-2"
+                >
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Add} alt="add" />
+                        <span className="fs-16 fw-600">Add</span>
+                      </div>
                     </PrimaryButton>
                   </div>
-                  <div style={{ width: "80px" }}>
-                    <SecondaryButton onClick={() => setDetailView(false)}>
-                      No
-                    </SecondaryButton>
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.OptionsIcon} alt="add" />
+                      </div>
+                    </PrimaryButton>
                   </div>
-                </div>
+                </CCol>
+              </CRow>
+              <div className="mb-2">
+                <SleepTable
+                  rowData={getCurrentPageItems()}
+                  columns={columnData}
+                  getselectedData={getselectedData}
+                />
+
+                <CRow className="mb-3">
+                  <CCol lg={12} className="d-flex justify-content-center">
+                    <Pagination
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={rowData?.length}
+                      itemsPerPage={itemsPerPage}
+                    />
+                  </CCol>
+                </CRow>
               </div>
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
+            </>
+          )}
+          {addFormView && (
+            <CCard className="p-2 cursor-default mb-5">
+              <CCardBody className="mb-3">
+                <SleepForm
+                  back={() => {
+                    setAddFormView(false);
+                    setSelectedData({});
+                  }}
+                  // defaultValues={selectedData}
+                />
+              </CCardBody>
+            </CCard>
+          )}
+
+          {detailView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={detailView}
+                onClose={() => setDetailView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+              >
+                <CModalBody className="p-3">
+                  <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                    <h5>Are you sure want to delete ?</h5>
+                    <div className="d-flex gap-2 mt-2">
+                      <div style={{ width: "80px" }}>
+                        <PrimaryButton onClick={() => setDetailView(false)}>
+                          Yes
+                        </PrimaryButton>
+                      </div>
+                      <div style={{ width: "80px" }}>
+                        <SecondaryButton onClick={() => setDetailView(false)}>
+                          No
+                        </SecondaryButton>
+                      </div>
+                    </div>
+                  </div>
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+        </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Sleep
+export default Sleep;
