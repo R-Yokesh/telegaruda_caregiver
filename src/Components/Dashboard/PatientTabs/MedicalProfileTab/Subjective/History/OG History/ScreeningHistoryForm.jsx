@@ -1,11 +1,12 @@
-import { CCol, CFormTextarea,CFormCheck, CRow } from "@coreui/react";
+import { CCol, CFormTextarea, CFormCheck, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
-const ScreeningHistoryForm = ({ back, defaultValues }) => {
+const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
   const [date, setDate] = useState(null);
   const [date2, setDate2] = useState(null);
   const [date3, setDate3] = useState(null);
@@ -99,19 +100,21 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
         <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date of last pap smear 
+              Date of last pap smear
             </label>
             <div className="date-size">
               <DatePicker
                 showIcon
                 selected={date}
                 onChange={(date) => setDate(date)}
+                dateFormat={DATE_FORMAT}
+                disabled={from === "Consult-Screen" ? true : false}
               />
             </div>
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-        <p className="radio-label">History of abnormal pap smear</p>
+          <p className="radio-label">History of abnormal pap smear</p>
           <div className="d-flex align-items-end w-100">
             <div
               style={{
@@ -131,6 +134,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 name="abnormal"
                 checked={abnormalStatus === "Yes"}
                 onChange={handleAbnormalStatus}
+                disabled={from === "Consult-Screen" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -142,6 +146,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 name="abnormal"
                 checked={abnormalStatus === "No"}
                 onChange={handleAbnormalStatus}
+                disabled={from === "Consult-Screen" ? true : false}
               />
             </div>
           </div>
@@ -158,6 +163,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                   // label="Example textarea"
                   rows={3}
                   // text="Must be 8-20 words long."
+                  disabled={from === "Consult-Screen" ? true : false}
                 ></CFormTextarea>
               </div>
             </div>
@@ -166,19 +172,21 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
         <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date of last mamogram 
+              Date of last mamogram
             </label>
             <div className="date-size">
               <DatePicker
                 showIcon
                 selected={date2}
                 onChange={(date) => setDate2(date)}
+                disabled={from === "Consult-Screen" ? true : false}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-        <p className="radio-label">History of mamogram</p>
+          <p className="radio-label">History of mamogram</p>
           <div className="d-flex align-items-end w-100">
             <div
               style={{
@@ -198,6 +206,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 name="mamogram"
                 checked={mamogramStatus === "Yes"}
                 onChange={handleMamogramStatus}
+                disabled={from === "Consult-Screen" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -209,6 +218,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 name="mamogram"
                 checked={mamogramStatus === "No"}
                 onChange={handleMamogramStatus}
+                disabled={from === "Consult-Screen" ? true : false}
               />
             </div>
           </div>
@@ -225,6 +235,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                   // label="Example textarea"
                   rows={3}
                   // text="Must be 8-20 words long."
+                  disabled={from === "Consult-Screen" ? true : false}
                 ></CFormTextarea>
               </div>
             </div>
@@ -233,19 +244,21 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
         <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-              Date of last breast exam 
+              Date of last breast exam
             </label>
             <div className="date-size">
               <DatePicker
                 showIcon
                 selected={date3}
                 onChange={(date) => setDate3(date)}
+                disabled={from === "Consult-Screen" ? true : false}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-        <p className="radio-label">History of breast exam</p>
+          <p className="radio-label">History of breast exam</p>
           <div className="d-flex align-items-end w-100">
             <div
               style={{
@@ -265,6 +278,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 name="breast"
                 checked={breastStatus === "Yes"}
                 onChange={handleBreastStatus}
+                disabled={from === "Consult-Screen" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -276,6 +290,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 name="breast"
                 checked={breastStatus === "No"}
                 onChange={handleBreastStatus}
+                disabled={from === "Consult-Screen" ? true : false}
               />
             </div>
           </div>
@@ -292,6 +307,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                   // label="Example textarea"
                   rows={3}
                   // text="Must be 8-20 words long."
+                  disabled={from === "Consult-Screen" ? true : false}
                 ></CFormTextarea>
               </div>
             </div>
@@ -299,14 +315,16 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
         )}
       </CRow>
 
-      <CRow className="mb-1">
-        <div style={{ width: "130px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
-        </div>
-        <div style={{ width: "128px" }}>
-          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-        </div>
-      </CRow>
+      {from !== "Consult-Screen" && (
+        <CRow className="mb-1">
+          <div style={{ width: "130px" }}>
+            <PrimaryButton>SAVE</PrimaryButton>
+          </div>
+          <div style={{ width: "128px" }}>
+            <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+          </div>
+        </CRow>
+      )}
     </>
   );
 };

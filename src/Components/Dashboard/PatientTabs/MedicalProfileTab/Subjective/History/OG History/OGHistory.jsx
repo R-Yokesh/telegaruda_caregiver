@@ -27,7 +27,7 @@ import MensturalHistoryForm from "./MensturalHistoryForm";
 import ScreeningHistoryForm from "./ScreeningHistoryForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
-const OGHistory = ({ from,back }) => {
+const OGHistory = ({ from, back }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "LMP Date" },
@@ -514,22 +514,28 @@ const OGHistory = ({ from,back }) => {
       )}
       {from === "Consult-Gynaec" && (
         <CRow>
-          <GynaecHistoryTable
-            rowData={getCurrentMenstrualPageItems()}
-            columns={MensuralcolumnData}
-            getselectedData={getselectedData}
-            from={from}
-          />
+          <CCard className="p-2 cursor-default mb-5">
+            <CCardBody className="mb-3">
+              <MensturalHistoryForm
+                back={back}
+                defaultValues={selectedData}
+                from={from}
+              />
+            </CCardBody>
+          </CCard>
         </CRow>
       )}
       {from === "Consult-Screen" && (
         <CRow>
-          <ScreeningHistory
-            rowData={getCurrentScreeningItem()}
-            columns={ScreeningcolumnData}
-            getselectedData={getselectedData}
-            from={from}
-          />
+          <CCard className="p-2 cursor-default mb-5">
+            <CCardBody className="mb-3">
+              <ScreeningHistoryForm
+                back={back}
+                defaultValues={selectedData}
+                from={from}
+              />
+            </CCardBody>
+          </CCard>
         </CRow>
       )}
       {from === "" && (
@@ -721,20 +727,22 @@ const OGHistory = ({ from,back }) => {
         </>
       )}
 
-      {addFormView && (
-        <CRow className="mb-2">
-          <CCard className="p-2 cursor-default mb-5">
-            <CCardBody className="mb-3">
-              {currentTab === 1 && (
-                <ImagingOrderForm
-                  back={() => {
-                    setAddFormView(false);
-                    setSelectedData({});
-                  }}
-                  defaultValues={selectedData}
-                />
-              )}
-              {/* {currentTab === 2 && currentHistoryTab === 1 && (
+      {from === "" && (
+        <>
+          {addFormView && (
+            <CRow className="mb-2">
+              <CCard className="p-2 cursor-default mb-5">
+                <CCardBody className="mb-3">
+                  {currentTab === 1 && (
+                    <ImagingOrderForm
+                      back={() => {
+                        setAddFormView(false);
+                        setSelectedData({});
+                      }}
+                      defaultValues={selectedData}
+                    />
+                  )}
+                  {/* {currentTab === 2 && currentHistoryTab === 1 && (
                 <MensturalHistoryForm
                   back={() => {
                     setAddFormView(false);
@@ -752,60 +760,62 @@ const OGHistory = ({ from,back }) => {
                   defaultValues={selectedData}
                 />
               )} */}
-            </CCardBody>
-          </CCard>
-        </CRow>
+                </CCardBody>
+              </CCard>
+            </CRow>
+          )}
+
+          {currentTab !== 1 && (
+            <CRow className="mb-2">
+              <CCard className="p-2 cursor-default mb-5">
+                <CCardBody className="mb-3">
+                  {currentTab === 2 && currentHistoryTab === 1 && (
+                    <MensturalHistoryForm
+                      back={back}
+                      defaultValues={selectedData}
+                    />
+                  )}
+                  {currentTab === 2 && currentHistoryTab === 2 && (
+                    <ScreeningHistoryForm
+                      back={back}
+                      defaultValues={selectedData}
+                    />
+                  )}
+                </CCardBody>
+              </CCard>
+            </CRow>
+          )}
+
+          {detailView && (
+            <BlurBackground>
+              <CModal
+                alignment="center"
+                visible={detailView}
+                onClose={() => setDetailView(false)}
+                aria-labelledby="VerticallyCenteredExample"
+              >
+                <CModalBody className="p-3">
+                  <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
+                    <h5>Are you sure want to delete ?</h5>
+                    <div className="d-flex gap-2 mt-2">
+                      <div style={{ width: "80px" }}>
+                        <PrimaryButton onClick={() => setDetailView(false)}>
+                          Yes
+                        </PrimaryButton>
+                      </div>
+                      <div style={{ width: "80px" }}>
+                        <SecondaryButton onClick={() => setDetailView(false)}>
+                          No
+                        </SecondaryButton>
+                      </div>
+                    </div>
+                  </div>
+                </CModalBody>
+              </CModal>
+            </BlurBackground>
+          )}
+        </>
       )}
-
-      <CRow className="mb-2">
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            {currentTab === 2 && currentHistoryTab === 1 && (
-              <MensturalHistoryForm
-                back={back}
-                defaultValues={selectedData}
-              />
-            )}
-            {currentTab === 2 && currentHistoryTab === 2 && (
-              <ScreeningHistoryForm
-              back={back}
-                defaultValues={selectedData}
-              />
-            )}
-          </CCardBody>
-        </CCard>
-      </CRow>
-
-
-      {detailView && (
-        <BlurBackground>
-          <CModal
-            alignment="center"
-            visible={detailView}
-            onClose={() => setDetailView(false)}
-            aria-labelledby="VerticallyCenteredExample"
-          >
-            <CModalBody className="p-3">
-              <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                <h5>Are you sure want to delete ?</h5>
-                <div className="d-flex gap-2 mt-2">
-                  <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDetailView(false)}>
-                      Yes
-                    </PrimaryButton>
-                  </div>
-                  <div style={{ width: "80px" }}>
-                    <SecondaryButton onClick={() => setDetailView(false)}>
-                      No
-                    </SecondaryButton>
-                  </div>
-                </div>
-              </div>
-            </CModalBody>
-          </CModal>
-        </BlurBackground>
-      )
-      }
     </>
   );
 };

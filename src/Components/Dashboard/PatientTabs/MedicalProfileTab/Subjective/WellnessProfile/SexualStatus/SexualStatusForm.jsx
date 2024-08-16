@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const SexualStatusForm = ({ back, defaultValues, from }) => {
   const [date, setDate] = useState(null);
@@ -54,6 +55,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="activity"
+                disabled={from === "Consult" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -63,6 +65,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="activity"
+                disabled={from === "Consult" ? true : false}
               />
             </div>
           </div>
@@ -89,6 +92,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                 name="sti"
                 checked={historySti === true}
                 onChange={handleHistoryStiClick}
+                disabled={from === "Consult" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -100,6 +104,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                 name="sti"
                 checked={historySti === false}
                 onChange={handleHistoryStiClick}
+                disabled={from === "Consult" ? true : false}
               />
             </div>
           </div>
@@ -117,6 +122,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                     showIcon
                     selected={date}
                     onChange={(date) => setDate(date)}
+                    dateFormat={DATE_FORMAT}
                   />
                 </div>
               </div>
@@ -131,6 +137,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                     id="validationTooltip01"
                     placeholder="Enter"
                     defaultValue={defaultValues?.sti_current_notes}
+                    disabled={from === "Consult" ? true : false}
                   />
                 </div>
               </div>
@@ -158,6 +165,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                     name="sti_status"
                     checked={currentSti === true}
                     onChange={handleCurrentStiClick}
+                    disabled={from === "Consult" ? true : false}
                   />
                   <CFormCheck
                     className="mb-0"
@@ -169,6 +177,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                     name="sti_status"
                     checked={currentSti === false}
                     onChange={handleCurrentStiClick}
+                    disabled={from === "Consult" ? true : false}
                   />
                   <CFormCheck
                     className="mb-0"
@@ -180,6 +189,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                     name="sti_status"
                     checked={currentSti === false}
                     onChange={handleCurrentStiClick}
+                    disabled={from === "Consult" ? true : false}
                   />
                 </div>
               </div>
@@ -195,6 +205,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                       id="validationTooltip01"
                       placeholder="Enter"
                       defaultValue={defaultValues?.name}
+                      disabled={from === "Consult" ? true : false}
                     />
                   </div>
                 </div>
