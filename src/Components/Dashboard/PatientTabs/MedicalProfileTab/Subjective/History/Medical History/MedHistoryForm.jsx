@@ -4,6 +4,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import DatePicker from "react-datepicker";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const MedHistoryForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -69,6 +70,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                   isClearable
                   closeOnScroll={true}
                   wrapperClassName="date-picker-wrapper"
+                  dateFormat={DATE_FORMAT}
                 />
               </div>
             </div>

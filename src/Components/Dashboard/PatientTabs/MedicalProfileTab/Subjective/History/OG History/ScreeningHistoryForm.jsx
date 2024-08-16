@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const ScreeningHistoryForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -106,6 +107,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 showIcon
                 selected={date}
                 onChange={(date) => setDate(date)}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>
@@ -173,6 +175,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 showIcon
                 selected={date2}
                 onChange={(date) => setDate2(date)}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>
@@ -240,6 +243,7 @@ const ScreeningHistoryForm = ({ back, defaultValues }) => {
                 showIcon
                 selected={date3}
                 onChange={(date) => setDate3(date)}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>

@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const MensturalHistoryForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -340,6 +341,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 showIcon
                 selected={date}
                 onChange={(date) => setDate(date)}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>

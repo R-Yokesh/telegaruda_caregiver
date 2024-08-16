@@ -4,6 +4,7 @@ import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import DatePicker from "react-datepicker";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const ProcedureForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(new Date());
@@ -30,6 +31,7 @@ const ProcedureForm = ({ back, defaultValues }) => {
                   showIcon
                   selected={date}
                   onChange={(date) => setDate(date)}
+                  dateFormat={DATE_FORMAT}
                 />
               </div>
             </div>

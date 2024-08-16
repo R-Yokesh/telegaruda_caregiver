@@ -34,8 +34,7 @@
 .invite-doc-sec{
     padding: 3%;
     background-color: #ffff;
-   
-    margin-bottom: 5%;
+    margin-bottom: 3%;
     border-radius: 10px;
 }
 .invite-doc-sec-inside{
@@ -71,4 +70,10 @@
 }
 .start-btn{
     background-color: var(--theme-blue);
+}
+.doc-head{
+    text-align: center;
+    text-align: center;
+    font-weight: 800;
+    margin-bottom: 20px;
 }

@@ -23,7 +23,7 @@ const PhysicalExam = ({ onClose }) => {
   const dateCards = [
     {
       id: 1,
-      date: "06/07/2024",
+      date: "06-07-2024",
       ga: {
         status: "Abnormal",
         notes: "Lorem ipsum",
@@ -37,7 +37,7 @@ const PhysicalExam = ({ onClose }) => {
     },
     {
       id: 2,
-      date: "06/07/2024",
+      date: "06-07-2024",
       ga: {
         status: "Normal",
         notes: "Lorem ipsum",
@@ -51,7 +51,7 @@ const PhysicalExam = ({ onClose }) => {
     },
     {
       id: 3,
-      date: "06/07/2024",
+      date: "06-07-2024",
       ga: {
         status: "Normal",
         notes: "Lorem ipsum",
@@ -65,7 +65,7 @@ const PhysicalExam = ({ onClose }) => {
     },
     {
       id: 4,
-      date: "06/07/2024",
+      date: "06-07-2024",
       ga: {
         status: "Normal",
         notes: "Lorem ipsum",
@@ -79,7 +79,7 @@ const PhysicalExam = ({ onClose }) => {
     },
     {
       id: 5,
-      date: "06/07/2024",
+      date: "06-07-2024",
       ga: {
         status: "Normal",
         notes: "Lorem ipsum",
@@ -93,7 +93,7 @@ const PhysicalExam = ({ onClose }) => {
     },
     {
       id: 6,
-      date: "06/07/2024",
+      date: "06-07-2024",
       ga: {
         status: "Normal",
         notes: "Lorem ipsum",
@@ -107,7 +107,7 @@ const PhysicalExam = ({ onClose }) => {
     },
     {
       id: 7,
-      date: "06/07/2024",
+      date: "06-07-2024",
       ga: {
         status: "Normal",
         notes: "Lorem ipsum",
@@ -121,7 +121,7 @@ const PhysicalExam = ({ onClose }) => {
     },
     {
       id: 8,
-      date: "06/07/2024",
+      date: "06-07-2024",
       ga: {
         status: "Normal",
         notes: "Lorem ipsum",
@@ -133,12 +133,12 @@ const PhysicalExam = ({ onClose }) => {
         select: ["Posture and Gait"],
       },
     },
-    { id: 9, date: "06/07/2024" },
-    { id: 10, date: "06/07/2024" },
-    { id: 11, date: "06/07/2024" },
-    { id: 12, date: "06/07/2024" },
-    { id: 13, date: "06/07/2024" },
-    { id: 14, date: "06/07/2024" },
+    { id: 9, date: "06-07-2024" },
+    { id: 10, date: "06-07-2024" },
+    { id: 11, date: "06-07-2024" },
+    { id: 12, date: "06-07-2024" },
+    { id: 13, date: "06-07-2024" },
+    { id: 14, date: "06-07-2024" },
   ];
   const [currentPage, setCurrentPage] = useState(1);
   const [addFormView, setAddFormView] = useState(true);

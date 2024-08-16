@@ -200,53 +200,7 @@ const Immunization = ({ onClose, from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <>
-                    <CRow className="mb-2">
-                      <CCol md={3} className="d-flex flex-column gap-1">
-                        <span className="fs-18 fw-400">Start Date *</span>
-                        <div style={{ width: "100%" }}>
-                          <DatePicker
-                            showIcon
-                            selected={startDate}
-                            onChange={(date) => setStartDate(date)}
-                            className="date-range-selector"
-                            maxDate={today}
-                          />
-                        </div>
-                      </CCol>
-                      <CCol md={3} className="d-flex flex-column gap-1">
-                        <span className="fs-18 fw-400">End Date *</span>
-                        <div style={{ width: "100%" }}>
-                          <DatePicker
-                            showIcon
-                            selected={endDate}
-                            onChange={(date) => setEndDate(date)}
-                            className="date-range-selector"
-                            maxDate={today}
-                          />
-                        </div>
-                      </CCol>
-                      {/* <CCol
-                    md={3}
-                    className="d-flex flex-column gap-1 justify-content-end"
-                  >
-                    <div style={{ width: "100%" }}>
-                      <Dropdown options={options} />
-                    </div>
-                  </CCol> */}
-                      <CCol
-                        md={3}
-                        className="d-flex flex-column gap-1 justify-content-end"
-                        style={{ width: "60px" }}
-                      >
-                        <PrimaryButton>
-                          <div className="d-flex align-items-center gap-2">
-                            <img src={Assets.search} alt="close" />
-                          </div>
-                        </PrimaryButton>
-                      </CCol>
-                    </CRow>
-                  </>
+                <DateSelector />
                 </CCol>
                 <CCol
                   lg={4}

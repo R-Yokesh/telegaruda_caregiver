@@ -6,6 +6,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import DropdownButton from "../../../../../../Buttons/DropDownButton/DropDownButton";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const ImagingOrderForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -55,6 +56,7 @@ const ImagingOrderForm = ({ back, defaultValues }) => {
                 showIcon
                 selected={date}
                 onChange={(date) => setDate(date)}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>

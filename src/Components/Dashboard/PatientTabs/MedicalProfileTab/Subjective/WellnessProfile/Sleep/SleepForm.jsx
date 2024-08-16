@@ -5,6 +5,7 @@ import { Assets } from "../../../../../../../assets/Assets";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const SleepForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -55,7 +56,7 @@ const SleepForm = ({ back, defaultValues }) => {
                showIcon
                selected={date}
                onChange={(date) => setDate(date)}
-              //  dateFormat="MM-dd-yyyy"
+               dateFormat={DATE_FORMAT}
               />
             </div>
           </div>

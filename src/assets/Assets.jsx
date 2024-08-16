@@ -123,6 +123,8 @@ import ProfileImg from "./Images/Profile-Image.svg";
 import testSubIcon from "./Images/testSubIcon.svg";
 import testUnSubIcon from "./Images/testUnSubIcon.svg";
 import testViewIcon from "./Images/testViewIcon.svg";
+import videoCall_icon from "./Images/videoCall_icon.svg";
+
 
 export const Assets = {
   BackBtn,
@@ -226,4 +228,5 @@ export const Assets = {
   testSubIcon,
   testUnSubIcon,
   testViewIcon,
+  videoCall_icon,
 };

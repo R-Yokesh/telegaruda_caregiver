@@ -5,6 +5,7 @@ import DoctorCards from "../../../../Components/DoctorCards/DoctorCards";
 import { CModal, CModalBody, CModalHeader, CModalTitle, CForm, CFormInput, CButton, CModalFooter, CFormSelect, CRow, CCol } from '@coreui/react'
 import './Call.css';
 import Filter from "./Filter/Filter";
+import RegisteredDoctorCards from "../../../DoctorCards/RegisteredDoctorCards";
 
 
 
@@ -21,64 +22,73 @@ const CallTab = () => {
       name: "Ram Mohan S R",
       email: "rammohan@cure.com",
       mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
+      type: "Oncology",
+      date: "02-04-2024",
+      time: "12:15PM",
       profile: Assets.Patient,
     },
     {
       name: "Ram Mohan S R",
       email: "rammohan@cure.com",
       mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
+      type: "Oncology",
+      date: "02-04-2024",
+      time: "12:15PM",
       profile: Assets.Patient,
     },
     {
       name: "Ram Mohan S R",
       email: "rammohan@cure.com",
       mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
+      type: "Oncology",
+      date: "02-04-2024",
+      time: "12:15PM",
       profile: Assets.Patient,
     },
     {
       name: "Ram Mohan S R",
       email: "rammohan@cure.com",
       mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
+      type: "Oncology",
+      date: "02-04-2024",
+      time: "12:15PM",
       profile: Assets.Patient,
     },
     {
       name: "Ram Mohan S R",
       email: "rammohan@cure.com",
       mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
+      type: "Oncology",
+      date: "02-04-2024",
+      time: "12:15PM",
       profile: Assets.Patient,
     },
     {
       name: "Ram Mohan S R",
       email: "rammohan@cure.com",
       mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
+      type: "Oncology",
+      date: "02-04-2024",
+      time: "12:15PM",
       profile: Assets.Patient,
     },
     {
       name: "Ram Mohan S R",
       email: "rammohan@cure.com",
       mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
+      type: "Oncology",
+      date: "02-04-2024",
+      time:"12:15PM",
+      time: "12:15PM",
       profile: Assets.Patient,
     },
     {
       name: "Ram Mohan S R",
       email: "rammohan@cure.com",
       mobile: "+91 98765 43210",
-      mrn: "MRN 3",
-      age: "34 yrs (M)",
+      type: "Oncology",
+      date: "02-04-2024",
+      time: "12:15PM",
       profile: Assets.Patient,
     },
   ];
@@ -181,33 +191,34 @@ const CallTab = () => {
         {showEmailInput && (
           <>
             <hr />
-              <CForm>
+            <CForm>
               <div className="mobile-input-section">
-              <div>
-              <CFormInput
-                  type="email"
-                  id="exampleFormControlInput1"
-                  label="Email Address"
-                  placeholder="Enter"
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
+                <div>
+                  <CFormInput
+                    type="email"
+                    id="exampleFormControlInput1"
+                    label="Email Address"
+                    placeholder="Enter"
+                    aria-describedby="exampleFormControlInputHelpInline"
+                  />
                 </div>
                 <div>
-                <CButton color="primary" className="start-btn">Start</CButton>
+                  <CButton color="primary" className="start-btn">Start</CButton>
                 </div>
               </div>
-              </CForm>
-           
+            </CForm>
+
           </>
         )}
       </div>
 
       <div className="doctor-card-sec">
         <div className="row">
+         <h4 className="doc-head">Registered Doctors</h4>
           {DoctorDetail?.map((data, i) => (
             <div className="col-4" onClick={() => DetailSec()} >
               <Link className="card-link">
-                <DoctorCards DoctorDetail={data} />
+                <RegisteredDoctorCards DoctorDetail={data} />
               </Link>
             </div>
           ))}

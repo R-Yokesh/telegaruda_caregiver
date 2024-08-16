@@ -284,6 +284,10 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
                 id="systolic"
                 value={systolic}
                 onChange={(e) => setSystolic(e.target.value)}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
               />
               {errors.systolic && (
                 <div className="error-text">{errors.systolic}</div>
@@ -303,6 +307,10 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
                 id="diastolic"
                 value={diastolic}
                 onChange={(e) => setDiastolic(e.target.value)}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
               />
               {errors.diastolic && (
                 <div className="error-text">{errors.diastolic}</div>
@@ -320,6 +328,10 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
                 id="pulse"
                 value={pulse}
                 onChange={(e) => setPulse(e.target.value)}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
               />
               {errors.pulse && <div className="error-text">{errors.pulse}</div>}
             </div>

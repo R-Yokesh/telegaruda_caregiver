@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const SexualStatusForm = ({ back, defaultValues }) => {
     const [date, setDate] = useState(null);
@@ -115,6 +116,7 @@ const SexualStatusForm = ({ back, defaultValues }) => {
                                         showIcon
                                         selected={date}
                                         onChange={(date) => setDate(date)}
+                                        dateFormat={DATE_FORMAT}
                                     />
                                 </div>
                             </div>

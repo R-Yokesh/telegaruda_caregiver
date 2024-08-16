@@ -6,6 +6,7 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import ActiveButton from "../../../../../../Buttons/ActiveButton/ActiveButton";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const ExcerciseHabitForm = ({ back, defaultValues }) => {
   const [exercises, setExercises] = useState([
@@ -66,6 +67,7 @@ const ExcerciseHabitForm = ({ back, defaultValues }) => {
                     showIcon
                     selected={exercise.date}
                     onChange={(date) => handleChange(exercise.id, { date })}
+                    dateFormat={DATE_FORMAT}
                   />
                 </div>
               </div>

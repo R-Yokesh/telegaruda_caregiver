@@ -16,7 +16,7 @@ const Plan = () => {
     { id: 3, name: "Vaccinations", image: Assets.Vaccine },
     { id: 4, name: "Procedure (CPT Code)", image: Assets.CPT },
     { id: 5, name: "Patient Education", image: Assets.PatEdu },
-    { id: 6, name: "Next Appointment", image: Assets.PatEdu },
+    { id: 6, name: "Next Appointment", image: Assets.History },
   ];
   const navigate = useNavigate();
   const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-2");

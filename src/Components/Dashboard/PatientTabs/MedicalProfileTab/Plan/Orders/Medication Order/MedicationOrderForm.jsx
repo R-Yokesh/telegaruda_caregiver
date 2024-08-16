@@ -15,6 +15,7 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 import ActiveButton from "../../../../../../Buttons/ActiveButton/ActiveButton";
 import DropdownButton from "../../../../../../Buttons/DropDownButton/DropDownButton";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
 const MedicationOrderForm = ({ back, defaultValues }) => {
   const [date, setDate] = useState(null);
@@ -524,6 +525,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                                 "startDate"
                               )
                             }
+                            dateFormat={DATE_FORMAT}
                           />
                         </div>
                       </div>
@@ -573,6 +575,7 @@ const MedicationOrderForm = ({ back, defaultValues }) => {
                                 "endDate"
                               )
                             }
+                            dateFormat={DATE_FORMAT}
                           />
                         </div>
                       </div>
