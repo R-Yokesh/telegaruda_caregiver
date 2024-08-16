@@ -7,28 +7,54 @@ import MedicalTab from "../../MedicalTab";
 import Modal from "../../../../../Modal/Modal";
 import ObjectiveDetailPage from "../DetailPage/ObjectiveDetailPage";
 import useApi from "../../../../../../ApiServices/useApi";
+import { ObjectiveDatas } from "../../../../../Consultant/TableColumnsJson/ObjectiveJson";
 
-const VitalSign = ({ setVitalView }) => {
+const VitalSign = ({ setVitalView, onClose }) => {
   const tabs = [
     { id: 1, title: "Primary Vitals" },
     { id: 2, title: "Metabolic And Biochemical Profile" },
     { id: 3, title: "Hematologic Profile" },
     { id: 4, title: "Renal and Metabolic Markers" },
   ];
-  const [currentTab, setCurrentTab] = useState({
-    id: 1,
-    title: "Primary Vitals",
-  });
+  const PatientSubMenu3 = localStorage.getItem("PatientSubMenu-3");
+  const ParsedPatientSubMenu = PatientSubMenu3
+    ? JSON.parse(PatientSubMenu3)
+    : 1;
+  function findTabById(id) {
+    const titleObject = tabs?.find((title) => title.id === id);
+    return titleObject
+      ? titleObject
+      : {
+          id: 1,
+          title: "Primary Vitals",
+        }; // Return the title or a message if not found
+  }
+  function findTitleById(id) {
+    const titleObject = tabs?.find((title) => title.id === id);
+    return titleObject ? titleObject?.title : currentTab?.title; // Return the title or a message if not found
+  }
+  const [currentTab, setCurrentTab] = useState(
+    findTabById(ParsedPatientSubMenu)
+  );
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
-  function findTitleById(id) {
-    const titleObject = tabs?.find((title) => title.id === id);
-    return titleObject ? titleObject?.title : "Primary Vitals"; // Return the title or a message if not found
-  }
+
+  const GoTOConsultPage = localStorage.getItem("PatientConsultTab");
+  const parsedConsult = GoTOConsultPage ? JSON.parse(GoTOConsultPage) : false;
+
+  const getData = localStorage.getItem("PatientSubMenu-4");
+  const parsedData = getData ? JSON.parse(getData) : null;
+
+  const findByIdforSelectedData = () => {
+    const selectedObject = ObjectiveDatas?.find(
+      (title) => title.id === parsedData + 1
+    );
+    openModal(selectedObject);
+  };
 
   const currentTabtitle = findTitleById(currentTab);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(parsedConsult);
   const [cardSelectedData, setSelectedCardData] = useState();
   const [entities, setEntities] = useState([]);
 
@@ -120,6 +146,11 @@ const VitalSign = ({ setVitalView }) => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    if (parsedData !== null) {
+      findByIdforSelectedData();
+    }
+  }, [parsedData]);
   return (
     <>
       <CRow>
@@ -129,7 +160,7 @@ const VitalSign = ({ setVitalView }) => {
               alt="BackBtn"
               src={Assets.BackBtn}
               style={{ width: "35px" }}
-              onClick={setVitalView}
+              onClick={onClose}
               className="cursor"
             />
             <span className="Obj-name d-flex align-items-center">
@@ -155,7 +186,7 @@ const VitalSign = ({ setVitalView }) => {
           <MedicalTab
             tabs={tabs}
             getCurrentTab={getCurrentTab}
-            defaultTab={0}
+            defaultTab={currentTab?.id - 1}
           />
         </CCol>
       </CRow>
@@ -169,11 +200,11 @@ const VitalSign = ({ setVitalView }) => {
         <CContainer className="p-0">
           <CRow>
             <CCol className="mb-3">
-              {/* <ObjectiveDetailPage data={cardSelectedData} /> */}
-              <ObjectiveDetailPage
+              <ObjectiveDetailPage data={cardSelectedData} />
+              {/* <ObjectiveDetailPage
                 data={entities}
                 getTableDatas={(data) => TableDatas(data)}
-              />
+              /> */}
             </CCol>
           </CRow>
         </CContainer>

@@ -17,26 +17,20 @@ import MedHistoryForm from "./MedHistoryForm";
 import MedicalHistoryTable from "../../../../../../Tables/Subjective/MedicalHistoryTable";
 import SocialHistoryTable from "../../../../../../Tables/Subjective/SocialHistoryTable";
 
-const SocialHistory = ({ from,back }) => {
-
-  const Data = 
-    {
-      id: 1,
-      smoking: "No",
-      alcohol: "No",
-      drugs: "No",
-    }
+const SocialHistory = ({ from, back }) => {
+  const Data = {
+    id: 1,
+    smoking: "No",
+    alcohol: "No",
+    drugs: "No",
+  };
   return (
     <>
-    
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            <MedHistoryForm
-              back={back}
-              defaultValues={Data}
-            />
-          </CCardBody>
-        </CCard>
+      <CCard className="p-2 cursor-default mb-5">
+        <CCardBody className="mb-3">
+          <MedHistoryForm back={back} defaultValues={Data} from={from} />
+        </CCardBody>
+      </CCard>
     </>
   );
 };

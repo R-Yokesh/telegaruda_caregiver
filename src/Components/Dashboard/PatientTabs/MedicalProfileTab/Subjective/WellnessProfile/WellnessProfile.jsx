@@ -20,7 +20,7 @@ const WellnessProfile = ({ OnClose }) => {
   const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-3");
   const ParsedPatientSubMenu = PatientSubMenu2
     ? JSON.parse(PatientSubMenu2)
-    : 0;
+    : 1;
   const [currentTab, setCurrentTab] = useState(ParsedPatientSubMenu);
   const getCurrentTab = (data) => {
     setCurrentTab(data);

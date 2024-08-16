@@ -4,9 +4,8 @@ import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
-import { DATE_FORMAT } from "../../../../../../../Config/config";
 
-const MensturalHistoryForm = ({ back, defaultValues }) => {
+const MensturalHistoryForm = ({ back, defaultValues, from }) => {
   const [date, setDate] = useState(null);
   const [date2, setDate2] = useState(null);
 
@@ -148,6 +147,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value={value1}
                 onChange={handleChange}
                 onPaste={handlePaste}
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
             {error && <p className="error-message">{error}</p>}
@@ -169,6 +169,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value={value2}
                 onChange={handleChange}
                 onPaste={handlePaste}
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
           </div>
@@ -189,6 +190,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value={value3}
                 onChange={handleChange}
                 onPaste={handlePaste}
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
           </div>
@@ -236,7 +238,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <p className="radio-label">  InterMenstrual Bleeding </p>
+          <p className="radio-label"> InterMenstrual Bleeding </p>
           <div className="d-flex align-items-end w-100">
             <div
               style={{
@@ -254,6 +256,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="menstrual"
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -263,6 +266,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="menstrual"
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
           </div>
@@ -286,6 +290,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="irregularity"
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -295,6 +300,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="irregularity"
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
           </div>
@@ -318,6 +324,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="dysmenorrhea"
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -327,6 +334,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="dysmenorrhea"
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
           </div>
@@ -341,7 +349,6 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 showIcon
                 selected={date}
                 onChange={(date) => setDate(date)}
-                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>
@@ -367,6 +374,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 name="menopause"
                 checked={menopause === "Yes"}
                 onChange={handleClick}
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -378,6 +386,7 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                 name="menopause"
                 checked={menopause === "No"}
                 onChange={handleClick}
+                disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
           </div>
@@ -399,23 +408,24 @@ const MensturalHistoryForm = ({ back, defaultValues }) => {
                   value={value}
                   onChange={handleChange}
                   onPaste={handlePaste}
+                  disabled={from === "Consult-Gynaec" ? true : false}
                 />
               </div>
             </div>
           </CCol>
         )}
       </CRow>
-      {/* <CRow className="mb-3"></CRow>
-      <CRow className="mb-3"></CRow>
-      <CRow className="mb-3"></CRow> */}
-      <CRow className="mb-1">
-        <div style={{ width: "130px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
-        </div>
-        <div style={{ width: "128px" }}>
-          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-        </div>
-      </CRow>
+
+      {from !== "Consult-Gynaec" && (
+        <CRow className="mb-1">
+          <div style={{ width: "130px" }}>
+            <PrimaryButton>SAVE</PrimaryButton>
+          </div>
+          <div style={{ width: "128px" }}>
+            <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+          </div>
+        </CRow>
+      )}
     </>
   );
 };

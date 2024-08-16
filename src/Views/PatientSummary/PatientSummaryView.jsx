@@ -44,6 +44,10 @@ import ExerciseHabit from "../../Components/Dashboard/PatientTabs/MedicalProfile
 import Sleep from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/WellnessProfile/Sleep/Sleep";
 import Mood from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/WellnessProfile/Mood/Mood";
 import SexualStatus from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/WellnessProfile/SexualStatus/SexualStatus";
+import Nutrition from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Subjective/WellnessProfile/Nutrition/Nutrition";
+import PhysicalExam from "../../Components/Dashboard/PatientTabs/MedicalProfileTab/Objective/PhysicalExam/PhysicalExam";
+import DynamicTable from "../../Components/Tables/DynamicTable";
+import { ObjectiveDatas } from "../../Components/Consultant/TableColumnsJson/ObjectiveJson";
 
 function PatientSummaryView() {
   const getConsultTab = localStorage.getItem("ConsultTab");
@@ -911,6 +915,314 @@ function PatientSummaryView() {
                 </div>
 
                 <SexualStatus from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 4, 2, 1);
+                  }}
+                >
+                  <h4>Wellness - Nutrition - Diet</h4>
+                </div>
+
+                <Nutrition from={"Consult"} />
+              </div>
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 1, 4, 2, 2);
+                  }}
+                >
+                  <h4>Wellness - Nutrition - Fluid Intake</h4>
+                </div>
+
+                <Nutrition from={"Consult-Intake"} />
+              </div>
+            </CTabPanel>
+            <CTabPanel
+              className="p-2"
+              aria-labelledby="home-tab-pane"
+              itemKey={"Objective"}
+            >
+              <div className="mb-2">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 2);
+                  }}
+                >
+                  <h4>Physical Exam</h4>
+                </div>
+                <PhysicalExam from={"Consult"} />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 1, 0);
+                  }}
+                >
+                  <h4>Vital Signs - Primary Vitals - Blood Pressure</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[0]?.columnsData}
+                  tableData={ObjectiveDatas[0]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 1, 2);
+                  }}
+                >
+                  <h4>Vital Signs - Primary Vitals - BMI</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[2]?.columnsData}
+                  tableData={ObjectiveDatas[2]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 1, 4);
+                  }}
+                >
+                  <h4>Vital Signs - Primary Vitals - ECG</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[4]?.columnsData}
+                  tableData={ObjectiveDatas[4]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 1, 8);
+                  }}
+                >
+                  <h4>Vital Signs - Primary Vitals - Respiration Rate</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[8]?.columnsData}
+                  tableData={ObjectiveDatas[8]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 1, 9);
+                  }}
+                >
+                  <h4>Vital Signs - Primary Vitals - SpO2</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[9]?.columnsData}
+                  tableData={ObjectiveDatas[9]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 1, 10);
+                  }}
+                >
+                  <h4>Vital Signs - Primary Vitals - Temperature</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[10]?.columnsData}
+                  tableData={ObjectiveDatas[10]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 1, 11);
+                  }}
+                >
+                  <h4>
+                    Vital Signs - Primary Vitals - Lung Function Test (LFT)
+                  </h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[11]?.columnsData}
+                  tableData={ObjectiveDatas[11]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 2, 1);
+                  }}
+                >
+                  <h4>
+                    Vital Signs - Metabolic And Biochemical Profile - Blood
+                    Sugar
+                  </h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[1]?.columnsData}
+                  tableData={ObjectiveDatas[1]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 2, 7);
+                  }}
+                >
+                  <h4>
+                    Vital Signs - Metabolic And Biochemical Profile - Lipid
+                    Profile
+                  </h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[7]?.columnsData}
+                  tableData={ObjectiveDatas[7]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 3, 3);
+                  }}
+                >
+                  <h4>Vital Signs - Hematologic Profile - HCT</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[3]?.columnsData}
+                  tableData={ObjectiveDatas[3]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 3, 5);
+                  }}
+                >
+                  <h4>Vital Signs - Hematologic Profile - Hemoglobin</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[5]?.columnsData}
+                  tableData={ObjectiveDatas[5]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 3, 6);
+                  }}
+                >
+                  <h4>Vital Signs - Hematologic Profile - Blood Ketone</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[6]?.columnsData}
+                  tableData={ObjectiveDatas[6]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 3, 12);
+                  }}
+                >
+                  <h4>Vital Signs - Hematologic Profile - Blood Uric Acid</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[12]?.columnsData}
+                  tableData={ObjectiveDatas[12]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 4, 13);
+                  }}
+                >
+                  <h4>
+                    Vital Signs - Renal and Metabolic Markers - Urinalysis
+                  </h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[13]?.columnsData}
+                  tableData={ObjectiveDatas[13]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 4, 14);
+                  }}
+                >
+                  <h4>Vital Signs - Renal and Metabolic Markers - Urea</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[14]?.columnsData}
+                  tableData={ObjectiveDatas[14]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 4, 15);
+                  }}
+                >
+                  <h4>
+                    Vital Signs - Renal and Metabolic Markers - Creatinine
+                  </h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[15]?.columnsData}
+                  tableData={ObjectiveDatas[15]?.tableData}
+                  from="Consult"
+                />
+              </div>
+              <div className="mb-5">
+                <div
+                  className="mb-3 cursor"
+                  onClick={() => {
+                    goTo(2, 2, 1, 4, 16);
+                  }}
+                >
+                  <h4>Vital Signs - Renal and Metabolic Markers - GFR</h4>
+                </div>
+                <DynamicTable
+                  columnsData={ObjectiveDatas[16]?.columnsData}
+                  tableData={ObjectiveDatas[16]?.tableData}
+                  from="Consult"
+                />
               </div>
             </CTabPanel>
             <CTabPanel

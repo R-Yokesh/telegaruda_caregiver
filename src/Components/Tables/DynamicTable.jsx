@@ -26,7 +26,7 @@ import useApi from "../../ApiServices/useApi";
 import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 
-const DynamicTable = ({ columnsData, tableData, getTableDatas }) => {
+const DynamicTable = ({ columnsData, tableData, getTableDatas, from }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [selectedData, setSelectedData] = useState("");
@@ -60,22 +60,31 @@ const DynamicTable = ({ columnsData, tableData, getTableDatas }) => {
   return (
     <>
       <div className="responsive-table-container">
-        <table class="responsive-table">
+        <table
+          class="responsive-table"
+          style={{ background: from === "Consult" ? "white" : "transparent" }}
+        >
           <thead>
             <tr>
-              {columnsData?.map((column) => (
-                <th key={column.id}>{column.label}</th>
-              ))}
+              {columnsData?.map(
+                (data, i) =>
+                  from === "Consult" && i === columnsData.length - 1 ? null : (
+                    <th key={i}>{data?.label}</th>
+                  )
+                // <th key={column.id}>{column.label}</th>
+              )}
             </tr>
           </thead>
           <tbody>
             {tableData?.map((row, rowIndex) => (
               <tr key={rowIndex}>
-                {columnsData.map((column) => (
-                  <td key={`${rowIndex}-${column?.id}`}>
-                    {renderCell(row, column)}
-                  </td>
-                ))}
+                {columnsData.map((column, i) =>
+                  from === "Consult" && i === columnsData.length - 1 ? null : (
+                    <td key={`${rowIndex}-${column?.id}`}>
+                      {renderCell(row, column)}
+                    </td>
+                  )
+                )}
               </tr>
             ))}
           </tbody>

@@ -1,11 +1,11 @@
-import { CCol, CFormTextarea,CFormCheck, CRow } from "@coreui/react";
+import { CCol, CFormTextarea, CFormCheck, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import DatePicker from "react-datepicker";
 
-const MedHistoryForm = ({ back, defaultValues }) => {
+const MedHistoryForm = ({ back, defaultValues, from }) => {
   const [date, setDate] = useState(null);
   const [smokingStatus, setSmokingStatus] = useState(
     defaultValues?.smoking || "No"
@@ -17,7 +17,6 @@ const MedHistoryForm = ({ back, defaultValues }) => {
 
   const [drugStatus, setDrugStatus] = useState(defaultValues?.drugs || "No");
 
-  
   const handleSmokingStatus = (event) => {
     setSmokingStatus(event.target.value === "yes" ? "Yes" : "No");
   };
@@ -79,7 +78,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
     <>
       <CRow className="mb-3">
         <CCol lg={4}>
-        <p className="radio-label">Smoking</p>
+          <p className="radio-label">Smoking</p>
           <div className="d-flex align-items-end w-100">
             <div
               style={{
@@ -99,6 +98,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                 name="smoking"
                 checked={smokingStatus === "Yes"}
                 onChange={handleSmokingStatus}
+                disabled={from === "Consult" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -110,6 +110,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                 name="smoking"
                 checked={smokingStatus === "No"}
                 onChange={handleSmokingStatus}
+                disabled={from === "Consult" ? true : false}
               />
             </div>
           </div>
@@ -126,13 +127,14 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                   // label="Example textarea"
                   rows={3}
                   // text="Must be 8-20 words long."
+                disabled={from === "Consult" ? true : false}
                 ></CFormTextarea>
               </div>
             </div>
           </CCol>
         )}
         <CCol lg={4}>
-        <p className="radio-label">Alcohol</p>
+          <p className="radio-label">Alcohol</p>
           <div className="d-flex align-items-end w-100">
             <div
               style={{
@@ -152,6 +154,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                 name="alcohol"
                 checked={alcoholStatus === "Yes"}
                 onChange={handleAlcoholStatus}
+                disabled={from === "Consult" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -163,6 +166,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                 name="alcohol"
                 checked={alcoholStatus === "No"}
                 onChange={handleAlcoholStatus}
+                disabled={from === "Consult" ? true : false}
               />
             </div>
           </div>
@@ -179,13 +183,14 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                   // label="Example textarea"
                   rows={3}
                   // text="Must be 8-20 words long."
+                disabled={from === "Consult" ? true : false}
                 ></CFormTextarea>
               </div>
             </div>
           </CCol>
         )}
         <CCol lg={4}>
-        <p className="radio-label">Drugs</p>
+          <p className="radio-label">Drugs</p>
           <div className="d-flex align-items-end w-100">
             <div
               style={{
@@ -205,6 +210,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                 name="drugs"
                 checked={drugStatus === "Yes"}
                 onChange={handleDrugStatus}
+                disabled={from === "Consult" ? true : false}
               />
               <CFormCheck
                 className="mb-0"
@@ -216,6 +222,7 @@ const MedHistoryForm = ({ back, defaultValues }) => {
                 name="drugs"
                 checked={drugStatus === "No"}
                 onChange={handleDrugStatus}
+                disabled={from === "Consult" ? true : false}
               />
             </div>
           </div>
@@ -225,27 +232,30 @@ const MedHistoryForm = ({ back, defaultValues }) => {
             <div style={{ width: "100%" }}>
               <div class="position-relative">
                 <label for="validationTooltip01" class="form-label">
-                Drugs details*
+                  Drugs details*
                 </label>
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
                   rows={3}
                   // text="Must be 4-20 words long."
+                disabled={from === "Consult" ? true : false}
                 ></CFormTextarea>
               </div>
             </div>
           </CCol>
         )}
       </CRow>
-      <CRow className="mb-1">
-        <div style={{ width: "128px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
-        </div>
-        <div style={{ width: "128px" }}>
-          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-        </div>
-      </CRow>
+      {from !== "Consult" && (
+        <CRow className="mb-1">
+          <div style={{ width: "128px" }}>
+            <PrimaryButton>SAVE</PrimaryButton>
+          </div>
+          <div style={{ width: "128px" }}>
+            <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+          </div>
+        </CRow>
+      )}
     </>
   );
 };

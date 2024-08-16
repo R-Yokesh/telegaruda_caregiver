@@ -12,6 +12,7 @@ import VitalSign from "./VitalSign/VitalSign";
 import PhysicalExam from "./PhysicalExam/PhysicalExam";
 import Lab from "./Lab/Lab";
 import Imaging from "./Imaging/Imaging";
+import { useNavigate } from "react-router-dom";
 
 const Objective = () => {
   const cardData = [
@@ -20,10 +21,21 @@ const Objective = () => {
     // { id: 3, name: "Lab", image: Assets.Lab },
     // { id: 4, name: "Imaging", image: Assets.Imaging },
   ];
+  const navigate = useNavigate();
+  const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-2");
+  const ParsedPatientSubMenu = PatientSubMenu2
+    ? JSON.parse(PatientSubMenu2)
+    : 0;
+  const GoTOConsultPage = localStorage.getItem("PatientConsultTab");
+  const parsedConsult = GoTOConsultPage ? JSON.parse(GoTOConsultPage) : false;
 
   // const [selectedData, setSelectedData] = useState();
-  const [vitalView, setVitalView] = useState(false);
-  const [phyView, setPhyView] = useState(false);
+  const [vitalView, setVitalView] = useState(
+    ParsedPatientSubMenu === 1 ? true : false
+  );
+  const [phyView, setPhyView] = useState(
+    ParsedPatientSubMenu === 2 ? true : false
+  );
   const [labView, setLabView] = useState(false);
   const [imagingView, setImagingView] = useState(false);
 
@@ -56,9 +68,36 @@ const Objective = () => {
             ))}
           </CRow>
         ) : vitalView ? (
-          <VitalSign setVitalView={() => setVitalView(false)} />
+          <VitalSign
+            setVitalView={() => setVitalView(false)}
+            onClose={() => {
+              if (parsedConsult) {
+                navigate(-1);
+                setVitalView(false);
+                localStorage.setItem(
+                  "PatientConsultTab",
+                  JSON.stringify(false)
+                );
+              } else {
+                setVitalView(false);
+              }
+            }}
+          />
         ) : phyView ? (
-          <PhysicalExam onClose={() => setPhyView(false)} />
+          <PhysicalExam
+            onClose={() => {
+              if (parsedConsult) {
+                navigate(-1);
+                setPhyView(false);
+                localStorage.setItem(
+                  "PatientConsultTab",
+                  JSON.stringify(false)
+                );
+              } else {
+                setPhyView(false);
+              }
+            }}
+          />
         ) : labView ? (
           <Lab onClose={() => setLabView(false)} />
         ) : imagingView ? (
