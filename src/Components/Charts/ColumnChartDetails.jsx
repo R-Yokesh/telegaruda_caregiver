@@ -37,38 +37,12 @@ const ColumnChartDetails = ({ datas }) => {
         item?.["creatinine_value"] ||
         item?.["gfr_value"]
     ),
-    data2: parseInt(item?.["ph"] ? item?.["ph"] : ""),
+    data2: parseInt(
+      item?.["ph"] ? item?.["ph"] : item?.["systolic"] ? item?.["systolic"] : ""
+    ),
+    data3: parseInt(item?.["diastolic"] ? item?.["diastolic"] : ""),
   }));
-  const data = [
-    {
-      name: "21-03-2024",
-      bloodPressure: 70,
-    },
-    {
-      name: "22-03-2024",
-      bloodPressure: 70,
-    },
-    {
-      name: "23-03-2024",
-      bloodPressure: 100,
-    },
-    {
-      name: "24-03-2024",
-      bloodPressure: 95,
-    },
-    {
-      name: "25-03-2024",
-      bloodPressure: 70,
-    },
-    {
-      name: "26-03-2024",
-      bloodPressure: 77,
-    },
-    {
-      name: "27-03-2024",
-      bloodPressure: 100,
-    },
-  ];
+
   const minValue = Math?.min(...formattedData?.map((item) => item.data1));
   const maxValue = Math?.max(
     ...formattedData?.map((item) =>
@@ -86,12 +60,15 @@ const ColumnChartDetails = ({ datas }) => {
     if (name === "data2") {
       return [value, datas?.chartLabel2];
     }
+    if (name === "data3") {
+      return [value, datas?.chartLabel3];
+    }
     return [name, value];
   };
   return (
     <BarChart
-      width={720}
-      height={300}
+      width={1000}
+      height={350}
       data={formattedData}
       margin={{ top: 20, right: 5, left: 10, bottom: 5 }}
     >
@@ -101,43 +78,34 @@ const ColumnChartDetails = ({ datas }) => {
         <Tooltip formatter={(value) => `${value}%`} />
       ) : ( */}
       <Tooltip formatter={tooltipFormatter} />
-      {/* )} */}
-      {/* <Legend
-        payload={[...bloodPressureValues]?.map((value) => ({
-          id: value, // Set id (optional)
-          value: value, // Legend label
-          color: "#0084CF",
-        }))}
-      /> */}
 
-      {/* {!formattedData[0].data2 ? (
-        <Legend
-          payload={[{ value: datas?.name, type: "square", color: "#0084CF" }]}
-        />
-      ) : (
-        <Legend
-          payload={[
-            { value: datas?.chartLabel1, type: "square", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "square", color: "#0194CF" },
-          ]}
-        />
-      )} */}
-            {!formattedData[0].data2 ? (
+      
+      {!formattedData[0].data2 && !formattedData[0].data3 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
           ]}
         />
-      ) : (
+      ) : formattedData[0].data2 && !formattedData[0].data3 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#0194CF" },
+            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
+          ]}
+        />
+      ) :(
+        <Legend
+          payload={[
+            { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
+            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
+            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
           ]}
         />
       )}
       <Bar dataKey="data1" fill="#0084CF" />
-      {formattedData[0].data2 && <Bar dataKey="data2" fill="#0094CF" />}
+      {formattedData[0].data2 && <Bar dataKey="data2" fill="#166da9" />}
+      {formattedData[0].data3 && <Bar dataKey="data3" fill="#1858c6" />}
+
     </BarChart>
   );
 };

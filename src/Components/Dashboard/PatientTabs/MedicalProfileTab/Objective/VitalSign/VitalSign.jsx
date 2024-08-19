@@ -97,6 +97,10 @@ const VitalSign = ({ setVitalView, onClose }) => {
               label: `${tableData[0].systolic}/${tableData[0].diastolic} mm Hg`,
               color: tableData[0].result.status,
             },
+            {
+              label: `${tableData[0]["pulse_(in_bpm)"]} Pulse (bpm)`,
+              color: tableData[0].result.status,
+            },
           ]
         : [];
 
@@ -121,7 +125,9 @@ const VitalSign = ({ setVitalView, onClose }) => {
         { id: 7, label: "ACTION" },
       ],
       tableData,
-      chartLabel1: "PULSE (IN BPM)",
+      chartLabel1: "PULSE (bpm)",
+      chartLabel2: "SYSTOLE (mm Hg)",
+      chartLabel3: "DIASTOLE (mm Hg)",
     };
   };
 
@@ -143,6 +149,10 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     ? [
                         {
                           label: `${tableData[0].details?.systolic}/${tableData[0]?.details?.diastolic} mm Hg`,
+                          color: tableData[0].details?.bpFlagColor,
+                        },
+                        {
+                          label: `${tableData[0].details?.pulse} Pulse (bpm)`,
                           color: tableData[0].details?.bpFlagColor,
                         },
                       ]

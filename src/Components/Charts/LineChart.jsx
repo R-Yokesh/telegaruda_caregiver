@@ -38,39 +38,11 @@ const LineChartDetails = ({ datas }) => {
         item?.["creatinine_value"] ||
         item?.["gfr_value"]
     ), // Convert pluse to integer if needed
-    data2: parseInt(item?.["ph"] ? item?.["ph"] : ""),
+    data2: parseInt(
+      item?.["ph"] ? item?.["ph"] : item?.["systolic"] ? item?.["systolic"] : ""
+    ),
+    data3: parseInt(item?.["diastolic"] ? item?.["diastolic"] : ""),
   }));
-
-  const data = [
-    {
-      name: "21-03-2024",
-      amt: 70,
-    },
-    {
-      name: "22-03-2024",
-      amt: 70,
-    },
-    {
-      name: "23-03-2024",
-      amt: 100,
-    },
-    {
-      name: "24-03-2024",
-      amt: 95,
-    },
-    {
-      name: "25-03-2024",
-      amt: 70,
-    },
-    {
-      name: "26-03-2024",
-      amt: 77,
-    },
-    {
-      name: "27-03-2024",
-      amt: 100,
-    },
-  ];
 
   const minValue = Math?.min(...formattedData?.map((item) => item.data1));
   const maxValue = Math?.max(
@@ -86,13 +58,15 @@ const LineChartDetails = ({ datas }) => {
     if (name === "data2") {
       return [value, datas?.chartLabel2];
     }
+    if (name === "data3") {
+      return [value, datas?.chartLabel3];
+    }
     return [name, value];
   };
-
   return (
     <LineChart
-      width={750}
-      height={300}
+      width={1000}
+      height={350}
       data={formattedData}
       margin={{ top: 20, right: 5, left: 10, bottom: 5 }}
     >
@@ -109,24 +83,35 @@ const LineChartDetails = ({ datas }) => {
         tickLine={false}
       />
       <Tooltip formatter={tooltipFormatter} />
-      {!formattedData[0].data2 ? (
+      {!formattedData[0].data2 && !formattedData[0].data3 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
+          ]}
+        />
+      ) : formattedData[0].data2 && !formattedData[0].data3 ? (
+        <Legend
+          payload={[
+            { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
+            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
           ]}
         />
       ) : (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#0194CF" },
+            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
+            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
           ]}
         />
       )}
       <CartesianGrid horizontal={true} vertical={false} strokeWidth={1} />
       <Line type="linear" dataKey="data1" stroke="#0084CF" />
       {formattedData[0].data2 && (
-        <Line type="linear" dataKey="data2" stroke="#0194CF" />
+        <Line type="linear" dataKey="data2" stroke="#166da9" />
+      )}
+      {formattedData[0].data3 && (
+        <Line type="linear" dataKey="data3" stroke="#1858c6" />
       )}
     </LineChart>
   );

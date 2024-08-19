@@ -285,7 +285,11 @@ const DynamicTable = ({
     } else if (columnKey === "result") {
       return (
         <div style={{ width: "180px" }}>
-          <Badge label={value?.name} color={value?.status} />
+          {value?.name ? (
+            <Badge label={value?.name} color={value?.status} />
+          ) : (
+            <span>{value}</span>
+          )}
         </div>
       );
     } else if (columnKey === "date") {
