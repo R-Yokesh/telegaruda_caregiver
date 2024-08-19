@@ -41,11 +41,16 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
   const handleTimeChange = (date) => {
     setSelectedTime(date);
   };
-  const extractNum = (data) => {
-    const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
+  // const extractNum = (data) => {
+  //   const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-    return numbers || "";
-  };
+  //   return numbers || "";
+  // };
+
+  const extractNum = (e) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+  }
+  
   return (
     <>
       <CContainer>
@@ -86,110 +91,102 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Result *
+              LDL(mg/dL) * 
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultData?.result?.name}
+                // defaultValue={defaultData?.totalOnly}
+                maxLength={3}
+                onInput={extractNum}
               />
             </div>
           </CCol>
         </CRow>
         <CRow className="mb-3">
+         
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Unit (Total) *
-              </label>
-              <select
-                class="form-select"
-                aria-label="Disabled select example"
-                defaultValue={"mg/dL"}
-              >
-                <option value="dL">dL</option>
-                <option value="mg">mg</option>
-                <option value="mg/dL">mg/dL</option>
-              </select>
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Total Cholesterol*
+              HDL(mg/dL) * 
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={defaultData?.totalOnly}
+                maxLength={3}
+                onInput={extractNum}
               />
             </div>
           </CCol>
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Unit (Triglycerides) *
-              </label>
-              <select
-                class="form-select"
-                aria-label="Disabled select example"
-                defaultValue={"mg/dL"}
-              >
-                <option value="dL">dL</option>
-                <option value="mg">mg</option>
-                <option value="mg/dL">mg/dL</option>
-              </select>
-            </div>
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Triglycerides *
+              VLDL(mg/dL) * 
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={extractNum(defaultData?.triglycerides)}
+                defaultValue={defaultData?.totalOnly}
+                maxLength={3}
+                onInput={extractNum}
               />
             </div>
           </CCol>
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Unit (HDL) *
-              </label>
-              <select
-                class="form-select"
-                aria-label="Disabled select example"
-                defaultValue={"mg/dL"}
-              >
-                <option value="dL">dL</option>
-                <option value="mg">mg</option>
-                <option value="mg/dL">mg/dL</option>
-              </select>
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                HDL *
+              LDL/HDL(mg/dL) *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={extractNum(defaultData?.hdl)}
+                defaultValue={defaultData?.totalOnly}
+                maxLength={3}
+                onInput={extractNum}
+              />
+            </div>
+          </CCol>
+        
+        </CRow>
+        <CRow className="mb-3">
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              Triglycerides(mg/dL) * 
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                // defaultValue={extractNum(defaultData?.triglycerides)}
+                maxLength={3}
+                onInput={extractNum}
+              />
+            </div>
+          </CCol>
+         
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              Total Cholesterol(mg/dL) * 
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                // defaultValue={extractNum(defaultData?.hdl)}
+                maxLength={3}
+                onInput={extractNum}
               />
             </div>
           </CCol>
         </CRow>
-        <CRow className="mb-3">
+        {/* <CRow className="mb-3">
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -263,7 +260,7 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
               />
             </div>
           </CCol>
-        </CRow>
+        </CRow> */}
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
             <PrimaryButton onClick={() => addBack()}>SAVE</PrimaryButton>

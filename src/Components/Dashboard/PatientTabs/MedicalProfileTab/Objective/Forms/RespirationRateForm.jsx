@@ -98,6 +98,10 @@ const RespirationRateForm = ({ addBack, defaultData }) => {
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={defaultData?.["respiration_rate_(bpm)"]}
+                maxLength={2}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
               />
             </div>
           </CCol>

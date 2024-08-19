@@ -199,7 +199,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                     getTableDatas={getTableDatas}
                   />
                 )}
-                {data?.name === "ECG" && <HeartRate addBack={addBack} />}
+                {data?.name === "Heart" && <HeartRate addBack={addBack} />}
                 {data?.name === "Lung Function Test (LFT)" && (
                   <LFTForm addBack={addBack} />
                 )}
@@ -216,7 +216,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                 {data?.name === "BMI" && <BMI addBack={addBack} />}
                 {data?.name === "Blood Sugar" && <BSugar addBack={addBack} />}
                 {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} />}
-                {data?.name === "HCT" && <HCT addBack={addBack} />}
+                {data?.name === "Hematocrit (HCT)" && <HCT addBack={addBack} />}
                 {data?.name === "Blood Uric Acid" && (
                   <BUricAcid addBack={addBack} />
                 )}

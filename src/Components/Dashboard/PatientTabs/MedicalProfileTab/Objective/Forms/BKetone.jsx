@@ -92,7 +92,14 @@ const BKetone = ({ addBack, defaultData }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={extractNum(defaultData?.blood_ketone)}
+                // defaultValue={extractNum(defaultData?.blood_ketone)}
+                maxLength={5}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/[^0-9.]/g, "")
+                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+                    .replace(/(\..*)\./g, "$1");
+                }}
               />
             </div>
           </CCol>

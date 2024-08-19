@@ -200,7 +200,7 @@ const Immunization = ({ onClose, from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                <DateSelector />
+                {/* <DateSelector /> */}
                 </CCol>
                 <CCol
                   lg={4}

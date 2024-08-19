@@ -84,7 +84,7 @@ const Neurological = ({ from }) => {
           ],
         },
         {
-          label: "6. Left arm motor drift",
+          label: "7. Left arm motor drift",
           options: [
             "No drift for 10 seconds",
             "Drift, but doesn't hit bed",
@@ -96,7 +96,7 @@ const Neurological = ({ from }) => {
           ],
         },
         {
-          label: "7. Right arm motor drift",
+          label: "8. Right arm motor drift",
           options: [
             "No drift for 10 seconds",
             "Drift, but doesn't hit bed",
@@ -108,7 +108,7 @@ const Neurological = ({ from }) => {
           ],
         },
         {
-          label: "8. Left leg motor drift",
+          label: "9. Left leg motor drift",
           options: [
             "No drift for 10 seconds",
             "Drift, but doesn't hit bed",
@@ -120,7 +120,7 @@ const Neurological = ({ from }) => {
           ],
         },
         {
-          label: "9. Right leg motor drift",
+          label: "10. Right leg motor drift",
           options: [
             "No drift for 10 seconds",
             "Drift, but doesn't hit bed",
@@ -132,7 +132,7 @@ const Neurological = ({ from }) => {
           ],
         },
         {
-          label: "10. Limb Ataxia",
+          label: "11. Limb Ataxia",
           options: [
             "No ataxia",
             "Ataxia in 1 Limb",
@@ -143,7 +143,7 @@ const Neurological = ({ from }) => {
           ],
         },
         {
-          label: "11. Sensation",
+          label: "12. Sensation",
           options: [
             "Normal: no sensory loss",
             "Mild-moderate loss: less sharp/more dull",
@@ -154,17 +154,17 @@ const Neurological = ({ from }) => {
           ],
         },
         {
-          label: "12. Language/aphasia",
+          label: "13. Language/aphasia",
           options: [
             "Normal: no aphasia",
             "Mild-moderate aphasia: some obvious changes, without significant limitation",
-            "Severe aphasia: fragmentary expression, inference needed, cannot identify materials+",
+            "Severe aphasia: fragmentary expression, inference needed, cannot identify materials",
             "Mute/global aphasia: no usable speech/auditory comprehension",
             "Coma/unresponsive",
           ],
         },
         {
-          label: "13. Dysarthria",
+          label: "14. Dysarthria",
           options: [
             "Normal",
             "Mild-moderate dysarthria: slurring but can be understood",
@@ -174,7 +174,7 @@ const Neurological = ({ from }) => {
           ],
         },
         {
-          label: "14. Extinction/inattention",
+          label: "15. Extinction/inattention",
           options: [
             "No abnormality",
             "Visual/tactile/auditory/spatial/personal inattention",
