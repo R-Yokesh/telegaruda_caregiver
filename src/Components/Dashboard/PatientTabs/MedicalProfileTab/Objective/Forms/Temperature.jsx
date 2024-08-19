@@ -1,9 +1,10 @@
-import { CCol, CContainer, CRow } from "@coreui/react";
+import { CCol, CContainer, CRow ,CFormCheck} from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
+import Dropdown from "../../../../../Dropdown/Dropdown";
 
 const Temperature = ({ addBack, defaultData }) => {
 
@@ -37,6 +38,11 @@ const Temperature = ({ addBack, defaultData }) => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
+
+  const options = ["Oral", "Rectal", "Axillary", "Tympanic", "Temporal", "Skin",];
+
+
 
   const handleTimeChange = (date) => {
     setSelectedTime(date);
@@ -86,20 +92,25 @@ const Temperature = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Type *
+                Method *
               </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                defaultValue={defaultData?.type}
-              />
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                />
+              </div>
             </div>
           </CCol>
         </CRow>
         <CRow className="mb-3">
           <CCol lg={4}>
-            <div class="position-relative">
+            {/* <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Unit *
               </label>
@@ -109,6 +120,38 @@ const Temperature = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={'F'}
               />
+            </div> */}
+
+            <p className="radio-label">Unit *</p>
+            <div className="d-flex align-items-end w-100">
+              <div
+                style={{
+                  boxSizing: "border-box",
+                  borderRadius: "5px",
+                  border: "1px solid #17171D33",
+                  padding: "10px",
+                }}
+              >
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="activityYes"
+                  value="yes"
+                  label={<label className="form-label mb-0">Celsius</label>}
+                  name="activity"
+                />
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="activityNo"
+                  value="no"
+                  label={<label className="form-label mb-0">Fahrenheit</label>}
+                  name="activity"
+                 
+                />
+              </div>
             </div>
           </CCol>
           <CCol lg={4}>

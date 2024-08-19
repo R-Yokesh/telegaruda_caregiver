@@ -144,15 +144,15 @@ const VitalsTab = ({ category, openModal }) => {
     {
       id: 4,
       icon: Assets.VitalHCT,
-      name: "HCT",
+      name: "Hematocrit (HCT)",
       category: "Hematologic Profile",
       date: "Recently Added 27-03-2024",
       badge: [{ label: "23%", color: "error" }],
-      chartLabel1: "HCT Rate (in %)",
+      chartLabel1: " HCT (%)",
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "HCT Rate" },
+        { id: 3, label: " HCT (%)" },
         { id: 4, label: "DATE" },
         { id: 5, label: "ACTION" },
       ],
@@ -181,7 +181,7 @@ const VitalsTab = ({ category, openModal }) => {
     {
       id: 5,
       icon: Assets.VitalHBeat,
-      name: "ECG",
+      name: "Heart",
       category: "Primary Vitals",
       date: "Recently Added 27-03-2024",
       badge: [{ label: "1 Bpm", color: "success" }],

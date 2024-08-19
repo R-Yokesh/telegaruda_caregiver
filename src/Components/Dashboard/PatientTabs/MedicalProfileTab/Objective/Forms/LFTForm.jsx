@@ -1,4 +1,4 @@
-import { CCol, CContainer, CRow } from "@coreui/react";
+import { CCol, CContainer, CRow,CFormTextarea } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -41,11 +41,26 @@ const LFTForm = ({ addBack, defaultData }) => {
   const handleTimeChange = (date) => {
     setSelectedTime(date);
   };
-  const extractNum = (data) => {
-    const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
+  // const extractNum = (data) => {
+  //   const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-    return numbers || "";
-  };
+  //   return numbers || "";
+  // };
+
+  const numDecimal = (e) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")
+      .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+      .replace(/(\..*)\./g, "$1");
+  }
+  
+  const extractNum = (e) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+  }
+
+  
+  
+
   return (
     <>
       <CContainer>
@@ -93,11 +108,28 @@ const LFTForm = ({ addBack, defaultData }) => {
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={defaultData?.["fvc_(l)"]}
+                maxLength={5}
+                onInput={numDecimal}
               />
             </div>
           </CCol>
         </CRow>
         <CRow className="mb-3">
+        <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              FVC (%)*
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["fvc_(l)"]}
+                maxLength={2}
+                onInput={extractNum}
+              />
+            </div>
+          </CCol>
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -108,60 +140,217 @@ const LFTForm = ({ addBack, defaultData }) => {
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={defaultData?.["fev1_(l)"]}
+                maxLength={5}
+                onInput={numDecimal}
               />
             </div>
           </CCol>
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                FEV1/FVC Ratio *
+                FEV1 (%) *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={defaultData?.["fev1/fvc"]}
-
+                defaultValue={defaultData?.["fev1_(l)"]}
+                maxLength={2}
+                onInput={extractNum}
               />
             </div>
           </CCol>
-          <CCol lg={4}>
+        </CRow>
+     
+
+        <CRow className="mb-3">
+        <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                PEF (L/Min) *
+              PEF (L/s) *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={defaultData?.["pef_(l/min)"]}
+                maxLength={5}
+                onInput={numDecimal}
               />
             </div>
           </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              PEF (%) *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["pef_(l/min)"]}
+                maxLength={2}
+                onInput={extractNum}
+              />
+            </div>
+          </CCol>
+        <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              FEV1/FVC (%)*
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["fev1/fvc"]}
+                maxLength={2}
+                onInput={extractNum}
+
+              />
+            </div>
+          </CCol>
+         
         </CRow>
         <CRow className="mb-3">
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                SVC (L) *
+              FEF25 (L/s) 
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
+                maxLength={5}
+                onInput={numDecimal}
               />
             </div>
           </CCol>
-          <CCol lg={8}>
+          <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes *
+              FEF25 (%)
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
+                defaultValue={defaultData?.["svc_(l)"]}
+                maxLength={2}
+                onInput={extractNum}
+              />
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              FEF50 (L/s)
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["svc_(l)"]}
+                maxLength={5}
+                onInput={numDecimal}
+              />
+            </div>
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+        <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              FEF50 (%)
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["svc_(l)"]}
+                maxLength={2}
+                onInput={extractNum}
+              />
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              FEF75 (L/s)
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["svc_(l)"]}
+                maxLength={5}
+                onInput={numDecimal}
+              />
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              FEF75 (%)
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["svc_(l)"]}
+                maxLength={2}
+                onInput={extractNum}
+              />
+            </div>
+          </CCol>
+        </CRow>
+
+        <CRow className="mb-3">
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              FEF2575 (L/s)
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["svc_(l)"]}
+                maxLength={5}
+                onInput={numDecimal}
+              />
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              FEF2575 (%)
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.["svc_(l)"]}
+                maxLength={2}
+                onInput={extractNum}
+              />
+            </div>
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+        <CCol lg={8}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Notes *
+              </label>
+              <CFormTextarea
+                type="text"
+                class="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                rows={3}
               />
             </div>
           </CCol>

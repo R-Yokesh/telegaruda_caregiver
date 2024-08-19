@@ -48,14 +48,14 @@ const HeartRate = ({ addBack, defaultData }) => {
     return numbers || "";
   };
 
-  const options = ["Single Lead", "3 Lead", "12 Lead"];
+  const options = ["1 Lead ECG", "3 Lead ECG", "12 Lead ECG", "Auscultation", "Cardiac Function Test",];
   const findIndex = defaultData?.ecg_type
     ? options?.indexOf(defaultData?.ecg_type)
     : 0;
 
-    const getSelectedValue = (data) => {
-      setType(data);
-    };
+  const getSelectedValue = (data) => {
+    setType(data);
+  };
   return (
     <>
       <CContainer>
@@ -121,10 +121,27 @@ const HeartRate = ({ addBack, defaultData }) => {
           </CCol>
         </CRow>
         <CRow className="mb-3">
+        <CCol lg={4}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                HR (in bpm) *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.hr}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
+              />
+            </div>
+          </CCol>
           <CCol lg={4}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
-                ECG *
+                ECG 
               </label>
               <input type="file" id="file" />
               <label for="file">Choose file</label>
@@ -151,10 +168,11 @@ const HeartRate = ({ addBack, defaultData }) => {
               )}
             </div>
           </CCol> */}
-          <CCol lg={8}>
+          
+          <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                ECG Interpretation *
+                ECG Interpretation 
               </label>
               <input
                 type="text"

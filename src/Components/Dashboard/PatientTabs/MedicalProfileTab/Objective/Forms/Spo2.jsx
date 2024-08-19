@@ -105,6 +105,10 @@ const Spo2 = ({ addBack, defaultData }) => {
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={extractNum(defaultData?.spo2)}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
               />
             </div>
           </CCol>

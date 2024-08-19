@@ -92,7 +92,14 @@ const Creatinine = ({ addBack, defaultData }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={extractNum(defaultData?.creatinine)}
+                // defaultValue={extractNum(defaultData?.creatinine)}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/[^0-9.]/g, "")
+                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+                    .replace(/(\..*)\./g, "$1");
+                }}
               />
             </div>
           </CCol>

@@ -31,7 +31,7 @@ const TherapiesTab = ({ from }) => {
   const rowData = [
     {
       id: 1,
-      date_time: "06-07-2024",
+      date_time: "06-07-2024 12:15",
       type: "Physical",
       therapy_name: "Lorem ipsum",
       therapist_name: "Lorem ipsum",
@@ -39,7 +39,7 @@ const TherapiesTab = ({ from }) => {
     },
     {
       id: 2,
-      date_time: "06-07-2024",
+      date_time: "06-07-2024 12:15",
       type: "Occupational",
       therapy_name: "Lorem ipsum",
       therapist_name: "Lorem ipsum",

@@ -85,7 +85,7 @@ const BMI = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Unit (Height)*
+                Unit (Height) *
               </label>
               <input
                 type="text"
@@ -100,13 +100,17 @@ const BMI = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Height *
+                Height (cm) *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={extractNum(defaultData?.height)}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
               />
             </div>
           </CCol>
@@ -126,13 +130,17 @@ const BMI = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Weight *
+              Weight (Kg) *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={extractNum(defaultData?.weight)}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
               />
             </div>
           </CCol>
@@ -141,13 +149,20 @@ const BMI = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                BMI *
+              BMI (Kgm2) *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
                 defaultValue={defaultData?.bmi}
+                maxLength={5}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/[^0-9.]/g, "")
+                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+                    .replace(/(\..*)\./g, "$1");
+                }}
               />
             </div>
           </CCol>

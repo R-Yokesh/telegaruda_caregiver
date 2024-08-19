@@ -17,6 +17,7 @@ import BlurBackground from "../../../../../BlurBackground/BlurBackground";
 import DiagnosisTable from "../../../../../Tables/DiagnosisTable";
 import DateSelector from "../../../../../DateRangePicker/DateSelector";
 import DiagnosisForm from "./DiagnosisForm";
+import DateSearch from "../../../../../DateRangePicker/DateSearch";
 
 const Diagnosis = ({ onClose, from }) => {
   const columnData = [
@@ -173,7 +174,7 @@ const Diagnosis = ({ onClose, from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSelector />
+                <DateSearch />
               </CCol>
               <CCol
                 lg={4}

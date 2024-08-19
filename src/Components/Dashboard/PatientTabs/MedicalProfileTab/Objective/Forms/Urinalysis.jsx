@@ -208,7 +208,7 @@ const Urinalysis = ({ addBack, defaultData }) => {
           <CCol lg={4} className="mb-3">
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Specific Gravity *
+                Specific Gravity 
               </label>
               <input
                 type="text"
@@ -216,11 +216,18 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.ph}
                 placeholder="Enter"
+                maxLength={5}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/[^0-9.]/g, "")
+                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+                    .replace(/(\..*)\./g, "$1");
+                }}
               />
             </div>
           </CCol>
           <CCol lg={4} className="mb-3">
-            <div class="position-relative">
+            {/* <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 pH *
               </label>
@@ -234,7 +241,27 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 <option value="Acidic(<6)">Acidic ({"<"}6)</option>
                 <option value="Alkaline(>7)">Alkaline ({">"}7)</option>
               </select>
+            </div> */}
+             <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              pH *
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.ph}
+                placeholder="Enter"
+                maxLength={5}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/[^0-9.]/g, "")
+                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+                    .replace(/(\..*)\./g, "$1");
+                }}
+              />
             </div>
+
           </CCol>
           <CCol lg={4} className="mb-3">
             <div class="position-relative">
@@ -288,9 +315,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
-                <option value="Small (1+)">Small (1+)</option>
-                <option value="Moderate (2+)">Moderate (2+)</option>
-                <option value="Large (3+)">Large (3+)</option>
+                <option value="Small (1+) mg/dL">Small (1+) mg/dL</option>
+                <option value="Moderate (2+) mg/dL">Moderate (2+) mg/dL</option>
+                <option value="Large (3+) mg/dL">Large (3+) mg/dL</option>
               </select>
             </div>
           </CCol>
@@ -307,9 +334,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
-                <option value="Small (1+)">Small (1+)</option>
-                <option value="Moderate (2+)">Moderate (2+)</option>
-                <option value="Large (3+)">Large (3+)</option>
+                <option value="Small (1+) mg/dL">Small (1+) mg/dL</option>
+                <option value="Moderate (2+) mg/dL">Moderate (2+) mg/dL</option>
+                <option value="Large (3+) mg/dL">Large (3+) mg/dL</option>
               </select>
             </div>
           </CCol>
@@ -326,9 +353,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
-                <option value="Small (1+)">Small (1+)</option>
-                <option value="Moderate (2+)">Moderate (2+)</option>
-                <option value="Large (3+)">Large (3+)</option>
+                <option value="Small (1+) mg/dL">Small (1+) mg/dL</option>
+                <option value="Moderate (2+) mg/dL">Moderate (2+) mg/dL</option>
+                <option value="Large (3+) mg/dL">Large (3+) mg/dL</option>
               </select>
             </div>
           </CCol>
@@ -359,6 +386,13 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.ph}
                 placeholder="Enter"
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/[^0-9.]/g, "")
+                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+                    .replace(/(\..*)\./g, "$1");
+                }}
               />
             </div>
           </CCol>
@@ -381,25 +415,90 @@ const Urinalysis = ({ addBack, defaultData }) => {
         </CRow>
         <div className="vertical-line mb-3"></div>
         <CRow>
+        <CCol lg={4} className="mb-3">
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              Red Blood Cells
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.ph}
+                placeholder="Enter"
+                maxLength={2}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
+              />
+            </div>
+          </CCol>
           <CCol lg={4} className="mb-3">
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Cells *
+              White Blood Cells
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="validationTooltip01"
+                defaultValue={defaultData?.ph}
+                placeholder="Enter"
+                maxLength={2}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                }}
+              />
+            </div>
+          </CCol>
+          <CCol lg={4} className="mb-3">
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+              Epithelial Cells 
               </label>
               <select
                 class="form-select"
                 aria-label="Disabled select example"
                 // defaultValue={"Red Blood Cell"}
-                onChange={(e) => setCell(e.target.value)}
+                // onChange={(e) => setCell(e.target.value)}
               >
                 <option>Select</option>
-                <option value="Red Blood Cell">Red Blood Cell</option>
-                <option value="White Blood Cell">White Blood Cell</option>
-                <option value="Epithelial Cell">Epithelial Cell</option>
+                <option value="Red Blood Cell">Squamous Epithelial Cells</option>
+                <option value="White Blood Cell">Transitional Epithelial Cells</option>
+                <option value="Epithelial Cell">Renal Tubular Epithelial Cells</option>
               </select>
             </div>
           </CCol>
-          <CCol lg={4} className="mb-3">
+         
+          {/* {cell === "Epithelial Cell" && (
+            <CCol lg={4} className="mb-3">
+              <div class="position-relative">
+                <label for="validationTooltip01" class="form-label">
+                  Epithelial Cells *
+                </label>
+                <select
+                  class="form-select"
+                  aria-label="Disabled select example"
+                  // defaultValue={"Squamous Epithelial Cells"}
+                >
+                  <option>Select</option>
+
+                  <option value="Squamous Epithelial Cells">
+                    Squamous Epithelial Cells
+                  </option>
+                  <option value="Transitional Epithelial Cells">
+                    Transitional Epithelial Cells
+                  </option>
+                  <option value="Renal Tubular Epithelial Cells">
+                    Renal Tubular Epithelial Cells
+                  </option>
+                </select>
+              </div>
+            </CCol>
+          )} */}
+        </CRow>
+        <CRow className="mb-3"> 
+        <CCol lg={4} className="mb-3">
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Crystals *
@@ -436,32 +535,6 @@ const Urinalysis = ({ addBack, defaultData }) => {
               </select>
             </div>
           </CCol>
-          {cell === "Epithelial Cell" && (
-            <CCol lg={4} className="mb-3">
-              <div class="position-relative">
-                <label for="validationTooltip01" class="form-label">
-                  Epithelial Cells *
-                </label>
-                <select
-                  class="form-select"
-                  aria-label="Disabled select example"
-                  // defaultValue={"Squamous Epithelial Cells"}
-                >
-                  <option>Select</option>
-
-                  <option value="Squamous Epithelial Cells">
-                    Squamous Epithelial Cells
-                  </option>
-                  <option value="Transitional Epithelial Cells">
-                    Transitional Epithelial Cells
-                  </option>
-                  <option value="Renal Tubular Epithelial Cells">
-                    Renal Tubular Epithelial Cells
-                  </option>
-                </select>
-              </div>
-            </CCol>
-          )}
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>

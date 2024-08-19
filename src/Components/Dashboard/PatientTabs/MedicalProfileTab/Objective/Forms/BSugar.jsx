@@ -4,12 +4,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
+import Dropdown from "../../../../../Dropdown/Dropdown";
 
 const BSugar = ({ addBack, defaultData }) => {
   console.log("first", defaultData);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-
+  const [type, setType] = useState("");
   useEffect(() => {
     // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
@@ -46,6 +47,16 @@ const BSugar = ({ addBack, defaultData }) => {
 
     return numbers || "";
   };
+
+  const options = ["Fasting", "Random", "Post Prandial ",];
+  const findIndex = defaultData?.type
+  ? options?.indexOf(defaultData?.type)
+  : 0;
+
+const getSelectedValue = (data) => {
+  setType(data);
+};
+
   return (
     <>
       <CContainer>
@@ -86,19 +97,27 @@ const BSugar = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Type *
+              Type *
               </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                defaultValue={defaultData?.type}
-              />
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Dropdown
+                  options={options}
+                  defaultValue={options[findIndex]}
+                  getSelectedValue={getSelectedValue}
+                />
+              </div>
             </div>
+            
           </CCol>
         </CRow>
         <CRow className="mb-3">
-          <CCol lg={4}>
+          {/* <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Unit *
@@ -110,17 +129,24 @@ const BSugar = ({ addBack, defaultData }) => {
                 defaultValue={'mg/dL'}
               />
             </div>
-          </CCol>
+          </CCol> */}
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Blood Sugar *
+              Blood Sugar (mg/dL)  *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={defaultData?.blood_sugar_value}
+                // defaultValue={defaultData?.blood_sugar_value}
+                maxLength={6}
+                onInput={(e) => {
+                  e.target.value = e.target.value
+                    .replace(/[^0-9.]/g, "")
+                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+                    .replace(/(\..*)\./g, "$1");
+                }}
               />
             </div>
           </CCol>

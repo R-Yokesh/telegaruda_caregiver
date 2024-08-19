@@ -13,7 +13,7 @@ const AssessmentTool = ({ onClose }) => {
   const tabs = [
     { id: 1, title: "psychiatric" },
     { id: 2, title: "Neurological" },
-    { id: 3, title: "Peadiatric" },
+    { id: 3, title: "Pediatric" },
     { id: 4, title: "Ophthalmic" },
   ];
   const navigate = useNavigate();
