@@ -181,7 +181,7 @@ const DynamicTable = ({
                   defaultData={selectedData}
                 />
               )}
-              {selectedData?.name === "Heart Rate" && (
+              {selectedData?.name === "Heart" && (
                 <HeartRate
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
@@ -199,7 +199,7 @@ const DynamicTable = ({
                   defaultData={selectedData}
                 />
               )}
-              {selectedData?.name === "HCT" && (
+              {selectedData?.name === "Hematocrit (HCT)" && (
                 <HCT
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}

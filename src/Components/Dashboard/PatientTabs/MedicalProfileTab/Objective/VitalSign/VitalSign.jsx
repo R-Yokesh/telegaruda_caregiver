@@ -356,7 +356,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                 </div>
                 <div className="vital-line-container">
                   {/* <img alt="line" src={Assets.Vitalline} /> */}
-                  {item?.name === "ECG" ? (
+                  {item?.name === "Heart" ? (
                     <div className="chart-item">
                       {/* <div className="rectangle">
                             <img src={Assets.ecgSample} alt="ecg" />
