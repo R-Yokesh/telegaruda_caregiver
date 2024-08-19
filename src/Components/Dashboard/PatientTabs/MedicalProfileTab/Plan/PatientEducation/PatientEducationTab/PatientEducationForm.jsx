@@ -1,4 +1,4 @@
-import { CCol, CRow } from "@coreui/react";
+import { CCol, CFormTextarea, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -6,97 +6,132 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
-
-
+import { isValid, parse } from "date-fns";
 
 const PatientEducationForm = ({ back, defaultValues }) => {
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
 
-    const [date, setDate] = useState(null);
-  
-    useEffect(() => {
-      // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-      const parseDateString = (dateString) => {
-        const parts = dateString?.split(" ");
-        const datePart = parts[0];
-        const timePart = parts[1];
-        const [month, day, year] = datePart?.split("-")?.map(Number);
-        const [hours, minutes] = timePart?.split(":")?.map(Number);
-        const date = new Date(year, month - 1, day, hours, minutes);
-        return date;
-      };
-  
-      // Example default date string
-      const defaultDateString = defaultValues?.date;
-  
-      // Parse default date string to Date object
-      const defaultDate = defaultValues?.date
-        ? parseDateString(defaultDateString)
-        : new Date();
-  
-      // Set default date in state
-      setDate(defaultDate);
-    }, [defaultValues]);
-  
-    
-      const options = ["one", "Two","Three"];
-      const findIndex = defaultValues?.prev_illness
-        ? options?.indexOf(defaultValues?.prev_illness)
-        : 0;
-  
-      const getSelectedValue = (data) => {
-        console.log(data);
-      };
-  
+  const defaultDateTime = defaultValues?.date || "";
 
-   
+  // Split date and time
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultValues?.time || "00:00";
+  useEffect(() => {
+    // Combine default date and time into a single Date object
+    let date = new Date();
+
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
+
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
+
+    setDate(date);
+    setTime(date);
+  }, [defaultDate, defaultTime]);
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(date || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
+
+      setDate(updatedDateTime); // Optionally update date as well
+      setTime(time);
+    }
+  };
   return (
     <>
-    <CRow className="mb-3">
-      <CCol lg={4}>
-      <div class="position-relative">
+      <CRow className="mb-3">
+        <CCol lg={4}>
+          <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
               Date *
             </label>
             <div className="date-size">
               <DatePicker
-               showIcon
-               selected={date}
-               onChange={(date) => setDate(date)}
-               dateFormat={DATE_FORMAT}
+                showIcon
+                selected={date}
+                onChange={(date) => setDate(date)}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>
-      </CCol>
-      <CCol lg={8}>
-        <div style={{ width: "100%" }}>
+        </CCol>
+        <CCol lg={4}>
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
-            Notes *
+              Time *
             </label>
-            <input
-              type="text"
-              class="form-control pad-10"
-              id="validationTooltip01"
-              placeholder="Enter"
-              defaultValue={defaultValues?.notes}
-            />
+            <div className="date-size">
+              <DatePicker
+                showIcon
+                selected={time}
+                onChange={handleTimeChange}
+                showTimeSelect
+                showTimeSelectOnly
+                isClearable
+                closeOnScroll={true}
+                timeIntervals={5}
+                dateFormat="h:mm aa"
+              />
+            </div>
           </div>
+        </CCol>
+        <CCol lg={4}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Title *
+              </label>
+              <input
+                type="text"
+                class="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.title}
+              />
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={8} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Notes
+              </label>
+              <CFormTextarea
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                defaultValue={defaultValues?.notes}
+                rows={3}
+              />
+            </div>
+          </div>
+        </CCol>
+      </CRow>
+
+      <CRow className="mb-1">
+        <div style={{ width: "128px" }}>
+          <PrimaryButton>SAVE</PrimaryButton>
         </div>
-      </CCol>
-      
-    </CRow>
- 
-    <CRow className="mb-1">
-      <div style={{ width: "128px" }}>
-        <PrimaryButton>SAVE</PrimaryButton>
-      </div>
-      <div style={{ width: "128px" }}>
-        <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-      </div>
-    </CRow>
-  </>
+        <div style={{ width: "128px" }}>
+          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+        </div>
+      </CRow>
+    </>
+  );
+};
 
-  )
-}
-
-export default PatientEducationForm
+export default PatientEducationForm;

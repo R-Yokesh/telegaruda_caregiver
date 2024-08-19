@@ -46,7 +46,6 @@ import ECGChart from "../ECG Chart/ECGChart";
 import useApi from "../../../../../../ApiServices/useApi";
 
 const ObjectiveDetailPage = ({ data, getTableDatas }) => {
-
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
   const [filterView, setFilterView] = useState(false);
@@ -195,7 +194,10 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
               </CModalHeader>
               <CModalBody className="p-4">
                 {data?.name === "Blood Pressure" && (
-                  <BPForm addBack={addBack}  getTableDatas={getTableDatas}/>
+                  <BPForm
+                    addBack={addBack}
+                    getTableDatas={getTableDatas}
+                  />
                 )}
                 {data?.name === "ECG" && <HeartRate addBack={addBack} />}
                 {data?.name === "Lung Function Test (LFT)" && (

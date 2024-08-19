@@ -26,7 +26,13 @@ import useApi from "../../ApiServices/useApi";
 import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 
-const DynamicTable = ({ columnsData, tableData, getTableDatas, from }) => {
+const DynamicTable = ({
+  columnsData,
+  tableData,
+  getTableDatas,
+  from,
+  render,
+}) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [selectedData, setSelectedData] = useState("");

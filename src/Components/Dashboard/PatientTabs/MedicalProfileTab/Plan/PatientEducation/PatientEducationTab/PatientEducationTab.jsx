@@ -8,7 +8,7 @@ import {
   CRow,
 } from "@coreui/react";
 import { Assets } from "../../../../../../../assets/Assets";
-import DateSelector from "../../../../../../DateRangePicker/DateSelector";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Pagination from "../../../../../../Pagination/Pagination";
@@ -20,33 +20,45 @@ const PatientEducationTab = ({ from }) => {
   const columnData = [
     { id: 1, label: "No" },
     { id: 2, label: "Date" },
-    { id: 3, label: "Notes" },
+    { id: 3, label: "Time" },
+    { id: 4, label: "Title" },
+    { id: 5, label: "Notes" },
     { id: 7, label: "ACTIONS" },
   ];
   const rowData = [
     {
       id: 1,
-      date: "06-07-2024",
+      date: "2024-08-16",
+      time: "12:30",
+      title: "Lorem ipsum",
       notes: "Lorem ipsum Lorem ipsum",
     },
     {
       id: 2,
-      date: "06-07-2024",
+      date: "2024-08-16",
+      time: "12:20",
+      title: "Lorem ipsum",
       notes: "Lorem ipsum Lorem ipsum",
     },
     {
       id: 3,
-      date: "06-07-2024",
+      date: "2024-08-16",
+      time: "15:30",
+      title: "Lorem ipsum",
       notes: "Lorem ipsum Lorem ipsum",
     },
     {
       id: 4,
-      date: "06-07-2024",
+      date: "2024-08-16",
+      time: "12:30",
+      title: "Lorem ipsum",
       notes: "Lorem ipsum Lorem ipsum",
     },
     {
       id: 5,
-      date: "06-07-2024",
+      date: "2024-08-16",
+      time: "12:30",
+      title: "Lorem ipsum",
       notes: "Lorem ipsum Lorem ipsum",
     },
   ];
@@ -103,7 +115,7 @@ const PatientEducationTab = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSelector />
+                  <DateSearch />
                 </CCol>
                 <CCol
                   lg={4}

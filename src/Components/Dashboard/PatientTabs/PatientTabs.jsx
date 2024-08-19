@@ -57,7 +57,10 @@ const PatientTabs = ({ getCurrentTab }) => {
     localStorage.removeItem("PatientSubMenu-1");
     localStorage.removeItem("PatientSubMenu-2");
     localStorage.removeItem("PatientSubMenu-3");
+    localStorage.removeItem("PatientSubMenu-4");
+    localStorage.removeItem("PatientSubMenu-5");
     localStorage.removeItem("PatientMenu");
+    localStorage.removeItem("PatientConsultTab");
     
     localStorage.setItem("patiendDetailTab", JSON.stringify(data));
 

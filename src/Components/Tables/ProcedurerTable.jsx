@@ -36,6 +36,9 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from }) => {
                 <span className="fs-16 fw-500">{dt?.date}</span>
               </CTableDataCell>
               <CTableDataCell>
+                <span className="fs-16 fw-500">{dt?.time}</span>
+              </CTableDataCell>
+              <CTableDataCell>
                 <span className="fs-16 fw-500">{dt?.id}</span>
               </CTableDataCell>
               <CTableDataCell>{dt?.description}</CTableDataCell>

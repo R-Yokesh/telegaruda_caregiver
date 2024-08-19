@@ -4,6 +4,7 @@ export const ObjectiveDatas = [
   {
     id: 1,
     icon: Assets.VitalBP,
+    slug: "blood-pressure",
     name: "Blood Pressure",
     date: "Recently Added 27-03-2024",
     category: "Primary Vitals",
@@ -94,6 +95,7 @@ export const ObjectiveDatas = [
   {
     id: 3,
     icon: Assets.VitalBMI,
+    slug: "bmi",
     name: "BMI",
     category: "Primary Vitals",
     date: "Recently Added 27-03-2024",

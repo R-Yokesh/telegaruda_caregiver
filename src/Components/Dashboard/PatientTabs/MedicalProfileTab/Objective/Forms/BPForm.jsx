@@ -40,36 +40,36 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
     return `${hours}:${minutes}`;
   };
   const getFormattedDate = (date) => {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
     const year = date.getFullYear();
-  
+
     return `${day}-${month}-${year}`;
   };
-  
+
   const currentDate = new Date();
   const formattedDate = getFormattedDate(currentDate);
-  
+
   console.log(formattedDate); // e.g., 25-08-2024
 
-  const defaultDateTime = defaultData?.date || '';
+  const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
-  const defaultDate = defaultDateTime.split(' ')[0] || '';
-  const defaultTime = defaultDateTime.split(' ')[1] || '00:00';
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
 
     if (defaultDate) {
-      const parsedDate = parse(defaultDate, 'yyyy-MM-dd', new Date());
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
       if (isValid(parsedDate)) {
         date = parsedDate;
       }
     }
 
     if (defaultTime) {
-      const [hours, minutes] = defaultTime.split(':').map(Number);
+      const [hours, minutes] = defaultTime.split(":").map(Number);
       date.setHours(hours);
       date.setMinutes(minutes);
       date.setSeconds(0); // Reset seconds
@@ -97,7 +97,6 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
       setSelectedTime(time);
     }
   };
-
 
   // useEffect(() => {
   //   // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -128,8 +127,6 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
   //   setSelectedDate(defaultDate);
   //   // setSelectedTime(defaultDate1);
   // }, [defaultData]);
-
-
 
   const extractNum = (data) => {
     const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
@@ -286,7 +283,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
                 onChange={(e) => setSystolic(e.target.value)}
                 maxLength={3}
                 onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
               />
               {errors.systolic && (
@@ -309,7 +306,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
                 onChange={(e) => setDiastolic(e.target.value)}
                 maxLength={3}
                 onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
               />
               {errors.diastolic && (
@@ -330,7 +327,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
                 onChange={(e) => setPulse(e.target.value)}
                 maxLength={3}
                 onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
               />
               {errors.pulse && <div className="error-text">{errors.pulse}</div>}

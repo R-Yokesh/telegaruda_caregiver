@@ -7,6 +7,7 @@ function PatientCard({ PatientDetail }) {
 
   const goTo = () => {
     navigate("/patients/history", { state: { PatientDetail } });
+    localStorage.removeItem("PatientConsultTab");
     localStorage.removeItem("patiendDetailTab");
     localStorage.removeItem("PatientMenu");
     localStorage.removeItem("PatientSubMenu-1");

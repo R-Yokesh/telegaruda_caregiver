@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import VitalsTab from "../../../VitalsTab/VitalsTab";
-import { CCol, CContainer, CRow } from "@coreui/react";
+import { CCard, CCardBody, CCol, CContainer, CRow } from "@coreui/react";
 import { Assets } from "../../../../../../assets/Assets";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import MedicalTab from "../../MedicalTab";
@@ -8,6 +8,8 @@ import Modal from "../../../../../Modal/Modal";
 import ObjectiveDetailPage from "../DetailPage/ObjectiveDetailPage";
 import useApi from "../../../../../../ApiServices/useApi";
 import { ObjectiveDatas } from "../../../../../Consultant/TableColumnsJson/ObjectiveJson";
+import CardChart from "../../../../../Charts/CardChart";
+import Badge from "../../../../../Badge/Badge";
 
 const VitalSign = ({ setVitalView, onClose }) => {
   const tabs = [
@@ -56,8 +58,9 @@ const VitalSign = ({ setVitalView, onClose }) => {
   const currentTabtitle = findTitleById(currentTab);
   const [isModalOpen, setIsModalOpen] = useState(parsedConsult);
   const [cardSelectedData, setSelectedCardData] = useState();
-  const [entities, setEntities] = useState([]);
-
+  const [entities, setEntities] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [filtered, setFiltered] = useState([]);
   const { loading, error, get } = useApi();
 
   const transformData = (originalData) => {
@@ -83,6 +86,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
       name: "Blood Pressure",
       id: item.id,
       user_id: item.user_id,
+      slug: "blood-pressure",
     }));
 
     // Create badge and other static information
@@ -121,25 +125,119 @@ const VitalSign = ({ setVitalView, onClose }) => {
     };
   };
 
-  const TableDatas = async (data) => {
+  useEffect(() => {
+    const fetchCardData = async () => {
+      try {
+        // Create an array of promises to fetch data for each card
+        const fetchPromises = ObjectiveDatas.map(async (card) => {
+          if (card.slug !== null) {
+            try {
+              const response = await get(
+                `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=10&slug=${card?.slug}`
+              );
+              const tableData = response?.data?.vitals;
+
+              const cardbadge =
+                tableData.length > 0
+                  ? card?.slug === "blood-pressure"
+                    ? [
+                        {
+                          label: `${tableData[0].details?.systolic}/${tableData[0]?.details?.diastolic} mm Hg`,
+                          color: tableData[0].details?.bpFlagColor,
+                        },
+                      ]
+                    : card?.slug === "bmi"
+                    ? [
+                        {
+                          label: `${tableData[0].details?.bmi}kg/m²`,
+                          color: tableData[0].details?.bpFlagColor,
+                        },
+                      ]
+                    : []
+                  : [];
+              const formattedData = transformData(response?.data?.vitals);
+
+              return {
+                ...card,
+                created: response?.data?.vitals[0]?.details?.date,
+                cardbadge,
+                ...formattedData,
+              };
+            } catch (error) {
+              console.error(`Error fetching data for card ${card.id}:`, error);
+              return {
+                ...card,
+                cardbadge: card.badge,
+                created: "N/A",
+              };
+            }
+          }
+        });
+
+        // Wait for all fetches to complete
+        const updatedCards = await Promise.all(fetchPromises);
+        setCards(updatedCards);
+        getFilter();
+      } catch (error) {
+        console.error("Error fetching card data:", error);
+      }
+    };
+
+    fetchCardData();
+  }, [entities, cardSelectedData]);
+  // Function to fetch data for a specific card
+  const fetchCardData = async (card) => {
     try {
       const response = await get(
-        `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=10&slug=blood-pressure`
+        `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=10&slug=${cardSelectedData?.slug}`
       );
-      setIsModalOpen(true);
-      if (response.code === 200) {
-        const formattedData = transformData(response?.data?.vitals);
-        setEntities(formattedData);
-      } else {
-      }
-    } catch (err) {
-      console.error("Error fetching data:", err);
+      const tableData = response?.data?.vitals;
+
+      const cardbadge =
+        tableData.length > 0
+          ? cardSelectedData.slug === "blood-pressure"
+            ? [
+                {
+                  label: `${tableData[0].details?.systolic}/${tableData[0]?.details?.diastolic} mm Hg`,
+                  color: tableData[0].details?.bpFlagColor,
+                },
+              ]
+            : cardSelectedData.slug === "bmi"
+            ? [
+                {
+                  label: `${tableData[0].details?.bmi}kg/m²`,
+                  color: tableData[0].details?.bpFlagColor,
+                },
+              ]
+            : []
+          : [];
+
+      const formattedData = transformData(response?.data?.vitals);
+
+      const updatedCard = await {
+        ...card,
+        created: response?.data?.vitals[0]?.details?.date,
+        cardbadge,
+        ...formattedData,
+      };
+      setSelectedCardData(updatedCard);
+    } catch (error) {
+      console.error(
+        `Error fetching data for card ${cardSelectedData?.id}:`,
+        error
+      );
+      return {
+        ...card,
+        cardbadge: card.badge,
+        created: "N/A",
+      };
     }
   };
 
   const openModal = (data) => {
     setSelectedCardData(data);
-    TableDatas(data);
+    // TableDatas(data);
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
@@ -151,6 +249,41 @@ const VitalSign = ({ setVitalView, onClose }) => {
       findByIdforSelectedData();
     }
   }, [parsedData]);
+
+  const getFilter = () => {
+    const filteredProducts = cards?.filter(
+      (product) => product?.category === currentTabtitle
+    );
+    setFiltered(filteredProducts);
+  };
+
+  useEffect(() => {
+    getFilter();
+  }, [currentTabtitle, cards, cardSelectedData]);
+
+  const renderImage = (contentUrl) => {
+    return (
+      <img
+        src={contentUrl}
+        alt="mage1"
+        style={{ maxWidth: "100%", maxHeight: "100%" }}
+      />
+    );
+  };
+
+  // // Function to render PDF content
+  const renderPdf = (contentUrl) => {
+    return (
+      <iframe
+        title="PDF Viewer"
+        src={contentUrl}
+        style={{ width: "100%", height: "140px", border: "none" }}
+      />
+    );
+  };
+
+  console.log(filtered, "first", cardSelectedData, cards);
+
   return (
     <>
       <CRow>
@@ -190,17 +323,65 @@ const VitalSign = ({ setVitalView, onClose }) => {
           />
         </CCol>
       </CRow>
-      <CRow>
-        <CCol md={12}>
+      <CRow className="mt-3">
+        {/* <CCol md={12}>
           <VitalsTab category={currentTabtitle} openModal={openModal} />
-        </CCol>
+        </CCol> */}
+        {filtered?.map((item, index) => (
+          <CCol md={6} xl={4} key={index} className="mb-3">
+            <CCard
+              className={`vital-cards`}
+              onClick={() => {
+                openModal(item);
+              }}
+            >
+              <CCardBody>
+                <div className="vital-icon-and-title">
+                  <div>
+                    <img alt="bp" src={item?.icon} />
+                  </div>
+                  <div className="vital-card-title">
+                    <span className="vital-card-text-bold">{item?.name}</span>
+                    <span className="vital-card-text">{item?.created}</span>
+                  </div>
+                </div>
+                <div className="vital-badge">
+                  <div className="vital-badge-list">
+                    {item?.cardbadge?.map((dt, i) => (
+                      <div key={i} style={{ height: "24px" }}>
+                        <Badge label={dt?.label} color={dt?.color} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="vital-line-container">
+                  {/* <img alt="line" src={Assets.Vitalline} /> */}
+                  {item?.name === "ECG" ? (
+                    <div className="chart-item">
+                      {/* <div className="rectangle">
+                            <img src={Assets.ecgSample} alt="ecg" />
+                          </div> */}
+                      {renderImage(Assets.ecgSample)}
+                      {/* {renderPdf("https://www.orimi.com/pdf-test.pdf")} */}
+                    </div>
+                  ) : (
+                    <CardChart datas={item} />
+                  )}
+                </div>
+              </CCardBody>
+            </CCard>
+          </CCol>
+        ))}
       </CRow>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CContainer className="p-0">
           <CRow>
             <CCol className="mb-3">
-              <ObjectiveDetailPage data={cardSelectedData} />
+              <ObjectiveDetailPage
+                data={cardSelectedData}
+                getTableDatas={(data) => fetchCardData(data)}
+              />
               {/* <ObjectiveDetailPage
                 data={entities}
                 getTableDatas={(data) => TableDatas(data)}

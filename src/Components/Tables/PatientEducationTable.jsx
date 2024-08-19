@@ -8,10 +8,16 @@ import {
 } from "@coreui/react";
 import React from "react";
 import { Assets } from "../../assets/Assets";
+import { format, parse } from "date-fns";
 
 const PatientEducationTable = ({ columns, rowData, getselectedData, from }) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
+  };
+
+  const formattedDate = (dateStr) => {
+    const parsedDate = parse(dateStr, "yyyy-MM-dd", new Date());
+    return format(parsedDate, "dd-MM-yyyy");
   };
 
   return (
@@ -33,7 +39,13 @@ const PatientEducationTable = ({ columns, rowData, getselectedData, from }) => {
                 <span className="fs-16 fw-500">{dt?.id}</span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.date}</span>
+                <span className="fs-16 fw-500">{formattedDate(dt?.date)}</span>
+              </CTableDataCell>
+              <CTableDataCell>
+                <span className="fs-16 fw-500">{dt?.time}</span>
+              </CTableDataCell>
+              <CTableDataCell>
+                <span className="fs-16 fw-500">{dt?.title}</span>
               </CTableDataCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">{dt?.notes}</span>

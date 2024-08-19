@@ -142,6 +142,11 @@ body {
   line-height: 16.23px !important;
 }
 
+.badge-danger {
+  background-color: #EC5A5A !important;
+
+}
+
 .badge-success {
   background-color: #48B875 !important;
 }

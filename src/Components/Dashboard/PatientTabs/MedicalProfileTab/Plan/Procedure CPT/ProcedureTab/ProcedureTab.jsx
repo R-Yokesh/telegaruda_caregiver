@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Breadcrumb from "../../../../../../Breadcrumb/Breadcrumb";
 import {
   CCard,
   CCardBody,
@@ -10,27 +9,28 @@ import {
 } from "@coreui/react";
 import { Assets } from "../../../../../../../assets/Assets";
 import ProcedureForm from "./ProcedureForm";
-import DateSelector from "../../../../../../DateRangePicker/DateSelector";
-import DiagnosisTable from "../../../../../../Tables/DiagnosisTable";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Pagination from "../../../../../../Pagination/Pagination";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import ProcedurerTable from "../../../../../../Tables/ProcedurerTable";
+import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 
 const ProcedureTab = ({ onClose, from }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "DATE" },
-    { id: 3, label: "CPT Code" },
-    { id: 4, label: "DESCRIPTION" },
-    { id: 5, label: "ACTIONS" },
+    { id: 3, label: "TIME" },
+    { id: 4, label: "CPT Code" },
+    { id: 5, label: "DESCRIPTION" },
+    { id: 6, label: "ACTIONS" },
   ];
   const rowData = [
     {
       no: 1,
       date: "06-07-2024",
       id: "93000",
+      time: "12:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -38,6 +38,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 2,
       date: "06-07-2024",
       id: "93000",
+      time: "18:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -45,6 +46,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 3,
       date: "06-07-2024",
       id: "93008",
+      time: "19:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -52,6 +54,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 4,
       date: "06-07-2024",
       id: "93006",
+      time: "18:43",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -59,6 +62,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 5,
       date: "06-07-2024",
       id: "93005",
+      time: "18:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -66,6 +70,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 6,
       date: "06-07-2024",
       id: "93002",
+      time: "18:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -73,6 +78,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 7,
       date: "06-07-2024",
       id: "93000",
+      time: "18:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -80,6 +86,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 8,
       date: "06-07-2024",
       id: "93000",
+      time: "18:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -87,6 +94,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 9,
       date: "06-07-2024",
       id: "93000",
+      time: "18:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -94,6 +102,7 @@ const ProcedureTab = ({ onClose, from }) => {
       no: 10,
       date: "06-07-2024",
       id: "93000",
+      time: "18:30",
       description:
         "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
     },
@@ -169,7 +178,7 @@ const ProcedureTab = ({ onClose, from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSelector />
+                  <DateSearch />
                 </CCol>
                 <CCol
                   lg={4}
