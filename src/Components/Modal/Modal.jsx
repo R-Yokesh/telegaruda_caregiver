@@ -12,7 +12,7 @@ const Modal = ({ isOpen, onClose, children }) => {
       onClose={onClose}
       aria-labelledby="LiveDemoExampleLabel"
       alignment="center"
-      size="lg"
+      size="xl"
     >
       <CModalBody className="p-0">
         <div className="close-modal" onClick={onClose}>

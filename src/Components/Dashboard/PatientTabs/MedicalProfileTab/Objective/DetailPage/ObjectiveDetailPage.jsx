@@ -44,6 +44,7 @@ import BlurBackground from "../../../../../BlurBackground/BlurBackground";
 import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 import ECGChart from "../ECG Chart/ECGChart";
 import useApi from "../../../../../../ApiServices/useApi";
+import DateSearch from "../../../../../DateRangePicker/DateSearch";
 
 const ObjectiveDetailPage = ({ data, getTableDatas }) => {
   const [chartView, setChartView] = useState(false);
@@ -94,7 +95,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                 <CCol xs={4} md={4} lg={4}>
                   {!addView && (
                     <PrimaryButton onClick={() => addPage()}>
-                      <div className="d-flex align-items-center gap-2">
+                      <div className="d-flex align-items-center justify-content-center gap-2">
                         <img src={Assets.Add} alt="add" />
                         <span className="fs-16 fw-600">Add</span>
                       </div>
@@ -102,7 +103,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                   )}
                   {addView && (
                     <ActiveButton onClick={() => addBack()}>
-                      <div className="d-flex align-items-center gap-2">
+                      <div className="d-flex align-items-center justify-content-center gap-2">
                         <img src={Assets.CloseX} alt="add" />
                         <span className="fs-16 fw-600">Add</span>
                       </div>
@@ -112,7 +113,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                 <CCol xs={4} md={4} lg={4}>
                   {filterView && (
                     <ActiveButton onClick={() => filterBack()}>
-                      <div className="d-flex align-items-center gap-2">
+                      <div className="d-flex align-items-center justify-content-center gap-2">
                         <img src={Assets.CloseX} alt="add" />
                         <span className="fs-16 fw-600">Filter</span>
                       </div>
@@ -121,7 +122,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                   {!filterView && (
                     <PrimaryButton>
                       <div
-                        className="d-flex align-items-center gap-2"
+                        className="d-flex align-items-center justify-content-center gap-2"
                         onClick={() => filterPage()}
                       >
                         <img src={Assets.Filter} alt="add" />
@@ -135,7 +136,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                   {!chartView && (
                     <CCol xs={4} md={4} lg={4}>
                       <PrimaryButton onClick={() => chartPage()}>
-                        <div className="d-flex align-items-center gap-2">
+                        <div className="d-flex align-items-center justify-content-center gap-2">
                           <img src={Assets.Chart} alt="add" />
                           <span className="fs-16 fw-600">Chart</span>
                         </div>
@@ -145,7 +146,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                   {chartView && (
                     <CCol xs={4} md={4} lg={4}>
                       <ActiveButton onClick={() => tablePage()}>
-                        <div className="d-flex align-items-center gap-2">
+                        <div className="d-flex align-items-center justify-content-center gap-2">
                           <img src={Assets.CloseX} alt="add" />
                           <span className="fs-16 fw-600">Chart</span>
                         </div>
@@ -168,6 +169,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
               )
             ) : (
               <>
+                {/* {filterView && <DateSearch />} */}
                 {filterView && <DateRangePicker onClose={filterBack} />}
                 <DynamicTable
                   columnsData={data?.columnsData}
@@ -194,10 +196,7 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
               </CModalHeader>
               <CModalBody className="p-4">
                 {data?.name === "Blood Pressure" && (
-                  <BPForm
-                    addBack={addBack}
-                    getTableDatas={getTableDatas}
-                  />
+                  <BPForm addBack={addBack} getTableDatas={getTableDatas} />
                 )}
                 {data?.name === "Heart" && <HeartRate addBack={addBack} />}
                 {data?.name === "Lung Function Test (LFT)" && (

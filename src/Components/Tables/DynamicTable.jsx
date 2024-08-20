@@ -270,7 +270,7 @@ const DynamicTable = ({
   function renderCell(row, column) {
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
-    // console.log("first", value);
+    console.log(columnKey, "first", row['fev1_(l)']);
 
     if (columnKey === "ecg") {
       // Function to render PDF content
@@ -285,7 +285,11 @@ const DynamicTable = ({
     } else if (columnKey === "result") {
       return (
         <div style={{ width: "180px" }}>
-          <Badge label={value?.name} color={value?.status} />
+          {value?.name ? (
+            <Badge label={value?.name} color={value?.status} />
+          ) : (
+            <span>{value}</span>
+          )}
         </div>
       );
     } else if (columnKey === "date") {

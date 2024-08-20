@@ -14,7 +14,7 @@ const DateRangePicker = ({ onClose }) => {
   return (
     <>
       <CRow className="mb-2 p-3">
-        <CCol md={4} className="d-flex flex-column gap-1">
+        <CCol md={3} className="d-flex flex-column gap-1">
           <span>From Date *</span>
           <DatePicker
             showIcon
@@ -26,7 +26,7 @@ const DateRangePicker = ({ onClose }) => {
             dateFormat={DATE_FORMAT}
           />
         </CCol>
-        <CCol md={4} className="d-flex flex-column gap-1">
+        <CCol md={3} className="d-flex flex-column gap-1">
           <span>To Date *</span>
           <DatePicker
             showIcon
@@ -38,9 +38,21 @@ const DateRangePicker = ({ onClose }) => {
             dateFormat={DATE_FORMAT}
           />
         </CCol>
+        <CCol md={3} className="d-flex flex-column gap-1 justify-content-end">
+          <div
+            className="search-bar"
+            style={{ width: "100%", borderRadius: "10px" }}
+          >
+            <input
+              type="text"
+              placeholder="Search"
+              style={{ padding: "7px" }}
+            />
+          </div>
+        </CCol>
         <CCol
-          md={4}
-          className="d-flex flex-column gap-1 justify-content-center"
+          md={3}
+          className="d-flex flex-column gap-1 justify-content-end"
           style={{ width: "60px" }}
         >
           <ActiveButton onClick={onClose}>

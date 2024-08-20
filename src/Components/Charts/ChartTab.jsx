@@ -40,9 +40,9 @@ const ChartTab = ({ data }) => {
           </div>
         ))}
       </div>
-      <div className="mt-2">
+      <div className="mt-2" style={{ overflow: "auto" }}>
         {currentTab?.id === 1 && <LineChartDetails datas={data} />}
-        {currentTab?.id === 2 && <ColumnChartDetails datas={data}/>}
+        {currentTab?.id === 2 && <ColumnChartDetails datas={data} />}
       </div>
     </div>
   );
