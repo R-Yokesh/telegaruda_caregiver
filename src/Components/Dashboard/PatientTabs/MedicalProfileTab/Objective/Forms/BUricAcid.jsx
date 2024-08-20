@@ -45,6 +45,16 @@ const BUricAcid = ({ addBack, defaultData }) => {
 
     return numbers || "";
   };
+
+  
+  const numWithDecimal = (e) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")               
+      .replace(/^(\d{2})\d*$/, "$1")        
+      .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+      .replace(/(\..*)\./g, "$1");         
+  }
+
   return (
     <>
       <CContainer>
@@ -91,14 +101,8 @@ const BUricAcid = ({ addBack, defaultData }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                // defaultValue={extractNum(defaultData?.blood_uric_acid)}
-                maxLength={5}
-                onInput={(e) => {
-                  e.target.value = e.target.value
-                    .replace(/[^0-9.]/g, "")
-                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
-                    .replace(/(\..*)\./g, "$1");
-                }}
+                 defaultValue={extractNum(defaultData?.blood_uric_acid)}
+                onInput={numWithDecimal}
               />
             </div>
           </CCol>

@@ -41,20 +41,22 @@ const LFTForm = ({ addBack, defaultData }) => {
   const handleTimeChange = (date) => {
     setSelectedTime(date);
   };
-  // const extractNum = (data) => {
-  //   const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-  //   return numbers || "";
-  // };
+  const extractNum = (data) => {
+    const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-  const numDecimal = (e) => {
-    e.target.value = e.target.value
-      .replace(/[^0-9.]/g, "")
-      .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
-      .replace(/(\..*)\./g, "$1");
-  }
+    return numbers || "";
+  };
   
-  const extractNum = (e) => {
+  const numWithDecimal = (e) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")               
+      .replace(/^(\d{2})\d*$/, "$1")        
+      .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+      .replace(/(\..*)\./g, "$1");         
+  }
+
+  const convertNum = (e) => {
     e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
   }
 
@@ -109,7 +111,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["fvc_(l)"]}
                 maxLength={5}
-                onInput={numDecimal}
+                onInput={numWithDecimal}
               />
             </div>
           </CCol>
@@ -126,7 +128,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["fvc_(l)"]}
                 maxLength={2}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -141,7 +143,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["fev1_(l)"]}
                 maxLength={5}
-                onInput={numDecimal}
+                onInput={numWithDecimal}
               />
             </div>
           </CCol>
@@ -156,7 +158,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["fev1_(l)"]}
                 maxLength={2}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -175,7 +177,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["pef_(l/min)"]}
                 maxLength={5}
-                onInput={numDecimal}
+                onInput={numWithDecimal}
               />
             </div>
           </CCol>
@@ -190,7 +192,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["pef_(l/min)"]}
                 maxLength={2}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -205,7 +207,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["fev1/fvc"]}
                 maxLength={2}
-                onInput={extractNum}
+                onInput={numWithDecimal}
 
               />
             </div>
@@ -224,7 +226,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
                 maxLength={5}
-                onInput={numDecimal}
+                onInput={numWithDecimal}
               />
             </div>
           </CCol>
@@ -239,7 +241,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
                 maxLength={2}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -254,7 +256,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
                 maxLength={5}
-                onInput={numDecimal}
+                onInput={numWithDecimal}
               />
             </div>
           </CCol>
@@ -271,7 +273,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
                 maxLength={2}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -286,7 +288,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
                 maxLength={5}
-                onInput={numDecimal}
+                onInput={numWithDecimal}
               />
             </div>
           </CCol>
@@ -301,7 +303,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
                 maxLength={2}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -319,7 +321,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
                 maxLength={5}
-                onInput={numDecimal}
+                onInput={numWithDecimal}
               />
             </div>
           </CCol>
@@ -334,7 +336,7 @@ const LFTForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.["svc_(l)"]}
                 maxLength={2}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>

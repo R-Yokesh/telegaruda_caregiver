@@ -47,6 +47,48 @@ const Urinalysis = ({ addBack, defaultData }) => {
 
     return numbers || "";
   };
+
+
+  const oneNumWithOneDecimal = (e) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")               
+      .replace(/^(\d{1})\d*$/, "$1")        
+      .replace(/^(\d{1})\.(\d{1}).*$/, "$1.$2") 
+      .replace(/(\..*)\./g, "$1");         
+  }
+
+  
+  const oneNumWithDecimal = (e) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")               
+      .replace(/^(\d{1})\d*$/, "$1")        
+      .replace(/^(\d{1})\.(\d{3}).*$/, "$1.$2") 
+      .replace(/(\..*)\./g, "$1");         
+  }
+
+  const twoNumWithDecimal = (e) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")               
+      .replace(/^(\d{2})\d*$/, "$1")        
+      .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
+      .replace(/(\..*)\./g, "$1");         
+  }
+  const threeNumWithDecimal = (e) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")               
+      .replace(/^(\d{3})\d*$/, "$1")        
+      .replace(/^(\d{3})\.(\d{2}).*$/, "$1.$2") 
+      .replace(/(\..*)\./g, "$1");         
+  }
+  
+  const wholeNumber = (e) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+  }
+
+
+
+
+
   return (
     <>
       <CContainer>
@@ -214,15 +256,9 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                defaultValue={defaultData?.ph}
+                defaultValue={defaultData?.specific_gravity}
                 placeholder="Enter"
-                maxLength={5}
-                onInput={(e) => {
-                  e.target.value = e.target.value
-                    .replace(/[^0-9.]/g, "")
-                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
-                    .replace(/(\..*)\./g, "$1");
-                }}
+                onInput={oneNumWithDecimal}
               />
             </div>
           </CCol>
@@ -252,13 +288,7 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.ph}
                 placeholder="Enter"
-                maxLength={5}
-                onInput={(e) => {
-                  e.target.value = e.target.value
-                    .replace(/[^0-9.]/g, "")
-                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
-                    .replace(/(\..*)\./g, "$1");
-                }}
+                onInput={twoNumWithDecimal}
               />
             </div>
 
@@ -386,13 +416,7 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.ph}
                 placeholder="Enter"
-                maxLength={3}
-                onInput={(e) => {
-                  e.target.value = e.target.value
-                    .replace(/[^0-9.]/g, "")
-                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
-                    .replace(/(\..*)\./g, "$1");
-                }}
+                onInput={oneNumWithOneDecimal}
               />
             </div>
           </CCol>
@@ -427,9 +451,7 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 defaultValue={defaultData?.ph}
                 placeholder="Enter"
                 maxLength={2}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
-                }}
+                onInput={wholeNumber}
               />
             </div>
           </CCol>
@@ -445,9 +467,7 @@ const Urinalysis = ({ addBack, defaultData }) => {
                 defaultValue={defaultData?.ph}
                 placeholder="Enter"
                 maxLength={2}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
-                }}
+                onInput={wholeNumber}
               />
             </div>
           </CCol>
@@ -501,7 +521,7 @@ const Urinalysis = ({ addBack, defaultData }) => {
         <CCol lg={4} className="mb-3">
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Crystals *
+                Crystals 
               </label>
               <select
                 class="form-select"
@@ -521,7 +541,7 @@ const Urinalysis = ({ addBack, defaultData }) => {
           <CCol lg={4} className="mb-3">
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Microorganisms *
+                Microorganisms 
               </label>
               <select
                 class="form-select"

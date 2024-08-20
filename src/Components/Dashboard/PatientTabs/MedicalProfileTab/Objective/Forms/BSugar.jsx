@@ -57,6 +57,14 @@ const getSelectedValue = (data) => {
   setType(data);
 };
 
+const numWithDecimal = (e) => {
+  e.target.value = e.target.value
+    .replace(/[^0-9.]/g, "")               
+    .replace(/^(\d{4})\d*$/, "$1")        
+    .replace(/^(\d{4})\.(\d{1}).*$/, "$1.$2") 
+    .replace(/(\..*)\./g, "$1");         
+}
+
   return (
     <>
       <CContainer>
@@ -139,14 +147,8 @@ const getSelectedValue = (data) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                // defaultValue={defaultData?.blood_sugar_value}
-                maxLength={6}
-                onInput={(e) => {
-                  e.target.value = e.target.value
-                    .replace(/[^0-9.]/g, "")
-                    .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2") 
-                    .replace(/(\..*)\./g, "$1");
-                }}
+                 defaultValue={defaultData?.blood_sugar_value}
+               onInput={numWithDecimal}
               />
             </div>
           </CCol>

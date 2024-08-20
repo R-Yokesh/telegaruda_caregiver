@@ -41,13 +41,13 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
   const handleTimeChange = (date) => {
     setSelectedTime(date);
   };
-  // const extractNum = (data) => {
-  //   const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
+  const extractNum = (data) => {
+    const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-  //   return numbers || "";
-  // };
+    return numbers || "";
+  };
 
-  const extractNum = (e) => {
+  const convertNum = (e) => {
     e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
   }
   
@@ -97,9 +97,9 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                // defaultValue={defaultData?.totalOnly}
+                defaultValue={defaultData?.totalOnly}
                 maxLength={3}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -117,7 +117,7 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.totalOnly}
                 maxLength={3}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -132,7 +132,7 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.totalOnly}
                 maxLength={3}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -147,7 +147,7 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
                 id="validationTooltip01"
                 defaultValue={defaultData?.totalOnly}
                 maxLength={3}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -163,9 +163,9 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                // defaultValue={extractNum(defaultData?.triglycerides)}
+                 defaultValue={extractNum(defaultData?.triglycerides)}
                 maxLength={3}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>
@@ -179,9 +179,9 @@ const LipidProfileForm = ({ addBack, defaultData }) => {
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                // defaultValue={extractNum(defaultData?.hdl)}
+                 defaultValue={extractNum(defaultData?.hdl)}
                 maxLength={3}
-                onInput={extractNum}
+                onInput={convertNum}
               />
             </div>
           </CCol>

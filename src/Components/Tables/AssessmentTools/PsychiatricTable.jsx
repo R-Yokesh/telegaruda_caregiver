@@ -58,14 +58,14 @@ const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
                       }
                       className="cursor"
                     />
-                    {/* {i === 0 && ( */}
+                    {i === 0 && (
                     <img
                       alt="delete"
                       src={Assets?.testViewIcon}
                       className="cursor"
                       onClick={() => selectedData(dt, "view")}
                     />
-                    {/* )} */}
+                     )} 
                   </div>
                 </CTableDataCell>
               )}
