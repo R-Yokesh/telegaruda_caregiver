@@ -39,9 +39,16 @@ const LineChartDetails = ({ datas }) => {
         item?.["gfr_value"]
     ), // Convert pluse to integer if needed
     data2: parseInt(
-      item?.["ph"] ? item?.["ph"] : item?.["systolic"] ? item?.["systolic"] : ""
+      item?.["ph"]
+        ? item?.["ph"]
+        : item?.["systolic"]
+        ? item?.["systolic"]
+        : item?.["fev1_(l)"]
+        ? item?.["fev1_(l)"]
+        : ""
     ),
     data3: parseInt(item?.["diastolic"] ? item?.["diastolic"] : ""),
+    
   }));
 
   const minValue = Math?.min(...formattedData?.map((item) => item.data1));
@@ -60,6 +67,9 @@ const LineChartDetails = ({ datas }) => {
     }
     if (name === "data3") {
       return [value, datas?.chartLabel3];
+    }
+    if (name === "data4") {
+      return [value, datas?.chartLabel4];
     }
     return [name, value];
   };

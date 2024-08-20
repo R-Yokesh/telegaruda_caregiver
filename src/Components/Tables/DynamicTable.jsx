@@ -270,7 +270,7 @@ const DynamicTable = ({
   function renderCell(row, column) {
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
-    // console.log("first", value);
+    console.log(columnKey, "first", row['fev1_(l)']);
 
     if (columnKey === "ecg") {
       // Function to render PDF content
