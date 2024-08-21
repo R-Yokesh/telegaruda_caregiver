@@ -162,9 +162,10 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
         <CRow>
           <CCol xl={12}>
             {chartView ? (
-              data?.name === "Heart" ? (
-                <ECGChart data={data} />
-              ) : (
+              // data?.name === "Heart" ? (
+              //   <ECGChart data={data} />
+              // ) : 
+              (
                 <ChartTab data={data} />
               )
             ) : (
