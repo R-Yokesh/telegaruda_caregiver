@@ -96,7 +96,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Pagination from "../../../../../Pagination/Pagination";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../assets/Assets";
@@ -107,6 +107,7 @@ import ChiefComplaintsForm from "./ChiefComplaintsForm";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import DateSelector from "../../../../../DateRangePicker/DateSelector";
 import { useNavigate } from "react-router-dom";
+import useApi from "../../../../../../ApiServices/useApi";
 
 const ChiefComplaints = ({ OnClose, from }) => {
   const columnData = [
@@ -116,64 +117,69 @@ const ChiefComplaints = ({ OnClose, from }) => {
     { label: "Notes" },
     { label: "Actions" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      complaints:
-        "Abdominal pain, radiating to right shoulder and shoulder blades",
-      notes: "Taking dole",
-      date: "2024-07-05 17:52",
-    },
-    {
-      id: 2,
-      complaints:
-        "Abdominal pain, radiating to right shoulder and shoulder blades",
-      notes: "Taking dole",
-      date: "2024-07-05 18:15",
-    },
-    {
-      id: 3,
-      complaints:
-        "Abdominal pain, radiating to right shoulder and shoulder blades",
-      notes: "Taking dole",
-      date: "2024-08-05 03:15",
-    },
-    {
-      id: 4,
-      complaints:
-        "Abdominal pain, radiating to right shoulder and shoulder blades",
-      notes: "Taking dole",
-      date: "2024-08-05 18:15",
-    },
-    {
-      id: 5,
-      complaints:
-        "Abdominal pain, radiating to right shoulder and shoulder blades",
-      notes: "Taking dole",
-      date: "2024-08-05 18:15",
-    },
-    {
-      id: 6,
-      complaints:
-        "Abdominal pain, radiating to right shoulder and shoulder blades",
-      notes: "Taking dole",
-      date: "2024-08-05 18:15",
-    },
-    {
-      id: 7,
-      complaints:
-        "Abdominal pain, radiating to right shoulder and shoulder blades",
-      notes: "Taking dole",
-      date: "2024-08-05 18:15",
-    },
-    {
-      id: 8,
-      complaints:
-        "Abdominal pain, radiating to right shoulder and shoulder blades",
-      notes: "Taking dole",
-      date: "2024-08-05 18:15",
-    },
-  ];
+  // const rowData = [
+  //   {
+  //     id: 1,
+  //     complaints:
+  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
+  //     notes: "Taking dole",
+  //     date: "2024-07-05 17:52",
+  //   },
+  //   {
+  //     id: 2,
+  //     complaints:
+  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
+  //     notes: "Taking dole",
+  //     date: "2024-07-05 18:15",
+  //   },
+  //   {
+  //     id: 3,
+  //     complaints:
+  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
+  //     notes: "Taking dole",
+  //     date: "2024-08-05 03:15",
+  //   },
+  //   {
+  //     id: 4,
+  //     complaints:
+  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
+  //     notes: "Taking dole",
+  //     date: "2024-08-05 18:15",
+  //   },
+  //   {
+  //     id: 5,
+  //     complaints:
+  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
+  //     notes: "Taking dole",
+  //     date: "2024-08-05 18:15",
+  //   },
+  //   {
+  //     id: 6,
+  //     complaints:
+  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
+  //     notes: "Taking dole",
+  //     date: "2024-08-05 18:15",
+  //   },
+  //   {
+  //     id: 7,
+  //     complaints:
+  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
+  //     notes: "Taking dole",
+  //     date: "2024-08-05 18:15",
+  //   },
+  //   {
+  //     id: 8,
+  //     complaints:
+  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
+  //     notes: "Taking dole",
+  //     date: "2024-08-05 18:15",
+  //   },
+  // ];
+
+  const { loading, error, get } = useApi();
+
+  const [rowData, setRowData] = useState([]);
+  const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
 
@@ -212,6 +218,27 @@ const ChiefComplaints = ({ OnClose, from }) => {
       detailPage();
     }
   };
+
+  const getChiefComplaints = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&searchkey=&order_by=created_at&dir=2&slug=chief-complaints&user_id=10&scanOrdersOnly=&scanstatus=`
+      );
+      if (response.code === 200) {
+        console.log(response.data.docs);
+        setRowData(response.data.docs);
+        setPagination(response.data.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage]);
+
+  useEffect(() => {
+    getChiefComplaints();
+  }, [getChiefComplaints]);
 
   return (
     <>
@@ -278,7 +305,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
           )}
           <div className="mb-2">
             <ChiefComplaintTable
-              rowData={getCurrentPageItems()}
+              rowData={rowData}
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
@@ -289,7 +316,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
                   <Pagination
                     currentPage={currentPage}
                     onPageChange={onPageChange}
-                    totalItems={rowData?.length}
+                    totalItems={pagination?.total}
                     itemsPerPage={itemsPerPage}
                   />
                 </CCol>

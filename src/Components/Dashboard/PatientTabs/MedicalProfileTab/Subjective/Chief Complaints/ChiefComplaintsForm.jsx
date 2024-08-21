@@ -6,56 +6,95 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import { isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 
+const parseDate = (dateString) => {
+  if (!dateString) return null;
+  const [day, month, year] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const parseTime = (timeString) => {
+  if (!timeString) return null;
+  const [hours, minutes] = timeString.split(':').map(Number);
+  const now = new Date();
+  now.setHours(hours, minutes, 0, 0);
+  return now;
+};
+
 const ChiefComplaintsForm = ({ back, defaultValues }) => {
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  const defaultDateTime = defaultValues?.date || "";
-
-  // Split date and time
-  const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  const [selectedTime, setSelectedTime] = useState(
+  );
+  const [selectedDate, setSelectedDate] = useState(
+  );
+  const [complaints, setComplaints] = useState(
+  );
+  const [notes, setNotes] = useState(defaultValues?.addition_info?.notes || "");
+  const [errors, setErrors] = useState({});
   useEffect(() => {
-    // Combine default date and time into a single Date object
-    let date = new Date();
-
-    if (defaultDate) {
-      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
-      if (isValid(parsedDate)) {
-        date = parsedDate;
-      }
+    // Initialize the state with default values if available
+    if (defaultValues?.addition_info) {
+      setSelectedDate(parseDate(defaultValues.addition_info.date));
+      setSelectedTime(parseTime(defaultValues.addition_info.time));
+      setComplaints(defaultValues.addition_info.title || "");
+      setNotes(defaultValues.addition_info.notes || "");
     }
-
-    if (defaultTime) {
-      const [hours, minutes] = defaultTime.split(":").map(Number);
-      date.setHours(hours);
-      date.setMinutes(minutes);
-      date.setSeconds(0); // Reset seconds
-    }
-
-    setSelectedDate(date);
-    setSelectedTime(date); // Initialize time picker with the same Date object
-  }, [defaultDate, defaultTime]);
+  }, [defaultValues]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    if (date) {
-      setSelectedTime(date); // Sync time picker with the updated date
+    if (date && selectedTime) {
+      const updatedDateTime = new Date(date);
+      updatedDateTime.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
+      setSelectedTime(updatedDateTime);
     }
   };
 
   const handleTimeChange = (time) => {
     if (time) {
       const updatedDateTime = new Date(selectedDate || time);
-      updatedDateTime.setHours(time.getHours());
-      updatedDateTime.setMinutes(time.getMinutes());
-      updatedDateTime.setSeconds(0); // Reset seconds
-
-      setSelectedDate(updatedDateTime); // Optionally update date as well
-      setSelectedTime(time);
+      updatedDateTime.setHours(time.getHours(), time.getMinutes(), 0, 0);
+      setSelectedDate(updatedDateTime);
+      setSelectedTime(updatedDateTime);
     }
   };
 
+  // Validate the form
+  const validate = () => {
+    let valid = true;
+    let newErrors = {};
+
+    if (!selectedDate) {
+      console.log("Validate");
+      newErrors.date = "Date is required";
+      valid = false;
+    }
+
+    if (!selectedTime) {
+      console.log("Validate");
+      newErrors.time = "Time is required";
+      valid = false;
+    }
+
+    if (!complaints.trim()) {
+      console.log("Validate");
+      newErrors.complaints = "Chief Complaints is required";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const onSubmit = () => {
+    if (validate()) {
+      if (defaultValues.id !== undefined) {
+        console.log("Edit clicked");
+      }
+      if (defaultValues.id === undefined) {
+        console.log("Add clicked");
+        
+      }
+    }
+  };
   return (
     <>
       <CRow className="mb-3">
@@ -73,6 +112,7 @@ const ChiefComplaintsForm = ({ back, defaultValues }) => {
               wrapperClassName="date-picker-wrapper"
               dateFormat={DATE_FORMAT}
             />
+            {errors.date && <div className="error-text">{errors.date}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
@@ -91,6 +131,7 @@ const ChiefComplaintsForm = ({ back, defaultValues }) => {
               timeIntervals={5}
               dateFormat="h:mm aa"
             />
+            {errors.time && <div className="error-text">{errors.time}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
@@ -104,8 +145,13 @@ const ChiefComplaintsForm = ({ back, defaultValues }) => {
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.complaints}
+                // defaultValue={defaultValues?.complaints}
+                value={complaints}
+                onChange={(e) => setComplaints(e.target.value)}
               />
+              {errors.complaints && (
+                <div className="error-text">{errors.complaints}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -120,7 +166,9 @@ const ChiefComplaintsForm = ({ back, defaultValues }) => {
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.notes}
+                // defaultValue={defaultValues?.notes}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
                 rows={3}
               />
             </div>
@@ -130,7 +178,7 @@ const ChiefComplaintsForm = ({ back, defaultValues }) => {
 
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
+          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

@@ -35,13 +35,19 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData, from }) => {
                 <span className="fs-16 fw-500">{dt?.id}</span>
               </CTableHeaderCell>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{tableDateTime(dt?.date)}</span>
+                <span className="fs-16 fw-500">
+                  {dt?.addition_info?.date ? dt?.addition_info?.date : "-"}
+                  {" "}
+                </span>
+                <span className="fs-16 fw-500">
+                  {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}
+                </span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.complaints}</span>
+                <span className="fs-16 fw-500">{dt?.addition_info?.title ? dt?.addition_info?.title :'-'}</span>
               </CTableDataCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.notes}</span>
+                <span className="fs-16 fw-500">{dt?.addition_info?.notes ? dt?.addition_info?.notes : '-'}</span>
               </CTableDataCell>
               {from !== "Consult" && (
                 <CTableDataCell style={{ height: "10px" }}>
