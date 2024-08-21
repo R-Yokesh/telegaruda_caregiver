@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import VitalsTab from "../../../VitalsTab/VitalsTab";
 import { CCard, CCardBody, CCol, CContainer, CRow } from "@coreui/react";
 import { Assets } from "../../../../../../assets/Assets";
@@ -10,6 +10,7 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { ObjectiveDatas } from "../../../../../Consultant/TableColumnsJson/ObjectiveJson";
 import CardChart from "../../../../../Charts/CardChart";
 import Badge from "../../../../../Badge/Badge";
+import { transformBMIData, transformBPData } from "./FormattedDatas";
 
 const VitalSign = ({ setVitalView, onClose }) => {
   const tabs = [
@@ -61,74 +62,17 @@ const VitalSign = ({ setVitalView, onClose }) => {
   const [entities, setEntities] = useState(false);
   const [cards, setCards] = useState([]);
   const [filtered, setFiltered] = useState([]);
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [filters, setFilters] = useState(true);
   const { loading, error, get } = useApi();
 
-  const transformData = (originalData) => {
-    if (!Array.isArray(originalData) || originalData.length === 0) {
-      return null;
-    }
-
-    // Map through original data to create tableData
-    const tableData = originalData.map((item, index) => ({
-      "no.": index + 1,
-      result: {
-        status: item.details.bpFlagColor === "success" ? "success" : "error",
-        name: item.details.bpFlag || "Unknown",
-      },
-      systolic: item.details.systolic || "N/A",
-      diastolic: item.details.diastolic || "N/A",
-      "pulse_(in_bpm)": item.details.pulse || "N/A",
-      date: `${item.details.date} ${item.details.time || ""}`,
-      action:
-        item.freeze === 1
-          ? [{ type: "warning" }]
-          : [{ type: "edit" }, { type: "delete" }],
-      name: "Blood Pressure",
-      id: item.id,
-      user_id: item.user_id,
-      slug: "blood-pressure",
-    }));
-
-    // Create badge and other static information
-    const badge =
-      tableData.length > 0
-        ? [
-            {
-              label: `${tableData[0].systolic}/${tableData[0].diastolic} mm Hg`,
-              color: tableData[0].result.status,
-            },
-            {
-              label: `${tableData[0]["pulse_(in_bpm)"]} Pulse (bpm)`,
-              color: tableData[0].result.status,
-            },
-          ]
-        : [];
-
-    return {
-      id: 1,
-      icon: Assets.VitalBP,
-      name: "Blood Pressure",
-      date: `Recently Added ${tableData[0].date
-        .split(" ")[0]
-        .split("-")
-        .reverse()
-        .join("-")}`,
-      category: "Primary Vitals",
-      badge,
-      columnsData: [
-        { id: 1, label: "NO." },
-        { id: 2, label: "RESULT" },
-        { id: 3, label: "SYSTOLIC" },
-        { id: 4, label: "DIASTOLIC" },
-        { id: 5, label: "PULSE (IN BPM)" },
-        { id: 6, label: "DATE" },
-        { id: 7, label: "ACTION" },
-      ],
-      tableData,
-      chartLabel1: "PULSE (bpm)",
-      chartLabel2: "SYSTOLE (mm Hg)",
-      chartLabel3: "DIASTOLE (mm Hg)",
-    };
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
   };
 
   useEffect(() => {
@@ -160,12 +104,17 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     ? [
                         {
                           label: `${tableData[0].details?.bmi}kg/m²`,
-                          color: tableData[0].details?.bpFlagColor,
+                          color: tableData[0].details?.bmiFlagColor,
                         },
                       ]
                     : []
                   : [];
-              const formattedData = transformData(response?.data?.vitals);
+              const formattedData =
+                card?.slug === "blood-pressure"
+                  ? transformBPData(response?.data?.vitals)
+                  : card?.slug === "bmi"
+                  ? transformBMIData(response?.data?.vitals)
+                  : null;
 
               return {
                 ...card,
@@ -192,39 +141,51 @@ const VitalSign = ({ setVitalView, onClose }) => {
         console.error("Error fetching card data:", error);
       }
     };
-
-    fetchCardData();
+    if (filters) {
+      fetchCardData();
+    }
   }, [entities, cardSelectedData]);
-  // Function to fetch data for a specific card
+  // entities, cardSelectedData
+
   const fetchCardData = async (card) => {
+    console.log(searchValue, "searchValue");
     try {
       const response = await get(
-        `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=10&slug=${cardSelectedData?.slug}`
+        `resource/vitals?limit=10&page=1&searchkey=${searchValue ?? ""}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&order_by=details-%3Edate&dir=2&user_id=10&slug=${
+          cardSelectedData?.slug
+        }`
       );
       const tableData = response?.data?.vitals;
 
       const cardbadge =
         tableData.length > 0
-          ? cardSelectedData.slug === "blood-pressure"
+          ? cardSelectedData?.slug === "blood-pressure"
             ? [
                 {
                   label: `${tableData[0].details?.systolic}/${tableData[0]?.details?.diastolic} mm Hg`,
                   color: tableData[0].details?.bpFlagColor,
                 },
               ]
-            : cardSelectedData.slug === "bmi"
+            : cardSelectedData?.slug === "bmi"
             ? [
                 {
                   label: `${tableData[0].details?.bmi}kg/m²`,
-                  color: tableData[0].details?.bpFlagColor,
+                  color: tableData[0].details?.bmiFlagColor,
                 },
               ]
             : []
           : [];
 
-      const formattedData = transformData(response?.data?.vitals);
+      const formattedData =
+        card?.slug === "blood-pressure"
+          ? transformBPData(response?.data?.vitals)
+          : card?.slug === "bmi"
+          ? transformBMIData(response?.data?.vitals)
+          : null;
 
-      const updatedCard = await {
+      const updatedCard = {
         ...card,
         created: response?.data?.vitals[0]?.details?.date,
         cardbadge,
@@ -269,7 +230,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
 
   useEffect(() => {
     getFilter();
-  }, [currentTabtitle, cards, cardSelectedData]);
+  }, [currentTabtitle, cards]);
 
   const renderImage = (contentUrl) => {
     return (
@@ -292,7 +253,9 @@ const VitalSign = ({ setVitalView, onClose }) => {
     );
   };
 
-  console.log(filtered, "first", cardSelectedData, cards);
+  useEffect(() => {
+    fetchCardData(cardSelectedData);
+  }, [startDate, endDate, searchValue]);
 
   return (
     <>
@@ -352,7 +315,14 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   </div>
                   <div className="vital-card-title">
                     <span className="vital-card-text-bold">{item?.name}</span>
-                    <span className="vital-card-text">{item?.created}</span>
+                    <span className="vital-card-text">
+                      Recently Added{" "}
+                      {item?.created
+                        ?.split(" ")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")}
+                    </span>
                   </div>
                 </div>
                 <div className="vital-badge">
@@ -391,6 +361,10 @@ const VitalSign = ({ setVitalView, onClose }) => {
               <ObjectiveDetailPage
                 data={cardSelectedData}
                 getTableDatas={(data) => fetchCardData(data)}
+                getFilterValues={(data1, data2, data3) => {
+                  getFilterValues(data1, data2, data3);
+                  setFilters(false);
+                }}
               />
               {/* <ObjectiveDetailPage
                 data={entities}

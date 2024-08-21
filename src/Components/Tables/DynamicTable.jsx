@@ -82,17 +82,24 @@ const DynamicTable = ({
             </tr>
           </thead>
           <tbody>
-            {tableData?.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {columnsData.map((column, i) =>
-                  from === "Consult" && i === columnsData.length - 1 ? null : (
-                    <td key={`${rowIndex}-${column?.id}`}>
-                      {renderCell(row, column)}
-                    </td>
-                  )
-                )}
+            {tableData?.length <= 0 ? (
+              <tr>
+                <td colSpan={columnsData.length} className="no-data-message">No data available</td>
               </tr>
-            ))}
+            ) : (
+              tableData?.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {columnsData.map((column, i) =>
+                    from === "Consult" &&
+                    i === columnsData.length - 1 ? null : (
+                      <td key={`${rowIndex}-${column?.id}`}>
+                        {renderCell(row, column)}
+                      </td>
+                    )
+                  )}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -151,7 +158,7 @@ const DynamicTable = ({
                 <BPForm
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
-                  getTableDatas={getTableDatas}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -270,7 +277,6 @@ const DynamicTable = ({
   function renderCell(row, column) {
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
-    console.log(columnKey, "first", row['fev1_(l)']);
 
     if (columnKey === "ecg") {
       // Function to render PDF content

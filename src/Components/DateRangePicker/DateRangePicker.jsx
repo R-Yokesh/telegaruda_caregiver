@@ -4,13 +4,23 @@ import DatePicker from "react-datepicker";
 import { Assets } from "../../assets/Assets";
 import ActiveButton from "../Buttons/ActiveButton/ActiveButton";
 import { DATE_FORMAT } from "../../Config/config";
+import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
+import { formatDate } from "../../Utils/dateUtils";
 
-const DateRangePicker = ({ onClose }) => {
+const DateRangePicker = ({ onClose, getFilterValues }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
+  const [searchValue, setSearchValue] = useState("");
   // Get today's date
   const today = new Date();
+
+  const onSearch = () => {
+    const formattedStart =
+      formatDate(startDate) === "01-01-1970" ? null : formatDate(startDate);
+    const formattedEnd =
+      formatDate(endDate) === "01-01-1970" ? null : formatDate(endDate);
+    getFilterValues(formattedStart, formattedEnd, searchValue);
+  };
   return (
     <>
       <CRow className="mb-2 p-3">
@@ -19,7 +29,14 @@ const DateRangePicker = ({ onClose }) => {
           <DatePicker
             showIcon
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            onChange={(date) => {
+              if (date === null) {
+                // Explicitly set to null if the clear button is clicked
+                setStartDate(null);
+              } else {
+                setStartDate(date);
+              }
+            }}
             isClearable
             className="date-range-picker"
             maxDate={today}
@@ -47,6 +64,8 @@ const DateRangePicker = ({ onClose }) => {
               type="text"
               placeholder="Search"
               style={{ padding: "7px" }}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
         </CCol>
@@ -55,11 +74,11 @@ const DateRangePicker = ({ onClose }) => {
           className="d-flex flex-column gap-1 justify-content-end"
           style={{ width: "60px" }}
         >
-          <ActiveButton onClick={onClose}>
+          <PrimaryButton onClick={() => onSearch()}>
             <div className="d-flex align-items-center gap-2">
-              <img src={Assets.CloseX} alt="close" />
+              <img src={Assets.search} alt="close" />
             </div>
-          </ActiveButton>
+          </PrimaryButton>
         </CCol>
       </CRow>
     </>

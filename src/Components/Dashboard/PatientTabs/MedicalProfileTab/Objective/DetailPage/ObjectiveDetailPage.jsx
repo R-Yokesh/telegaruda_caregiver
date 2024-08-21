@@ -46,7 +46,7 @@ import ECGChart from "../ECG Chart/ECGChart";
 import useApi from "../../../../../../ApiServices/useApi";
 import DateSearch from "../../../../../DateRangePicker/DateSearch";
 
-const ObjectiveDetailPage = ({ data, getTableDatas }) => {
+const ObjectiveDetailPage = ({ data, getTableDatas, getFilterValues }) => {
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
   const [filterView, setFilterView] = useState(false);
@@ -71,6 +71,9 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
     setFilterView(false);
   };
 
+  const getFilters = async (startDate, endDate, searchValue) => {
+    getFilterValues(startDate, endDate, searchValue);
+  };
   return (
     <>
       <CContainer className="p-0">
@@ -112,7 +115,12 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
                 </CCol>
                 <CCol xs={4} md={4} lg={4}>
                   {filterView && (
-                    <ActiveButton onClick={() => filterBack()}>
+                    <ActiveButton
+                      onClick={() => {
+                        filterBack();
+                        getFilterValues(null, null, null);
+                      }}
+                    >
                       <div className="d-flex align-items-center justify-content-center gap-2">
                         <img src={Assets.CloseX} alt="add" />
                         <span className="fs-16 fw-600">Filter</span>
@@ -164,14 +172,17 @@ const ObjectiveDetailPage = ({ data, getTableDatas }) => {
             {chartView ? (
               // data?.name === "Heart" ? (
               //   <ECGChart data={data} />
-              // ) : 
-              (
-                <ChartTab data={data} />
-              )
+              // ) :
+              <ChartTab data={data} />
             ) : (
               <>
                 {/* {filterView && <DateSearch />} */}
-                {filterView && <DateRangePicker onClose={filterBack} />}
+                {filterView && (
+                  <DateRangePicker
+                    onClose={filterBack}
+                    getFilterValues={getFilters}
+                  />
+                )}
                 <DynamicTable
                   columnsData={data?.columnsData}
                   tableData={data?.tableData}

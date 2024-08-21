@@ -22,7 +22,7 @@ const LineChartDetails = ({ datas }) => {
     data1: parseFloat(
       item?.["blood_ketone_value"] ||
       item?.["hemoglobinValue"] ||
-      item?.["bmi"] ||
+      item?.["bmi_(kg/m²)"] ||
       item?.["blood_sugar_value"] ||
       item?.["pulse_(in_bpm)"] ||
       item?.["hr_(bpm)"] ||
