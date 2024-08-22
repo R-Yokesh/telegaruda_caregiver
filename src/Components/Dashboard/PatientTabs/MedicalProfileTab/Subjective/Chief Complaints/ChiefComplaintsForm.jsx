@@ -1,10 +1,13 @@
 import { CCol, CFormTextarea, CRow } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import DatePicker from "react-datepicker";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import { isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
+import useApi from "../../../../../../ApiServices/useApi";
+import { format } from "date-fns";
+import moment  from "moment";
 
 const parseDate = (dateString) => {
   if (!dateString) return null;
@@ -20,7 +23,9 @@ const parseTime = (timeString) => {
   return now;
 };
 
-const ChiefComplaintsForm = ({ back, defaultValues }) => {
+const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultValues }) => {
+
+  const { loading, error, post,clearCache } = useApi();
   const [selectedTime, setSelectedTime] = useState(
   );
   const [selectedDate, setSelectedDate] = useState(
@@ -39,23 +44,45 @@ const ChiefComplaintsForm = ({ back, defaultValues }) => {
     }
   }, [defaultValues]);
 
+  // const handleDateChange = (date) => {
+  //   setSelectedDate(date);
+  //   if (date && selectedTime) {
+  //     const updatedDateTime = new Date(date);
+  //     updatedDateTime.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
+  //     setSelectedTime(updatedDateTime);
+  //   }
+  // };
+
+  // const handleTimeChange = (time) => {
+  //   if (time) {
+  //     const updatedDateTime = new Date(selectedDate || time);
+  //     updatedDateTime.setHours(time.getHours(), time.getMinutes(), 0, 0);
+  //     setSelectedDate(updatedDateTime);
+  //     setSelectedTime(updatedDateTime);
+  //   }
+  // };
+
   const handleDateChange = (date) => {
-    setSelectedDate(date);
-    if (date && selectedTime) {
-      const updatedDateTime = new Date(date);
-      updatedDateTime.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
-      setSelectedTime(updatedDateTime);
+    if (date) {
+      // const formattedDate = format(date, "dd-MM-yyyy");
+      setSelectedDate(date);
+    } else {
+      setSelectedDate(null);
     }
   };
-
+  
   const handleTimeChange = (time) => {
     if (time) {
-      const updatedDateTime = new Date(selectedDate || time);
-      updatedDateTime.setHours(time.getHours(), time.getMinutes(), 0, 0);
-      setSelectedDate(updatedDateTime);
-      setSelectedTime(updatedDateTime);
+      // console.log("Time-----",moment(time).format("hh:mm "))
+      // const formattedTime = moment(time).format("hh:mm");
+      setSelectedTime(time);
+    } else {
+      setSelectedTime(null);
     }
   };
+  
+  
+  
 
   // Validate the form
   const validate = () => {
@@ -74,7 +101,7 @@ const ChiefComplaintsForm = ({ back, defaultValues }) => {
       valid = false;
     }
 
-    if (!complaints.trim()) {
+    if (!complaints?.trim()) {
       console.log("Validate");
       newErrors.complaints = "Chief Complaints is required";
       valid = false;
@@ -84,13 +111,51 @@ const ChiefComplaintsForm = ({ back, defaultValues }) => {
     return valid;
   };
 
+
+  const addChiefComplaints = async () => {
+    const formattedDate = format(selectedDate, "dd-MM-yyyy");
+    const formattedTime = moment(selectedTime).format("hh:mm");
+    try {
+      const body = {
+        addition_info: {
+          date:formattedDate,
+          time:formattedTime,
+          title:complaints,
+          notes:notes,
+        },
+        user_id: "10",
+        document_source: "chief-complaints",
+      };
+  
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/docs`, body);
+  
+      if (response.code === 201) {
+        clearCache();
+        await getChiefComplaints();
+        setAddFormView(false);
+         
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+
+ 
+
+
   const onSubmit = () => {
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
+      
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
+        addChiefComplaints();
         
       }
     }

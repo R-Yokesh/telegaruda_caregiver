@@ -8,6 +8,7 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { toast } from "react-toastify";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 import { isValid, parse } from "date-fns";
+import { duration } from "moment";
 
 const SignsSymptomsForm = ({ back, defaultValues }) => {
 
@@ -111,74 +112,11 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
     }
   };
 
-  // const [selectedTime, setSelectedTime] = useState(null);
-  // const [selectedDate, setSelectedDate] = useState(null);
 
-  // const defaultDateTime = defaultValues?.onset || "";
-
-  // // Split date and time
-  // const defaultDate = defaultDateTime.split(" ")[0] || "";
-  // const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
-  // useEffect(() => {
-  //   // Combine default date and time into a single Date object
-  //   let date = new Date();
-
-  //   if (defaultDate) {
-  //     const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
-  //     if (isValid(parsedDate)) {
-  //       date = parsedDate;
-  //     }
-  //   }
-
-  //   if (defaultTime) {
-  //     const [hours, minutes] = defaultTime.split(":").map(Number);
-  //     date.setHours(hours);
-  //     date.setMinutes(minutes);
-  //     date.setSeconds(0); // Reset seconds
-  //   }
-
-  //   setSelectedDate(date);
-  //   setSelectedTime(date); // Initialize time picker with the same Date object
-  // }, [defaultDate, defaultTime, defaultValues]);
-
-  // const handleDateChange = (date) => {
-  //   setSelectedDate(date);
-  //   if (date) {
-  //     setSelectedTime(date); // Sync time picker with the updated date
-  //   }
-  // };
-
-  // const handleTimeChange = (time) => {
-  //   if (time) {
-  //     const updatedDateTime = new Date(selectedDate || time);
-  //     updatedDateTime.setHours(time.getHours());
-  //     updatedDateTime.setMinutes(time.getMinutes());
-  //     updatedDateTime.setSeconds(0); // Reset seconds
-
-  //     setSelectedDate(updatedDateTime); // Optionally update date as well
-  //     setSelectedTime(time);
-  //   }
-  // };
 
   return (
     <>
       <CRow className="mb-3">
-        {/* <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Onset *
-              </label>
-              <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.onset}
-              />
-            </div>
-          </div>
-        </CCol> */}
         <CCol lg={3}>
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
@@ -227,6 +165,7 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.location}
+                // value={location}
               />
             </div>
           </div>
@@ -242,9 +181,9 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="0000"
-                defaultValue={defaultValues?.duration_days}
+                // defaultValue={defaultValues?.duration_days}
                 name="dur_in_days"
-                value={value3}
+                value={duration}
                 onChange={handleChange}
                 onPaste={handlePaste}
               />

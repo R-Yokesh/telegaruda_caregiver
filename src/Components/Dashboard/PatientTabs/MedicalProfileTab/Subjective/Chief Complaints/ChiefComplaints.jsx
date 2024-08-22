@@ -176,12 +176,13 @@ const ChiefComplaints = ({ OnClose, from }) => {
   //   },
   // ];
 
-  const { loading, error, get } = useApi();
+  const { loading, error, get,del,clearCache } = useApi();
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
+  const [id, setId] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
@@ -208,14 +209,15 @@ const ChiefComplaints = ({ OnClose, from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
+  const getselectedData = (data,id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
     }
     if (type === "delete") {
+      setId(id);
       detailPage();
+      
     }
   };
 
@@ -234,11 +236,32 @@ const ChiefComplaints = ({ OnClose, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage]);
+  }, [get, currentPage,addFormView]);
 
   useEffect(() => {
     getChiefComplaints();
   }, [getChiefComplaints]);
+
+  
+  const deleteChiefComplaints = async () => {
+    try {
+      const response = await del(`resource/docs/${id}`);
+  
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        getChiefComplaints();
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
+
 
   return (
     <>
@@ -333,6 +356,8 @@ const ChiefComplaints = ({ OnClose, from }) => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
+              setAddFormView={setAddFormView}
+              getChiefComplaints={getChiefComplaints}
               defaultValues={selectedData}
             />
           </CCardBody>
@@ -352,7 +377,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
                 <h5>Are you sure want to delete ?</h5>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDetailView(false)}>
+                    <PrimaryButton onClick={() => deleteChiefComplaints()}>
                       Yes
                     </PrimaryButton>
                   </div>

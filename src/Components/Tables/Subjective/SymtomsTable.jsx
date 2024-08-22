@@ -11,9 +11,12 @@ import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
 
 const SymtomsTable = ({ columns, rowData, getselectedData, from }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+
+  const selectedData = (data,id, type) => {
+
+    getselectedData(data,id, type);
   };
+
   return (
     <>
       <CTable className="lab-responsive-table">
@@ -34,25 +37,29 @@ const SymtomsTable = ({ columns, rowData, getselectedData, from }) => {
                   <span className="fs-16 fw-500">{dt?.id}</span>
                 </div>
               </CTableHeaderCell>
+              <CTableHeaderCell>
+                <span className="fs-16 fw-500">
+                  {dt?.values?.date ? dt?.values?.date : "-"}
+                  {" "}
+                </span>
+                <span className="fs-16 fw-500">
+                  {dt?.values?.time ? dt?.values?.time : "-"}
+                </span>
+              </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.onset}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.location}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.location ? dt?.values?.location : "-"}</span>
                 </div>
               </CTableDataCell>
 
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.characteristics}</span>
+                  <span>{dt?.values?.symptoms ? dt?.values?.symptoms : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.duration_days}</span>
+                  <span>{dt?.values?.duration ? dt?.values?.duration : "-"}</span>
                 </div>
               </CTableDataCell>
               {/* <CTableDataCell style={{ height: "10px" }}>
@@ -72,7 +79,7 @@ const SymtomsTable = ({ columns, rowData, getselectedData, from }) => {
               </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.severity}</span>
+                  <span>{dt?.values?.severity ? dt?.values?.severity : "-"}</span>
                 </div>
               </CTableDataCell>
               {/* <CTableDataCell style={{ height: "10px" }}>
@@ -93,7 +100,7 @@ const SymtomsTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="edit"
                         src={Assets?.EditPencil}
                         className="cursor"
-                        onClick={() => selectedData(dt, "edit")}
+                        onClick={() => selectedData(dt,dt?.id, "edit")}
                       />
                     </div>
                     <div
@@ -107,7 +114,7 @@ const SymtomsTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="delete"
                         src={Assets?.Delete}
                         className="cursor"
-                        onClick={() => selectedData(dt, "delete")}
+                        onClick={() => selectedData(dt,dt?.id, "delete")}
                       />
                     </div>
                   </div>
