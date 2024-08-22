@@ -1,6 +1,6 @@
 import { Assets } from "../../../../../../assets/Assets";
 
-export const transformBPData = (originalData) => {
+export const transformBPData = (originalData, pagination) => {
   if (!Array.isArray(originalData) || originalData.length === 0) {
     return {
       id: 1,
@@ -85,10 +85,11 @@ export const transformBPData = (originalData) => {
     chartLabel1: "PULSE (bpm)",
     chartLabel2: "SYSTOLE (mm Hg)",
     chartLabel3: "DIASTOLE (mm Hg)",
+    total: pagination?.total,
   };
 };
 
-export const transformBMIData = (originalData) => {
+export const transformBMIData = (originalData, pagination) => {
   if (!Array.isArray(originalData) || originalData.length === 0) {
     return {
       id: 3,
@@ -123,7 +124,7 @@ export const transformBMIData = (originalData) => {
     "bmi_(kg/m²)": item?.details?.bmi || "N/A",
     "height_(cm)": item?.details?.height || "N/A",
     "weight_(kg)": item?.details?.weight || "N/A",
-    date: item?.details?.date || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item.freeze === 1
         ? [{ type: "warning" }]
@@ -132,6 +133,8 @@ export const transformBMIData = (originalData) => {
     id: item.id,
     user_id: item.user_id,
     slug: "bmi",
+    height_unit: item?.details?.height_unit || "",
+    weight_unit: item?.details?.weight_unit || "",
   }));
 
   // Create badge and other static information
@@ -169,5 +172,157 @@ export const transformBMIData = (originalData) => {
     chartLabel1: "BMI (kg/m²)",
     chartLabel2: "Height (cm)",
     chartLabel3: "Weight (kg)",
+    total: pagination?.total,
+  };
+};
+
+export const transformRespirationRateData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 9,
+      icon: Assets.VitalRespi,
+      name: "Respiration Rate",
+      date: "-",
+      category: "Primary Vitals",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "Respiration Rate (BPM)" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Respiration Rate (BPM)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData?.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item.details.respirationFlagColor,
+      name: item.details.respirationFlag,
+    },
+    "respiration_rate_(bpm)": item.details.respiration || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Respiration Rate",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "respiration",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0]["respiration_rate_(bpm)"]} bpm`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 9,
+    icon: Assets.VitalRespi,
+    name: "Respiration Rate",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Primary Vitals",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "Respiration Rate (BPM)" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Respiration Rate (BPM)",
+    total: pagination?.total,
+  };
+};
+
+export const transformSpO2Data = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 10,
+      icon: Assets.SpO2,
+      name: "SpO2",
+      date: "-",
+      category: "Primary Vitals",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "SpO2" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "SpO2 (%)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData?.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.spo2FlagColor,
+      name: item?.details?.spo2Flag,
+    },
+    spo2: item.details.spo2 + "" + item?.details?.unit || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "SpO2",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "spO2",
+    unit: item?.details?.unit ,
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0].spo2} %`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 10,
+    icon: Assets.SpO2,
+    name: "SpO2",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Primary Vitals",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "SpO2" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "SpO2 (%)",
+    total: pagination?.total,
   };
 };

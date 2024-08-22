@@ -22,7 +22,7 @@ const CardChart = ({ datas }) => {
           item?.["pulse_(in_bpm)"] ||
           item?.["heart_rate_(bpm)"] ||
           item?.["respiration_rate_(bpm)"] ||
-          removePercent(item?.["spo2"]) ||
+          item?.["spo2"] ||
           removePercent(item?.["hct_%"]) ||
           item?.["fvc_(l)"] ||
           item?.["totalOnly"] ||

@@ -10,7 +10,12 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { ObjectiveDatas } from "../../../../../Consultant/TableColumnsJson/ObjectiveJson";
 import CardChart from "../../../../../Charts/CardChart";
 import Badge from "../../../../../Badge/Badge";
-import { transformBMIData, transformBPData } from "./FormattedDatas";
+import {
+  transformBMIData,
+  transformBPData,
+  transformRespirationRateData,
+  transformSpO2Data,
+} from "./FormattedDatas";
 
 const VitalSign = ({ setVitalView, onClose }) => {
   const tabs = [
@@ -67,7 +72,12 @@ const VitalSign = ({ setVitalView, onClose }) => {
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const { loading, error, get } = useApi();
+
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const getFilterValues = (startDate, endDate, searchValue) => {
     setStartDate(startDate);
@@ -107,13 +117,43 @@ const VitalSign = ({ setVitalView, onClose }) => {
                           color: tableData[0].details?.bmiFlagColor,
                         },
                       ]
+                    : card?.slug === "respiration"
+                    ? [
+                        {
+                          label: `${tableData[0].details?.respiration} bpm`,
+                          color: tableData[0].details?.respirationFlagColor,
+                        },
+                      ]
+                    : card?.slug === "spO2"
+                    ? [
+                        {
+                          label: `${tableData[0].details?.spo2} %`,
+                          color: tableData[0].details?.spo2FlagColor,
+                        },
+                      ]
                     : []
                   : [];
               const formattedData =
                 card?.slug === "blood-pressure"
-                  ? transformBPData(response?.data?.vitals)
+                  ? transformBPData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
                   : card?.slug === "bmi"
-                  ? transformBMIData(response?.data?.vitals)
+                  ? transformBMIData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "respiration"
+                  ? transformRespirationRateData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "spO2"
+                  ? transformSpO2Data(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
                   : null;
 
               return {
@@ -148,12 +188,14 @@ const VitalSign = ({ setVitalView, onClose }) => {
   // entities, cardSelectedData
 
   const fetchCardData = async (card) => {
-    console.log(searchValue, "searchValue");
+    console.log(card, "searchValue");
     try {
       const response = await get(
-        `resource/vitals?limit=10&page=1&searchkey=${searchValue ?? ""}&from=${
-          startDate ?? ""
-        }&to=${endDate ?? ""}&order_by=details-%3Edate&dir=2&user_id=10&slug=${
+        `resource/vitals?limit=10&page=${currentPage ?? ""}&searchkey=${
+          searchValue ?? ""
+        }&from=${startDate ?? ""}&to=${
+          endDate ?? ""
+        }&order_by=details-%3Edate&dir=2&user_id=10&slug=${
           cardSelectedData?.slug
         }`
       );
@@ -175,14 +217,38 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   color: tableData[0].details?.bmiFlagColor,
                 },
               ]
+            : card?.slug === "respiration"
+            ? [
+                {
+                  label: `${tableData[0].details?.respiration} bpm`,
+                  color: tableData[0].details?.respirationFlagColor,
+                },
+              ]
+            : card?.slug === "spO2"
+            ? [
+                {
+                  label: `${tableData[0].details?.spo2} %`,
+                  color: tableData[0].details?.spo2FlagColor,
+                },
+              ]
             : []
           : [];
 
       const formattedData =
         card?.slug === "blood-pressure"
-          ? transformBPData(response?.data?.vitals)
+          ? transformBPData(response?.data?.vitals, response?.data?.pagination)
           : card?.slug === "bmi"
-          ? transformBMIData(response?.data?.vitals)
+          ? transformBMIData(response?.data?.vitals, response?.data?.pagination)
+          : card?.slug === "respiration"
+          ? transformRespirationRateData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "spO2"
+          ? transformSpO2Data(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
           : null;
 
       const updatedCard = {
@@ -255,7 +321,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
 
   useEffect(() => {
     fetchCardData(cardSelectedData);
-  }, [startDate, endDate, searchValue]);
+  }, [startDate, endDate, searchValue, currentPage]);
 
   return (
     <>
@@ -360,11 +426,15 @@ const VitalSign = ({ setVitalView, onClose }) => {
             <CCol className="mb-3">
               <ObjectiveDetailPage
                 data={cardSelectedData}
-                getTableDatas={(data) => fetchCardData(data)}
+                getTableDatas={(data) =>
+                  fetchCardData(data || cardSelectedData)
+                }
                 getFilterValues={(data1, data2, data3) => {
                   getFilterValues(data1, data2, data3);
                   setFilters(false);
                 }}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
               />
               {/* <ObjectiveDetailPage
                 data={entities}

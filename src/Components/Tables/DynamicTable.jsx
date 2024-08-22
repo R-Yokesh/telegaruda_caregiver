@@ -84,7 +84,9 @@ const DynamicTable = ({
           <tbody>
             {tableData?.length <= 0 ? (
               <tr>
-                <td colSpan={columnsData.length} className="no-data-message">No data available</td>
+                <td colSpan={columnsData.length} className="no-data-message">
+                  No data available
+                </td>
               </tr>
             ) : (
               tableData?.map((row, rowIndex) => (
@@ -152,6 +154,7 @@ const DynamicTable = ({
                 <BMI
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Blood Pressure" && (
@@ -166,12 +169,14 @@ const DynamicTable = ({
                 <RespirationRateForm
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "SpO2" && (
                 <Spo2
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 

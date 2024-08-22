@@ -45,8 +45,15 @@ import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 import ECGChart from "../ECG Chart/ECGChart";
 import useApi from "../../../../../../ApiServices/useApi";
 import DateSearch from "../../../../../DateRangePicker/DateSearch";
+import Pagination from "../../../../../Pagination/Pagination";
 
-const ObjectiveDetailPage = ({ data, getTableDatas, getFilterValues }) => {
+const ObjectiveDetailPage = ({
+  data,
+  getTableDatas,
+  getFilterValues,
+  currentPage,
+  onPageChange,
+}) => {
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
   const [filterView, setFilterView] = useState(false);
@@ -188,6 +195,16 @@ const ObjectiveDetailPage = ({ data, getTableDatas, getFilterValues }) => {
                   tableData={data?.tableData}
                   getTableDatas={getTableDatas}
                 />
+                <CRow className="mb-3">
+                  <CCol lg={12} className="d-flex justify-content-center">
+                    <Pagination
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={data?.total}
+                      itemsPerPage={10}
+                    />
+                  </CCol>
+                </CRow>
               </>
             )}
           </CCol>
@@ -220,11 +237,18 @@ const ObjectiveDetailPage = ({ data, getTableDatas, getFilterValues }) => {
                 {data?.name === "Temperature" && (
                   <Temperature addBack={addBack} />
                 )}
-                {data?.name === "SpO2" && <Spo2 addBack={addBack} />}
-                {data?.name === "Respiration Rate" && (
-                  <RespirationRateForm addBack={addBack} />
+                {data?.name === "SpO2" && (
+                  <Spo2 addBack={addBack} getTableDatas={getTableDatas} />
                 )}
-                {data?.name === "BMI" && <BMI addBack={addBack} />}
+                {data?.name === "Respiration Rate" && (
+                  <RespirationRateForm
+                    addBack={addBack}
+                    getTableDatas={getTableDatas}
+                  />
+                )}
+                {data?.name === "BMI" && (
+                  <BMI addBack={addBack} getTableDatas={getTableDatas} />
+                )}
                 {data?.name === "Blood Sugar" && <BSugar addBack={addBack} />}
                 {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} />}
                 {data?.name === "Hematocrit (HCT)" && <HCT addBack={addBack} />}

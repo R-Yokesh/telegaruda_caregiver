@@ -371,6 +371,7 @@ export const ObjectiveDatas = [
   {
     id: 9,
     icon: Assets.VitalRespi,
+    slug: "respiration",
     name: "Respiration Rate",
     category: "Primary Vitals",
     date: "Recently Added 27-03-2024",
@@ -408,6 +409,7 @@ export const ObjectiveDatas = [
   {
     id: 10,
     icon: Assets.SpO2,
+    slug: "spO2",
     name: "SpO2",
     category: "Primary Vitals",
     date: "Recently Added 27-03-2024",
