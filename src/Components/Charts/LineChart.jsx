@@ -18,7 +18,7 @@ const LineChartDetails = ({ datas }) => {
 
   // Transform tableData to the desired format
   const formattedData = datas?.tableData?.map((item) => ({
-    name: item?.date?.split(" ")[0], // Extract date part only
+    name: item?.date?.split(" ")[0].split("-").reverse().join("-"), // Extract date part only
     data1: parseFloat(
       item?.["blood_ketone_value"] ||
       item?.["hemoglobinValue"] ||

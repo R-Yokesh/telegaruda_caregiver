@@ -297,7 +297,7 @@ export const transformSpO2Data = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0].spo2} %`,
+            label: `${tableData[0].spo2}`,
             color: tableData[0].result.status,
           },
         ]

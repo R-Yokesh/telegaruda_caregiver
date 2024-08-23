@@ -10,7 +10,7 @@ const CardChart = ({ datas }) => {
 
   // Transform tableData to the desired format
   const formattedData = datas?.tableData?.map((item) => {
-    const datePart = item?.date?.split(" ")[0]; // Extract date part only
+    const datePart = item?.date?.split(" ")[0].split("-").reverse().join("-"); // Extract date part only
 
     return {
       name: datePart,

@@ -17,7 +17,7 @@ const ColumnChartDetails = ({ datas }) => {
   }
   // Transform tableData to the desired format
   const formattedData = datas?.tableData?.map((item) => ({
-    name: item?.date?.split(" ")[0],
+    name: item?.date?.split(" ")[0].split("-").reverse().join("-"),
     data1: parseFloat(
       item?.["blood_ketone_value"] ||
       item?.["hemoglobinValue"] ||
