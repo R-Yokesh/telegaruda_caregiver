@@ -12,8 +12,9 @@ import { Assets } from "../../../assets/Assets";
 import { tableDateTime } from "../../../Utils/dateUtils";
 
 const ChiefComplaintTable = ({ columns, rowData, getselectedData, from }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+  const selectedData = (data,id, type) => {
+
+    getselectedData(data,id, type);
   };
 
   return (
@@ -61,7 +62,7 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="edit"
                         src={Assets?.EditPencil}
                         className="cursor"
-                        onClick={() => selectedData(dt, "edit")}
+                        onClick={() => selectedData(dt,dt?.id, "edit")}
                       />
                     </div>
                     <div
@@ -75,7 +76,7 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="delete"
                         src={Assets?.Delete}
                         className="cursor"
-                        onClick={() => selectedData(dt, "delete")}
+                        onClick={() => selectedData(dt,dt?.id, "delete")}
                       />
                     </div>
                   </div>

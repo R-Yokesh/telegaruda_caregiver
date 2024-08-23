@@ -7,7 +7,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useState,useCallback,useEffect } from "react";
 import LabForm from "../../../Objective/Lab/LabForm";
 import Pagination from "../../../../../../Pagination/Pagination";
 import LabTable from "../../../../../../Tables/LabTable";
@@ -22,6 +22,7 @@ import SignsSymptomsForm from "./SignsSymptomsForm";
 import MedicationOrderTable from "../../../../../../Tables/MedicationOrderTable";
 import SymtomsTable from "../../../../../../Tables/Subjective/SymtomsTable";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import useApi from "../../../../../../../ApiServices/useApi";
 
 const SignsSymptoms = ({ from }) => {
   const detailsData = [
@@ -65,130 +66,138 @@ const SignsSymptoms = ({ from }) => {
     // { id: 10, label: "Notes" },
     { id: 6, label: "Actions" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      onset: "2024-07-15 03:15",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
-    },
-    {
-      id: 2,
-      onset: "2024-08-15 10:15",
-      location: "Knee",
-      duration_days: "150",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Mild",
-      notes: "-",
-    },
-    {
-      id: 3,
-      onset: "2024-07-18 20:15",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
-    },
-    {
-      id: 4,
-      onset: "2024-07-15 18:15",
-      location: "Knee",
-      duration_days: "120",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Moderate",
-      notes: "-",
-    },
-    {
-      id: 5,
-      onset: "2024-07-15 18:15",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Worst",
-      notes: "-",
-    },
-    {
-      id: 6,
-      onset: "2024-07-15 18:15",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Severe",
-      notes: "-",
-    },
-    {
-      id: 7,
-      onset: "2024-07-15 18:15",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
-    },
-    {
-      id: 8,
-      onset: "2024-07-15 18:15",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
-    },
-    {
-      id: 9,
-      onset: "2024-07-15 18:15",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
-    },
-    {
-      id: 10,
-      onset: "2024-07-15 18:15",
-      location: "Knee",
-      duration_days: "20",
-      characteristics: "Fracture",
-      aggravating: "Fracture",
-      relieving: "Fracture",
-      temporal: "Fracture",
-      severity: "Normal",
-      notes: "-",
-    },
-  ];
+
+
+  // const rowData = [
+  //   {
+  //     id: 1,
+  //     onset: "2024-07-15 03:15",
+  //     location: "Knee",
+  //     duration_days: "20",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Normal",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 2,
+  //     onset: "2024-08-15 10:15",
+  //     location: "Knee",
+  //     duration_days: "150",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Mild",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 3,
+  //     onset: "2024-07-18 20:15",
+  //     location: "Knee",
+  //     duration_days: "20",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Normal",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 4,
+  //     onset: "2024-07-15 18:15",
+  //     location: "Knee",
+  //     duration_days: "120",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Moderate",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 5,
+  //     onset: "2024-07-15 18:15",
+  //     location: "Knee",
+  //     duration_days: "20",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Worst",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 6,
+  //     onset: "2024-07-15 18:15",
+  //     location: "Knee",
+  //     duration_days: "20",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Severe",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 7,
+  //     onset: "2024-07-15 18:15",
+  //     location: "Knee",
+  //     duration_days: "20",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Normal",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 8,
+  //     onset: "2024-07-15 18:15",
+  //     location: "Knee",
+  //     duration_days: "20",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Normal",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 9,
+  //     onset: "2024-07-15 18:15",
+  //     location: "Knee",
+  //     duration_days: "20",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Normal",
+  //     notes: "-",
+  //   },
+  //   {
+  //     id: 10,
+  //     onset: "2024-07-15 18:15",
+  //     location: "Knee",
+  //     duration_days: "20",
+  //     characteristics: "Fracture",
+  //     aggravating: "Fracture",
+  //     relieving: "Fracture",
+  //     temporal: "Fracture",
+  //     severity: "Normal",
+  //     notes: "-",
+  //   },
+  // ];
+
+  const { loading, error, get,del,clearCache } = useApi();
+
+  const [rowData, setRowData] = useState([]);
+  const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
+  const [id, setId] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
@@ -198,7 +207,11 @@ const SignsSymptoms = ({ from }) => {
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };
+  };  
+
+
+
+  
 
   // Function to get items for the current page
   const getCurrentPageItems = () => {
@@ -215,16 +228,61 @@ const SignsSymptoms = ({ from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
+  const getselectedData = (data,id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
     }
     if (type === "delete") {
+      setId(id)
       detailPage();
     }
   };
+
+  
+  const fetchSignsSymptoms = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHealth?slug=hpi&user_id=261&limit=${itemsPerPage}&page=${currentPage}&order_by=values->date&dir=2`
+      );
+      if (response.code === 200) {
+        console.log(response.data.patient_healths);
+        setRowData(response.data.patient_healths);
+        setPagination(response.data.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage]);
+
+  useEffect(() => {
+    fetchSignsSymptoms();
+  }, [fetchSignsSymptoms]);
+
+  // Delte Signs Symptoms
+  const deleteSignsSymptoms = async () => {
+    try {
+      const response = await del(`resource/patientHealth/${id}`);
+  
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        fetchSignsSymptoms();
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
+
+
+
 
   return (
     <>
@@ -259,7 +317,7 @@ const SignsSymptoms = ({ from }) => {
           )}
           <div className="mb-2">
             <SymtomsTable
-              rowData={getCurrentPageItems()}
+              rowData={rowData}
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
@@ -271,7 +329,7 @@ const SignsSymptoms = ({ from }) => {
                   <Pagination
                     currentPage={currentPage}
                     onPageChange={onPageChange}
-                    totalItems={rowData?.length}
+                    totalItems={pagination?.total}
                     itemsPerPage={itemsPerPage}
                   />
                 </CCol>
@@ -307,7 +365,7 @@ const SignsSymptoms = ({ from }) => {
                 <h5>Are you sure want to delete ?</h5>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDetailView(false)}>
+                    <PrimaryButton onClick={() => deleteSignsSymptoms()}>
                       Yes
                     </PrimaryButton>
                   </div>
