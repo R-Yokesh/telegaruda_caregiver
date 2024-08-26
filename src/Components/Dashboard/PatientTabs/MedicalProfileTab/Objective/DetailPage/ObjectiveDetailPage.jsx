@@ -227,15 +227,18 @@ const ObjectiveDetailPage = ({
                 {data?.name === "Blood Pressure" && (
                   <BPForm addBack={addBack} getTableDatas={getTableDatas} />
                 )}
-                {data?.name === "Heart" && <HeartRate addBack={addBack} />}
+                {data?.name === "Heart" && <HeartRate addBack={addBack} getTableDatas={getTableDatas}/>}
                 {data?.name === "Lung Function Test (LFT)" && (
-                  <LFTForm addBack={addBack} />
+                  <LFTForm addBack={addBack} getTableDatas={getTableDatas} />
                 )}
                 {data?.name === "Lipid Profile" && (
                   <LipidProfileForm addBack={addBack} />
                 )}
                 {data?.name === "Temperature" && (
-                  <Temperature addBack={addBack} />
+                  <Temperature
+                    addBack={addBack}
+                    getTableDatas={getTableDatas}
+                  />
                 )}
                 {data?.name === "SpO2" && (
                   <Spo2 addBack={addBack} getTableDatas={getTableDatas} />

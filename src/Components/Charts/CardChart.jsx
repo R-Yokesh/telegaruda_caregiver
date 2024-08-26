@@ -20,41 +20,77 @@ const CardChart = ({ datas }) => {
           item?.["bmi_(kg/m²)"] ||
           item?.["blood_sugar_value"] ||
           item?.["pulse_(in_bpm)"] ||
-          item?.["heart_rate_(bpm)"] ||
+          item?.["hr_(bpm)"] ||
           item?.["respiration_rate_(bpm)"] ||
           item?.["spo2"] ||
           removePercent(item?.["hct_%"]) ||
           item?.["fvc_(l)"] ||
           item?.["totalOnly"] ||
           item?.["chartValue"] ||
-          item?.["temperature_value"] ||
+          item?.["temperature"] ||
           item?.["blood_uric_acid_value"] ||
           item?.["urea_value"] ||
           item?.["creatinine_value"] ||
           item?.["gfr_value"]
       ),
+      // For temperature C / F
+      unit: item.unit,
     };
   });
 
+  // const CustomTooltip = ({ active, payload, label }) => {
+  //   if (active && payload && payload.length) {
+  //     return (
+  //       <div
+  //         style={{
+  //           backgroundColor: "#fff",
+  //           border: "1px solid #ccc",
+  //           padding: "10px",
+  //         }}
+  //       >
+  //         <h5>{payload[0].payload.name}</h5>
+  //         <p className="label">{`${datas?.chartLabel1} : ${payload[0].value}`}</p>
+  //         {/* <p className="intro">{getIntroOfPage(label)}</p> */}
+  //       </div>
+  //     );
+  //   }
+
+  //   return null;
+  // };
+
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
+      // Determine the temperature unit and format the tooltip content accordingly
+      let tooltipContent = "";
+      if (datas.slug === "temperature" && payload[0]?.dataKey === "data1") {
+        const unit = payload[0].payload?.unit || "N/A";
+        const temperature = payload[0].value || "N/A";
+        tooltipContent =
+          unit === "Celsius"
+            ? `Temperature: ${temperature}°C`
+            : `Temperature: ${temperature}°F`;
+      } else {
+        tooltipContent = `${datas.chartLabel1} : ${payload[0].value}`;
+      }
+
       return (
         <div
           style={{
             backgroundColor: "#fff",
             border: "1px solid #ccc",
             padding: "10px",
+            borderRadius: "4px",
           }}
         >
           <h5>{payload[0].payload.name}</h5>
-          <p className="label">{`${datas?.chartLabel1} : ${payload[0].value}`}</p>
-          {/* <p className="intro">{getIntroOfPage(label)}</p> */}
+          <p className="label">{tooltipContent}</p>
         </div>
       );
     }
 
     return null;
   };
+
   return (
     <>
       <LineChart

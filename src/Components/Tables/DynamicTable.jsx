@@ -184,6 +184,7 @@ const DynamicTable = ({
                 <Temperature
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -191,12 +192,14 @@ const DynamicTable = ({
                 <LFTForm
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Heart" && (
                 <HeartRate
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Blood Sugar" && (
@@ -283,14 +286,14 @@ const DynamicTable = ({
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
 
-    if (columnKey === "ecg") {
+    if (columnKey === "result_file") {
       // Function to render PDF content
       const renderPdf = (contentUrl) => {
         window.open(contentUrl, "_blank");
       };
       return (
         <div style={{ width: "80px" }} onClick={() => renderPdf(value.link)}>
-          <span className="hyperlink">ECG</span>
+          <span className="hyperlink">{value.name}</span>
         </div>
       );
     } else if (columnKey === "result") {

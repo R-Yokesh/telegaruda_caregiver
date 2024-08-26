@@ -289,7 +289,7 @@ export const transformSpO2Data = (originalData, pagination) => {
     id: item.id,
     user_id: item.user_id,
     slug: "spO2",
-    unit: item?.details?.unit ,
+    unit: item?.details?.unit,
   }));
 
   // Create badge and other static information
@@ -323,6 +323,278 @@ export const transformSpO2Data = (originalData, pagination) => {
     ],
     tableData,
     chartLabel1: "SpO2 (%)",
+    total: pagination?.total,
+  };
+};
+
+export const transformTemperatureData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 11,
+      icon: Assets.Temp,
+      name: "Temperature",
+      date: "-",
+      category: "Primary Vitals",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "Temperature" },
+        { id: 4, label: "Method" },
+        { id: 5, label: "DATE" },
+        { id: 6, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Temperature (°F)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.temperatureFlagColor,
+      name: item?.details?.temperatureFlag,
+    },
+    temperature: `${item?.details?.temperature}${
+      item?.details?.unit === "Fahrenheit" ? "°F" : "°C" || "N/A"
+    }`,
+    method: item?.details.type,
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Temperature",
+    id: item.id,
+    unit: item?.details.unit,
+    slug: "temperature",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0].temperature}`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 11,
+    icon: Assets.Temp,
+    name: "Temperature",
+    date: `Recently Added ${
+      tableData[0]?.date.split(" ")[0].split("-").reverse().join("-") || "-"
+    }`,
+    category: "Primary Vitals",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "Temperature" },
+      { id: 4, label: "Method" },
+      { id: 5, label: "DATE" },
+      { id: 6, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Temperature (°F)",
+    total: pagination?.total,
+  };
+};
+
+export const transformLFTData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 12,
+      icon: Assets.LFT,
+      name: "Lung Function Test (LFT)",
+      date: "-",
+      category: "Primary Vitals",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "FVC (L)" },
+        { id: 4, label: "FEV1 (L)" },
+        { id: 5, label: "PEF (L/s)" },
+        { id: 6, label: "FEV1/FVC (%)" },
+        { id: 7, label: "DATE" },
+        { id: 8, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "FVC (L)",
+      chartLabel2: "FEV1 (%)",
+      chartLabel3: "FEV1/FVC Ratio (%)",
+      chartLabel4: "PEF (%)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData?.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.spirometerFlagColor,
+      name: item?.details?.spirometerFlag || "Unknown",
+    },
+    "fvc_(l)": item?.details?.fvc || "N/A",
+    "fev1_(l)": item?.details?.fev1 || "N/A",
+    "fev1/fvc_(%)": item?.details?.fev1_fvc || "N/A",
+    "pef_(l/s)": item?.details?.pef || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Lung Function Test (LFT)",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "spirometer",
+    fvcPercent: item?.details?.fvcPercent,
+    fev1Percent: item?.details?.fev1Percent,
+    pefPercent: item?.details?.pefPercent,
+    fef25: item?.details?.fef25,
+    fef25Percent: item?.details?.fef25Percent,
+    fef50: item?.details?.fef50,
+    fef50Percent: item?.details?.fef50Percent,
+    fef75: item?.details?.fef75,
+    fef75Percent: item?.details?.fef75Percent,
+    fef2575: item?.details?.fef2575,
+    fef2575Percent: item?.details?.fef2575Percent,
+    notes: item?.details?.notes,
+  }));
+
+  // Create badge and other static information
+  const badge = [
+    {
+      label: `FEV1 (%): ${tableData[0]?.["fev1_(l)"] || "N/A"}`,
+      color: tableData[0].result.status,
+    },
+    {
+      label: `FVC (%): ${tableData[0]?.["fvc_(l)"] || "N/A"}`,
+      color: tableData[0].result.status,
+    },
+    {
+      label: `FEV1/FVC Ratio (%): ${tableData[0]?.["fev1/fvc_(%)"] || "N/A"}`,
+      color: tableData[0].result.status,
+    },
+    {
+      label: `PEF (%): ${tableData[0]?.["pef_(l/s)"] || "N/A"}`,
+      color: tableData[0].result.status,
+    },
+  ];
+
+  return {
+    id: 12,
+    icon: Assets.LFT,
+    name: "Lung Function Test (LFT)",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Primary Vitals",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "FVC (L)" },
+      { id: 4, label: "FEV1 (L)" },
+      { id: 5, label: "PEF (L/s)" },
+      { id: 6, label: "FEV1/FVC (%)" },
+      { id: 7, label: "DATE" },
+      { id: 8, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "FVC (L)",
+    chartLabel2: "FEV1 (%)",
+    chartLabel3: "FEV1/FVC Ratio (%)",
+    chartLabel4: "PEF (%)",
+    total: pagination?.total,
+  };
+};
+
+export const transformHeartRateData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 5,
+      icon: Assets.VitalHBeat,
+      name: "Heart",
+      date: "-",
+      category: "Primary Vitals",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "HR (bpm)" },
+        { id: 4, label: "Type" },
+        { id: 5, label: "Result File" },
+        { id: 6, label: "Interpretation" },
+        { id: 7, label: "DATE" },
+        { id: 8, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Heart Rate (bpm)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.heartRateFlagColor || "unknown",
+      name: item?.details?.heartRateFlag || "Unknown",
+    },
+    unit: item?.details?.unit || "N/A",
+    "hr_(bpm)": item?.details?.heart || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Heart Rate",
+    type: item?.details?.type || "Unknown",
+    interpretation: item?.details?.interpretation || "N/A",
+    result_file: item?.details?.result_file || {},
+    id: item.id,
+    user_id: item.user_id,
+    slug: "heart-rate",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0]?.["hr_(bpm)"] || "N/A"} bpm`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 5,
+    icon: Assets.VitalHBeat,
+    name: "Heart",
+    date: `Recently Added ${
+      tableData[0]?.date?.split(" ")[0]?.split("-")?.reverse()?.join("-") || "-"
+    }`,
+    category: "Primary Vitals",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "HR (bpm)" },
+      { id: 4, label: "Type" },
+      { id: 5, label: "Result File" },
+      { id: 6, label: "Interpretation" },
+      { id: 7, label: "DATE" },
+      { id: 8, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Heart Rate (bpm)",
     total: pagination?.total,
   };
 };

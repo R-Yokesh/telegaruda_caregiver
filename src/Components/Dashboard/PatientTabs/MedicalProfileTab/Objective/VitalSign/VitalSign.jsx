@@ -13,8 +13,11 @@ import Badge from "../../../../../Badge/Badge";
 import {
   transformBMIData,
   transformBPData,
+  transformHeartRateData,
+  transformLFTData,
   transformRespirationRateData,
   transformSpO2Data,
+  transformTemperatureData,
 } from "./FormattedDatas";
 
 const VitalSign = ({ setVitalView, onClose }) => {
@@ -131,6 +134,43 @@ const VitalSign = ({ setVitalView, onClose }) => {
                           color: tableData[0].details?.spo2FlagColor,
                         },
                       ]
+                    : card?.slug === "temperature"
+                    ? [
+                        {
+                          label: `${tableData[0].details?.temperature} ${
+                            tableData[0].details?.unit === "Fahrenheit"
+                              ? "°F"
+                              : "°C"
+                          }`,
+                          color: tableData[0].details?.temperatureFlagColor,
+                        },
+                      ]
+                    : card?.slug === "spirometer"
+                    ? [
+                        {
+                          label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                        {
+                          label: `FVC (%):  ${tableData[0].details?.fvc}L`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                        {
+                          label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                        {
+                          label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                      ]
+                    : card?.slug === "heart-rate"
+                    ? [
+                        {
+                          label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                      ]
                     : []
                   : [];
               const formattedData =
@@ -154,8 +194,22 @@ const VitalSign = ({ setVitalView, onClose }) => {
                       response?.data?.vitals,
                       response?.data?.pagination
                     )
+                  : card?.slug === "temperature"
+                  ? transformTemperatureData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "spirometer"
+                  ? transformLFTData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "heart-rate"
+                  ? transformHeartRateData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
                   : null;
-
               return {
                 ...card,
                 created: response?.data?.vitals[0]?.details?.date,
@@ -181,14 +235,13 @@ const VitalSign = ({ setVitalView, onClose }) => {
         console.error("Error fetching card data:", error);
       }
     };
-    if (filters) {
+    if (filters === true) {
       fetchCardData();
     }
   }, [entities, cardSelectedData]);
   // entities, cardSelectedData
 
-  const fetchCardData = async (card) => {
-    console.log(card, "searchValue");
+  const fetchSingleCardData = async (card) => {
     try {
       const response = await get(
         `resource/vitals?limit=10&page=${currentPage ?? ""}&searchkey=${
@@ -231,6 +284,41 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   color: tableData[0].details?.spo2FlagColor,
                 },
               ]
+            : card?.slug === "temperature"
+            ? [
+                {
+                  label: `${tableData[0].details?.temperature} ${
+                    tableData[0].details?.unit === "Fahrenheit" ? "°F" : "°C"
+                  }`,
+                  color: tableData[0].details?.temperatureFlagColor,
+                },
+              ]
+            : card?.slug === "spirometer"
+            ? [
+                {
+                  label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                  color: `${tableData[0].details?.spirometerFlagColor}`,
+                },
+                {
+                  label: `FVC (%):  ${tableData[0].details?.fvc}L`,
+                  color: `${tableData[0].details?.spirometerFlagColor}`,
+                },
+                {
+                  label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                  color: `${tableData[0].details?.spirometerFlagColor}`,
+                },
+                {
+                  label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
+                  color: `${tableData[0].details?.spirometerFlagColor}`,
+                },
+              ]
+            : card?.slug === "heart-rate"
+            ? [
+                {
+                  label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                  color: `${tableData[0].details?.spirometerFlagColor}`,
+                },
+              ]
             : []
           : [];
 
@@ -246,6 +334,18 @@ const VitalSign = ({ setVitalView, onClose }) => {
             )
           : card?.slug === "spO2"
           ? transformSpO2Data(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "temperature"
+          ? transformTemperatureData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "spirometer"
+          ? transformLFTData(response?.data?.vitals, response?.data?.pagination)
+          : card?.slug === "heart-rate"
+          ? transformHeartRateData(
               response?.data?.vitals,
               response?.data?.pagination
             )
@@ -320,7 +420,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
   };
 
   useEffect(() => {
-    fetchCardData(cardSelectedData);
+    fetchSingleCardData(cardSelectedData);
   }, [startDate, endDate, searchValue, currentPage]);
 
   return (
@@ -402,17 +502,18 @@ const VitalSign = ({ setVitalView, onClose }) => {
                 </div>
                 <div className="vital-line-container">
                   {/* <img alt="line" src={Assets.Vitalline} /> */}
-                  {item?.name === "Heart" ? (
+                  {/* {item?.name === "Heart" ? (
                     <div className="chart-item">
-                      {/* <div className="rectangle">
+                      <div className="rectangle">
                             <img src={Assets.ecgSample} alt="ecg" />
-                          </div> */}
+                          </div>
                       {renderImage(Assets.ecgSample)}
-                      {/* {renderPdf("https://www.orimi.com/pdf-test.pdf")} */}
+                      {renderPdf("https://www.orimi.com/pdf-test.pdf")}
                     </div>
                   ) : (
                     <CardChart datas={item} />
-                  )}
+                  )} */}
+                  <CardChart datas={item} />
                 </div>
               </CCardBody>
             </CCard>
@@ -427,7 +528,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
               <ObjectiveDetailPage
                 data={cardSelectedData}
                 getTableDatas={(data) =>
-                  fetchCardData(data || cardSelectedData)
+                  fetchSingleCardData(data || cardSelectedData)
                 }
                 getFilterValues={(data1, data2, data3) => {
                   getFilterValues(data1, data2, data3);

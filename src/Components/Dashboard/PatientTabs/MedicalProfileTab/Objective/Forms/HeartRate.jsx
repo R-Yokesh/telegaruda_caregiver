@@ -6,7 +6,7 @@ import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import Dropdown from "../../../../../Dropdown/Dropdown";
 
-const HeartRate = ({ addBack, defaultData }) => {
+const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [type, setType] = useState("");
@@ -42,13 +42,14 @@ const HeartRate = ({ addBack, defaultData }) => {
   const handleTimeChange = (date) => {
     setSelectedTime(date);
   };
-  const extractNum = (data) => {
-    const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-    return numbers || "";
-  };
-
-  const options = ["1 Lead ECG", "3 Lead ECG", "12 Lead ECG", "Auscultation", "Cardiac Function Test",];
+  const options = [
+    "1 Lead ECG",
+    "3 Lead ECG",
+    "12 Lead ECG",
+    "Auscultation",
+    "Cardiac Function Test",
+  ];
   const findIndex = defaultData?.ecg_type
     ? options?.indexOf(defaultData?.ecg_type)
     : 0;
@@ -121,7 +122,7 @@ const HeartRate = ({ addBack, defaultData }) => {
           </CCol>
         </CRow>
         <CRow className="mb-3">
-        <CCol lg={4}>
+          <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 HR (in bpm) *
@@ -133,7 +134,7 @@ const HeartRate = ({ addBack, defaultData }) => {
                 defaultValue={defaultData?.hr}
                 maxLength={3}
                 onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
               />
             </div>
@@ -141,7 +142,7 @@ const HeartRate = ({ addBack, defaultData }) => {
           <CCol lg={4}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
-                ECG 
+                ECG
               </label>
               <input type="file" id="file" />
               <label for="file">Choose file</label>
@@ -168,11 +169,11 @@ const HeartRate = ({ addBack, defaultData }) => {
               )}
             </div>
           </CCol> */}
-          
+
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                ECG Interpretation 
+                ECG Interpretation
               </label>
               <input
                 type="text"
