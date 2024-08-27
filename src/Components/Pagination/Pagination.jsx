@@ -1,49 +1,14 @@
-// import React, { useState, useEffect } from "react";
-
-// const Pagination = ({
-//   currentPage,
-//   onPageChange,
-//   totalItems,
-//   itemsPerPage,
-// }) => {
-//   const [totalPages, setTotalPages] = useState(1);
-//   const [pages, setPages] = useState([]);
-
-//   useEffect(() => {
-//     // Calculate total pages based on totalItems and itemsPerPage
-//     const pagesCount = Math.ceil(totalItems / itemsPerPage);
-//     setTotalPages(pagesCount);
-
-//     // Generate array of pages dynamically
-//     setPages(Array.from(Array(pagesCount).keys()));
-//   }, [totalItems, itemsPerPage]);
-
-//   const handlePageClick = (pageNumber) => {
-//     onPageChange(pageNumber);
-//   };
-
-//   return (
-//     <div className="pagination">
-//       {pages.map((page) => (
-//         <button
-//           key={page}
-//           onClick={() => handlePageClick(page + 1)}
-//           className={currentPage === page + 1 ? "active-page" : ""}
-//         >
-//           {page + 1}
-//         </button>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default Pagination;
-
 import React, { useEffect, useState } from "react";
+import "../../assets/Css/Pagination.css";
 
-const Pagination = ({ currentPage, totalItems, onPageChange, itemsPerPage }) => {
+const Pagination = ({
+  currentPage,
+  totalItems,
+  onPageChange,
+  itemsPerPage,
+}) => {
   const [totalPages, setTotalPages] = useState(1);
-  
+
   useEffect(() => {
     // Calculate total pages based on totalItems and itemsPerPage
     const pagesCount = Math.ceil(totalItems / itemsPerPage);
@@ -72,35 +37,37 @@ const Pagination = ({ currentPage, totalItems, onPageChange, itemsPerPage }) => 
         for (let i = 1; i <= 3; i++) {
           pageNumbers.push(i);
         }
-        pageNumbers.push('...');
+        pageNumbers.push("...");
         pageNumbers.push(totalPages);
       } else if (currentPage >= totalPages - 2) {
         // Show last few pages and the first page
         pageNumbers.push(1);
-        pageNumbers.push('...');
+        pageNumbers.push("...");
         for (let i = totalPages - 2; i <= totalPages; i++) {
           pageNumbers.push(i);
         }
       } else {
         // Show a range around the current page
         pageNumbers.push(1);
-        pageNumbers.push('...');
+        pageNumbers.push("...");
         for (let i = currentPage - range; i <= currentPage + range; i++) {
           if (i > 0 && i <= totalPages) {
             pageNumbers.push(i);
           }
         }
-        pageNumbers.push('...');
+        pageNumbers.push("...");
         pageNumbers.push(totalPages);
       }
     }
 
     // Remove duplicate ellipses
-    return pageNumbers.filter((item, index, arr) => item !== '...' || (index > 0 && arr[index - 1] !== '...'));
+    return pageNumbers.filter(
+      (item, index, arr) =>
+        item !== "..." || (index > 0 && arr[index - 1] !== "...")
+    );
   };
 
   const pageNumbers = getPageNumbers();
-
 
   return (
     <div className="pagination-home">
@@ -136,6 +103,5 @@ const Pagination = ({ currentPage, totalItems, onPageChange, itemsPerPage }) => 
     </div>
   );
 };
-
 
 export default Pagination;
