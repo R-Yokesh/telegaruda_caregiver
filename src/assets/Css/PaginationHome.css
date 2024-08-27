@@ -1,4 +1,14 @@
-.pagination-home button {
+/* Normalize button styles */
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+.pagination-home>button {
     width: 56px !important;
     height: 56px !important;
     gap: 0px !important;
@@ -13,7 +23,7 @@
     line-height: 28.9px !important;
 }
 
-.active-page {
+.active-home-page {
     background: #0084CF !important;
     color: white !important;
 }

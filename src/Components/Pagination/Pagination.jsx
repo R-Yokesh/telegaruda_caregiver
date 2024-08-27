@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../../assets/Css/Pagination.css";
+import "../../assets/Css/PaginationHome.css";
 
 const Pagination = ({
   currentPage,
@@ -71,13 +71,13 @@ const Pagination = ({
 
   return (
     <div className="pagination-home">
-      <button
+      <div
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Previous"
       >
         &lt;
-      </button>
+      </div>
       {pageNumbers.map((number, index) => (
         <button
           key={index}
@@ -86,7 +86,7 @@ const Pagination = ({
               handlePageChange(number);
             }
           }}
-          className={number === currentPage ? "active-page" : ""}
+          className={number === currentPage ? "active-home-page" : ""}
           disabled={number === "..."}
           aria-current={number === currentPage ? "page" : undefined}
         >
