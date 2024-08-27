@@ -79,7 +79,7 @@ const Pagination = ({
         &lt;
       </div>
       {pageNumbers.map((number, index) => (
-        <button
+        <div
           key={index}
           onClick={() => {
             if (number !== "...") {
@@ -91,15 +91,15 @@ const Pagination = ({
           aria-current={number === currentPage ? "page" : undefined}
         >
           {number}
-        </button>
+        </div>
       ))}
-      <button
+      <div
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="Next"
       >
         &gt;
-      </button>
+      </div>
     </div>
   );
 };
