@@ -70,12 +70,35 @@ const Pagination = ({
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="pagination-home">
+    <div
+      // className="pagination-home"
+      style={{
+        display: "flex",
+      }}
+    >
       <div
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Previous"
-        className="div-pagination"
+        // className="div-pagination"
+        style={{
+          width: "56px !important",
+          height: "56px !important",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0px !important",
+          borderRadius: "8px !important",
+          opacity: "0px !important",
+          boxShadow: "0px 4px 24px 0px #0084CF14 !important",
+          marginLeft: "10px !important",
+          outline: "none !important",
+          border: "none !important",
+          fontSize: "20px !important",
+          fontWeight: "600 !important",
+          lineHeight: "28.9px !important",
+          cursor: "pointer",
+        }}
       >
         &lt;
       </div>
@@ -89,11 +112,29 @@ const Pagination = ({
           }}
           className={
             number === currentPage
-              ? "active-home-page div-pagination"
-              : "div-pagination"
+              ? "active-home-page"
+              : ""
           }
           disabled={number === "..."}
           aria-current={number === currentPage ? "page" : undefined}
+          style={{
+            width: "56px !important",
+            height: "56px !important",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0px !important",
+            borderRadius: "8px !important",
+            opacity: "0px !important",
+            boxShadow: "0px 4px 24px 0px #0084CF14 !important",
+            marginLeft: "10px !important",
+            outline: "none !important",
+            border: "none !important",
+            fontSize: "20px !important",
+            fontWeight: "600 !important",
+            lineHeight: "28.9px !important",
+            cursor: "pointer",
+          }}
         >
           {number}
         </div>
@@ -102,7 +143,24 @@ const Pagination = ({
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="Next"
-        className="div-pagination"
+        style={{
+          width: "56px !important",
+          height: "56px !important",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0px !important",
+          borderRadius: "8px !important",
+          opacity: "0px !important",
+          boxShadow: "0px 4px 24px 0px #0084CF14 !important",
+          marginLeft: "10px !important",
+          outline: "none !important",
+          border: "none !important",
+          fontSize: "20px !important",
+          fontWeight: "600 !important",
+          lineHeight: "28.9px !important",
+          cursor: "pointer",
+        }}
       >
         &gt;
       </div>
