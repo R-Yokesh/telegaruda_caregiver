@@ -1,19 +1,19 @@
-.pagination button {
-    width: 56px;
-    height: 56px;
-    gap: 0px;
-    border-radius: 8px;
-    opacity: 0px;
-    box-shadow: 0px 4px 24px 0px #0084CF14;
-    margin-left: 10px;
-    outline: none;
-    border: none;
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 28.9px;
+.pagination-home button {
+    width: 56px !important;
+    height: 56px !important;
+    gap: 0px !important;
+    border-radius: 8px !important;
+    opacity: 0px !important;
+    box-shadow: 0px 4px 24px 0px #0084CF14 !important;
+    margin-left: 10px !important;
+    outline: none !important;
+    border: none !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    line-height: 28.9px !important;
 }
 
 .active-page {
-    background: #0084CF;
-    color: white;
+    background: #0084CF !important;
+    color: white !important;
 }

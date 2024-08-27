@@ -103,7 +103,7 @@ const Pagination = ({ currentPage, totalItems, onPageChange, itemsPerPage }) => 
 
 
   return (
-    <div className="pagination">
+    <div className="pagination-home">
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
