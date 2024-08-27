@@ -75,6 +75,7 @@ const Pagination = ({
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Previous"
+        className="div-pagination"
       >
         &lt;
       </div>
@@ -86,7 +87,11 @@ const Pagination = ({
               handlePageChange(number);
             }
           }}
-          className={number === currentPage ? "active-home-page" : ""}
+          className={
+            number === currentPage
+              ? "active-home-page div-pagination"
+              : "div-pagination"
+          }
           disabled={number === "..."}
           aria-current={number === currentPage ? "page" : undefined}
         >
@@ -97,6 +102,7 @@ const Pagination = ({
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="Next"
+        className="div-pagination"
       >
         &gt;
       </div>

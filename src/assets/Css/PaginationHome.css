@@ -2,7 +2,7 @@
     display: flex;
 }
 
-.pagination-home div {
+.div-pagination {
     width: 56px !important;
     height: 56px !important;
     display: flex;
