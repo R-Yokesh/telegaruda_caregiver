@@ -7,6 +7,8 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import useApi from "../../../../../../ApiServices/useApi";
 import { format, isValid, parse } from "date-fns";
 import { toast } from "react-toastify";
+import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { DATE_FORMAT } from "../../../../../../Config/config";
 
 const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
   console.log("first", defaultData);
@@ -47,7 +49,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -114,10 +116,10 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
       newErrors.time = "Time is required";
       isValid = false;
     }
-    if (!notes) {
-      newErrors.notes = "Notes is required";
-      isValid = false;
-    }
+    // if (!notes) {
+    //   newErrors.notes = "Notes is required";
+    //   isValid = false;
+    // }
     // Check required numerical fields
     const fields = [
       {
@@ -148,20 +150,20 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
         required: true,
         label: "FEV1 (%)",
       },
-      {
-        name: "pefL",
-        value: pefL,
-        maxLength: 5,
-        required: true,
-        label: "PEF (L/s)",
-      },
-      {
-        name: "pefPercent",
-        value: pefPercent,
-        maxLength: 2,
-        required: true,
-        label: "PEF (%)",
-      },
+      // {
+      //   name: "pefL",
+      //   value: pefL,
+      //   maxLength: 5,
+      //   required: true,
+      //   label: "PEF (L/s)",
+      // },
+      // {
+      //   name: "pefPercent",
+      //   value: pefPercent,
+      //   maxLength: 2,
+      //   required: true,
+      //   label: "PEF (%)",
+      // },
       {
         name: "fev1FvcPercent",
         value: fev1FvcPercent,
@@ -290,6 +292,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
                 isClearable
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
+                dateFormat={DATE_FORMAT}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
@@ -397,7 +400,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                PEF (L/s) *
+                PEF (L/s) 
               </label>
               <input
                 type="text"
@@ -415,7 +418,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                PEF (%) *
+                PEF (%) 
               </label>
               <input
                 type="text"
@@ -600,7 +603,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={8}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes *
+                Notes 
               </label>
               <CFormTextarea
                 type="text"

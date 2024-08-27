@@ -8,6 +8,7 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { toast } from "react-toastify";
+import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 
 const RespirationRateForm = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
@@ -21,7 +22,7 @@ const RespirationRateForm = ({ addBack, defaultData, getTableDatas }) => {
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();

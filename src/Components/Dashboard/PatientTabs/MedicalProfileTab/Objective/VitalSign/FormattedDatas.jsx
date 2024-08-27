@@ -350,7 +350,7 @@ export const transformTemperatureData = (originalData, pagination) => {
   }
 
   // Map through original data to create tableData
-  const tableData = originalData.map((item, index) => ({
+  const tableData = originalData?.map((item, index) => ({
     "no.": index + 1,
     result: {
       status: item?.details?.temperatureFlagColor,
@@ -359,15 +359,15 @@ export const transformTemperatureData = (originalData, pagination) => {
     temperature: `${item?.details?.temperature}${
       item?.details?.unit === "Fahrenheit" ? "°F" : "°C" || "N/A"
     }`,
-    method: item?.details.type,
-    date: `${item.details.date} ${item.details.time || ""}`,
+    method: item?.details?.type,
+    date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
       item.freeze === 1
         ? [{ type: "warning" }]
         : [{ type: "edit" }, { type: "delete" }],
     name: "Temperature",
-    id: item.id,
-    unit: item?.details.unit,
+    id: item?.id,
+    unit: item?.details?.unit,
     slug: "temperature",
   }));
 
@@ -376,8 +376,8 @@ export const transformTemperatureData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0].temperature}`,
-            color: tableData[0].result.status,
+            label: `${tableData[0]?.temperature}`,
+            color: tableData[0]?.result?.status,
           },
         ]
       : [];
@@ -387,7 +387,7 @@ export const transformTemperatureData = (originalData, pagination) => {
     icon: Assets.Temp,
     name: "Temperature",
     date: `Recently Added ${
-      tableData[0]?.date.split(" ")[0].split("-").reverse().join("-") || "-"
+      tableData[0]?.date.split(" ")[0]?.split("-")?.reverse()?.join("-") || "-"
     }`,
     category: "Primary Vitals",
     badge,
@@ -400,7 +400,7 @@ export const transformTemperatureData = (originalData, pagination) => {
       { id: 6, label: "ACTION" },
     ],
     tableData,
-    chartLabel1: "Temperature (°F)",
+    chartLabel1: "Temperature(°F / °C)",
     total: pagination?.total,
   };
 };
@@ -469,19 +469,20 @@ export const transformLFTData = (originalData, pagination) => {
   // Create badge and other static information
   const badge = [
     {
-      label: `FEV1 (%): ${tableData[0]?.["fev1_(l)"] || "N/A"}`,
-      color: tableData[0].result.status,
-    },
-    {
       label: `FVC (%): ${tableData[0]?.["fvc_(l)"] || "N/A"}`,
       color: tableData[0].result.status,
     },
     {
-      label: `FEV1/FVC Ratio (%): ${tableData[0]?.["fev1/fvc_(%)"] || "N/A"}`,
+      label: `FEV1 (%): ${tableData[0]?.["fev1_(l)"] || "N/A"}`,
+      color: tableData[0].result.status,
+    },
+
+    {
+      label: `PEF (%): ${tableData[0]?.["pef_(l/s)"] || "N/A"}`,
       color: tableData[0].result.status,
     },
     {
-      label: `PEF (%): ${tableData[0]?.["pef_(l/s)"] || "N/A"}`,
+      label: `FEV1/FVC Ratio (%): ${tableData[0]?.["fev1/fvc_(%)"] || "N/A"}`,
       color: tableData[0].result.status,
     },
   ];
@@ -508,10 +509,10 @@ export const transformLFTData = (originalData, pagination) => {
       { id: 8, label: "ACTION" },
     ],
     tableData,
-    chartLabel1: "FVC (L)",
+    chartLabel1: "FVC (%)",
     chartLabel2: "FEV1 (%)",
-    chartLabel3: "FEV1/FVC Ratio (%)",
-    chartLabel4: "PEF (%)",
+    chartLabel4: "FEV1/FVC Ratio (%)",
+    chartLabel3: "PEF (%)",
     total: pagination?.total,
   };
 };
@@ -554,10 +555,10 @@ export const transformHeartRateData = (originalData, pagination) => {
       item.freeze === 1
         ? [{ type: "warning" }]
         : [{ type: "edit" }, { type: "delete" }],
-    name: "Heart Rate",
+    name: "Heart",
     type: item?.details?.type || "Unknown",
-    interpretation: item?.details?.interpretation || "N/A",
-    result_file: item?.details?.result_file || {},
+    interpretation: item?.details?.interpretation || "-",
+    result_file: item?.details?.result_file || "-",
     id: item.id,
     user_id: item.user_id,
     slug: "heart-rate",
@@ -595,6 +596,87 @@ export const transformHeartRateData = (originalData, pagination) => {
     ],
     tableData,
     chartLabel1: "Heart Rate (bpm)",
+    total: pagination?.total,
+  };
+};
+
+export const transformBloodSugarData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 2,
+      icon: Assets.VitalBs,
+      name: "Blood Sugar",
+      date: "-",
+      category: "Metabolic And Biochemical Profile",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "Blood Sugar" },
+        { id: 4, label: "Type" },
+        { id: 5, label: "DATE" },
+        { id: 6, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Blood Sugar (mg/dL)",
+      chartLabel2: "Type",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.bsFlagColor,
+      name: item?.details?.bsFlag || "Unknown",
+    },
+    blood_sugar: item?.details?.blood_sugar || "N/A",
+    blood_sugar_value: item?.details?.blood_sugar || "N/A",
+    type: item?.details?.type || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Blood Sugar",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "blood-sugar",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0]["blood_sugar"]} mg/dL`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 2,
+    icon: Assets.VitalBs,
+    name: "Blood Sugar",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Metabolic And Biochemical Profile",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "Blood Sugar" },
+      { id: 4, label: "Type" },
+      { id: 5, label: "DATE" },
+      { id: 6, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Blood Sugar (mg/dL)",
+    chartLabel2: "Type",
     total: pagination?.total,
   };
 };

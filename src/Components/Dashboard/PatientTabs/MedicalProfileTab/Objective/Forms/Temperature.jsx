@@ -10,9 +10,9 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { format, isValid, parse } from "date-fns";
 import { toast } from "react-toastify";
 import { extractNum, findItemIndex } from "../../../../../../Utils/commonUtils";
+import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 
 const Temperature = ({ addBack, defaultData, getTableDatas }) => {
-
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -66,7 +66,7 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -179,6 +179,15 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
     } catch (error) {
       console.error("Failed to delete:", error);
     }
+  };
+
+  const numWithDecimal = (e) => {
+    const nums = e.target.value
+      .replace(/[^0-9.]/g, "")
+      .replace(/^(\d{3})\d*$/, "$1")
+      .replace(/^(\d{3})\.(\d{3}).*$/, "$1.$2")
+      .replace(/(\..*)\./g, "$1");
+    setTemperature(nums);
   };
   return (
     <>
@@ -306,7 +315,7 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
                 class="form-control"
                 id="validationTooltip01"
                 value={temperature}
-                onChange={(e) => setTemperature(e.target.value)}
+                onChange={numWithDecimal}
               />
               {errors.temperature && (
                 <div className="error-text">{errors.temperature}</div>

@@ -7,6 +7,8 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import useApi from "../../../../../../ApiServices/useApi";
 import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
+import { DATE_FORMAT } from "../../../../../../Config/config";
+import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 
 const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
@@ -19,7 +21,7 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -159,6 +161,7 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
                 isClearable
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
+                dateFormat={DATE_FORMAT}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

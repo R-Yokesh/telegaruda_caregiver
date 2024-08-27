@@ -24,7 +24,7 @@ const CardChart = ({ datas }) => {
           item?.["respiration_rate_(bpm)"] ||
           item?.["spo2"] ||
           removePercent(item?.["hct_%"]) ||
-          item?.["fvc_(l)"] ||
+          item?.["fev1/fvc_(%)"] ||
           item?.["totalOnly"] ||
           item?.["chartValue"] ||
           item?.["temperature"] ||
@@ -69,6 +69,11 @@ const CardChart = ({ datas }) => {
           unit === "Celsius"
             ? `Temperature: ${temperature}°C`
             : `Temperature: ${temperature}°F`;
+      } else if (
+        datas.slug === "spirometer" &&
+        payload[0]?.dataKey === "data1"
+      ) {
+        tooltipContent = `${datas.chartLabel3} : ${payload[0].value}`;
       } else {
         tooltipContent = `${datas.chartLabel1} : ${payload[0].value}`;
       }

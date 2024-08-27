@@ -11,6 +11,7 @@ import { ObjectiveDatas } from "../../../../../Consultant/TableColumnsJson/Objec
 import CardChart from "../../../../../Charts/CardChart";
 import Badge from "../../../../../Badge/Badge";
 import {
+  transformBloodSugarData,
   transformBMIData,
   transformBPData,
   transformHeartRateData,
@@ -116,7 +117,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     : card?.slug === "bmi"
                     ? [
                         {
-                          label: `${tableData[0].details?.bmi}kg/m²`,
+                          label: `${tableData[0].details?.bmi} kg/m²`,
                           color: tableData[0].details?.bmiFlagColor,
                         },
                       ]
@@ -137,7 +138,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     : card?.slug === "temperature"
                     ? [
                         {
-                          label: `${tableData[0].details?.temperature} ${
+                          label: `${tableData[0]?.details?.temperature} ${
                             tableData[0].details?.unit === "Fahrenheit"
                               ? "°F"
                               : "°C"
@@ -147,32 +148,42 @@ const VitalSign = ({ setVitalView, onClose }) => {
                       ]
                     : card?.slug === "spirometer"
                     ? [
-                        {
-                          label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
-                          color: `${tableData[0].details?.spirometerFlagColor}`,
-                        },
-                        {
-                          label: `FVC (%):  ${tableData[0].details?.fvc}L`,
-                          color: `${tableData[0].details?.spirometerFlagColor}`,
-                        },
-                        {
-                          label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
-                          color: `${tableData[0].details?.spirometerFlagColor}`,
-                        },
-                        {
-                          label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
-                          color: `${tableData[0].details?.spirometerFlagColor}`,
-                        },
-                      ]
+                      {
+                        label: `FVC (%):  ${tableData[0].details?.fvc}L`,
+                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                      },
+                      {
+                        label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                      },
+                      {
+                        label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
+                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                      },
+                      {
+                        label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                      },
+                    ]
                     : card?.slug === "heart-rate"
                     ? [
                         {
-                          label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
-                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                          label: `${tableData[0]?.details?.heart || "N/A"} bpm`,
+                          color: tableData[0].details?.heartRateFlagColor,
+                        },
+                      ]
+                    : card?.slug === "blood-sugar"
+                    ? [
+                        {
+                          label: `${
+                            tableData[0]?.details?.blood_sugar || "N/A"
+                          } mg/dL`,
+                          color: tableData[0].details?.bsFlagColor,
                         },
                       ]
                     : []
                   : [];
+
               const formattedData =
                 card?.slug === "blood-pressure"
                   ? transformBPData(
@@ -209,7 +220,13 @@ const VitalSign = ({ setVitalView, onClose }) => {
                       response?.data?.vitals,
                       response?.data?.pagination
                     )
+                  : card?.slug === "blood-sugar"
+                  ? transformBloodSugarData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
                   : null;
+
               return {
                 ...card,
                 created: response?.data?.vitals[0]?.details?.date,
@@ -266,7 +283,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
             : cardSelectedData?.slug === "bmi"
             ? [
                 {
-                  label: `${tableData[0].details?.bmi}kg/m²`,
+                  label: `${tableData[0].details?.bmi} kg/m²`,
                   color: tableData[0].details?.bmiFlagColor,
                 },
               ]
@@ -287,36 +304,43 @@ const VitalSign = ({ setVitalView, onClose }) => {
             : card?.slug === "temperature"
             ? [
                 {
-                  label: `${tableData[0].details?.temperature} ${
-                    tableData[0].details?.unit === "Fahrenheit" ? "°F" : "°C"
+                  label: `${tableData[0]?.details?.temperature} ${
+                    tableData[0]?.details?.unit === "Fahrenheit" ? "°F" : "°C"
                   }`,
-                  color: tableData[0].details?.temperatureFlagColor,
+                  color: tableData[0]?.details?.temperatureFlagColor,
                 },
               ]
             : card?.slug === "spirometer"
             ? [
                 {
-                  label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
-                  color: `${tableData[0].details?.spirometerFlagColor}`,
-                },
-                {
                   label: `FVC (%):  ${tableData[0].details?.fvc}L`,
                   color: `${tableData[0].details?.spirometerFlagColor}`,
                 },
                 {
-                  label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                  label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
                   color: `${tableData[0].details?.spirometerFlagColor}`,
                 },
                 {
                   label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
                   color: `${tableData[0].details?.spirometerFlagColor}`,
                 },
+                {
+                  label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                  color: `${tableData[0].details?.spirometerFlagColor}`,
+                },
               ]
             : card?.slug === "heart-rate"
             ? [
                 {
-                  label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
-                  color: `${tableData[0].details?.spirometerFlagColor}`,
+                  label: `${tableData[0]?.details?.heart || "N/A"} bpm`,
+                  color: tableData[0].details?.heartRateFlagColor,
+                },
+              ]
+            : card?.slug === "blood-sugar"
+            ? [
+                {
+                  label: `${tableData[0]?.details?.blood_sugar || "N/A"} mg/dL`,
+                  color: tableData[0].details?.bsFlagColor,
                 },
               ]
             : []
@@ -346,6 +370,11 @@ const VitalSign = ({ setVitalView, onClose }) => {
           ? transformLFTData(response?.data?.vitals, response?.data?.pagination)
           : card?.slug === "heart-rate"
           ? transformHeartRateData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "blood-sugar"
+          ? transformBloodSugarData(
               response?.data?.vitals,
               response?.data?.pagination
             )

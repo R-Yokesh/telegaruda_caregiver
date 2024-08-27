@@ -9,3 +9,19 @@ export const extractNum = (data) => {
 
   return numbers || "";
 };
+
+export const getFileTypeFromMime = (mimeType) => {
+  const mimeTypes = {
+    'application/pdf': 'pdf',
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'text/plain': 'txt',
+    // Add more MIME types as needed
+  };
+
+  return mimeTypes[mimeType] || 'unknown';
+};
+
+export const openFile = (contentUrl) => {
+  window.open(contentUrl, "_blank");
+};

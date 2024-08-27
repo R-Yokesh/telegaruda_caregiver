@@ -206,6 +206,7 @@ const DynamicTable = ({
                 <BSugar
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Lipid Profile" && (

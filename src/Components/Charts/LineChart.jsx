@@ -56,8 +56,8 @@ const LineChartDetails = ({ datas }) => {
     data3: parseInt(
       item?.["diastolic"]
         ? item?.["diastolic"]
-        : item?.["fev1/fvc_(%)"]
-        ? item?.["fev1/fvc_(%)"]
+        : item?.["pef_(l/s)"]
+        ? item?.["pef_(l/s)"]
         : item?.["vldl(mg/dl)"]
         ? item?.["vldl(mg/dl)"]
         : item?.["urobilinogen"]
@@ -66,8 +66,8 @@ const LineChartDetails = ({ datas }) => {
     ),
 
     data4: parseInt(
-      item?.["pef_(l/s)"]
-        ? item?.["pef_(l/s)"]
+      item?.["fev1/fvc_(%)"]
+        ? item?.["fev1/fvc_(%)"]
         : item?.["ldl/hdl(mg/dl)"]
         ? item?.["ldl/hdl(mg/dl)"]
         : item?.["red_blood_cells"]

@@ -252,7 +252,7 @@ const ObjectiveDetailPage = ({
                 {data?.name === "BMI" && (
                   <BMI addBack={addBack} getTableDatas={getTableDatas} />
                 )}
-                {data?.name === "Blood Sugar" && <BSugar addBack={addBack} />}
+                {data?.name === "Blood Sugar" && <BSugar addBack={addBack} getTableDatas={getTableDatas} />}
                 {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} />}
                 {data?.name === "Hematocrit (HCT)" && <HCT addBack={addBack} />}
                 {data?.name === "Blood Uric Acid" && (

@@ -8,6 +8,7 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
+import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 
 const BPForm = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
@@ -56,7 +57,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();

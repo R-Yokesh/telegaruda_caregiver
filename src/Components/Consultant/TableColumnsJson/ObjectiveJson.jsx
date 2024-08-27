@@ -53,6 +53,7 @@ export const ObjectiveDatas = [
   {
     id: 2,
     icon: Assets.VitalBs,
+    slug: "blood-sugar",
     name: "Blood Sugar",
     category: "Metabolic And Biochemical Profile",
     date: "Recently Added 27-03-2024",
@@ -516,10 +517,10 @@ export const ObjectiveDatas = [
     name: "Lung Function Test (LFT)",
     date: "Recently Added 27-03-2024",
     category: "Primary Vitals",
-    chartLabel1: "FVC (L)",
-    chartLabel2: "FEV1(%)",
-    chartLabel4: "PEF(%)",
-    chartLabel3: "FEV1/FVC Ratio(%)",
+    chartLabel1: "FVC (%)",
+    chartLabel2: "FEV1 (%)",
+    chartLabel4: "FEV1/FVC Ratio (%)",
+    chartLabel3: "PEF (%)",
     badge: [
       { label: "FEV1 (%): 1L", color: "error" },
       { label: "FVC (%): 1L", color: "error" },
