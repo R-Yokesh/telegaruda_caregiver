@@ -82,21 +82,21 @@ const Pagination = ({
         aria-label="Previous"
         // className="div-pagination"
         style={{
-          width: "56px !important",
-          height: "56px !important",
+          width: "56px",
+          height: "56px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: "0px !important",
-          borderRadius: "8px !important",
-          opacity: "0px !important",
-          boxShadow: "0px 4px 24px 0px #0084CF14 !important",
-          marginLeft: "10px !important",
-          outline: "none !important",
-          border: "none !important",
-          fontSize: "20px !important",
-          fontWeight: "600 !important",
-          lineHeight: "28.9px !important",
+          gap: "0px",
+          borderRadius: "8px",
+          opacity: "0px",
+          boxShadow: "0px 4px 24px 0px #0084CF14",
+          marginLeft: "10px",
+          outline: "none",
+          border: "none",
+          fontSize: "20px",
+          fontWeight: "600",
+          lineHeight: "28.9px",
           cursor: "pointer",
         }}
       >
@@ -110,30 +110,26 @@ const Pagination = ({
               handlePageChange(number);
             }
           }}
-          className={
-            number === currentPage
-              ? "active-home-page"
-              : ""
-          }
+          className={number === currentPage ? "active-home-page" : ""}
           disabled={number === "..."}
           aria-current={number === currentPage ? "page" : undefined}
           style={{
-            width: "56px !important",
-            height: "56px !important",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "0px !important",
-            borderRadius: "8px !important",
-            opacity: "0px !important",
-            boxShadow: "0px 4px 24px 0px #0084CF14 !important",
-            marginLeft: "10px !important",
-            outline: "none !important",
-            border: "none !important",
-            fontSize: "20px !important",
-            fontWeight: "600 !important",
-            lineHeight: "28.9px !important",
+            gap: "0px ",
+            borderRadius: "8px ",
+            opacity: "0px ",
+            boxShadow: "0px 4px 24px 0px #0084CF14 ",
+            marginLeft: "10px ",
+            outline: "none ",
+            border: "none ",
+            fontSize: "20px ",
+            fontWeight: "600 ",
+            lineHeight: "28.9px ",
             cursor: "pointer",
+            width: "56px",
+            height: "56px",
           }}
         >
           {number}
@@ -144,21 +140,21 @@ const Pagination = ({
         disabled={currentPage === totalPages}
         aria-label="Next"
         style={{
-          width: "56px !important",
-          height: "56px !important",
+          width: "56px",
+          height: "56px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: "0px !important",
-          borderRadius: "8px !important",
-          opacity: "0px !important",
-          boxShadow: "0px 4px 24px 0px #0084CF14 !important",
-          marginLeft: "10px !important",
-          outline: "none !important",
-          border: "none !important",
-          fontSize: "20px !important",
-          fontWeight: "600 !important",
-          lineHeight: "28.9px !important",
+          gap: "0px",
+          borderRadius: "8px",
+          opacity: "0px",
+          boxShadow: "0px 4px 24px 0px #0084CF14",
+          marginLeft: "10px",
+          outline: "none",
+          border: "none",
+          fontSize: "20px",
+          fontWeight: "600",
+          lineHeight: "28.9px",
           cursor: "pointer",
         }}
       >
