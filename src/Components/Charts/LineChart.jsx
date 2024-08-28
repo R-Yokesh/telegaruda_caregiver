@@ -28,7 +28,7 @@ const LineChartDetails = ({ datas }) => {
         item?.["hr_(bpm)"] ||
         item?.["respiration_rate_(bpm)"] ||
         item?.["spo2"] ||
-        removePercent(item?.["hct_%"]) ||
+        item?.["hct_%"] ||
         item?.["fvc_(l)"] ||
         item?.["totalOnly"] ||
         item?.["specific_gravity"] ||

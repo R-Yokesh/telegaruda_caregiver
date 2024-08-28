@@ -27,7 +27,7 @@ const ColumnChartDetails = ({ datas }) => {
         item?.["hr_(bpm)"] ||
         item?.["respiration_rate_(bpm)"] ||
         removePercent(item?.["spo2"]) ||
-        removePercent(item?.["hct_%"]) ||
+        item?.["hct_%"] ||
         item?.["fvc_(l)"] ||
         item?.["totalOnly"] ||
         item?.["specific_gravity"] ||
@@ -76,7 +76,7 @@ const ColumnChartDetails = ({ datas }) => {
     ),
 
     data5: parseInt(
-       item?.["triglycerides(mg/dl)"]
+      item?.["triglycerides(mg/dl)"]
         ? item?.["triglycerides(mg/dl)"]
         : item?.["white_blood_cells"]
         ? item?.["white_blood_cells"]

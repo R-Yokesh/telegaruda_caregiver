@@ -12,10 +12,12 @@ import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 
 const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
-  console.log("first", defaultData);
+  function removePercent(str) {
+    return str?.replace("%", "");
+  }
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [spO2, setSpO2] = useState(defaultData?.spo2 || "");
+  const [spO2, setSpO2] = useState(removePercent(defaultData?.spo2) || "");
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
 

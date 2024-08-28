@@ -11,11 +11,16 @@ import { ObjectiveDatas } from "../../../../../Consultant/TableColumnsJson/Objec
 import CardChart from "../../../../../Charts/CardChart";
 import Badge from "../../../../../Badge/Badge";
 import {
+  transformBloodKetoneData,
   transformBloodSugarData,
+  transformBloodUricAcidData,
   transformBMIData,
   transformBPData,
   transformHeartRateData,
+  transformHematocritData,
+  transformHemoglobinData,
   transformLFTData,
+  transformLipidProfileData,
   transformRespirationRateData,
   transformSpO2Data,
   transformTemperatureData,
@@ -148,23 +153,23 @@ const VitalSign = ({ setVitalView, onClose }) => {
                       ]
                     : card?.slug === "spirometer"
                     ? [
-                      {
-                        label: `FVC (%):  ${tableData[0].details?.fvc}L`,
-                        color: `${tableData[0].details?.spirometerFlagColor}`,
-                      },
-                      {
-                        label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
-                        color: `${tableData[0].details?.spirometerFlagColor}`,
-                      },
-                      {
-                        label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
-                        color: `${tableData[0].details?.spirometerFlagColor}`,
-                      },
-                      {
-                        label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
-                        color: `${tableData[0].details?.spirometerFlagColor}`,
-                      },
-                    ]
+                        {
+                          label: `FVC (%):  ${tableData[0].details?.fvc}L`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                        {
+                          label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                        {
+                          label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                        {
+                          label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                          color: `${tableData[0].details?.spirometerFlagColor}`,
+                        },
+                      ]
                     : card?.slug === "heart-rate"
                     ? [
                         {
@@ -179,6 +184,68 @@ const VitalSign = ({ setVitalView, onClose }) => {
                             tableData[0]?.details?.blood_sugar || "N/A"
                           } mg/dL`,
                           color: tableData[0].details?.bsFlagColor,
+                        },
+                      ]
+                    : card?.slug === "lipid-profile"
+                    ? [
+                        {
+                          label: `Total Cholesterol:${
+                            tableData[0]?.details?.total || "N/A"
+                          } mg/dL`,
+                          color: tableData[0].details?.total_message_flag,
+                        },
+                        {
+                          label: `LDL:${
+                            tableData[0]?.details?.ldl || "N/A"
+                          } mg/dL`,
+                          color: tableData[0].details?.ldl_message_flag,
+                        },
+                        {
+                          label: `HDL:${
+                            tableData[0]?.details?.hdl || "N/A"
+                          } mg/dL`,
+                          color: tableData[0].details?.hdl_message_flag,
+                        },
+                        {
+                          label: `Triglycerides:${
+                            tableData[0]?.details?.triglycerides || "N/A"
+                          } mg/dL`,
+                          color:
+                            tableData[0].details?.triglycerides_message_flag,
+                        },
+                      ]
+                    : card?.slug === "hct"
+                    ? [
+                        {
+                          label: `${tableData[0]?.details?.hct || "N/A"} %`,
+                          color: tableData[0].details?.hctFlagColor,
+                        },
+                      ]
+                    : card?.slug === "hemoglobin"
+                    ? [
+                        {
+                          label: `${
+                            tableData[0]?.details?.hemoglobin || "N/A"
+                          } g/dL`,
+                          color: tableData[0].details?.hemoglobinFlagColor,
+                        },
+                      ]
+                    : card?.slug === "keytone"
+                    ? [
+                        {
+                          label: `${
+                            tableData[0]?.details?.keytone || "N/A"
+                          } mmol/L`,
+                          color: tableData[0].details?.keytoneFlagColor,
+                        },
+                      ]
+                    : card?.slug === "uric_acid"
+                    ? [
+                        {
+                          label: `${
+                            tableData[0]?.details?.uric_acid || "N/A"
+                          } mg/dL`,
+                          color: "success",
                         },
                       ]
                     : []
@@ -222,6 +289,31 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     )
                   : card?.slug === "blood-sugar"
                   ? transformBloodSugarData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "lipid-profile"
+                  ? transformLipidProfileData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "hct"
+                  ? transformHematocritData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "hemoglobin"
+                  ? transformHemoglobinData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "keytone"
+                  ? transformBloodKetoneData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "uric_acid"
+                  ? transformBloodUricAcidData(
                       response?.data?.vitals,
                       response?.data?.pagination
                     )
@@ -343,6 +435,57 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   color: tableData[0].details?.bsFlagColor,
                 },
               ]
+            : card?.slug === "lipid-profile"
+            ? [
+                {
+                  label: `Total Cholesterol:${
+                    tableData[0]?.details?.total || "N/A"
+                  } mg/dL`,
+                  color: tableData[0].details?.total_message_flag,
+                },
+                {
+                  label: `LDL:${tableData[0]?.details?.ldl || "N/A"} mg/dL`,
+                  color: tableData[0].details?.ldl_message_flag,
+                },
+                {
+                  label: `HDL:${tableData[0]?.details?.hdl || "N/A"} mg/dL`,
+                  color: tableData[0].details?.hdl_message_flag,
+                },
+                {
+                  label: `Triglycerides:${
+                    tableData[0]?.details?.triglycerides || "N/A"
+                  } mg/dL`,
+                  color: tableData[0].details?.triglycerides_message_flag,
+                },
+              ]
+            : card?.slug === "hct"
+            ? [
+                {
+                  label: `${tableData[0]?.details?.hct || "N/A"} %`,
+                  color: tableData[0].details?.hctFlagColor,
+                },
+              ]
+            : card?.slug === "hemoglobin"
+            ? [
+                {
+                  label: `${tableData[0]?.details?.hemoglobin || "N/A"} g/dL`,
+                  color: tableData[0].details?.hemoglobinFlagColor,
+                },
+              ]
+            : card?.slug === "keytone"
+            ? [
+                {
+                  label: `${tableData[0]?.details?.keytone || "N/A"} mmol/L`,
+                  color: tableData[0].details?.keytoneFlagColor,
+                },
+              ]
+            : card?.slug === "uric_acid"
+            ? [
+                {
+                  label: `${tableData[0]?.details?.uric_acid || "N/A"} mg/dL`,
+                  color: "success",
+                },
+              ]
             : []
           : [];
 
@@ -375,6 +518,31 @@ const VitalSign = ({ setVitalView, onClose }) => {
             )
           : card?.slug === "blood-sugar"
           ? transformBloodSugarData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "lipid-profile"
+          ? transformLipidProfileData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "hct"
+          ? transformHematocritData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "hemoglobin"
+          ? transformHemoglobinData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "keytone"
+          ? transformBloodKetoneData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "uric_acid"
+          ? transformBloodUricAcidData(
               response?.data?.vitals,
               response?.data?.pagination
             )

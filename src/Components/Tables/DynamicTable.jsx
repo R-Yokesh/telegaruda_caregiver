@@ -213,18 +213,21 @@ const DynamicTable = ({
                 <LipidProfileForm
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Hematocrit (HCT)" && (
                 <HCT
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Hemoglobin" && (
                 <Hemogloin
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -232,6 +235,7 @@ const DynamicTable = ({
                 <BKetone
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -239,6 +243,7 @@ const DynamicTable = ({
                 <BUricAcid
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -294,14 +299,16 @@ const DynamicTable = ({
       };
       return (
         <div style={{ width: "80px" }} onClick={() => renderPdf(value.link)}>
-          <span className="hyperlink">{value.name}</span>
+          <span className="hyperlink">{value?.name}</span>
         </div>
       );
     } else if (columnKey === "result") {
       return (
         <div style={{ width: "180px" }}>
-          {value?.name ? (
-            <Badge label={value?.name} color={value?.status} />
+          {value?.name !== "" ? (
+            <Badge label={value?.name ?? "-"} color={value?.status ?? "-"} />
+          ) : value?.name === "" ? (
+            <>--</>
           ) : (
             <span>{value}</span>
           )}

@@ -23,7 +23,7 @@ const CardChart = ({ datas }) => {
           item?.["hr_(bpm)"] ||
           item?.["respiration_rate_(bpm)"] ||
           item?.["spo2"] ||
-          removePercent(item?.["hct_%"]) ||
+          item?.["hct_%"] ||
           item?.["fev1/fvc_(%)"] ||
           item?.["totalOnly"] ||
           item?.["chartValue"] ||
@@ -31,7 +31,8 @@ const CardChart = ({ datas }) => {
           item?.["blood_uric_acid_value"] ||
           item?.["urea_value"] ||
           item?.["creatinine_value"] ||
-          item?.["gfr_value"]
+          item?.["gfr_value"] ||
+          item?.["ldl(mg/dl)"]
       ),
       // For temperature C / F
       unit: item.unit,

@@ -232,7 +232,7 @@ const ObjectiveDetailPage = ({
                   <LFTForm addBack={addBack} getTableDatas={getTableDatas} />
                 )}
                 {data?.name === "Lipid Profile" && (
-                  <LipidProfileForm addBack={addBack} />
+                  <LipidProfileForm addBack={addBack} getTableDatas={getTableDatas}/>
                 )}
                 {data?.name === "Temperature" && (
                   <Temperature
@@ -253,12 +253,12 @@ const ObjectiveDetailPage = ({
                   <BMI addBack={addBack} getTableDatas={getTableDatas} />
                 )}
                 {data?.name === "Blood Sugar" && <BSugar addBack={addBack} getTableDatas={getTableDatas} />}
-                {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} />}
-                {data?.name === "Hematocrit (HCT)" && <HCT addBack={addBack} />}
+                {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} getTableDatas={getTableDatas}/>}
+                {data?.name === "Hematocrit (HCT)" && <HCT addBack={addBack} getTableDatas={getTableDatas}/>}
                 {data?.name === "Blood Uric Acid" && (
-                  <BUricAcid addBack={addBack} />
+                  <BUricAcid addBack={addBack} getTableDatas={getTableDatas}/>
                 )}
-                {data?.name === "Blood Ketone" && <BKetone addBack={addBack} />}
+                {data?.name === "Blood Ketone" && <BKetone addBack={addBack} getTableDatas={getTableDatas} />}
                 {data?.name === "Urea" && <Urea addBack={addBack} />}
                 {data?.name === "Creatinine" && (
                   <Creatinine addBack={addBack} />

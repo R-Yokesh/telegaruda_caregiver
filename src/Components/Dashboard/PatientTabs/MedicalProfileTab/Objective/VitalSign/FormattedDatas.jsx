@@ -279,15 +279,15 @@ export const transformSpO2Data = (originalData, pagination) => {
       status: item?.details?.spo2FlagColor,
       name: item?.details?.spo2Flag,
     },
-    spo2: item.details.spo2 + "" + item?.details?.unit || "N/A",
-    date: `${item.details.date} ${item.details.time || ""}`,
+    spo2: item?.details?.spo2 + "" + item?.details?.unit || "N/A",
+    date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
       item.freeze === 1
         ? [{ type: "warning" }]
         : [{ type: "edit" }, { type: "delete" }],
     name: "SpO2",
-    id: item.id,
-    user_id: item.user_id,
+    id: item?.id,
+    user_id: item?.user_id,
     slug: "spO2",
     unit: item?.details?.unit,
   }));
@@ -297,8 +297,8 @@ export const transformSpO2Data = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0].spo2}`,
-            color: tableData[0].result.status,
+            label: `${tableData[0]?.spo2}`,
+            color: tableData[0]?.result?.status,
           },
         ]
       : [];
@@ -307,7 +307,7 @@ export const transformSpO2Data = (originalData, pagination) => {
     id: 10,
     icon: Assets.SpO2,
     name: "SpO2",
-    date: `Recently Added ${tableData[0].date
+    date: `Recently Added ${tableData[0]?.date
       .split(" ")[0]
       .split("-")
       .reverse()
@@ -677,6 +677,425 @@ export const transformBloodSugarData = (originalData, pagination) => {
     tableData,
     chartLabel1: "Blood Sugar (mg/dL)",
     chartLabel2: "Type",
+    total: pagination?.total,
+  };
+};
+
+export const transformLipidProfileData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 8,
+      icon: Assets.VitalLipid,
+      name: "Lipid Profile",
+      date: "-",
+      category: "Metabolic And Biochemical Profile",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "LDL(mg/dL)" },
+        { id: 4, label: "HDL(mg/dL)" },
+        { id: 5, label: "VLDL(mg/dL)" },
+        { id: 6, label: "LDL/HDL(mg/dL)" },
+        { id: 7, label: "Triglycerides(mg/dL)" },
+        { id: 8, label: "Total Cholesterol(mg/dL)" },
+        { id: 9, label: "DATE" },
+        { id: 10, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "LDL (mg/dL)",
+      chartLabel2: "HDL (mg/dL)",
+      chartLabel3: "VLDL (mg/dL)",
+      chartLabel4: "LDL/HDL",
+      chartLabel5: "Triglycerides (mg/dL)",
+      chartLabel6: "Total Cholesterol (mg/dL)",
+      total: pagination?.total,
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.total_message_flag || "unknown",
+      name: item?.details?.total_message || "Unknown",
+    },
+    "ldl(mg/dl)": item?.details?.ldl || "",
+    "hdl(mg/dl)": item?.details?.hdl || "",
+    "vldl(mg/dl)": item?.details?.vldl || "",
+    "ldl/hdl(mg/dl)": item?.details?.hdl_ldl || "",
+    "triglycerides(mg/dl)": item?.details?.triglycerides || "",
+    ldl_message_flag: item?.details?.ldl_message_flag,
+    triglycerides_message_flag: item?.details?.triglycerides_message_flag,
+    hdl_message_flag: item?.details?.hdl_message_flag,
+    "total_cholesterol(mg/dl)": item?.details?.total || "",
+    date: `${item.details?.date || ""} ${item.details?.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Lipid Profile",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "lipid-profile",
+  }));
+
+  // Create badges
+  const badge = [
+    {
+      label: `Total Cholesterol: ${
+        tableData[0]?.["total_cholesterol(mg/dl)"] || "N/A"
+      } mg/dl`,
+      color: `${tableData[0]?.result.status}`,
+    },
+    {
+      label: `LDL: ${tableData[0]?.["ldl(mg/dl)"] || "N/A"} mg/dl`,
+      color: `${tableData[0]?.ldl_message_flag}`,
+    },
+    {
+      label: `HDL: ${tableData[0]?.["hdl(mg/dl)"] || "N/A"} mg/dl`,
+      color: `${tableData[0]?.hdl_message_flag}`,
+    },
+    {
+      label: `Triglycerides: ${
+        tableData[0]?.["triglycerides(mg/dl)"] || "N/A"
+      } mg/dl`,
+      color: `${tableData[0]?.triglycerides_message_flag}`,
+    },
+  ];
+
+  return {
+    id: 8,
+    icon: Assets.VitalLipid,
+    name: "Lipid Profile",
+    date: `Recently Added ${
+      tableData[0]?.date.split(" ")[0].split("-").reverse().join("-") || "-"
+    }`,
+    category: "Metabolic And Biochemical Profile",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "LDL(mg/dL)" },
+      { id: 4, label: "HDL(mg/dL)" },
+      { id: 5, label: "VLDL(mg/dL)" },
+      { id: 6, label: "LDL/HDL(mg/dL)" },
+      { id: 7, label: "Triglycerides(mg/dL)" },
+      { id: 8, label: "Total Cholesterol(mg/dL)" },
+      { id: 9, label: "DATE" },
+      { id: 10, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "LDL (mg/dL)",
+    chartLabel2: "HDL (mg/dL)",
+    chartLabel3: "VLDL (mg/dL)",
+    chartLabel4: "LDL/HDL",
+    chartLabel5: "Triglycerides (mg/dL)",
+    chartLabel6: "Total Cholesterol (mg/dL)",
+    total: pagination?.total,
+  };
+};
+
+export const transformHematocritData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 4,
+      icon: Assets.VitalHCT,
+      name: "Hematocrit (HCT)",
+      date: "-",
+      category: "Hematologic Profile",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "HCT %" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "HCT (%)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData?.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.hctFlagColor,
+      name: item?.details?.hctFlag || "Unknown",
+    },
+    "hct_%": item?.details?.hct || 0,
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Hematocrit (HCT)",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "hct",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0]["hct_%"]} %`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 4,
+    icon: Assets.VitalHCT,
+    name: "Hematocrit (HCT)",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Hematologic Profile",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "HCT %" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "HCT (%)",
+    total: pagination?.total,
+  };
+};
+
+export const transformHemoglobinData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 6,
+      icon: Assets.VitalHae,
+      name: "Hemoglobin",
+      date: "-",
+      category: "Hematologic Profile",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "Hemoglobin" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Hemoglobin (g/dL)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.hemoglobinFlagColor,
+      name: item?.details?.hemoglobinFlag || "Unknown",
+    },
+    hemoglobin: item?.details?.hemoglobin || "N/A",
+    hemoglobinValue: item?.details?.hemoglobin || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Hemoglobin",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "hemoglobin",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0].hemoglobin} g/dL`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 6,
+    icon: Assets.VitalHae,
+    name: "Hemoglobin",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Hematologic Profile",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "Hemoglobin" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Hemoglobin (g/dL)",
+    total: pagination?.total,
+  };
+};
+
+export const transformBloodKetoneData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 7,
+      icon: Assets.BKetone,
+      name: "Blood Ketone",
+      date: "-",
+      category: "Hematologic Profile",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "BLOOD KETONE" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Blood Ketone (mmol/L)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.keytoneFlagColor,
+      name: item?.details?.keytoneFlag || "Unknown",
+    },
+    blood_ketone: item?.details?.keytone || "N/A",
+    blood_ketone_value: item?.details?.keytone || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Blood Ketone",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "keytone",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0].blood_ketone} mmol/L`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 7,
+    icon: Assets.BKetone,
+    name: "Blood Ketone",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Hematologic Profile",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "BLOOD KETONE" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Blood Ketone (mmol/L)",
+    total: pagination?.total,
+  };
+};
+
+export const transformBloodUricAcidData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 13,
+      icon: Assets.BUAcid,
+      name: "Blood Uric Acid",
+      date: "-",
+      category: "Hematologic Profile",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "BLOOD URIC ACID" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Blood Uric Acid (mg/dL)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.uricAcidFlagColor,
+      name: item?.details?.uricAcidFlag || "Unknown",
+    },
+    blood_uric_acid: item?.details?.uric_acid || "N/A",
+    blood_uric_acid_value: item?.details?.uric_acid || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Blood Uric Acid",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "uric_acid",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0].blood_uric_acid} mg/dL`,
+            // color: tableData[0].result.status,
+            color: "success",
+          },
+        ]
+      : [];
+
+  return {
+    id: 13,
+    icon: Assets.BUAcid,
+    name: "Blood Uric Acid",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Hematologic Profile",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "BLOOD URIC ACID" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Blood Uric Acid (mg/dL)",
     total: pagination?.total,
   };
 };

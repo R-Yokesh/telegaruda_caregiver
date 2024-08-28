@@ -140,6 +140,7 @@ export const ObjectiveDatas = [
   {
     id: 4,
     icon: Assets.VitalHCT,
+    slug: "hct",
     name: "Hematocrit (HCT)",
     category: "Hematologic Profile",
     date: "Recently Added 27-03-2024",
@@ -242,6 +243,7 @@ export const ObjectiveDatas = [
   {
     id: 6,
     icon: Assets.VitalHae,
+    slug: "hemoglobin",
     name: "Hemoglobin",
     category: "Hematologic Profile",
     date: "Recently Added 27-03-2024",
@@ -258,7 +260,7 @@ export const ObjectiveDatas = [
       {
         "no.": 1,
         result: { status: "success", name: "Normal" },
-        hemoglobin: "15 g/dL",
+        hemoglobin: "15",
         hemoglobinValue: "15",
         date: "06-24-2024 10:15",
         action: [{ type: "warning" }],
@@ -270,7 +272,7 @@ export const ObjectiveDatas = [
           status: "success",
           name: "Normal",
         },
-        hemoglobin: "15 g/dL",
+        hemoglobin: "15",
         hemoglobinValue: "15",
         date: "05-24-2024 10:15",
         action: [{ type: "edit" }, { type: "delete" }],
@@ -281,6 +283,7 @@ export const ObjectiveDatas = [
   {
     id: 7,
     icon: Assets.BKetone,
+    slug: "keytone",
     name: "Blood Ketone",
     category: "Hematologic Profile",
     date: "Recently Added 27-03-2024",
@@ -320,6 +323,7 @@ export const ObjectiveDatas = [
   {
     id: 8,
     icon: Assets.VitalLipid,
+    slug: "lipid-profile",
     name: "Lipid Profile",
     category: "Metabolic And Biochemical Profile",
     date: "Recently Added 27-03-2024",
@@ -330,12 +334,12 @@ export const ObjectiveDatas = [
       // { label: "TG: Optimal", color: "error" },
       { label: "Triglycerides: 150 mg/dL", color: "success" },
     ],
-    chartLabel1: "LDL (mg/dL",
-    chartLabel2: "HDL (mg/dL",
-    chartLabel3: "VLDL (mg/dL",
-    chartLabel4: "LDL/HDL (mg/dL",
-    chartLabel5: "Triglycerides (mg/dL",
-    chartLabel6: "Total Cholesterol (mg/dL",
+    chartLabel1: "LDL (mg/dL)",
+    chartLabel2: "HDL (mg/dL)",
+    chartLabel3: "VLDL (mg/dL)",
+    chartLabel4: "LDL/HDL (mg/dL)",
+    chartLabel5: "Triglycerides (mg/dL)",
+    chartLabel6: "Total Cholesterol (mg/dL)",
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
@@ -565,6 +569,7 @@ export const ObjectiveDatas = [
   {
     id: 13,
     icon: Assets.BUAcid,
+    slug: "uric_acid",
     name: "Blood Uric Acid",
     category: "Hematologic Profile",
     date: "Recently Added 27-03-2024",
