@@ -1099,3 +1099,231 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
     total: pagination?.total,
   };
 };
+
+export const transformUreaData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 15,
+      icon: Assets.Urea,
+      name: "Urea",
+      date: "-",
+      category: "Renal and Metabolic Markers",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "UREA" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Urea (mg/dL)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.ureaFlagColor,
+      name: item?.details?.ureaFlag || "Unknown",
+    },
+    urea: item.details?.urea || "N/A",
+    urea_value: item?.details?.urea || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Urea",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "urea",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0].urea} mg/dL`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 15,
+    icon: Assets.Urea,
+    name: "Urea",
+    date: `Recently Added ${
+      tableData.length > 0
+        ? tableData[0].date.split(" ")[0].split("-").reverse().join("-")
+        : "-"
+    }`,
+    category: "Renal and Metabolic Markers",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "UREA" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Urea (mg/dL)",
+    total: pagination?.total,
+  };
+};
+
+export const transformCreatinineData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 16,
+      icon: Assets.Creatinine,
+      name: "Creatinine",
+      date: "-",
+      category: "Renal and Metabolic Markers",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "CREATININE" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Creatinine (mg/dL)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.creatinineFlagColor,
+      name: item?.details?.creatinineFlag || "Unknown",
+    },
+    creatinine: item?.details?.creatinine || "N/A",
+    creatinine_value: item?.details?.creatinine || "N/A",
+    date: `${item?.details?.date} ${item?.details?.time || ""}`,
+    action:
+      item?.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Creatinine",
+    id: item?.id,
+    user_id: item?.user_id,
+    slug: "creatinine",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0]?.creatinine} mg/dL`,
+            color: tableData[0]?.result?.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 16,
+    icon: Assets.Creatinine,
+    name: "Creatinine",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Renal and Metabolic Markers",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "CREATININE" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Creatinine (mg/dL)",
+    total: pagination?.total,
+  };
+};
+
+export const transformGFRData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 17,
+      icon: Assets.GFR,
+      name: "GFR",
+      date: "-",
+      category: "Renal and Metabolic Markers",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "RESULT" },
+        { id: 3, label: "GFR" },
+        { id: 4, label: "DATE" },
+        { id: 5, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "GFR (mL/min/1.73m²)",
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    result: {
+      status: item?.details?.gfrFlagColor,
+      name: item?.details?.gfrFlag || "Unknown",
+    },
+    gfr: item?.details?.gfr || "N/A",
+    gfr_value: item?.details?.gfr || "N/A",
+    date: `${item?.details?.date} ${item?.details?.time || ""}`,
+    action:
+      item?.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "GFR",
+    id: item.id,
+    user_id: item.user_id,
+    slug: "gfr",
+  }));
+
+  // Create badge and other static information
+  const badge =
+    tableData.length > 0
+      ? [
+          {
+            label: `${tableData[0].gfr} mL/min/1.73m²`,
+            color: tableData[0].result.status,
+          },
+        ]
+      : [];
+
+  return {
+    id: 17,
+    icon: Assets.GFR,
+    name: "GFR",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Renal and Metabolic Markers",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "RESULT" },
+      { id: 3, label: "GFR" },
+      { id: 4, label: "DATE" },
+      { id: 5, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "GFR (mL/min/1.73m²)",
+    total: pagination?.total,
+  };
+};

@@ -251,18 +251,21 @@ const DynamicTable = ({
                 <GFR
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Creatinine" && (
                 <Creatinine
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Urea" && (
                 <Urea
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Urinalysis" && (

@@ -16,6 +16,8 @@ import {
   transformBloodUricAcidData,
   transformBMIData,
   transformBPData,
+  transformCreatinineData,
+  transformGFRData,
   transformHeartRateData,
   transformHematocritData,
   transformHemoglobinData,
@@ -24,6 +26,7 @@ import {
   transformRespirationRateData,
   transformSpO2Data,
   transformTemperatureData,
+  transformUreaData,
 } from "./FormattedDatas";
 
 const VitalSign = ({ setVitalView, onClose }) => {
@@ -248,6 +251,33 @@ const VitalSign = ({ setVitalView, onClose }) => {
                           color: "success",
                         },
                       ]
+                    : card?.slug === "urea"
+                    ? [
+                        {
+                          label: `${
+                            tableData[0]?.details?.urea || "N/A"
+                          } mg/dL`,
+                          color: `${tableData[0]?.details?.ureaFlagColor}`,
+                        },
+                      ]
+                    : card?.slug === "creatinine"
+                    ? [
+                        {
+                          label: `${
+                            tableData[0]?.details?.creatinine || "N/A"
+                          } mg/dL`,
+                          color: `${tableData[0]?.details?.creatinineFlagColor}`,
+                        },
+                      ]
+                    : card?.slug === "gfr"
+                    ? [
+                        {
+                          label: `${
+                            tableData[0]?.details?.gfr || "N/A"
+                          } mL/min/1.73m²`,
+                          color: `${tableData[0]?.details?.gfrFlagColor}`,
+                        },
+                      ]
                     : []
                   : [];
 
@@ -314,6 +344,21 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     )
                   : card?.slug === "uric_acid"
                   ? transformBloodUricAcidData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "urea"
+                  ? transformUreaData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "creatinine"
+                  ? transformCreatinineData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
+                  : card?.slug === "gfr"
+                  ? transformGFRData(
                       response?.data?.vitals,
                       response?.data?.pagination
                     )
@@ -486,6 +531,27 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   color: "success",
                 },
               ]
+            : card?.slug === "urea"
+            ? [
+                {
+                  label: `${tableData[0]?.details?.urea || "N/A"} mg/dL`,
+                  color: `${tableData[0]?.details?.ureaFlagColor}`,
+                },
+              ]
+            : card?.slug === "creatinine"
+            ? [
+                {
+                  label: `${tableData[0]?.details?.creatinine || "N/A"} mg/dL`,
+                  color: `${tableData[0]?.details?.creatinineFlagColor}`,
+                },
+              ]
+            : card?.slug === "gfr"
+            ? [
+                {
+                  label: `${tableData[0]?.details?.gfr || "N/A"} mL/min/1.73m²`,
+                  color: `${tableData[0]?.details?.gfrFlagColor}`,
+                },
+              ]
             : []
           : [];
 
@@ -546,6 +612,18 @@ const VitalSign = ({ setVitalView, onClose }) => {
               response?.data?.vitals,
               response?.data?.pagination
             )
+          : card?.slug === "urea"
+          ? transformUreaData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "creatinine"
+          ? transformCreatinineData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
+          : card?.slug === "gfr"
+          ? transformGFRData(response?.data?.vitals, response?.data?.pagination)
           : null;
 
       const updatedCard = {

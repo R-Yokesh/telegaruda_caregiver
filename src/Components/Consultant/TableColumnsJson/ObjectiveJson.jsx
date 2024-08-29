@@ -731,6 +731,7 @@ export const ObjectiveDatas = [
   {
     id: 15,
     icon: Assets.Urea,
+    slug: "urea",
     name: "Urea",
     date: "Recently Added 27-03-2024",
     category: "Renal and Metabolic Markers",
@@ -771,6 +772,7 @@ export const ObjectiveDatas = [
     id: 16,
     icon: Assets.Creatinine,
     name: "Creatinine",
+    slug: "creatinine",
     category: "Renal and Metabolic Markers",
     date: "Recently Added 27-03-2024",
     badge: [{ label: "1.7 mg/dL", color: "error" }],
@@ -809,6 +811,7 @@ export const ObjectiveDatas = [
   {
     id: 17,
     icon: Assets.GFR,
+    slug: "gfr",
     name: "GFR",
     category: "Renal and Metabolic Markers",
     date: "Recently Added 27-03-2024",
