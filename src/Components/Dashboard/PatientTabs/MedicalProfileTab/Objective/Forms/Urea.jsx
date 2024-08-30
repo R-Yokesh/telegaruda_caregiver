@@ -9,9 +9,12 @@ import { format, isValid, parse } from "date-fns";
 import useApi from "../../../../../../ApiServices/useApi";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { DATE_FORMAT } from "../../../../../../Config/config";
+import { useLocation } from "react-router-dom";
 
 const Urea = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [urea, setUrea] = useState(defaultData?.urea || "");
@@ -105,7 +108,7 @@ const Urea = ({ addBack, defaultData, getTableDatas }) => {
           unit: "mg/dL",
           urea: Number(urea),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "urea",
       };
       await post(url, body);
@@ -127,7 +130,7 @@ const Urea = ({ addBack, defaultData, getTableDatas }) => {
           unit: "mg/dL",
           urea: Number(urea),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "urea",
       };
       await patch(url, body);

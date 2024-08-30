@@ -9,9 +9,12 @@ import { format, isValid, parse } from "date-fns";
 import useApi from "../../../../../../ApiServices/useApi";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { DATE_FORMAT } from "../../../../../../Config/config";
+import { useLocation } from "react-router-dom";
 
 const Hemogloin = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [hemoglobin, setHemoglobin] = useState(defaultData?.hemoglobin || "");
@@ -104,7 +107,7 @@ const Hemogloin = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           hemoglobin: Number(hemoglobin),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "hemoglobin",
       };
       await post(url, body);
@@ -125,7 +128,7 @@ const Hemogloin = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           hemoglobin: Number(hemoglobin),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "hemoglobin",
       };
       await patch(url, body);

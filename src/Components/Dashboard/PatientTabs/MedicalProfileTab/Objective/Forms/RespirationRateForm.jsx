@@ -9,8 +9,11 @@ import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { toast } from "react-toastify";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const RespirationRateForm = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -106,7 +109,7 @@ const RespirationRateForm = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           respiration: respiration,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "respiration",
       };
       await post(url, body);
@@ -127,7 +130,7 @@ const RespirationRateForm = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           respiration: respiration,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "respiration",
       };
       await patch(url, body);

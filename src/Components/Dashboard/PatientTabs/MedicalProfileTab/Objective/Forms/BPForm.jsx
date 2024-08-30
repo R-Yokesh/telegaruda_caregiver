@@ -9,8 +9,12 @@ import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const BPForm = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -197,7 +201,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
           diastolic: Number(diastolic),
           pulse: Number(pulse),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "blood-pressure",
       };
       await post(url, body);
@@ -220,7 +224,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
           diastolic: Number(diastolic),
           pulse: Number(pulse),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "blood-pressure",
       };
       await patch(url, body);

@@ -145,12 +145,12 @@ const ColumnChartDetails = ({ datas }) => {
       ) : ( */}
       <Tooltip formatter={tooltipFormatter} />
 
-      {formattedData[0].data6 &&
-      formattedData[0].data5 &&
-      formattedData[0].data4 &&
-      formattedData[0].data3 &&
-      formattedData[0].data2 &&
-      formattedData[0].data1 ? (
+      {formattedData[0]?.data6 &&
+      formattedData[0]?.data5 &&
+      formattedData[0]?.data4 &&
+      formattedData[0]?.data3 &&
+      formattedData[0]?.data2 &&
+      formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -161,11 +161,11 @@ const ColumnChartDetails = ({ datas }) => {
             { value: datas?.chartLabel6, type: "line", color: "#1858c7" },
           ]}
         />
-      ) : formattedData[0].data5 &&
-        formattedData[0].data4 &&
-        formattedData[0].data3 &&
-        formattedData[0].data2 &&
-        formattedData[0].data1 ? (
+      ) : formattedData[0]?.data5 &&
+        formattedData[0]?.data4 &&
+        formattedData[0]?.data3 &&
+        formattedData[0]?.data2 &&
+        formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -175,10 +175,10 @@ const ColumnChartDetails = ({ datas }) => {
             { value: datas?.chartLabel5, type: "line", color: "#1858c7" },
           ]}
         />
-      ) : formattedData[0].data4 &&
-        formattedData[0].data3 &&
-        formattedData[0].data2 &&
-        formattedData[0].data1 ? (
+      ) : formattedData[0]?.data4 &&
+        formattedData[0]?.data3 &&
+        formattedData[0]?.data2 &&
+        formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -187,9 +187,9 @@ const ColumnChartDetails = ({ datas }) => {
             { value: datas?.chartLabel4, type: "line", color: "#1858c7" },
           ]}
         />
-      ) : formattedData[0].data3 &&
-        formattedData[0].data2 &&
-        formattedData[0].data1 ? (
+      ) : formattedData[0]?.data3 &&
+        formattedData[0]?.data2 &&
+        formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -197,14 +197,14 @@ const ColumnChartDetails = ({ datas }) => {
             { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
           ]}
         />
-      ) : formattedData[0].data2 && formattedData[0].data1 ? (
+      ) : formattedData[0]?.data2 && formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
             { value: datas?.chartLabel2, type: "line", color: "#166da9" },
           ]}
         />
-      ) : formattedData[0].data1 ? (
+      ) : formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -212,11 +212,11 @@ const ColumnChartDetails = ({ datas }) => {
         />
       ) : null}
       <Bar dataKey="data1" fill="#0084CF" />
-      {formattedData[0].data2 && <Bar dataKey="data2" fill="#166da9" />}
-      {formattedData[0].data3 && <Bar dataKey="data3" fill="#1858c6" />}
-      {formattedData[0].data4 && <Bar dataKey="data4" fill="#1858c7" />}
-      {formattedData[0].data5 && <Bar dataKey="data5" fill="#1858c7" />}
-      {formattedData[0].data6 && <Bar dataKey="data6" fill="#1858c7" />}
+      {formattedData[0]?.data2 && <Bar dataKey="data2" fill="#166da9" />}
+      {formattedData[0]?.data3 && <Bar dataKey="data3" fill="#1858c6" />}
+      {formattedData[0]?.data4 && <Bar dataKey="data4" fill="#1858c7" />}
+      {formattedData[0]?.data5 && <Bar dataKey="data5" fill="#1858c7" />}
+      {formattedData[0]?.data6 && <Bar dataKey="data6" fill="#1858c7" />}
     </BarChart>
   );
 };

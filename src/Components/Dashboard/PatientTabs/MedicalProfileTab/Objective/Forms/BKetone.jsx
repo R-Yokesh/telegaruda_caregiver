@@ -9,8 +9,12 @@ import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import useApi from "../../../../../../ApiServices/useApi";
 import { DATE_FORMAT } from "../../../../../../Config/config";
+import { useLocation } from "react-router-dom";
 
 const BKetone = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -104,7 +108,7 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           keytone: Number(keytone),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "keytone",
       };
       await post(url, body);
@@ -125,7 +129,7 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           keytone: Number(keytone),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "keytone",
       };
       await patch(url, body);

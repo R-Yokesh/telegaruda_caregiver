@@ -11,9 +11,12 @@ import { format, isValid, parse } from "date-fns";
 import { toast } from "react-toastify";
 import { extractNum, findItemIndex } from "../../../../../../Utils/commonUtils";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const Temperature = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedMethod, setSelectedMethod] = useState(
@@ -146,7 +149,7 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
           unit: selectedUnit,
           temperature: Number(temperature),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "temperature",
       };
       await post(url, body);
@@ -169,7 +172,7 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
           unit: selectedUnit,
           temperature: Number(extractNum(temperature)),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "temperature",
       };
       await patch(url, body);

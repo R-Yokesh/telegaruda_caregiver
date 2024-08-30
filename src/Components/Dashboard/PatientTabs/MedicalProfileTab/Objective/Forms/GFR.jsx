@@ -9,9 +9,12 @@ import { format, isValid, parse } from "date-fns";
 import useApi from "../../../../../../ApiServices/useApi";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { DATE_FORMAT } from "../../../../../../Config/config";
+import { useLocation } from "react-router-dom";
 
 const GFR = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [gfr, setGfr] = useState(defaultData?.gfr || "");
@@ -105,7 +108,7 @@ const GFR = ({ addBack, defaultData, getTableDatas }) => {
           unit: "mL/min/1.73 m²",
           gfr: Number(gfr),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "gfr",
       };
       await post(url, body);
@@ -127,7 +130,7 @@ const GFR = ({ addBack, defaultData, getTableDatas }) => {
           unit: "mL/min/1.73 m²",
           gfr: Number(gfr),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "gfr",
       };
       await patch(url, body);

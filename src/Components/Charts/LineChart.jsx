@@ -88,15 +88,15 @@ const LineChartDetails = ({ datas }) => {
         : ""
     ),
     // For temperature C / F
-    unit: item.unit,
+    unit: item?.unit,
   }));
 
-  const minValue = Math?.min(...formattedData?.map((item) => item.data1));
+  const minValue = Math?.min(...formattedData?.map((item) => item.data1)) || 3;
   const maxValue = Math?.max(
     ...formattedData?.map((item) =>
       !isNaN(item?.data1) ? item?.data1 : -Infinity
     )
-  );
+  ) || 30;
   // Custom tooltip formatter function
   const tooltipFormatter = (value, name, props) => {
     const item = formattedData.find((d) => d.name === props.payload.name);
@@ -148,12 +148,12 @@ const LineChartDetails = ({ datas }) => {
         tickLine={false}
       />
       <Tooltip formatter={tooltipFormatter} />
-      {formattedData[0].data6 &&
-      formattedData[0].data5 &&
-      formattedData[0].data4 &&
-      formattedData[0].data3 &&
-      formattedData[0].data2 &&
-      formattedData[0].data1 ? (
+      {formattedData[0]?.data6 &&
+      formattedData[0]?.data5 &&
+      formattedData[0]?.data4 &&
+      formattedData[0]?.data3 &&
+      formattedData[0]?.data2 &&
+      formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -164,11 +164,11 @@ const LineChartDetails = ({ datas }) => {
             { value: datas?.chartLabel6, type: "line", color: "#1858c7" },
           ]}
         />
-      ) : formattedData[0].data5 &&
-        formattedData[0].data4 &&
-        formattedData[0].data3 &&
-        formattedData[0].data2 &&
-        formattedData[0].data1 ? (
+      ) : formattedData[0]?.data5 &&
+        formattedData[0]?.data4 &&
+        formattedData[0]?.data3 &&
+        formattedData[0]?.data2 &&
+        formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -178,10 +178,10 @@ const LineChartDetails = ({ datas }) => {
             { value: datas?.chartLabel5, type: "line", color: "#1858c7" },
           ]}
         />
-      ) : formattedData[0].data4 &&
-        formattedData[0].data3 &&
-        formattedData[0].data2 &&
-        formattedData[0].data1 ? (
+      ) : formattedData[0]?.data4 &&
+        formattedData[0]?.data3 &&
+        formattedData[0]?.data2 &&
+        formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -190,9 +190,9 @@ const LineChartDetails = ({ datas }) => {
             { value: datas?.chartLabel4, type: "line", color: "#1858c7" },
           ]}
         />
-      ) : formattedData[0].data3 &&
-        formattedData[0].data2 &&
-        formattedData[0].data1 ? (
+      ) : formattedData[0]?.data3 &&
+        formattedData[0]?.data2 &&
+        formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -200,14 +200,14 @@ const LineChartDetails = ({ datas }) => {
             { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
           ]}
         />
-      ) : formattedData[0].data2 && formattedData[0].data1 ? (
+      ) : formattedData[0]?.data2 && formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
             { value: datas?.chartLabel2, type: "line", color: "#166da9" },
           ]}
         />
-      ) : formattedData[0].data1 ? (
+      ) : formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
@@ -217,19 +217,19 @@ const LineChartDetails = ({ datas }) => {
 
       <CartesianGrid horizontal={true} vertical={false} strokeWidth={1} />
       <Line type="linear" dataKey="data1" stroke="#0084CF" />
-      {formattedData[0].data2 && (
+      {formattedData[0]?.data2 && (
         <Line type="linear" dataKey="data2" stroke="#166da9" />
       )}
-      {formattedData[0].data3 && (
+      {formattedData[0]?.data3 && (
         <Line type="linear" dataKey="data3" stroke="#1858c6" />
       )}
-      {formattedData[0].data4 && (
+      {formattedData[0]?.data4 && (
         <Line type="linear" dataKey="data4" stroke="#1858c7" />
       )}
-      {formattedData[0].data5 && (
+      {formattedData[0]?.data5 && (
         <Line type="linear" dataKey="data5" stroke="#1858c7" />
       )}
-      {formattedData[0].data6 && (
+      {formattedData[0]?.data6 && (
         <Line type="linear" dataKey="data6" stroke="#1858c7" />
       )}
     </LineChart>

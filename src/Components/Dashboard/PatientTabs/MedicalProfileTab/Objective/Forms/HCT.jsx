@@ -10,9 +10,12 @@ import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import useApi from "../../../../../../ApiServices/useApi";
+import { useLocation } from "react-router-dom";
 
 const HCT = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [hct, setHct] = useState(defaultData?.["hct_%"] || "");
@@ -105,7 +108,7 @@ const HCT = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           hct: Number(hct),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "hct",
       };
       await post(url, body);
@@ -126,7 +129,7 @@ const HCT = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           hct: Number(hct),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "hct",
       };
       await patch(url, body);

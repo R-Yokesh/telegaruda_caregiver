@@ -7,6 +7,7 @@ export const transformBPData = (originalData, pagination) => {
       icon: Assets.VitalBP,
       name: "Blood Pressure",
       date: "-",
+      total: 0,
       category: "Primary Vitals",
       badge: [],
       columnsData: [
@@ -96,6 +97,7 @@ export const transformBMIData = (originalData, pagination) => {
       icon: Assets.VitalBMI,
       name: "BMI",
       date: "-",
+      total: 0,
       category: "Primary Vitals",
       badge: [],
       columnsData: [
@@ -183,6 +185,7 @@ export const transformRespirationRateData = (originalData, pagination) => {
       icon: Assets.VitalRespi,
       name: "Respiration Rate",
       date: "-",
+      total: 0,
       category: "Primary Vitals",
       badge: [],
       columnsData: [
@@ -258,6 +261,7 @@ export const transformSpO2Data = (originalData, pagination) => {
       icon: Assets.SpO2,
       name: "SpO2",
       date: "-",
+      total: 0,
       category: "Primary Vitals",
       badge: [],
       columnsData: [
@@ -334,6 +338,7 @@ export const transformTemperatureData = (originalData, pagination) => {
       icon: Assets.Temp,
       name: "Temperature",
       date: "-",
+      total: 0,
       category: "Primary Vitals",
       badge: [],
       columnsData: [
@@ -412,6 +417,7 @@ export const transformLFTData = (originalData, pagination) => {
       icon: Assets.LFT,
       name: "Lung Function Test (LFT)",
       date: "-",
+      total: 0,
       category: "Primary Vitals",
       badge: [],
       columnsData: [
@@ -524,6 +530,7 @@ export const transformHeartRateData = (originalData, pagination) => {
       icon: Assets.VitalHBeat,
       name: "Heart",
       date: "-",
+      total: 0,
       category: "Primary Vitals",
       badge: [],
       columnsData: [
@@ -607,6 +614,7 @@ export const transformBloodSugarData = (originalData, pagination) => {
       icon: Assets.VitalBs,
       name: "Blood Sugar",
       date: "-",
+      total: 0,
       category: "Metabolic And Biochemical Profile",
       badge: [],
       columnsData: [
@@ -688,6 +696,7 @@ export const transformLipidProfileData = (originalData, pagination) => {
       icon: Assets.VitalLipid,
       name: "Lipid Profile",
       date: "-",
+      total: 0,
       category: "Metabolic And Biochemical Profile",
       badge: [],
       columnsData: [
@@ -803,6 +812,7 @@ export const transformHematocritData = (originalData, pagination) => {
       icon: Assets.VitalHCT,
       name: "Hematocrit (HCT)",
       date: "-",
+      total: 0,
       category: "Hematologic Profile",
       badge: [],
       columnsData: [
@@ -889,6 +899,7 @@ export const transformHemoglobinData = (originalData, pagination) => {
       ],
       tableData: [],
       chartLabel1: "Hemoglobin (g/dL)",
+      total: 0,
     };
   }
 
@@ -1041,6 +1052,7 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
       ],
       tableData: [],
       chartLabel1: "Blood Uric Acid (mg/dL)",
+      total: 0,
     };
   }
 
@@ -1118,6 +1130,7 @@ export const transformUreaData = (originalData, pagination) => {
       ],
       tableData: [],
       chartLabel1: "Urea (mg/dL)",
+      total: 0,
     };
   }
 
@@ -1193,6 +1206,7 @@ export const transformCreatinineData = (originalData, pagination) => {
         { id: 5, label: "ACTION" },
       ],
       tableData: [],
+      total: 0,
       chartLabel1: "Creatinine (mg/dL)",
     };
   }
@@ -1269,6 +1283,7 @@ export const transformGFRData = (originalData, pagination) => {
         { id: 5, label: "ACTION" },
       ],
       tableData: [],
+      total: 0,
       chartLabel1: "GFR (mL/min/1.73m²)",
     };
   }
@@ -1324,6 +1339,107 @@ export const transformGFRData = (originalData, pagination) => {
     ],
     tableData,
     chartLabel1: "GFR (mL/min/1.73m²)",
+    total: pagination?.total,
+  };
+};
+
+export const transformUrinalysisData = (originalData, pagination) => {
+  if (!Array.isArray(originalData) || originalData.length === 0) {
+    return {
+      id: 14,
+      icon: Assets.Urinalysis,
+      name: "Urinalysis",
+      date: "-",
+      category: "Renal and Metabolic Markers",
+      badge: [],
+      columnsData: [
+        { id: 1, label: "NO." },
+        { id: 2, label: "Color" },
+        { id: 3, label: "Clarity" },
+        { id: 4, label: "PH" },
+        { id: 5, label: "Protein" },
+        { id: 6, label: "Glucose" },
+        { id: 7, label: "Leukocyte" },
+        { id: 8, label: "Bilirubin" },
+        { id: 9, label: "ACTION" },
+      ],
+      tableData: [],
+      chartLabel1: "Specific gravity",
+      chartLabel2: "PH",
+      chartLabel3: "Urobilinogen",
+      chartLabel4: "Red Blood Cells",
+      chartLabel5: "White Blood Cells",
+      total: 0,
+    };
+  }
+
+  // Map through original data to create tableData
+  const tableData = originalData.map((item, index) => ({
+    "no.": index + 1,
+    color: item?.details?.color || "N/A",
+    specific_gravity: item?.details?.specific_gravity || "N/A",
+    ph: item?.details?.ph || "N/A",
+    clarity: item?.details?.clarity || "N/A",
+    protein: item?.details?.protein || "N/A",
+    glucose: item?.details?.glucose || "N/A",
+    leukocyte: item?.details?.leukocytes || "N/A",
+    leukocytes_flag: item?.details?.leukocytes_flag,
+    bilirubin: item?.details?.bilirubin || "N/A",
+    urobilinogen: item?.details?.urobilinogen || "N/A",
+    red_blood_cells: item?.details?.red_blood_cells || "N/A",
+    white_blood_cells: item?.details?.white_blood_cells || "N/A",
+    date: `${item.details.date} ${item.details.time || ""}`,
+    action:
+      item?.freeze === 1
+        ? [{ type: "warning" }]
+        : [{ type: "edit" }, { type: "delete" }],
+    name: "Urinalysis",
+  }));
+
+  // Create badges based on the first item in tableData if available
+  const badge =
+    tableData.length > 0
+      ? [
+          { label: `Color: ${tableData[0].color}`, color: "success" },
+          { label: `Clarity: ${tableData[0].clarity}`, color: "success" },
+          { label: `Glucose: ${tableData[0].glucose}`, color: "success" },
+          {
+            label: `Specific Gravity: ${tableData[0].specific_gravity}`,
+            color: "success",
+          },
+          { label: `PH: ${tableData[0].ph}`, color: "success" },
+          { label: `Protein: ${tableData[0].protein}`, color: "success" },
+        ]
+      : [];
+
+  return {
+    id: 14,
+    icon: Assets.Urinalysis,
+    name: "Urinalysis",
+    date: `Recently Added ${tableData[0].date
+      .split(" ")[0]
+      .split("-")
+      .reverse()
+      .join("-")}`,
+    category: "Renal and Metabolic Markers",
+    badge,
+    columnsData: [
+      { id: 1, label: "NO." },
+      { id: 2, label: "Color" },
+      { id: 3, label: "Clarity" },
+      { id: 4, label: "PH" },
+      { id: 5, label: "Protein" },
+      { id: 6, label: "Glucose" },
+      { id: 7, label: "Leukocyte" },
+      { id: 8, label: "Bilirubin" },
+      { id: 9, label: "ACTION" },
+    ],
+    tableData,
+    chartLabel1: "Specific gravity",
+    chartLabel2: "PH",
+    chartLabel3: "Urobilinogen",
+    chartLabel4: "Red Blood Cells",
+    chartLabel5: "White Blood Cells",
     total: pagination?.total,
   };
 };

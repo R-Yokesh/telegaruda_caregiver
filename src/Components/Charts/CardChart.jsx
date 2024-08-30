@@ -35,7 +35,7 @@ const CardChart = ({ datas }) => {
           item?.["ldl(mg/dl)"]
       ),
       // For temperature C / F
-      unit: item.unit,
+      unit: item?.unit,
     };
   });
 

@@ -560,3 +560,43 @@ body {
   display: block;
   cursor: pointer;
 }
+
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skeleton-badge {
+  width: 80px; /* Adjust based on the badge size */
+  height: 24px; /* Adjust based on the badge size */
+  background-color: #e0e0e0;
+  border-radius: 12px; /* Adjust based on your badge shape */
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-date {
+  width: 150px; /* Adjust based on the date text length */
+  height: 16px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f5f5f5;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}

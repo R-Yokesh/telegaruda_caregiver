@@ -664,6 +664,7 @@ export const ObjectiveDatas = [
   {
     id: 14,
     icon: Assets.Urinalysis,
+    slug: "urine",
     name: "Urinalysis",
     category: "Renal and Metabolic Markers",
     date: "Recently Added 27-03-2024",

@@ -11,9 +11,12 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { findItemIndex } from "../../../../../../Utils/commonUtils";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const BSugar = ({ addBack, defaultData, getTableDatas }) => {
-  console.log("first", defaultData);
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -133,7 +136,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
           type: type,
           blood_sugar: bloodSugar,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "blood-sugar",
       };
       await post(url, body);
@@ -156,7 +159,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
           type: type,
           blood_sugar: bloodSugar,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "blood-sugar",
       };
       await patch(url, body);

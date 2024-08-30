@@ -27,9 +27,15 @@ import {
   transformSpO2Data,
   transformTemperatureData,
   transformUreaData,
+  transformUrinalysisData,
 } from "./FormattedDatas";
+import { useLocation } from "react-router-dom";
+import Loader from "../../../../../Loader/Loader";
 
 const VitalSign = ({ setVitalView, onClose }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
   const tabs = [
     { id: 1, title: "Primary Vitals" },
     { id: 2, title: "Metabolic And Biochemical Profile" },
@@ -85,6 +91,10 @@ const VitalSign = ({ setVitalView, onClose }) => {
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [vitalsLoading, setVitalsLoading] = useState(false);
+
+  const [modalStatic, setModalStatic] = useState({});
+
   const { loading, error, get } = useApi();
 
   const onPageChange = (pageNumber) => {
@@ -97,15 +107,24 @@ const VitalSign = ({ setVitalView, onClose }) => {
     setSearchValue(searchValue);
   };
 
+  const modalStaticData = (card) => {
+    const filteredModal = card?.filter(
+      (product) => product?.id === cardSelectedData?.id
+    );
+    setModalStatic(filteredModal);
+  };
+
   useEffect(() => {
+    console.log("ONE");
     const fetchCardData = async () => {
+      setVitalsLoading(true);
       try {
         // Create an array of promises to fetch data for each card
         const fetchPromises = ObjectiveDatas.map(async (card) => {
           if (card.slug !== null) {
             try {
               const response = await get(
-                `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=10&slug=${card?.slug}`
+                `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=${data?.user_id}&slug=${card?.slug}`
               );
               const tableData = response?.data?.vitals;
 
@@ -362,8 +381,13 @@ const VitalSign = ({ setVitalView, onClose }) => {
                       response?.data?.vitals,
                       response?.data?.pagination
                     )
+                  : card?.slug === "urine"
+                  ? transformUrinalysisData(
+                      response?.data?.vitals,
+                      response?.data?.pagination
+                    )
                   : null;
-
+              setVitalsLoading(false);
               return {
                 ...card,
                 created: response?.data?.vitals[0]?.details?.date,
@@ -371,6 +395,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                 ...formattedData,
               };
             } catch (error) {
+              setVitalsLoading(false);
               console.error(`Error fetching data for card ${card.id}:`, error);
               return {
                 ...card,
@@ -385,14 +410,13 @@ const VitalSign = ({ setVitalView, onClose }) => {
         const updatedCards = await Promise.all(fetchPromises);
         setCards(updatedCards);
         getFilter();
+        modalStaticData(updatedCards);
       } catch (error) {
         console.error("Error fetching card data:", error);
       }
     };
-    if (filters === true) {
-      fetchCardData();
-    }
-  }, [entities, cardSelectedData]);
+    fetchCardData();
+  }, [cardSelectedData]);
   // entities, cardSelectedData
 
   const fetchSingleCardData = async (card) => {
@@ -402,7 +426,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
           searchValue ?? ""
         }&from=${startDate ?? ""}&to=${
           endDate ?? ""
-        }&order_by=details-%3Edate&dir=2&user_id=10&slug=${
+        }&order_by=details-%3Edate&dir=2&user_id=${data?.user_id}&slug=${
           cardSelectedData?.slug
         }`
       );
@@ -624,6 +648,11 @@ const VitalSign = ({ setVitalView, onClose }) => {
             )
           : card?.slug === "gfr"
           ? transformGFRData(response?.data?.vitals, response?.data?.pagination)
+          : card?.slug === "urine"
+          ? transformUrinalysisData(
+              response?.data?.vitals,
+              response?.data?.pagination
+            )
           : null;
 
       const updatedCard = {
@@ -653,6 +682,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
   };
 
   const closeModal = () => {
+    setModalStatic({});
     setIsModalOpen(false);
   };
 
@@ -737,47 +767,48 @@ const VitalSign = ({ setVitalView, onClose }) => {
           />
         </CCol>
       </CRow>
-      <CRow className="mt-3">
-        {/* <CCol md={12}>
+      {!vitalsLoading ? (
+        <CRow className="mt-3">
+          {/* <CCol md={12}>
           <VitalsTab category={currentTabtitle} openModal={openModal} />
         </CCol> */}
-        {filtered?.map((item, index) => (
-          <CCol md={6} xl={4} key={index} className="mb-3">
-            <CCard
-              className={`vital-cards`}
-              onClick={() => {
-                openModal(item);
-              }}
-            >
-              <CCardBody>
-                <div className="vital-icon-and-title">
-                  <div>
-                    <img alt="bp" src={item?.icon} />
+          {filtered?.map((item, index) => (
+            <CCol md={6} xl={4} key={index} className="mb-3">
+              <CCard
+                className={`vital-cards`}
+                onClick={() => {
+                  openModal(item);
+                }}
+              >
+                <CCardBody>
+                  <div className="vital-icon-and-title">
+                    <div>
+                      <img alt="bp" src={item?.icon} />
+                    </div>
+                    <div className="vital-card-title">
+                      <span className="vital-card-text-bold">{item?.name}</span>
+                      <span className="vital-card-text">
+                        Recently Added{" "}
+                        {item?.created
+                          ?.split(" ")[0]
+                          .split("-")
+                          .reverse()
+                          .join("-")}
+                      </span>
+                    </div>
                   </div>
-                  <div className="vital-card-title">
-                    <span className="vital-card-text-bold">{item?.name}</span>
-                    <span className="vital-card-text">
-                      Recently Added{" "}
-                      {item?.created
-                        ?.split(" ")[0]
-                        .split("-")
-                        .reverse()
-                        .join("-")}
-                    </span>
+                  <div className="vital-badge">
+                    <div className="vital-badge-list">
+                      {item?.cardbadge?.map((dt, i) => (
+                        <div key={i} style={{ height: "24px" }}>
+                          <Badge label={dt?.label} color={dt?.color} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="vital-badge">
-                  <div className="vital-badge-list">
-                    {item?.cardbadge?.map((dt, i) => (
-                      <div key={i} style={{ height: "24px" }}>
-                        <Badge label={dt?.label} color={dt?.color} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="vital-line-container">
-                  {/* <img alt="line" src={Assets.Vitalline} /> */}
-                  {/* {item?.name === "Heart" ? (
+                  <div className="vital-line-container">
+                    {/* <img alt="line" src={Assets.Vitalline} /> */}
+                    {/* {item?.name === "Heart" ? (
                     <div className="chart-item">
                       <div className="rectangle">
                             <img src={Assets.ecgSample} alt="ecg" />
@@ -788,13 +819,21 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ) : (
                     <CardChart datas={item} />
                   )} */}
-                  <CardChart datas={item} />
-                </div>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        ))}
-      </CRow>
+                    <CardChart datas={item} />
+                  </div>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          ))}
+        </CRow>
+      ) : (
+        <div
+          className="d-flex w-100 justify-content-center mb-3 align-items-center"
+          style={{ height: "350px", maxHeight: "100%" }}
+        >
+          <Loader />
+        </div>
+      )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CContainer className="p-0">
@@ -802,15 +841,17 @@ const VitalSign = ({ setVitalView, onClose }) => {
             <CCol className="mb-3">
               <ObjectiveDetailPage
                 data={cardSelectedData}
-                getTableDatas={(data) =>
-                  fetchSingleCardData(data || cardSelectedData)
-                }
+                getTableDatas={(data) => {
+                  fetchSingleCardData(data || cardSelectedData);
+                  modalStaticData(cards);
+                }}
                 getFilterValues={(data1, data2, data3) => {
                   getFilterValues(data1, data2, data3);
                   setFilters(false);
                 }}
                 currentPage={currentPage}
                 onPageChange={onPageChange}
+                topData={modalStatic}
               />
               {/* <ObjectiveDetailPage
                 data={entities}

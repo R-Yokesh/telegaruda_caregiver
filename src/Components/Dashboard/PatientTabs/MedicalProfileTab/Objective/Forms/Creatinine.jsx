@@ -9,8 +9,11 @@ import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import useApi from "../../../../../../ApiServices/useApi";
 import { DATE_FORMAT } from "../../../../../../Config/config";
+import { useLocation } from "react-router-dom";
 
 const Creatinine = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -105,7 +108,7 @@ const Creatinine = ({ addBack, defaultData, getTableDatas }) => {
           unit: "mg/dL",
           creatinine: Number(creatinine),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "creatinine",
       };
       await post(url, body);
@@ -127,7 +130,7 @@ const Creatinine = ({ addBack, defaultData, getTableDatas }) => {
           unit: "mg/dL",
           creatinine: Number(creatinine),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "creatinine",
       };
       await patch(url, body);

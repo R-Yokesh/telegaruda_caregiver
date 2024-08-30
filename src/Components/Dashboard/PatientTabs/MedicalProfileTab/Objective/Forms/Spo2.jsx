@@ -9,8 +9,11 @@ import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   function removePercent(str) {
     return str?.replace("%", "");
@@ -108,7 +111,7 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
           spo2: Number(spO2),
           unit: "%",
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "spO2",
       };
       await post(url, body);
@@ -130,7 +133,7 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
           spo2: Number(spO2),
           unit: "%",
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "spO2",
       };
       await patch(url, body);

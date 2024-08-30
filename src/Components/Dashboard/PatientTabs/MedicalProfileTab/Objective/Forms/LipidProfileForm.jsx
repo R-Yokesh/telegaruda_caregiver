@@ -9,8 +9,11 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { format, isValid, parse } from "date-fns";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -148,7 +151,7 @@ const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
           triglycerides: Number(triglycerides),
           total: Number(totalCholesterol),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "lipid-profile",
       };
       await post(url, body);
@@ -180,7 +183,7 @@ const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
           triglycerides: Number(triglycerides),
           total: Number(totalCholesterol),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "lipid-profile",
       };
       await patch(url, body);
