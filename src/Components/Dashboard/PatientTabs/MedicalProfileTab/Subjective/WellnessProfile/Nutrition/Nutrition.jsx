@@ -6,7 +6,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Pagination from "../../../../../../Pagination/Pagination";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -21,8 +21,25 @@ import NutritionFluidTable from "../../../../../../Tables/Subjective/WellnessPro
 import DietForm from "./DietForm";
 import FluidIntakeForm from "./FluidIntakeForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import useApi from "../../../../../../../ApiServices/useApi";
 
 const Nutrition = ({ from }) => {
+
+
+
+  const [pagination, setPagination] = useState({});
+  const [rowData, setRowData] = useState([]);
+  const [rowFluidata, setRowFluiData] = useState([]);
+  const [addFormView, setAddFormView] = useState(false);
+  const [detailView, setDetailView] = useState(false);
+  const [id, setId] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedData, setSelectedData] = useState({});
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const { loading, error, get, del, clearCache } = useApi();
+
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "Date" },
@@ -30,26 +47,71 @@ const Nutrition = ({ from }) => {
     { id: 4, label: "Notes" },
     { id: 9, label: "ACTIONS" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      date: "02-04-2024 12:13",
-      type_of_diet: "Non-Veg",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 2,
-      date: "02-04-2024 12:13",
-      type_of_diet: "Non-Veg",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 3,
-      date: "02-04-2024 12:13",
-      type_of_diet: "Non-Veg",
-      notes: "Lorem ipsum",
-    },
-  ];
+  // const rowData = [
+  //   {
+  //     id: 1,
+  //     date: "02-04-2024 12:13",
+  //     type_of_diet: "Non-Veg",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 2,
+  //     date: "02-04-2024 12:13",
+  //     type_of_diet: "Non-Veg",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 3,
+  //     date: "02-04-2024 12:13",
+  //     type_of_diet: "Non-Veg",
+  //     notes: "Lorem ipsum",
+  //   },
+  // ];
+
+
+  const fetchDiet = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/activity_wellness?act_catagory=diet&user_id=10&limit=${itemsPerPage}&page=${currentPage}&order_by=act_date&dir=2`
+      );
+      if (response.code === 200) {
+        console.log(response?.data?.activity_wellnesses);
+        setRowData(response?.data?.activity_wellnesses);
+        setPagination(response?.data?.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage, startDate, endDate]);
+
+  useEffect(() => {
+    fetchDiet();
+  }, [fetchDiet]);
+
+  const fetchFluid = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/activity_wellness?&limit=${itemsPerPage}&page=${currentPage}&order_by=act_date&dir=2&act_catagory=fluid&user_id=10`
+      );
+      // &from=${startDate}&to=${endDate}&
+      if (response.code === 200) {
+        console.log(response?.data?.activity_wellnesses);
+        setRowFluiData(response?.data?.activity_wellnesses);
+        setPagination(response?.data?.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage, startDate, endDate]);
+
+  useEffect(() => {
+    fetchFluid();
+  }, [fetchFluid]);
+
 
   const FluidIntakecolumnData = [
     { id: 1, label: "No." },
@@ -58,20 +120,20 @@ const Nutrition = ({ from }) => {
     { id: 4, label: "INTAKE (ML)" },
     { id: 6, label: "ACTIONS" },
   ];
-  const FluidIntakerowData = [
-    {
-      id: 1,
-      date: "02-04-2024 12:13",
-      type: "Water",
-      intake: "1500",
-    },
-    {
-      id: 2,
-      date: "02-04-2024 12:13",
-      type: "Water",
-      intake: "1500",
-    },
-  ];
+  // const FluidIntakerowData = [
+  //   {
+  //     id: 1,
+  //     date: "02-04-2024 12:13",
+  //     type: "Water",
+  //     intake: "1500",
+  //   },
+  //   {
+  //     id: 2,
+  //     date: "02-04-2024 12:13",
+  //     type: "Water",
+  //     intake: "1500",
+  //   },
+  // ];
 
   const tabs = [
     { id: 1, title: "Diet" },
@@ -87,11 +149,7 @@ const Nutrition = ({ from }) => {
     setCurrentTab(data);
   };
 
-  const [addFormView, setAddFormView] = useState(false);
-  const [detailView, setDetailView] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedData, setSelectedData] = useState({});
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -107,12 +165,22 @@ const Nutrition = ({ from }) => {
     return rowData?.slice(startIndex, endIndex);
   };
 
-  const getCurrentFluidPageItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return FluidIntakerowData?.slice(startIndex, endIndex);
+  // const getCurrentFluidPageItems = () => {
+  //   const startIndex = (currentPage - 1) * itemsPerPage;
+  //   const endIndex = startIndex + itemsPerPage;
+  //   return FluidIntakerowData?.slice(startIndex, endIndex);
+  // };
+  const getselectedData = (data,id, type) => {
+    console.log(type, "first", data);
+    setSelectedData(data);
+    if (type === "edit") {
+      setAddFormView(true);
+    }
+    if (type === "delete") {
+      setId(id);
+      detailPage();
+    }
   };
-
   const addFormPage = () => {
     setAddFormView(true);
     setSelectedData({});
@@ -121,24 +189,32 @@ const Nutrition = ({ from }) => {
   const detailPage = () => {
     setDetailView(true);
   };
-
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
-    setSelectedData(data);
-    if (type === "edit") {
-      setAddFormView(true);
-    }
-    if (type === "delete") {
-      detailPage();
+  const deleteDiet = async () => {
+    try {
+      if (id) {
+        const response = await del(`resource/activity_wellness/${id}`);
+        if (response.code === 200) {
+          setDetailView(false);
+          clearCache();
+          fetchDiet();
+        } else {
+          console.error("Failed to delete data:", response.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
     }
   };
+
+  
+
 
   return (
     <>
       {from === "Consult" && (
         <CRow>
           <NutritionDietTable
-            rowData={getCurrentPageItems()}
+            rowData={rowData}
             columns={columnData}
             getselectedData={getselectedData}
             from={from}
@@ -148,7 +224,7 @@ const Nutrition = ({ from }) => {
       {from === "Consult-Intake" && (
         <CRow>
           <NutritionFluidTable
-            rowData={getCurrentFluidPageItems()}
+            rowData={rowFluidata}
             columns={FluidIntakecolumnData}
             getselectedData={getselectedData}
             from={from}
@@ -171,7 +247,12 @@ const Nutrition = ({ from }) => {
               <>
                 <CRow className="mb-2">
                   <CCol lg={8} className="">
-                    <DateSearch />
+                    <DateSearch
+                      startDate={startDate}
+                      setStartDate={setStartDate}
+                      endDate={endDate}
+                      setEndDate={setEndDate}
+                    />
                   </CCol>
                   <CCol
                     lg={4}
@@ -199,9 +280,10 @@ const Nutrition = ({ from }) => {
                     <>
                       <CRow>
                         <NutritionDietTable
-                          rowData={getCurrentPageItems()}
+                          rowData={rowData}
                           columns={columnData}
                           getselectedData={getselectedData}
+                          from={from}
                         />
                       </CRow>
                       <CRow className="mb-3">
@@ -209,7 +291,7 @@ const Nutrition = ({ from }) => {
                           <Pagination
                             currentPage={currentPage}
                             onPageChange={onPageChange}
-                            totalItems={rowData?.length}
+                            totalItems={pagination?.total}
                             itemsPerPage={itemsPerPage}
                           />
                         </CCol>
@@ -220,9 +302,10 @@ const Nutrition = ({ from }) => {
                     <>
                       <CRow>
                         <NutritionFluidTable
-                          rowData={getCurrentFluidPageItems()}
+                          rowData={rowFluidata}
                           columns={FluidIntakecolumnData}
                           getselectedData={getselectedData}
+                          from={from}
                         />
                       </CRow>
                       <CRow className="mb-3">
@@ -230,7 +313,7 @@ const Nutrition = ({ from }) => {
                           <Pagination
                             currentPage={currentPage}
                             onPageChange={onPageChange}
-                            totalItems={rowData?.length}
+                            totalItems={pagination?.total}
                             itemsPerPage={itemsPerPage}
                           />
                         </CCol>
@@ -252,7 +335,9 @@ const Nutrition = ({ from }) => {
                         setAddFormView(false);
                         setSelectedData({});
                       }}
-                      // defaultValues={selectedData}
+                      setAddFormView={setAddFormView}
+                      fetchDiet={fetchDiet}
+                      defaultValues={selectedData}
                     />
                   )}
                   {currentTab === 2 && (
@@ -261,7 +346,9 @@ const Nutrition = ({ from }) => {
                         setAddFormView(false);
                         setSelectedData({});
                       }}
-                      // defaultValues={selectedData}
+                      setAddFormView={setAddFormView}
+                      fetchFluid={fetchFluid}
+                      defaultValues={selectedData}
                     />
                   )}
                 </CCardBody>
@@ -282,9 +369,7 @@ const Nutrition = ({ from }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => setDetailView(false)}>
-                          Yes
-                        </PrimaryButton>
+                      <PrimaryButton onClick={deleteDiet}>Yes</PrimaryButton>
                       </div>
                       <div style={{ width: "80px" }}>
                         <SecondaryButton onClick={() => setDetailView(false)}>
@@ -304,3 +389,4 @@ const Nutrition = ({ from }) => {
 };
 
 export default Nutrition;
+

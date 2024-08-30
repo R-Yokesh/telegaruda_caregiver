@@ -183,6 +183,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
+  
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
@@ -228,6 +229,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
       );
       if (response.code === 200) {
         console.log(response.data.docs);
+        
         setRowData(response.data.docs);
         setPagination(response.data.pagination);
       } else {
