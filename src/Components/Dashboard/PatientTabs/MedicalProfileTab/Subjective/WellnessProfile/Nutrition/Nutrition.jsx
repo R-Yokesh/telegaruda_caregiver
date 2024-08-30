@@ -22,6 +22,7 @@ import DietForm from "./DietForm";
 import FluidIntakeForm from "./FluidIntakeForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 
 const Nutrition = ({ from }) => {
 
@@ -34,10 +35,12 @@ const Nutrition = ({ from }) => {
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
 
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [filters, setFilters] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
   const { loading, error, get, del, clearCache } = useApi();
 
   const columnData = [
@@ -67,12 +70,23 @@ const Nutrition = ({ from }) => {
   //     notes: "Lorem ipsum",
   //   },
   // ];
-
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    console.log(startDate,endDate,searchValue,"ghghhghg")
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+    
+  };
 
   const fetchDiet = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?act_catagory=diet&user_id=10&limit=${itemsPerPage}&page=${currentPage}&order_by=act_date&dir=2`
+        `resource/activity_wellness?act_catagory=diet&user_id=10&limit=${itemsPerPage}&page=${currentPage ?? ""}&from=${startDate ?? ""}&to=${
+          endDate ?? ""
+        }&order_by=act_date&dir=2`
       );
       if (response.code === 200) {
         console.log(response?.data?.activity_wellnesses);
@@ -153,10 +167,6 @@ const Nutrition = ({ from }) => {
 
   const itemsPerPage = 5; // Number of items to display per page
 
-  // Function to handle page change
-  const onPageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   // Function to get items for the current page
   const getCurrentPageItems = () => {
@@ -247,11 +257,10 @@ const Nutrition = ({ from }) => {
               <>
                 <CRow className="mb-2">
                   <CCol lg={8} className="">
-                    <DateSearch
-                      startDate={startDate}
-                      setStartDate={setStartDate}
-                      endDate={endDate}
-                      setEndDate={setEndDate}
+                   
+                    <DateRangePicker
+                    
+                     getFilterValues={getFilterValues}
                     />
                   </CCol>
                   <CCol

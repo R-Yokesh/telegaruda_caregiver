@@ -8,7 +8,7 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 import ActiveButton from "../../../../../../Buttons/ActiveButton/ActiveButton";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 
-const ExcerciseHabitForm = ({ back, defaultValues }) => {
+const ExcerciseHabitForm = ({ back, defaultValues ,setAddFormView,fetchExciseHabit}) => {
   const [exercises, setExercises] = useState([
     {
       id: 1,

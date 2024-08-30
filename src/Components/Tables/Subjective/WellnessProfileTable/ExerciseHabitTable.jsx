@@ -10,9 +10,9 @@ import React from "react";
 import Badge from "../../../Badge/Badge";
 import { Assets } from "../../../../assets/Assets";
 
-function ExerciseHabitTable({ columns, rowData, getselectedData, from }) {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+function ExerciseHabitTable({ columns, habitData, getselectedData, from }) {
+  const selectedData = (data,id, type) => {
+    getselectedData(data,id, type);
   };
 
   return (
@@ -28,7 +28,7 @@ function ExerciseHabitTable({ columns, rowData, getselectedData, from }) {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {rowData?.map((dt, i) => (
+          {habitData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
@@ -37,23 +37,23 @@ function ExerciseHabitTable({ columns, rowData, getselectedData, from }) {
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.date}</span>
+                  <span className="fs-16 fw-500">{dt?.act_date}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.type}</span>
+                  <span className="fs-16 fw-500">{dt?.act_type}</span>
                 </div>
               </CTableDataCell>
 
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.duration}</span>
+                  <span>{dt?.act_duration}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.intensity}</span>
+                  <span>{dt?.act_intensity}</span>
                 </div>
               </CTableDataCell>
 
@@ -69,7 +69,7 @@ function ExerciseHabitTable({ columns, rowData, getselectedData, from }) {
                         alt="edit"
                         src={Assets?.EditPencil}
                         className="cursor"
-                        onClick={() => selectedData(dt, "edit")}
+                        onClick={() => selectedData(dt,dt?.id, "edit")}
                       />
                     </div>
                     <div
@@ -83,7 +83,7 @@ function ExerciseHabitTable({ columns, rowData, getselectedData, from }) {
                         alt="delete"
                         src={Assets?.Delete}
                         className="cursor"
-                        onClick={() => selectedData(dt, "delete")}
+                        onClick={() => selectedData(dt,dt?.id, "delete")}
                       />
                     </div>
                   </div>
