@@ -1,44 +1,122 @@
-import { CCol, CFormCheck, CFormSelect,CFormTextarea, CRow } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import { CCol, CFormCheck, CFormSelect, CFormTextarea, CRow } from "@coreui/react";
+import React, { useEffect, useState, useCallback } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
+import { toast } from "react-toastify";
+import { format, isValid, parse } from "date-fns";
+import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import useApi from "../../../../../../../ApiServices/useApi";
+import {
+  findItemIndex,
+  getFileTypeFromMime,
+  openFile,
+} from "../../../../../../../Utils/commonUtils";
 
-const MedicationForm = ({ back, defaultValues }) => {
-  const [date, setDate] = useState(null);
-  const [date1, setDate1] = useState(null);
+
+const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }) => {
+
+
+
+  const { loading, error, get, post, clearCache, patch } = useApi();
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    medicine_type: defaultValues?.values?.medicine_type || "",
+    medicine_name: defaultValues?.values?.medicine_name || "",
+    dosage: defaultValues?.values?.dosage || "",
+    strength : defaultValues?.values?.strength  || "",
+    strength_measurement: defaultValues?.values?.strength_measurement || "",
+    total_qty: defaultValues?.values?.total_qty || "",
+    route_administration: defaultValues?.values?.route_administration || "",
+    no_of_days: defaultValues?.values?.no_of_days || "",
+    m: defaultValues?.values?.m || "",
+    a: defaultValues?.values?.a || "",
+    e: defaultValues?.values?.e || "",
+    n: defaultValues?.values?.n || "",
+    medicine_taken: defaultValues?.values?.medicine_taken || "",
+    notes: defaultValues?.values?.notes || "",
+    status: defaultValues?.values?.status || "",
+
+
+
+  });
+  const [location, setLocation] = useState([defaultValues?.values?.locationy || ""]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+
+  const getFormattedDate = (date) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
+  const currentDate = new Date();
+  const formattedDate = getFormattedDate(currentDate);
+
+  const defaultDateTime = defaultValues?.date || "";
+
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
 
   useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      return new Date(year, month - 1, day);
-    };
+    let date = new Date();
 
-    // Example default date string
-    const defaultDateString = defaultValues?.start_date;
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
 
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.start_date
-      ? parseDateString(defaultDateString)
-      : new Date();
-    // Example default date string
-    const defaultDateString2 = defaultValues?.end_date;
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0);
+    }
 
-    // Parse default date string to Date object
-    const defaultDate2 = defaultValues?.end_date
-      ? parseDateString(defaultDateString2)
-      : new Date();
+    setSelectedStartDate(date);
+    setSelectedEndDate(date);
+    setSelectedTime(date);
+  }, [defaultDate, defaultTime]);
 
-    // Set default date in state
-    setDate(defaultDate);
-    setDate1(defaultDate2);
-  }, [defaultValues]);
+  // Separate handlers for start and end date changes
+  const handleStartDateChange = (date) => {
+    setSelectedStartDate(date);
+    if (date) {
+      setSelectedTime(date);
+    }
+  };
+
+  const handleEndDateChange = (date) => {
+    setSelectedEndDate(date);
+    if (date) {
+      setSelectedTime(date);
+    }
+  };
+
+  // Function to handle time change
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(selectedStartDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0);
+
+      setSelectedStartDate(updatedDateTime);
+      setSelectedTime(time);
+    }
+  };
+
+  
 
   const options = ["Taking", "Not Taking", "Discontinued", "Status Unknown"];
   const getSelectedValue = (data) => {
@@ -46,8 +124,12 @@ const MedicationForm = ({ back, defaultValues }) => {
   };
 
   const options1 = ["Brand", "Generic"];
-  const getSelectedValue1 = (data) => {
-    console.log(data);
+   // Function to update symptoms
+   const getSelectedValue1 = (data) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      symptoms: data,
+    }));
   };
 
   const options2 = [
@@ -89,45 +171,176 @@ const MedicationForm = ({ back, defaultValues }) => {
     console.log(data);
   };
 
-  const [strength, setStrength] = useState(defaultValues?.strength || "");
-  const [qty, setQty] = useState(defaultValues?.qty || "");
-  const [timeTaken, setTimeTaken] = useState(defaultValues?.time_taken || "");
 
-  const numCheck = (e) => {
-    const input = e.target.value;
-    const name = e.target.name;
+  const validate = () => {
+    let isValid = true;
+    const newErrors = {};
 
-    const newDaysValue = input.replace(/[^0-9]/g, "").slice(0, 3);
-    const newstrValue = input.replace(/[^0-9]/g, "").slice(0, 4);
-    const newQtyValue = input.replace(/[^0-9]/g, "").slice(0, 4);
-
-    if (name === "str&dos") {
-      setStrength(newstrValue);
+    if (!selectedStartDate) {
+      newErrors.date = " Start Date is required.";
+      isValid = false;
     }
-    if (name === "totalQty") {
-      setQty(newQtyValue);
+    if (!selectedEndDate) {
+      newErrors.date = "End Date is required.";
+      isValid = false;
     }
-    if (name === "days") {
-      setTimeTaken(newDaysValue);
+    if (!formData.medicine_type) {
+      newErrors.medicine_type = "Medication Type is required.";
+      isValid = false;
+    }
+    if (!formData.medicine_name) {
+      newErrors.medicine_name = "Medication Name is required.";
+      isValid = false;
+    }
+    if (!formData.dosage) {
+      newErrors.dosage = "Dosage is required.";
+      isValid = false;
+    }
+    if (!formData.strength) {
+      newErrors.strength = "Strength is required.";
+      isValid = false;
+    }
+    if (!formData.strength_measurement) {
+      newErrors.strength_measurement = "Strength Measurement is required.";
+      isValid = false;
+    }
+    if (!formData.total_qty) {
+      newErrors.total_qty = "Quantity is required.";
+      isValid = false;
+    }
+    if (!formData.route_administration) {
+      newErrors.route_administration = "Administration is required.";
+      isValid = false;
+    }
+    if (!formData.no_of_days) {
+      newErrors.no_of_days = "Number of days is required.";
+      isValid = false;
+    }
+    if (!formData.status) {
+      newErrors.status = "Status is required.";
+      isValid = false;
+    }
+
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+
+  const onSubmit = () => {
+    console.log('clicked checking')
+    if (validate()) {
+      if (defaultValues.id !== undefined) {
+        console.log("Edit clicked");
+         editMedication()
+
+      }
+      if (defaultValues.id === undefined) {
+        console.log("Add clicked");
+         addMedication();
+
+      }
     }
   };
-  useEffect(() => {
-    if (date && timeTaken) {
-      // Convert numDays to an integer
-      const days = parseInt(timeTaken, 10);
 
-      if (!isNaN(days)) {
-        // Calculate the end date
-        const end = new Date(date);
-        end.setDate(end.getDate() + days);
-        setDate1(end);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const addMedication = async () => {
+
+    try {
+      const body = {
+
+        slug: "prescription",
+        patient_id: "10",
+       
+        values: {
+          start_date: format(selectedStartDate, "dd-MM-yyyy"),
+          end_date: format(selectedEndDate, "dd-MM-yyyy"),
+          dosage: formData.dosage,
+          strength: formData.strength,
+          strength_measurement: formData.strength_measurement,
+          total_qty: formData.total_qty,
+          route_administration: formData.route_administration,
+          no_of_days: formData.no_of_days,
+          m: formData.m,
+          a: formData.a,
+          e: formData.e,
+          n: formData.n,
+          medicine_taken: formData.medicine_taken,
+          notes: formData.notes,
+          status: formData.status
+        }
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/patientHealth`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchMedication();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
       } else {
-        setDate1(null);
+        console.error("Failed to fetch data:", response.message);
       }
-    } else {
-      setDate1(null);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  }, [date, timeTaken]);
+  };
+
+  const editMedication = async () => {
+    try {
+     
+      const body = {
+
+        slug: "prescription",
+        patient_id: "10",
+       
+        values: {
+          start_date: format(selectedStartDate, "dd-MM-yyyy"),
+          end_date: format(selectedEndDate, "dd-MM-yyyy"),
+          dosage: formData.dosage,
+          strength: formData.strength,
+          strength_measurement: formData.strength_measurement,
+          total_qty: formData.total_qty,
+          route_administration: formData.route_administration,
+          no_of_days: formData.no_of_days,
+          m: formData.m,
+          a: formData.a,
+          e: formData.e,
+          n: formData.n,
+          medicine_taken: formData.medicine_taken,
+          notes: formData.notes,
+          status: formData.status
+        }
+      };
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchMedication();
+        setAddFormView(false);
+        toast.success("Updated successfully");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+
+  };
+
+
+
+
+
+
   return (
     <>
       <CRow className="mb-3">
@@ -137,13 +350,6 @@ const MedicationForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Medication Type *
               </label>
-              {/* <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.name}
-              /> */}
               <div
                 className="w-100"
                 style={{
@@ -153,10 +359,15 @@ const MedicationForm = ({ back, defaultValues }) => {
               >
                 <Dropdown
                   options={options1}
-                  // defaultValue={options[1]}
+                  defaultValue={
+                    defaultValues?.values?.type
+                      ? options1[findItemIndex(options1, defaultValues?.values?.type)]
+                      : null
+                  }
                   getSelectedValue={getSelectedValue1}
                 />
               </div>
+              {errors.medicine_type && <div className="error-text">{errors.medicine_type}</div>}
             </div>
           </div>
         </CCol>
@@ -173,6 +384,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 placeholder="Enter"
                 defaultValue={defaultValues?.name}
               />
+             {errors.medicine_name && <div className="error-text">{errors.medicine_name}</div>}
             </div>
           </div>
         </CCol>
@@ -195,6 +407,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                   getSelectedValue={getSelectedValue2}
                 />
               </div>
+              {errors.dosage && <div className="error-text">{errors.dosage}</div>}
             </div>
           </div>
         </CCol>
@@ -204,16 +417,21 @@ const MedicationForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Strength *
               </label>
-              <input
+                <input
                 type="text"
-                class="form-control pad-10"
+                class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="0000"
-                name="str&dos"
-                // defaultValue={defaultValues?.strength}
-                value={strength}
-                onChange={numCheck}
+                // value={formData?.duration_days}
+                name="duration_days"
+                onChange={handleChange}
+                maxLength={4}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
+               
               />
+              {errors.strength && <div className="error-text">{errors.strength}</div>}
             </div>
           </div>
         </CCol>
@@ -250,6 +468,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 <option value="kg">Kilogram (kg) </option>
                 <option value="mcg">Microgram (mcg)</option>
               </CFormSelect>
+              {errors.strength_measurement && <div className="error-text">{errors.strength_measurement}</div>}
             </div>
           </div>
         </CCol>
@@ -265,10 +484,16 @@ const MedicationForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="0000"
-                name="totalQty"
-                value={qty}
-                onChange={numCheck}
+                name="total_qty"
+                value={formData.total_qty}
+                onChange={handleChange}
+                maxLength={4}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
+              
               />
+              {errors.total_qty && <div className="error-text">{errors.total_qty}</div>}
             </div>
           </div>
         </CCol>
@@ -304,6 +529,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 <option value="Intrathecal">Intrathecal</option>
                 <option value="Epidural">Epidural</option>
               </CFormSelect>
+              {errors.route_administration && <div className="error-text">{errors.route_administration}</div>}
             </div>
           </div>
         </CCol>
@@ -316,11 +542,12 @@ const MedicationForm = ({ back, defaultValues }) => {
             <div className="date-size">
               <DatePicker
                 showIcon
-                selected={date}
-                onChange={(date) => setDate(date)}
-                dateFormat={DATE_FORMAT}
+                selected={selectedStartDate}
+                onChange={handleStartDateChange}
+                dateFormat="MM-dd-yyyy"
                 disabled
               />
+               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </div>
         </CCol>
@@ -336,9 +563,15 @@ const MedicationForm = ({ back, defaultValues }) => {
                 id="validationTooltip01"
                 placeholder="000"
                 name="days"
-                value={timeTaken}
-                onChange={numCheck}
+                // value={timeTaken}
+                onChange={handleChange}
+                maxLength={3}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
+                
               />
+              {errors.no_of_days && <div className="error-text">{errors.no_of_days}</div>}
             </div>
           </div>
         </CCol>
@@ -350,11 +583,11 @@ const MedicationForm = ({ back, defaultValues }) => {
             <div className="date-size">
               <DatePicker
                 showIcon
-                selected={date1}
-                onChange={(date) => setDate1(date)}
-                dateFormat={DATE_FORMAT}
-                
+                selected={selectedEndDate}
+                onChange={handleEndDateChange}
+                dateFormat="MM-dd-yyyy"
               />
+               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </div>
         </CCol>
@@ -371,6 +604,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 placeholder="0"
                 name="m"
               />
+              {errors.m && <div className="error-text">{errors.m}</div>}
             </div>
             <div>
               <label for="validationTooltip01" class="form-label">
@@ -383,6 +617,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 placeholder="0"
                 name="a"
               />
+              {errors.a && <div className="error-text">{errors.a}</div>}
             </div>
             <div>
               <label for="validationTooltip01" class="form-label">
@@ -395,6 +630,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 placeholder="0"
                 name="e"
               />
+              {errors.e && <div className="error-text">{errors.e}</div>}
             </div>
             <div>
               <label for="validationTooltip01" class="form-label">
@@ -407,6 +643,7 @@ const MedicationForm = ({ back, defaultValues }) => {
                 placeholder="0"
                 name="n"
               />
+              {errors.n && <div className="error-text">{errors.n}</div>}
             </div>
           </div>
         </CCol>
@@ -430,8 +667,8 @@ const MedicationForm = ({ back, defaultValues }) => {
                   defaultValues?.lab_status === "Prescribed"
                     ? false
                     : defaultValues?.medicines?.length >= 1
-                    ? true
-                    : false
+                      ? true
+                      : false
                 }
                 label={
                   <label for="validationTooltip01" class="form-label mb-0">
@@ -463,9 +700,9 @@ const MedicationForm = ({ back, defaultValues }) => {
                 Notes
               </label>
               <CFormTextarea
-                  id="exampleFormControlTextarea1"
-                  rows={3} >
-                </CFormTextarea>
+                id="exampleFormControlTextarea1"
+                rows={3} >
+              </CFormTextarea>
             </div>
           </div>
         </CCol>
@@ -504,13 +741,14 @@ const MedicationForm = ({ back, defaultValues }) => {
                   getSelectedValue={getSelectedValue}
                 />
               </div>
+              {errors.status && <div className="error-text">{errors.status}</div>}
             </div>
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
+          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

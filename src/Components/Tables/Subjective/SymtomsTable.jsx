@@ -13,7 +13,6 @@ import { Assets } from "../../../assets/Assets";
 const SymtomsTable = ({ columns, rowData, getselectedData, from }) => {
 
   const selectedData = (data,id, type) => {
-
     getselectedData(data,id, type);
   };
 

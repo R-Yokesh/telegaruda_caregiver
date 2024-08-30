@@ -7,50 +7,99 @@ import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { toast } from "react-toastify";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
-import { isValid, parse } from "date-fns";
+import { format, isValid, parse } from "date-fns";
 import { duration } from "moment";
+import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import useApi from "../../../../../../../ApiServices/useApi";
+import {
+  findItemIndex,
+  getFileTypeFromMime,
+  openFile,
+} from "../../../../../../../Utils/commonUtils";
 
-const SignsSymptomsForm = ({ back, defaultValues }) => {
+const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymptoms }) => {
 
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
+  const { loading,error, get, post, clearCache, patch } = useApi();
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    // location: defaultValues?.values?.location || "",
+    duration_days: defaultValues?.values?.duration || "",
+    symptoms: defaultValues?.values?.symptoms || "",
+    aggravating_factors: defaultValues?.values?.aggravating_factors || "",
+    releiving_factors: defaultValues?.values?.releiving_factors || "",
+    temporal_factors: defaultValues?.values?.temporal_factors || "",
+    severity: defaultValues?.values?.severity || "",
+    notes: defaultValues?.values?.notes || "",
 
+  });
+  const [location, setLocation] = useState([defaultValues?.values?.locationy || ""]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const getFormattedDate = (date) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
+  const currentDate = new Date();
+  const formattedDate = getFormattedDate(currentDate);
+
+  // console.log(formattedDate); // e.g., 25-08-2024
+
+  const defaultDateTime = defaultValues?.date || "";
+
+  // Split date and time
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date and Time objects
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const timePart = parts[1];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      const [hours, minutes] = timePart?.split(":")?.map(Number);
+    // Combine default date and time into a single Date object
+    let date = new Date();
 
-      // Create Date and Time objects
-      const parsedDate = new Date(year, month - 1, day);
-      const parsedTime = new Date();
-      parsedTime.setHours(hours, minutes, 0, 0);
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
 
-      return { parsedDate, parsedTime };
-    };
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
 
-    // Example default date string
-    const defaultDateString = defaultValues?.date;
+    setSelectedDate(date);
+    setSelectedTime(date); // Initialize time picker with the same Date object
+  }, [defaultDate, defaultTime]);
 
-    // Parse default date string to Date and Time objects
-    const { parsedDate, parsedTime } = defaultValues?.date
-      ? parseDateString(defaultDateString)
-      : { parsedDate: new Date(), parsedTime: new Date() };
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    if (date) {
+      setSelectedTime(date); // Sync time picker with the updated date
+    }
+  };
 
-    // Set default date and time in state
-    setDate(parsedDate);
-    setTime(parsedTime);
-  }, [defaultValues]);
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(selectedDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
 
-  const today = new Date();
-  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
-  const todayEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+      setSelectedDate(updatedDateTime); // Optionally update date as well
+      setSelectedTime(time);
+    }
+  };
 
-
-
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const options = [
     "Normal",
@@ -60,58 +109,188 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
     "Very Severe",
     "Worst",
   ];
-  const getSelectedValue = (data) => {
-    console.log(data);
-  };
   const options1 = ["Headache", "Fracture", "Fever"];
+
+  // Function to update symptoms
+  const getSelectedValue = (data) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      symptoms: data,
+    }));
+  };
+
+  // Function to update severity
   const getSelectedValue1 = (data) => {
-    console.log(data);
-  };
-  const [value3, setValue3] = useState(defaultValues?.duration_days || "");
-  const [error, setError] = useState("");
-  const handleChange = (e) => {
-    const input = e.target.value;
-
-    // Remove non-digit characters and limit to two digits
-    const newValue = input.replace(/[^0-9]/g, "").slice(0, 2);
-    const newValueDuration = input.replace(/[^0-9]/g, "").slice(0, 4);
-
-    if (
-      e.target.name === "dur_in_days" &&
-      input.length > 4 &&
-      newValueDuration.length > 4
-    ) {
-      setError("Input should not exceed 4 digits.");
-    } else {
-      setValue3(newValueDuration);
-      setError("");
-    }
-
-    if (input.length > 2 && newValue.length > 2) {
-      setError("Input should not exceed 2 digits.");
-    } else {
-      // if (e.target.name === "dur_in_days") {
-      //   setValue3(newValue);
-      // }
-      setError("");
-    }
+    setFormData((prevState) => ({
+      ...prevState,
+      severity: data,
+    }));
   };
 
-  const handlePaste = (e) => {
-    e.preventDefault();
-    const paste = e.clipboardData.getData("text");
-    const newValue = paste.replace(/[^0-9]/g, "").slice(0, 2);
 
-    if (newValue.length > 2) {
-      setError("Input should not exceed 2 digits.");
-    } else {
-      if (e.target.name === "dur_in_days") {
-        setValue3(newValue);
+  const validate = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    if (!selectedDate) {
+      newErrors.date = "Date is required.";
+      isValid = false;
+    }
+    if (!selectedTime) {
+      newErrors.time = "Time is required.";
+      isValid = false;
+    }
+    if (!location) {
+      newErrors.location = "Location is required.";
+      isValid = false;
+    }
+    if (!formData.duration_days) {
+      newErrors.duration_days = "Duration is required.";
+      isValid = false;
+    }
+    if (!formData.symptoms) {
+      newErrors.symptoms = "Symptoms is required.";
+      isValid = false;
+    }
+    if (!formData.severity) {
+      newErrors.severity = "Severity is required.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+
+  const onSubmit = () => {
+    console.log('clicked checking')
+    if (validate()) {
+      if (defaultValues.id !== undefined) {
+        console.log("Edit clicked");
+        editSymptoms()
+
       }
-      setError("");
+      if (defaultValues.id === undefined) {
+        console.log("Add clicked");
+        addSymptoms();
+
+      }
     }
   };
 
+  //api integration of medical conditions list
+  useEffect(() => {
+    const getLocation = async () => {
+      if (searchTerm) {
+        try {
+          const response = await get(
+            `resource/masters/all?slug=hpi_location&order_by=name&dir=1&searchkey=${searchTerm}`
+          );
+          if (response.code === 200) {
+            console.log("data", response.data.masters);
+            setLocation(response.data.masters);
+          } else {
+            console.error("Failed to fetch data:", response.message);
+            setLocation([]);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          setLocation([]);
+        }
+      } else {
+        setLocation([]);
+      }
+    };
+
+    getLocation();
+  }, [searchTerm, get]);
+
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+  };
+
+  // console.log('searchvalue111111',searchTerm);
+ 
+  const addSymptoms = async () => {
+
+    try {
+      const body = {
+
+        slug: "hpi",
+        patient_id: "261",
+        consult_id: null,
+        values: {
+          date: format(selectedDate, "dd-MM-yyyy"),
+          time: format(selectedTime, "HH:mm"),
+          location: searchTerm,
+          duration: formData.duration_days,
+          symptoms: formData.symptoms,
+          aggravating_factors: formData.aggravating_factors,
+          releiving_factors: formData.releiving_factors,
+          temporal_factors: formData.temporal_factors,
+          severity: formData.severity,
+          notes: formData.notes,
+          quality: ""
+        }
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/patientHealth`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchSignsSymptoms();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const editSymptoms = async () => {
+    try {
+      const body = {
+
+        slug: "hpi",
+        patient_id: "261",
+        consult_id: null,
+        values: {
+          date: format(selectedDate, "dd-MM-yyyy"),
+          time: format(selectedTime, "HH:mm"),
+          location: formData.location,
+          duration: Number(formData.duration_days),
+          symptoms: formData.symptoms,
+          aggravating_factors: formData.aggravating_factors,
+          releiving_factors: formData.releiving_factors,
+          temporal_factors: formData.temporal_factors,
+          severity: formData.severity,
+          notes: formData.notes,
+          quality: ""
+        }
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchSignsSymptoms();
+        setAddFormView(false);
+        toast.success("Updated successfully");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+
+  };
 
 
   return (
@@ -125,11 +304,12 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
             <div className="date-size">
               <DatePicker
                 showIcon
-                selected={date}
-                onChange={(date) => setDate(date)}
+                selected={selectedDate}
+                onChange={handleDateChange}
                 dateFormat="MM-dd-yyyy"
                 disabled
               />
+              {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </div>
         </CCol>
@@ -140,33 +320,55 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
             </label>
             <div className="date-size">
               <DatePicker
-                 showIcon
-                 selected={time}
-                 onChange={(time) => setTime(time)}
-                 showTimeSelect
-                 showTimeSelectOnly
-                 timeIntervals={15}
-                 timeCaption="Time"
-                 dateFormat="h:mm aa"
-                 
+                showIcon
+                selected={selectedTime}
+                onChange={handleTimeChange}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="h:mm aa"
               />
+              {errors.time && <div className="error-text">{errors.time}</div>}
             </div>
           </div>
         </CCol>
-        <CCol lg={3}>
+        <CCol lg={3}> 
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
+            <div class="position-relative dropdown-container">
               <label for="validationTooltip01" class="form-label">
-                Location *
+              Location *
               </label>
               <input
                 type="text"
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.location}
-                // value={location}
+                value={defaultValues?.values?.location}
+                onChange={handleInputChange}
               />
+              {loading ? (
+                <p>Loading...</p>
+              ) : error ? (
+                <p>{error}</p>
+              ) : location?.length > 0 ? (
+                <ul className="dropdown-list">
+                  {location?.map((location) => (
+                    <li
+                      key={location?.id}
+                      className="list-group-item"
+                      onClick={() => {
+                        setSearchTerm(location?.name);
+                        setLocation([]);
+                      }}
+                    >
+                      {location?.name}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {errors.location && <div className="error-text">{errors.location}</div>}
+
             </div>
           </div>
         </CCol>
@@ -181,12 +383,16 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="0000"
-                // defaultValue={defaultValues?.duration_days}
-                name="dur_in_days"
-                value={duration}
+                value={formData?.duration_days}
+                name="duration_days"
                 onChange={handleChange}
-                onPaste={handlePaste}
+                maxLength={4}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
+
               />
+              {errors.duration_days && <div className="error-text">{errors.duration_days}</div>}
             </div>
           </div>
         </CCol>
@@ -213,11 +419,16 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 }}
               >
                 <Dropdown
-                  options={options1}
-                  // defaultValue={options1[1]}
-                  getSelectedValue={getSelectedValue1}
+                  options={options}
+                  defaultValue={
+                    defaultValues?.values?.symptoms
+                      ? options[findItemIndex(options, defaultValues?.values?.symptoms)]
+                      : null
+                  }
+                  getSelectedValue={getSelectedValue}
                 />
               </div>
+              {errors.symptoms && <div className="error-text">{errors.symptoms}</div>}
             </div>
           </div>
         </CCol>
@@ -232,7 +443,9 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.aggravating}
+                value={formData?.aggravating_factors}
+                name="aggravating_factors"
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -248,7 +461,9 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.relieving}
+                value={formData?.releiving_factors}
+                name="releiving_factors"
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -266,7 +481,9 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.temporal}
+                value={formData?.temporal_factors}
+                name="temporal_factors"
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -285,11 +502,16 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 }}
               >
                 <Dropdown
-                  options={options}
-                  defaultValue={options[1]}
-                  getSelectedValue={getSelectedValue}
+                  options={options1}
+                  defaultValue={
+                    defaultValues?.values?.severity
+                      ? options1[findItemIndex(options1, defaultValues?.values?.severity)]
+                      : null
+                  }
+                  getSelectedValue={getSelectedValue1}
                 />
               </div>
+              {errors.severity && <div className="error-text">{errors.severity}</div>}
             </div>
           </div>
         </CCol>
@@ -304,7 +526,9 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.notes}
+                value={formData?.notes}
+                name="notes"
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -312,10 +536,10 @@ const SignsSymptomsForm = ({ back, defaultValues }) => {
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
+          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
-          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+          <SecondaryButton onClick={() => back()}>CANCEL</SecondaryButton>
         </div>
       </CRow>
     </>
