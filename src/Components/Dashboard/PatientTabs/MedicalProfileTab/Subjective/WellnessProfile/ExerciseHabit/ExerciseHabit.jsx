@@ -6,7 +6,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Pagination from "../../../../../../Pagination/Pagination";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -15,7 +15,10 @@ import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import ExerciseHabitTable from "../../../../../../Tables/Subjective/WellnessProfileTable/ExerciseHabitTable";
 import ExcerciseHabitForm from "./ExcerciseHabitForm";
+// import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import useApi from "../../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 
 const ExerciseHabit = ({ from }) => {
   const columnData = [
@@ -26,55 +29,23 @@ const ExerciseHabit = ({ from }) => {
     { label: "INTENSITY" },
     { label: "Actions" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      date: "02-04-2024 12:13",
-      type: "Yoga ",
-      duration: "30",
-      intensity: "Moderate",
-    },
-    {
-      id: 2,
-      date: "02-04-2024 12:13",
-      type: "Yoga ",
-      duration: "30",
-      intensity: "Moderate",
-    },
-    {
-      id: 3,
-      date: "02-04-2024 12:13",
-      type: "Yoga ",
-      duration: "30",
-      intensity: "Moderate",
-    },
-    {
-      id: 4,
-      date: "02-04-2024 12:13",
-      type: "Yoga ",
-      duration: "30",
-      intensity: "Moderate",
-    },
-    {
-      id: 5,
-      date: "02-04-2024 12:13",
-      type: "Yoga ",
-      duration: "30",
-      intensity: "Moderate",
-    },
-    {
-      id: 6,
-      date: "02-04-2024 12:13",
-      type: "Yoga ",
-      duration: "30",
-      intensity: "Moderate",
-    },
-  ];
+
+  const [pagination, setPagination] = useState({});
+  const [rowData, setRowData] = useState([]);
+  const [habitData, setHabitData] = useState([]);
+  const [rowFluidata, setRowFluiData] = useState([]);
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
+  const [id, setId] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [startDate, setStartDate] = useState(new Date());
+  const [searchValue, setSearchValue] = useState("");
+  const [filters, setFilters] = useState(true);
+  const [endDate, setEndDate] = useState(new Date());
+  const { loading, error, get, del, clearCache } = useApi();
+
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -87,33 +58,77 @@ const ExerciseHabit = ({ from }) => {
   const getCurrentPageItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return rowData?.slice(startIndex, endIndex);
+    return habitData?.slice(startIndex, endIndex);
+  };
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    console.log(startDate,endDate,searchValue,"ghghhghg")
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+    
   };
 
+  const fetchExciseHabit = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&order_by=act_date&dir=2&act_catagory=activity&user_id=10`
+      );
+      if (response.code === 200) {
+        console.log(response?.data?.activity_wellnesses);
+        setHabitData(response?.data?.activity_wellnesses);
+        setPagination(response?.data?.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage, startDate, endDate]);
+  useEffect(() => {
+    fetchExciseHabit();
+  }, [fetchExciseHabit]);
+
+  const getselectedData = (data, id, type) => {
+    console.log(type, "first", data);
+    setSelectedData(data);
+    if (type === "edit") {
+      setAddFormView(true);
+    }
+    if (type === "delete") {
+      setId(id);
+      detailPage();
+    }
+  };
   const addFormPage = () => {
     setAddFormView(true);
+    setSelectedData({});
   };
 
   const detailPage = () => {
     setDetailView(true);
   };
 
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
-    setSelectedData(data);
-    if (type === "edit") {
-      addFormPage();
-    }
-    if (type === "delete") {
-      detailPage();
+  const deleteDiet = async () => {
+    try {
+      if (id) {
+        const response = await del(`resource/activity_wellness/${id}`);
+        if (response.code === 200) {
+          setDetailView(false);
+          clearCache();
+          fetchExciseHabit();
+        } else {
+          console.error("Failed to delete data:", response.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
     }
   };
-
   return (
     <>
       {from === "Consult" && (
         <ExerciseHabitTable
-          rowData={getCurrentPageItems()}
+        habitData={habitData}
           columns={columnData}
           getselectedData={getselectedData}
           from={from}
@@ -125,7 +140,10 @@ const ExerciseHabit = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSearch />
+                <DateRangePicker
+                    
+                    getFilterValues={getFilterValues}
+                   />
                 </CCol>
                 <CCol
                   lg={4}
@@ -150,19 +168,20 @@ const ExerciseHabit = ({ from }) => {
               </CRow>
               <div className="mb-2">
                 <ExerciseHabitTable
-                  rowData={getCurrentPageItems()}
-                  columns={columnData}
-                  getselectedData={getselectedData}
+                 habitData={habitData}
+                 columns={columnData}
+                 getselectedData={getselectedData}
+                 from={from}
                 />
 
                 <CRow className="mb-3">
                   <CCol lg={12} className="d-flex justify-content-center">
-                    <Pagination
-                      currentPage={currentPage}
-                      onPageChange={onPageChange}
-                      totalItems={rowData?.length}
-                      itemsPerPage={itemsPerPage}
-                    />
+                  <Pagination
+                            currentPage={currentPage}
+                            onPageChange={onPageChange}
+                            totalItems={pagination?.total}
+                            itemsPerPage={itemsPerPage}
+                          />
                   </CCol>
                 </CRow>
               </div>
@@ -176,6 +195,8 @@ const ExerciseHabit = ({ from }) => {
                     setAddFormView(false);
                     setSelectedData({});
                   }}
+                  setAddFormView={setAddFormView}
+                  fetchExciseHabit={fetchExciseHabit}
                   defaultValues={selectedData}
                 />
               </CCardBody>
@@ -195,9 +216,7 @@ const ExerciseHabit = ({ from }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => setDetailView(false)}>
-                          Yes
-                        </PrimaryButton>
+                        <PrimaryButton onClick={deleteDiet}>Yes</PrimaryButton>
                       </div>
                       <div style={{ width: "80px" }}>
                         <SecondaryButton onClick={() => setDetailView(false)}>
