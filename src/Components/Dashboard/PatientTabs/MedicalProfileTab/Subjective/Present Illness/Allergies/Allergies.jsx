@@ -7,7 +7,7 @@ import {
     CModalBody,
     CRow,
   } from "@coreui/react";
-  import React, { useState } from "react";
+  import React, { useState,useEffect,useCallback } from "react";
   import Pagination from "../../../../../../Pagination/Pagination";
   import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
   import { Assets } from "../../../../../../../assets/Assets";
@@ -18,6 +18,8 @@ import {
   import AllergiesTable from "../../../../../../Tables/Subjective/AllergiesTable";
 import AllergiesForm from "./AllergiesForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import useApi from "../../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 
 const Allergies = () => {
 
@@ -30,64 +32,118 @@ const Allergies = () => {
         { id: 9, label: " Status" },
         { id: 11, label: "ACTIONS" },
       ];
-      const rowData = [
-        {
-          id: 1,
-          onset_date: "06-07-2024",
-          allergy: "Knee (category 1)",
-          reaction: "-",
-          severity: "-",
-          status: "-",
-        },
-        {
-          id: 2,
-          onset_date: "06-07-2024",
-          allergy: "Knee (category 1)",
-          reaction: "-",
-          severity: "-",
-          status: "-",
+
+      // const rowData = [
+      //   {
+      //     id: 1,
+      //     onset_date: "06-07-2024",
+      //     allergy: "Knee (category 1)",
+      //     reaction: "-",
+      //     severity: "-",
+      //     status: "-",
+      //   },
+      //   {
+      //     id: 2,
+      //     onset_date: "06-07-2024",
+      //     allergy: "Knee (category 1)",
+      //     reaction: "-",
+      //     severity: "-",
+      //     status: "-",
         
-        },
+      //   },
        
-      ];
-      const [addFormView, setAddFormView] = useState(false);
-      const [detailView, setDetailView] = useState(false);
-    
-      const [currentPage, setCurrentPage] = useState(1);
-      const [selectedData, setSelectedData] = useState({});
-    
-      const itemsPerPage = 5; // Number of items to display per page
-    
-      // Function to handle page change
-      const onPageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-      };
-    
-      // Function to get items for the current page
-      const getCurrentPageItems = () => {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        return rowData?.slice(startIndex, endIndex);
-      };
-    
-      const addFormPage = () => {
-        setAddFormView(true);
-      };
-    
-      const detailPage = () => {
-        setDetailView(true);
-      };
-    
-      const getselectedData = (data, type) => {
-        console.log(type, "first", data);
-        setSelectedData(data);
-        if (type === "edit") {
-          addFormPage();
-        }
-        if (type === "delete") {
-          detailPage();
-        }
-      };
+      // ];
+
+
+      const { loading, error, get,del,clearCache } = useApi();
+
+  const [rowData, setRowData] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [addFormView, setAddFormView] = useState(false);
+  const [detailView, setDetailView] = useState(false);
+  const [id, setId] = useState(null);
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedData, setSelectedData] = useState({});
+
+  const itemsPerPage = 5; // Number of items to display per page
+
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+   
+  };
+
+  // Function to handle page change
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };  
+
+
+  const addFormPage = () => {
+    setAddFormView(true);
+  };
+
+  const detailPage = () => {
+    setDetailView(true);
+  };
+
+  const getselectedData = (data,id, type) => {
+    setSelectedData(data);
+    if (type === "edit") {
+      addFormPage();
+    }
+    if (type === "delete") {
+      setId(id)
+      detailPage();
+    }
+  };
+
+  
+  const fetchAllergies = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&dir=2&user_id=10&slug=allergy&searchkey=&slug_array=`
+      );
+      if (response.code === 200) {
+        setRowData(response.data.patient_healths);
+        setPagination(response.data.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage,startDate,endDate,searchValue]);
+
+  useEffect(() => {
+    fetchAllergies();
+  }, [fetchAllergies]);
+
+  // Delte Allergies
+  const deleteAllergies = async () => {
+    try {
+      const response = await del(`resource/patientHealth/${id}`);
+  
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        fetchAllergies();
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
+
+
     
      
   return (
@@ -96,7 +152,7 @@ const Allergies = () => {
         <>
           <CRow className="mb-2">
             <CCol lg={10} className="">
-              <DateSearch />
+            <DateRangePicker getFilterValues={getFilterValues} />
             </CCol>
             <CCol
               lg={2}
@@ -121,16 +177,17 @@ const Allergies = () => {
           </CRow>
           <div className="mb-2">
             <AllergiesTable
-              rowData={getCurrentPageItems()}
+              rowData={rowData}
               columns={columnData}
               getselectedData={getselectedData}
+            
             />
             <CRow className="mb-3">
               <CCol lg={12} className="d-flex justify-content-center">
                 <Pagination
                   currentPage={currentPage}
                   onPageChange={onPageChange}
-                  totalItems={rowData?.length}
+                  totalItems={pagination?.total}
                   itemsPerPage={itemsPerPage}
                 />
               </CCol>
@@ -146,6 +203,8 @@ const Allergies = () => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
+              setAddFormView={setAddFormView}
+              fetchAllergies={fetchAllergies}
               defaultValues={selectedData}
             />
           </CCardBody>
@@ -165,7 +224,7 @@ const Allergies = () => {
                 <h5>Are you sure want to delete ?</h5>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDetailView(false)}>
+                    <PrimaryButton  onClick={() => deleteAllergies()}>
                       Yes
                     </PrimaryButton>
                   </div>

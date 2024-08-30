@@ -7,7 +7,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useState,useEffect,useCallback } from "react";
 import LabForm from "../../../Objective/Lab/LabForm";
 import Pagination from "../../../../../../Pagination/Pagination";
 import LabTable from "../../../../../../Tables/LabTable";
@@ -21,8 +21,11 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import MedicationForm from "./MedicationForm";
 import MedicationTable from "../../../../../../Tables/Subjective/MedicationTable";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import useApi from "../../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 
 const Medication = ({ from }) => {
+
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "Medication Name" },
@@ -36,197 +39,208 @@ const Medication = ({ from }) => {
     { id: 10, label: "Status" },
     { id: 11, label: "ACTIONS" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "bf",
-      m: 0,
-      a: 0.5,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 2,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 3,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 4,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 5,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 6,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 7,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 8,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 9,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-    {
-      id: 10,
-      start_date: "06-07-2024",
-      end_date: "06-08-2024",
-      name: "Paracetamol",
-      strength: "650",
-      strength_measurement: "mg",
-      qty: "1456",
-      dosage: "Tablet",
-      time_taken: "5",
-      status: "Not Taking",
-      food_times: "af",
-      m: 0,
-      a: 1,
-      e: 1,
-      n: 1,
-    },
-  ];
+
+  // const rowData = [
+  //   {
+  //     id: 1,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "bf",
+  //     m: 0,
+  //     a: 0.5,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 3,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 4,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 5,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 6,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 7,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 8,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 9,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  //   {
+  //     id: 10,
+  //     start_date: "06-07-2024",
+  //     end_date: "06-08-2024",
+  //     name: "Paracetamol",
+  //     strength: "650",
+  //     strength_measurement: "mg",
+  //     qty: "1456",
+  //     dosage: "Tablet",
+  //     time_taken: "5",
+  //     status: "Not Taking",
+  //     food_times: "af",
+  //     m: 0,
+  //     a: 1,
+  //     e: 1,
+  //     n: 1,
+  //   },
+  // ];
+
+
+  const { loading, error, get,del,clearCache } = useApi();
+
+  const [rowData, setRowData] = useState([]);
+  const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
-
+  const [id, setId] = useState(null);
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
 
   const itemsPerPage = 5; // Number of items to display per page
 
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+   
+  };
+ 
+
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };
-
-  // Function to get items for the current page
-  const getCurrentPageItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return rowData?.slice(startIndex, endIndex);
-  };
+  };  
 
   const addFormPage = () => {
     setAddFormView(true);
@@ -236,16 +250,58 @@ const Medication = ({ from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
+  const getselectedData = (data,id, type) => {
     setSelectedData(data);
     if (type === "edit") {
+      console.log("Add Clicked")
       addFormPage();
     }
     if (type === "delete") {
+      console.log("Delete Clicked")
+      setId(id)
       detailPage();
     }
   };
+
+  const fetchMedication = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=values-%3Estart_date&dir=2&user_id=10&slug=medicine&slug_array=`
+      );
+      if (response.code === 200) {
+        setRowData(response?.data?.patient_healths);
+        setPagination(response?.data?.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage,startDate,endDate,searchValue]);
+
+  useEffect(() => {
+    fetchMedication();
+  }, [fetchMedication]);
+
+  // Delte Signs Symptoms
+  const deleteMedication = async () => {
+    try {
+      const response = await del(`resource/patientHealth/${id}`);
+  
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        fetchMedication();
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
 
   const options = ["Morning", "Afternoon", "Evening", "Night"];
 
@@ -256,7 +312,7 @@ const Medication = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSearch />
+              <DateRangePicker getFilterValues={getFilterValues} />
               </CCol>
               <CCol
                 lg={4}
@@ -282,10 +338,10 @@ const Medication = ({ from }) => {
           )}
           <div className="mb-2">
             <MedicationTable
-              rowData={getCurrentPageItems()}
-              columns={columnData}
-              getselectedData={getselectedData}
-              from={from}
+             rowData={rowData}
+             columns={columnData}
+             getselectedData={getselectedData}
+             from={from}
             />
             {from !== "Consult" && (
               <CRow className="mb-3">
@@ -293,7 +349,7 @@ const Medication = ({ from }) => {
                   <Pagination
                     currentPage={currentPage}
                     onPageChange={onPageChange}
-                    totalItems={rowData?.length}
+                    totalItems={pagination?.total}
                     itemsPerPage={itemsPerPage}
                   />
                 </CCol>
@@ -310,6 +366,8 @@ const Medication = ({ from }) => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
+              setAddFormView={setAddFormView}
+              fetchMedication={fetchMedication}
               defaultValues={selectedData}
             />
           </CCardBody>
@@ -329,7 +387,7 @@ const Medication = ({ from }) => {
                 <h5>Are you sure want to delete ?</h5>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDetailView(false)}>
+                    <PrimaryButton onClick={() => deleteMedication()}>
                       Yes
                     </PrimaryButton>
                   </div>
