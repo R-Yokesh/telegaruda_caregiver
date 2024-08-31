@@ -142,13 +142,44 @@ const GFR = ({ addBack, defaultData, getTableDatas }) => {
     }
   };
 
+  // const numWithDecimal = (e) => {
+  //   const deciNum = e.target.value
+  //     .replace(/[^0-9.]/g, "")
+  //     .replace(/^(\d{1})\d*$/, "$1")
+  //     .replace(/^(\d{1})\.(\d{1}).*$/, "$1.$2")
+  //     .replace(/(\..*)\./g, "$1");
+  //   setGfr(deciNum);
+  // };
+
   const numWithDecimal = (e) => {
-    const deciNum = e.target.value
-      .replace(/[^0-9.]/g, "")
-      .replace(/^(\d{1})\d*$/, "$1")
-      .replace(/^(\d{1})\.(\d{1}).*$/, "$1.$2")
-      .replace(/(\..*)\./g, "$1");
-    setGfr(deciNum);
+    // Extract the input value
+    const value = e.target.value;
+
+    // Remove all non-numeric characters except for the decimal point
+    let formattedValue = value.replace(/[^0-9.]/g, "");
+
+    // Ensure there is only one decimal point
+    if (formattedValue.split(".").length > 2) {
+      formattedValue = formattedValue.replace(/\.+$/, ""); // Remove trailing decimal points
+      formattedValue = formattedValue.replace(/(\..*)\./g, "$1"); // Remove extra decimal points
+    }
+
+    // Limit the number of digits before the decimal point to 3
+    const parts = formattedValue.split(".");
+    if (parts[0].length > 3) {
+      parts[0] = parts[0].slice(0, 3);
+    }
+
+    // Limit the number of digits after the decimal point to 2
+    if (parts[1]) {
+      parts[1] = parts[1].slice(0, 2);
+    }
+
+    // Reassemble the parts
+    formattedValue = parts.join(".");
+
+    // Set the formatted value to state or whatever variable you are using
+    setGfr(formattedValue);
   };
 
   return (
@@ -194,7 +225,7 @@ const GFR = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                GFR(mL/min/1.73m²) *
+                GFR (mL/min/1.73m²) *
               </label>
               <input
                 type="text"

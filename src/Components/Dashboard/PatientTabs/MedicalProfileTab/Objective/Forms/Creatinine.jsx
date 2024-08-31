@@ -194,7 +194,7 @@ const Creatinine = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Creatinine(mg/dL) *
+                Creatinine (mg/dL) *
               </label>
               <input
                 type="text"

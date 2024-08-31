@@ -286,7 +286,7 @@ const PhysicalExam = ({ onClose, from }) => {
 
   return (
     <>
-      {from === "Consult" && (
+      {/* {from === "Consult" && (
         <CCard className="p-2 cursor-default mb-5">
           <CCardBody className="mb-3">
             <CRow className="mb-2">
@@ -433,31 +433,6 @@ const PhysicalExam = ({ onClose, from }) => {
               </CRow>
               {heentOpen && (
                 <>
-                  {/* <CRow>
-            <CCol>
-              <div className="d-flex justify-content-center align-items-center">
-                <label class="form-label">Status:</label>
-                <div
-                  className={`option-item ${
-                    labelName1 === "Normal" ? "selected primary-bg" : ""
-                  }`}
-                  onClick={() => toggleSelected1("Normal")}
-                >
-                  {"Normal"}
-                </div>
-                <div
-                  className={`option-item ${
-                    labelName1 === "Abnormal"
-                      ? "selected primary-bg"
-                      : ""
-                  }`}
-                  onClick={() => toggleSelected1("Abnormal")}
-                >
-                  {"Abnormal"}
-                </div>
-              </div>
-            </CCol>
-          </CRow> */}
                   {labelName1 === "Abnormal" && (
                     <>
                       <CRow>
@@ -495,7 +470,7 @@ const PhysicalExam = ({ onClose, from }) => {
             </CRow>
           </CCardBody>
         </CCard>
-      )}
+      )} */}
       {from !== "Consult" && (
         <>
           <CRow className="mb-0">
@@ -626,106 +601,6 @@ const PhysicalExam = ({ onClose, from }) => {
                   </CCol>
                 </CRow>
                 <div className="vertical-line mb-3"></div>
-                {/* <CRow className="mb-2">
-              <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
-                {!nutritionOpen && (
-                  <img
-                    alt="plus"
-                    src={Assets?.PlusIcon}
-                    onClick={nutritionTabOpen}
-                    className="cursor"
-                  />
-                )}
-                {nutritionOpen && (
-                  <img
-                    alt="plus"
-                    src={Assets?.MinusIcon}
-                    onClick={nutritionTabClose}
-                    className="cursor"
-                  />
-                )}
-                <span className="fs-16 fw-600">Nutritional</span>
-              </CCol>
-              {nutritionOpen && (
-                <>
-                  <CCol lg={12} className="mb-2">
-                    <div class="position-relative">
-                      <label for="validationTooltip01" class="form-label">
-                        Custom Entry
-                      </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="validationTooltip01"
-                        placeholder="Custom Entry"
-                      />
-                    </div>
-                  </CCol>
-                  <CRow>
-                    {options?.map((option, index) => (
-                      <CCol lg={"auto"}>
-                        <OptionItem
-                          key={index}
-                          label={option}
-                          onSelect={handleSelect}
-                        />
-                      </CCol>
-                    ))}
-                  </CRow>
-                </>
-              )}
-            </CRow>
-            <div className="vertical-line mt-2 mb-3"></div>
-            <CRow className="mb-2">
-              <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
-                {!constiOpen && (
-                  <img
-                    alt="plus"
-                    src={Assets?.PlusIcon}
-                    onClick={constiTabOpen}
-                    className="cursor"
-                  />
-                )}
-                {constiOpen && (
-                  <img
-                    alt="plus"
-                    src={Assets?.MinusIcon}
-                    onClick={constiTabClose}
-                    className="cursor"
-                  />
-                )}
-                <span className="fs-16 fw-600">Constitutional</span>
-              </CCol>
-              {constiOpen && (
-                <>
-                  <CCol lg={12} className="mb-2">
-                    <div class="position-relative">
-                      <label for="validationTooltip01" class="form-label">
-                        Custom Entry
-                      </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="validationTooltip01"
-                        placeholder="Custom Entry"
-                      />
-                    </div>
-                  </CCol>
-                  <CRow>
-                    {options?.map((option, index) => (
-                      <CCol lg={"auto"}>
-                        <OptionItem
-                          key={index}
-                          label={option}
-                          onSelect={handleSelect}
-                        />
-                      </CCol>
-                    ))}
-                  </CRow>
-                </>
-              )}
-            </CRow>
-            <div className="vertical-line mt-2 mb-3"></div> */}
                 <CRow className="mb-2">
                   <CCol
                     lg={12}
@@ -940,26 +815,6 @@ const PhysicalExam = ({ onClose, from }) => {
                     </>
                   )}
                 </CRow>
-                {!editView && (
-                  <>
-                    <div className="vertical-line mt-2 mb-3"></div>
-                    <CRow className="mb-1">
-                      <div style={{ width: "128px" }}>
-                        <PrimaryButton>SAVE</PrimaryButton>
-                      </div>
-                      <div style={{ width: "128px" }}>
-                        <SecondaryButton
-                          onClick={() => {
-                            setAddFormView(false);
-                            setEditView(false);
-                          }}
-                        >
-                          CANCEL
-                        </SecondaryButton>
-                      </div>
-                    </CRow>
-                  </>
-                )}
               </CCardBody>
             </CCard>
           )}

@@ -1,4 +1,5 @@
 import { Assets } from "../../../../../../assets/Assets";
+import { findColorCodefev1_fvc } from "../../../../../../Utils/colorUtils";
 
 export const transformBPData = (originalData, pagination) => {
   if (!Array.isArray(originalData) || originalData.length === 0) {
@@ -489,7 +490,7 @@ export const transformLFTData = (originalData, pagination) => {
     },
     {
       label: `FEV1/FVC Ratio (%): ${tableData[0]?.["fev1/fvc_(%)"] || "N/A"}`,
-      color: tableData[0].result.status,
+      color: findColorCodefev1_fvc(tableData[0]?.["fev1/fvc_(%)"]),
     },
   ];
 
@@ -620,7 +621,7 @@ export const transformBloodSugarData = (originalData, pagination) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "Blood Sugar" },
+        { id: 3, label: "Blood Sugar (mg/dL)" },
         { id: 4, label: "Type" },
         { id: 5, label: "DATE" },
         { id: 6, label: "ACTION" },
@@ -638,7 +639,7 @@ export const transformBloodSugarData = (originalData, pagination) => {
       status: item?.details?.bsFlagColor,
       name: item?.details?.bsFlag || "Unknown",
     },
-    blood_sugar: item?.details?.blood_sugar || "N/A",
+    "blood_sugar_(mg/dl)": item?.details?.blood_sugar || "N/A",
     blood_sugar_value: item?.details?.blood_sugar || "N/A",
     type: item?.details?.type || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
@@ -657,7 +658,7 @@ export const transformBloodSugarData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0]["blood_sugar"]} mg/dL`,
+            label: `${tableData[0]["blood_sugar_(mg/dl)"]} mg/dL`,
             color: tableData[0].result.status,
           },
         ]
@@ -677,7 +678,7 @@ export const transformBloodSugarData = (originalData, pagination) => {
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "Blood Sugar" },
+      { id: 3, label: "Blood Sugar (mg/dL)" },
       { id: 4, label: "Type" },
       { id: 5, label: "DATE" },
       { id: 6, label: "ACTION" },
@@ -757,20 +758,20 @@ export const transformLipidProfileData = (originalData, pagination) => {
       } mg/dl`,
       color: `${tableData[0]?.result.status}`,
     },
-    {
-      label: `LDL: ${tableData[0]?.["ldl(mg/dl)"] || "N/A"} mg/dl`,
-      color: `${tableData[0]?.ldl_message_flag}`,
-    },
-    {
-      label: `HDL: ${tableData[0]?.["hdl(mg/dl)"] || "N/A"} mg/dl`,
-      color: `${tableData[0]?.hdl_message_flag}`,
-    },
-    {
-      label: `Triglycerides: ${
-        tableData[0]?.["triglycerides(mg/dl)"] || "N/A"
-      } mg/dl`,
-      color: `${tableData[0]?.triglycerides_message_flag}`,
-    },
+    // {
+    //   label: `LDL: ${tableData[0]?.["ldl(mg/dl)"] || "N/A"} mg/dl`,
+    //   color: `${tableData[0]?.ldl_message_flag}`,
+    // },
+    // {
+    //   label: `HDL: ${tableData[0]?.["hdl(mg/dl)"] || "N/A"} mg/dl`,
+    //   color: `${tableData[0]?.hdl_message_flag}`,
+    // },
+    // {
+    //   label: `Triglycerides: ${
+    //     tableData[0]?.["triglycerides(mg/dl)"] || "N/A"
+    //   } mg/dl`,
+    //   color: `${tableData[0]?.triglycerides_message_flag}`,
+    // },
   ];
 
   return {
@@ -893,7 +894,7 @@ export const transformHemoglobinData = (originalData, pagination) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "Hemoglobin" },
+        { id: 3, label: "Hemoglobin (g/dL)" },
         { id: 4, label: "DATE" },
         { id: 5, label: "ACTION" },
       ],
@@ -910,7 +911,7 @@ export const transformHemoglobinData = (originalData, pagination) => {
       status: item?.details?.hemoglobinFlagColor,
       name: item?.details?.hemoglobinFlag || "Unknown",
     },
-    hemoglobin: item?.details?.hemoglobin || "N/A",
+    "hemoglobin_(g/dl)": item?.details?.hemoglobin || "N/A",
     hemoglobinValue: item?.details?.hemoglobin || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
@@ -928,7 +929,7 @@ export const transformHemoglobinData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0].hemoglobin} g/dL`,
+            label: `${tableData[0]["hemoglobin_(g/dl)"]} g/dL`,
             color: tableData[0].result.status,
           },
         ]
@@ -948,7 +949,7 @@ export const transformHemoglobinData = (originalData, pagination) => {
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "Hemoglobin" },
+      { id: 3, label: "Hemoglobin (g/dL)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -986,7 +987,7 @@ export const transformBloodKetoneData = (originalData, pagination) => {
       status: item?.details?.keytoneFlagColor,
       name: item?.details?.keytoneFlag || "Unknown",
     },
-    blood_ketone: item?.details?.keytone || "N/A",
+    "blood_ketone_(mmol/l)": item?.details?.keytone || "N/A",
     blood_ketone_value: item?.details?.keytone || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
@@ -1004,7 +1005,7 @@ export const transformBloodKetoneData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0].blood_ketone} mmol/L`,
+            label: `${tableData[0]["blood_ketone_(mmol/l)"]} mmol/L`,
             color: tableData[0].result.status,
           },
         ]
@@ -1024,7 +1025,7 @@ export const transformBloodKetoneData = (originalData, pagination) => {
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "BLOOD KETONE" },
+      { id: 3, label: "BLOOD KETONE (mmol/L)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -1046,7 +1047,7 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "BLOOD URIC ACID" },
+        { id: 3, label: "BLOOD URIC ACID (mg/dL)" },
         { id: 4, label: "DATE" },
         { id: 5, label: "ACTION" },
       ],
@@ -1063,7 +1064,7 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
       status: item?.details?.uricAcidFlagColor,
       name: item?.details?.uricAcidFlag || "Unknown",
     },
-    blood_uric_acid: item?.details?.uric_acid || "N/A",
+    "blood_uric_acid_(mg/dl)": item?.details?.uric_acid || "N/A",
     blood_uric_acid_value: item?.details?.uric_acid || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
@@ -1081,7 +1082,7 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0].blood_uric_acid} mg/dL`,
+            label: `${tableData[0]["blood_uric_acid_(mg/dl)"]} mg/dL`,
             // color: tableData[0].result.status,
             color: "success",
           },
@@ -1102,7 +1103,7 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "BLOOD URIC ACID" },
+      { id: 3, label: "BLOOD URIC ACID (mg/dL)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -1124,7 +1125,7 @@ export const transformUreaData = (originalData, pagination) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "UREA" },
+        { id: 3, label: "UREA (mg/dL)" },
         { id: 4, label: "DATE" },
         { id: 5, label: "ACTION" },
       ],
@@ -1141,7 +1142,7 @@ export const transformUreaData = (originalData, pagination) => {
       status: item?.details?.ureaFlagColor,
       name: item?.details?.ureaFlag || "Unknown",
     },
-    urea: item.details?.urea || "N/A",
+    "urea_(mg/dl)": item.details?.urea || "N/A",
     urea_value: item?.details?.urea || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
@@ -1159,7 +1160,7 @@ export const transformUreaData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0].urea} mg/dL`,
+            label: `${tableData[0]["urea_(mg/dl)"]} mg/dL`,
             color: tableData[0].result.status,
           },
         ]
@@ -1179,7 +1180,7 @@ export const transformUreaData = (originalData, pagination) => {
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "UREA" },
+      { id: 3, label: "UREA (mg/dL)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -1201,7 +1202,7 @@ export const transformCreatinineData = (originalData, pagination) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "CREATININE" },
+        { id: 3, label: "CREATININE (mg/dL)" },
         { id: 4, label: "DATE" },
         { id: 5, label: "ACTION" },
       ],
@@ -1218,7 +1219,7 @@ export const transformCreatinineData = (originalData, pagination) => {
       status: item?.details?.creatinineFlagColor,
       name: item?.details?.creatinineFlag || "Unknown",
     },
-    creatinine: item?.details?.creatinine || "N/A",
+    "creatinine_(mg/dl)": item?.details?.creatinine || "N/A",
     creatinine_value: item?.details?.creatinine || "N/A",
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
@@ -1236,7 +1237,7 @@ export const transformCreatinineData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0]?.creatinine} mg/dL`,
+            label: `${tableData[0]["creatinine_(mg/dl)"]} mg/dL`,
             color: tableData[0]?.result?.status,
           },
         ]
@@ -1256,7 +1257,7 @@ export const transformCreatinineData = (originalData, pagination) => {
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "CREATININE" },
+      { id: 3, label: "CREATININE (mg/dL)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -1278,7 +1279,7 @@ export const transformGFRData = (originalData, pagination) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "GFR" },
+        { id: 3, label: "GFR (mL/min/1.73m²)" },
         { id: 4, label: "DATE" },
         { id: 5, label: "ACTION" },
       ],
@@ -1295,7 +1296,7 @@ export const transformGFRData = (originalData, pagination) => {
       status: item?.details?.gfrFlagColor,
       name: item?.details?.gfrFlag || "Unknown",
     },
-    gfr: item?.details?.gfr || "N/A",
+    "gfr_(ml/min/1.73m²)": item?.details?.gfr || "N/A",
     gfr_value: item?.details?.gfr || "N/A",
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
@@ -1313,7 +1314,7 @@ export const transformGFRData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0].gfr} mL/min/1.73m²`,
+            label: `${tableData[0]["gfr_(ml/min/1.73m²)"]} mL/min/1.73m²`,
             color: tableData[0].result.status,
           },
         ]
@@ -1333,7 +1334,7 @@ export const transformGFRData = (originalData, pagination) => {
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "GFR" },
+      { id: 3, label: "GFR (mL/min/1.73m²)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
