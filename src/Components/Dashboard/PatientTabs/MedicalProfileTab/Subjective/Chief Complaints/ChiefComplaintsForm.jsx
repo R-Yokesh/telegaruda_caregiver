@@ -1,88 +1,86 @@
 import { CCol, CFormTextarea, CRow } from "@coreui/react";
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import DatePicker from "react-datepicker";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import { isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import useApi from "../../../../../../ApiServices/useApi";
+import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { format } from "date-fns";
-import moment  from "moment";
+import moment from "moment";
 
-const parseDate = (dateString) => {
-  if (!dateString) return null;
-  const [day, month, year] = dateString.split('-').map(Number);
-  return new Date(year, month - 1, day);
-};
+const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, defaultValues }) => {
 
-const parseTime = (timeString) => {
-  if (!timeString) return null;
-  const [hours, minutes] = timeString.split(':').map(Number);
-  const now = new Date();
-  now.setHours(hours, minutes, 0, 0);
-  return now;
-};
-
-const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultValues }) => {
-
-  const { loading, error, post,clearCache } = useApi();
-  const [selectedTime, setSelectedTime] = useState(
-  );
-  const [selectedDate, setSelectedDate] = useState(
-  );
-  const [complaints, setComplaints] = useState(
-  );
+  const { loading, error, get, post, clearCache, patch } = useApi();
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [complaints, setComplaints] = useState(defaultValues?.addition_info?.title || "");
   const [notes, setNotes] = useState(defaultValues?.addition_info?.notes || "");
   const [errors, setErrors] = useState({});
+
+
+  const getFormattedDate = (date) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
+  const currentDate = new Date();
+  const formattedDate = getFormattedDate(currentDate);
+
+  // console.log(formattedDate); // e.g., 25-08-2024
+
+  const defaultDateTime = defaultValues?.date || "";
+
+  // Split date and time
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
-    // Initialize the state with default values if available
-    if (defaultValues?.addition_info) {
-      setSelectedDate(parseDate(defaultValues.addition_info.date));
-      setSelectedTime(parseTime(defaultValues.addition_info.time));
-      setComplaints(defaultValues.addition_info.title || "");
-      setNotes(defaultValues.addition_info.notes || "");
+    // Combine default date and time into a single Date object
+    let date = new Date();
+
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
     }
-  }, [defaultValues]);
 
-  // const handleDateChange = (date) => {
-  //   setSelectedDate(date);
-  //   if (date && selectedTime) {
-  //     const updatedDateTime = new Date(date);
-  //     updatedDateTime.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
-  //     setSelectedTime(updatedDateTime);
-  //   }
-  // };
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
 
-  // const handleTimeChange = (time) => {
-  //   if (time) {
-  //     const updatedDateTime = new Date(selectedDate || time);
-  //     updatedDateTime.setHours(time.getHours(), time.getMinutes(), 0, 0);
-  //     setSelectedDate(updatedDateTime);
-  //     setSelectedTime(updatedDateTime);
-  //   }
-  // };
+    setSelectedDate(date);
+    setSelectedTime(date); // Initialize time picker with the same Date object
+  }, [defaultDate, defaultTime]);
 
   const handleDateChange = (date) => {
+    setSelectedDate(date);
     if (date) {
-      // const formattedDate = format(date, "dd-MM-yyyy");
-      setSelectedDate(date);
-    } else {
-      setSelectedDate(null);
+      setSelectedTime(date); // Sync time picker with the updated date
     }
   };
-  
+
   const handleTimeChange = (time) => {
     if (time) {
-      // console.log("Time-----",moment(time).format("hh:mm "))
-      // const formattedTime = moment(time).format("hh:mm");
+      const updatedDateTime = new Date(selectedDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
+
+      setSelectedDate(updatedDateTime); // Optionally update date as well
       setSelectedTime(time);
-    } else {
-      setSelectedTime(null);
     }
   };
-  
-  
-  
+
+ 
+
 
   // Validate the form
   const validate = () => {
@@ -111,6 +109,20 @@ const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultVa
     return valid;
   };
 
+  const onSubmit = () => {
+    if (validate()) {
+      if (defaultValues.id !== undefined) {
+        console.log("Edit clicked");
+        editChiefComplaints();
+
+      }
+      if (defaultValues.id === undefined) {
+        console.log("Add clicked");
+        addChiefComplaints();
+
+      }
+    }
+  };
 
   const addChiefComplaints = async () => {
     const formattedDate = format(selectedDate, "dd-MM-yyyy");
@@ -118,23 +130,23 @@ const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultVa
     try {
       const body = {
         addition_info: {
-          date:formattedDate,
-          time:formattedTime,
-          title:complaints,
-          notes:notes,
+          date: formattedDate,
+          time: formattedTime,
+          title: complaints,
+          notes: notes,
         },
         user_id: "10",
         document_source: "chief-complaints",
       };
-  
+
       // Use the provided `post` function to send the request
       const response = await post(`resource/docs`, body);
-  
+
       if (response.code === 201) {
         clearCache();
         await getChiefComplaints();
         setAddFormView(false);
-         
+
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -142,24 +154,43 @@ const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultVa
       console.error("Error fetching data:", error);
     }
   };
-  
 
- 
+  const editChiefComplaints = async () => {
+    const formattedDate = format(selectedDate, "dd-MM-yyyy");
+    const formattedTime = moment(selectedTime).format("hh:mm");
+    try {
+      const body = {
+        addition_info: {
+          date: formattedDate,
+          time: formattedTime,
+          title: complaints,
+          notes: notes,
+        },
+        user_id: "10",
+        document_source: "chief-complaints",
+      };
 
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/docs/${defaultValues.id}`, body);
 
-  const onSubmit = () => {
-    if (validate()) {
-      if (defaultValues.id !== undefined) {
-        console.log("Edit clicked");
-      
+      if (response.code === 200) {
+        clearCache();
+        await getChiefComplaints();
+        setAddFormView(false);
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
       }
-      if (defaultValues.id === undefined) {
-        console.log("Add clicked");
-        addChiefComplaints();
-        
-      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
+
+
+
+
+
+
   return (
     <>
       <CRow className="mb-3">
