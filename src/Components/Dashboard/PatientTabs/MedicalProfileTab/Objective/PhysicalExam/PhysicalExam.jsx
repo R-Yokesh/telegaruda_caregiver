@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import {
   CCard,
@@ -18,157 +18,156 @@ import SingleDatePicker from "../../../../../DateRangePicker/SingleDatePicker";
 import OptionItem from "../../../../../OptionItems/OptionItem";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import BlurBackground from "../../../../../BlurBackground/BlurBackground";
+import useApi from "../../../../../../ApiServices/useApi";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import ExamOptions from "../../../../../OptionItems/ExamOptions";
+import { format } from "date-fns";
 
 const PhysicalExam = ({ onClose, from }) => {
-  const dateCards = [
-    {
-      id: 1,
-      date: "06-07-2024",
-      ga: {
-        status: "Abnormal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-      skin: {
-        status: "Normal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-    },
-    {
-      id: 2,
-      date: "06-07-2024",
-      ga: {
-        status: "Normal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-      skin: {
-        status: "Abnormal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-    },
-    {
-      id: 3,
-      date: "06-07-2024",
-      ga: {
-        status: "Normal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-      skin: {
-        status: "Abnormal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-    },
-    {
-      id: 4,
-      date: "06-07-2024",
-      ga: {
-        status: "Normal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-      skin: {
-        status: "Abnormal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-    },
-    {
-      id: 5,
-      date: "06-07-2024",
-      ga: {
-        status: "Normal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-      skin: {
-        status: "Abnormal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-    },
-    {
-      id: 6,
-      date: "06-07-2024",
-      ga: {
-        status: "Normal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-      skin: {
-        status: "Abnormal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-    },
-    {
-      id: 7,
-      date: "06-07-2024",
-      ga: {
-        status: "Normal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-      skin: {
-        status: "Abnormal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-    },
-    {
-      id: 8,
-      date: "06-07-2024",
-      ga: {
-        status: "Normal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-      skin: {
-        status: "Abnormal",
-        notes: "Lorem ipsum",
-        select: ["Posture and Gait"],
-      },
-    },
-    { id: 9, date: "06-07-2024" },
-    { id: 10, date: "06-07-2024" },
-    { id: 11, date: "06-07-2024" },
-    { id: 12, date: "06-07-2024" },
-    { id: 13, date: "06-07-2024" },
-    { id: 14, date: "06-07-2024" },
-  ];
+  // const dateCards = [
+  //   {
+  //     id: 1,
+  //     date: "06-07-2024",
+  //     ga: {
+  //       status: "Abnormal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //     skin: {
+  //       status: "Normal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //   },
+  //   {
+  //     id: 2,
+  //     date: "06-07-2024",
+  //     ga: {
+  //       status: "Normal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //     skin: {
+  //       status: "Abnormal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //   },
+  //   {
+  //     id: 3,
+  //     date: "06-07-2024",
+  //     ga: {
+  //       status: "Normal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //     skin: {
+  //       status: "Abnormal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //   },
+  //   {
+  //     id: 4,
+  //     date: "06-07-2024",
+  //     ga: {
+  //       status: "Normal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //     skin: {
+  //       status: "Abnormal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //   },
+  //   {
+  //     id: 5,
+  //     date: "06-07-2024",
+  //     ga: {
+  //       status: "Normal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //     skin: {
+  //       status: "Abnormal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //   },
+  //   {
+  //     id: 6,
+  //     date: "06-07-2024",
+  //     ga: {
+  //       status: "Normal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //     skin: {
+  //       status: "Abnormal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //   },
+  //   {
+  //     id: 7,
+  //     date: "06-07-2024",
+  //     ga: {
+  //       status: "Normal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //     skin: {
+  //       status: "Abnormal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //   },
+  //   {
+  //     id: 8,
+  //     date: "06-07-2024",
+  //     ga: {
+  //       status: "Normal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //     skin: {
+  //       status: "Abnormal",
+  //       notes: "Lorem ipsum",
+  //       select: ["Posture and Gait"],
+  //     },
+  //   },
+  //   { id: 9, date: "06-07-2024" },
+  //   { id: 10, date: "06-07-2024" },
+  //   { id: 11, date: "06-07-2024" },
+  //   { id: 12, date: "06-07-2024" },
+  //   { id: 13, date: "06-07-2024" },
+  //   { id: 14, date: "06-07-2024" },
+  // ];
+
+  const { get, post, clearCache, del } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
+  const [lists, setLists] = useState([]);
+  const [generalOpen, setGeneralOpen] = useState(false);
+  const [headings, setHeadings] = useState([]);
+  const [subOptions, setSubOptions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [addFormView, setAddFormView] = useState(true);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [skinselectedOptions, setSkinSelectedOptions] = useState([]);
-
-  const [labelName1, setLabelname1] = useState("");
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [notes, setNotes] = useState({});
   const [deleteView, setDeleteView] = useState(false);
   const [selectedData, setSelectedData] = useState(
-    from === "Consult" ? dateCards[1] : {}
+    from === "Consult" ? lists[1] : null
   );
-  const [isSelected, setIsSelected] = useState(false);
-  const [labelName, setLabelname] = useState(selectedData?.ga?.status || "");
-  const [editView, setEditView] = useState(false);
+  const [editView, setEditView] = useState(from === "Consult" ? true : false);
+  const [date, setDate] = useState(null);
 
-  useEffect(() => {
-    setEditView(true);
-  }, [from]);
-
-  const options = [
-    "Appearance (well, ill, distressed, etc.)",
-    "Level of Consciousness (alert, drowsy, unresponsive, etc.)",
-    "Posture and Gait",
-  ];
-
-  const skinoptions = [
-    "Appearance (well, ill, distressed, etc.)",
-    "Level of Consciousness (alert, drowsy, unresponsive, etc.)",
-    "Posture and Gait",
-  ];
+  // useEffect(() => {
+  //   setEditView(true);
+  // }, [from]);
 
   const itemsPerPage = 9; // Number of items to display per page
 
@@ -181,95 +180,15 @@ const PhysicalExam = ({ onClose, from }) => {
   const getCurrentPageItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return dateCards?.slice(startIndex, endIndex);
+    return lists?.slice(startIndex, endIndex);
   };
 
   const addFormPage = () => {
     setAddFormView(true);
   };
 
-  const handleSelect = (option, isSelected) => {
-    if (isSelected) {
-      setSelectedOptions([...selectedOptions, option]);
-    } else {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option));
-    }
-  };
-
-  const handleSelectSkin = (option, isSelected) => {
-    if (isSelected) {
-      setSkinSelectedOptions([...skinselectedOptions, option]);
-    } else {
-      setSkinSelectedOptions(
-        skinselectedOptions.filter((item) => item !== option)
-      );
-    }
-  };
-
-  const [nutritionOpen, setNutritionOpen] = useState(false);
-  const [constiOpen, setConstiOpen] = useState(false);
-  const [generalOpen, setGeneralOpen] = useState(false);
-  const [heentOpen, setHeentOpen] = useState(false);
-
-  const nutritionTabOpen = () => {
-    setNutritionOpen(true);
-  };
-
-  const nutritionTabClose = () => {
-    setNutritionOpen(false);
-  };
-
-  const constiTabOpen = () => {
-    setConstiOpen(true);
-  };
-
-  const constiTabClose = () => {
-    setConstiOpen(false);
-  };
-
-  const generalTabOpen = () => {
-    setGeneralOpen(true);
-  };
-
-  const generalTabClose = () => {
-    setGeneralOpen(false);
-  };
-
-  const heentTabOpen = () => {
-    setHeentOpen(true);
-  };
-
-  const heentTabClose = () => {
-    setHeentOpen(false);
-  };
-
-  const toggleSelected = (label) => {
-    setIsSelected(!isSelected);
-    setLabelname(label);
-  };
-
-  useEffect(() => {
-    if (editView) {
-      setLabelname(selectedData?.ga?.status);
-      setLabelname1(selectedData?.skin?.status);
-      setSelectedOptions(selectedData?.ga?.select);
-      setSkinSelectedOptions(selectedData?.skin?.select);
-      if (selectedData?.ga?.status === "Abnormal") {
-        setGeneralOpen(true);
-      }
-      if (selectedData?.skin?.status === "Abnormal") {
-        setHeentOpen(true);
-      }
-    } else {
-      setLabelname("");
-      setLabelname1("");
-      setGeneralOpen(false);
-      setHeentOpen(false);
-      setSelectedOptions([]);
-    }
-  }, [editView]);
-
   const getselected = (data, method) => {
+    console.log("first data", data);
     setSelectedData(data);
     if (method === "delete") {
       setDeleteView(true);
@@ -277,200 +196,170 @@ const PhysicalExam = ({ onClose, from }) => {
     if (method === "edit") {
       addFormPage();
       setEditView(true);
+      setSelectedOptions(data.values || {});
+      setNotes(data.notes || {});
+      setDate(data?.values?.date);
     }
   };
 
-  const toggleSelected1 = (label) => {
-    setLabelname1(label);
+  const getOptions = useCallback(
+    async (headingSlug) => {
+      try {
+        const response = await get(
+          `resource/masters/all?attr_slug=${headingSlug}&slug=systemic_sub_types&with_values=true&order_by=id&dir=1`
+        );
+        const optionsData = response?.data?.masters;
+        // setSubOptions(optionsData);
+        setSubOptions((prevMap) => ({
+          ...prevMap,
+          [headingSlug]: optionsData,
+        }));
+      } catch (error) {
+        console.error("Error fetching card data:", error);
+      }
+    },
+    [get]
+  );
+  const getSavedValue = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHealth/all?user_id=${data?.user_id}&slug=&from=${
+          date ?? format(new Date(), "dd-MM-yyyy")
+        }&to=${
+          date ?? format(new Date(), "dd-MM-yyyy")
+        }&slug_array=allergy,breast,cvs,ears,endocrine,eyes,gastro,general,genito-urinary,head,hematology,mouththroat,musculoskeletal,neck,neurology,nose,peripheral-vascular-disease,psychiatry,respiratory,skin&group_by=date_slug`
+      );
+      const savedData = response?.data?.patient_healths;
+      console.log("Saved Data:", savedData);
+
+      // Initialize state for selected options and notes
+      const initialSelections = {};
+      const initialNotes = {};
+
+      savedData?.forEach((item) => {
+        console.log("first item", item);
+        const { slug, values, notes } = item;
+        if (values) {
+          Object.keys(values).forEach((key) => {
+            if (values[key]) {
+              initialSelections[key] = true;
+              initialNotes[slug] = values?.notes; // Assuming notes are stored with a slug key
+            }
+          });
+        }
+      });
+
+      setSelectedOptions(initialSelections);
+      setNotes(initialNotes); // Ensure this state is initialized
+    } catch (error) {
+      console.error("Error fetching saved data:", error);
+    }
+  }, [get, date, addFormView]);
+
+  const getHeadings = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters/all?slug=systemic-examination&order_by=id&dir=1&patient_id=${data?.user_id}`
+      );
+      const headingData = response?.data?.masters;
+      setHeadings(headingData);
+      getSavedValue();
+      headingData?.forEach((item) => getOptions(item?.slug));
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [data?.user_id, get, getOptions, getSavedValue, addFormView]);
+
+  const handleSelect = (option, isSelected) => {
+    // Update the selected options as an object
+    const updatedOptions = {
+      ...selectedOptions,
+      [option.slug]: isSelected,
+    };
+
+    setSelectedOptions(updatedOptions);
+    clearCache();
+
+    // Format the options into an object where only the selected options are true
+    const formattedOptions = Object.keys(subOptions).reduce((acc, key) => {
+      if (key === option.attributes?.reference_slug) {
+        subOptions[key].forEach((opt) => {
+          acc[opt.slug] = updatedOptions[opt.slug] || false;
+        });
+      }
+      return acc;
+    }, {});
+
+    // Example API call with the formatted options
+    onSubmit(formattedOptions, option.attributes?.reference_slug);
   };
 
+  const handleNotesChange = (slug, value) => {
+    setNotes((prevNotes) => ({
+      ...prevNotes,
+      [slug]: value,
+    }));
+  };
+
+  const getLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHealth?limit=10&page=1&from=&to=&order_by=created_at&dir=2&user_id=${data?.user_id}&slug=&searchkey=&slug_array=allergy,breast,cvs,ears,endocrine,eyes,gastro,general,genito-urinary,head,hematology,mouththroat,musculoskeletal,neck,neurology,nose,peripheral-vascular-disease,psychiatry,respiratory,skin`
+      );
+      const listData = response?.data?.patient_healths; //pagination
+      setLists(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, deleteView, addFormView]);
+
+  useEffect(() => {
+    getSavedValue();
+  }, [getSavedValue, date]);
+
+  useEffect(() => {
+    getHeadings();
+  }, [getHeadings]);
+
+  useEffect(() => {
+    getLists();
+  }, [getLists]);
+
+  const onSubmit = async (formattedOptions, selectedSlug) => {
+    try {
+      const url = `resource/patientHealth`; // Replace with your API endpoint
+      const body = {
+        values: {
+          ...formattedOptions,
+          date: date,
+          // others: [], // option to add extra on the fly for perticular section
+          notes: notes[selectedSlug] || "",
+        },
+        slug: selectedSlug,
+        up_create: true,
+        patient_id: data?.user_id, //data?.user_id
+      };
+      await post(url, body);
+      toast.success("Updated successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+
+  const onDelete = async () => {
+    clearCache();
+    try {
+      const url = `resource/patientHealth/${selectedData?.id}`; // Replace with your API endpoint
+      await del(url);
+      toast.success("Deleted successfully");
+      setDeleteView(false);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  console.log("first date", date);
   return (
     <>
-      {/* {from === "Consult" && (
-        <CCard className="p-2 cursor-default mb-5">
-          <CCardBody className="mb-3">
-            <CRow className="mb-2">
-              <CCol className="d-flex align-items-center gap-2">
-                <span>Date</span>
-                <SingleDatePicker defaultDate={selectedData?.date} />
-              </CCol>
-            </CRow>
-            <div className="vertical-line mb-3"></div>
-
-            <CRow className="mb-2">
-              <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
-                {!generalOpen && (
-                  <img
-                    alt="plus"
-                    src={Assets?.PlusIcon}
-                    // onClick={generalTabOpen}
-                    className="cursor"
-                  />
-                )}
-                {generalOpen && (
-                  <img
-                    alt="plus"
-                    src={Assets?.MinusIcon}
-                    // onClick={generalTabClose}
-                    className="cursor"
-                  />
-                )}
-                <span className="fs-16 fw-600">General Appearance</span>
-              </CCol>
-              <CRow>
-                <CCol>
-                  <div className="d-flex justify-content-center align-items-center">
-                    <label class="form-label">Status:</label>
-                    <div
-                      className={`option-item ${
-                        labelName === "Normal" ? "selected primary-bg" : ""
-                      } ${editView ? "disabled" : ""}`}
-                      onClick={() => {
-                        toggleSelected("Normal");
-                        setGeneralOpen(false);
-                      }}
-                    >
-                      {"Normal"}
-                    </div>
-                    <div
-                      className={`option-item ${
-                        labelName === "Abnormal" ? "selected primary-bg" : ""
-                      } ${editView ? "disabled" : ""}`}
-                      onClick={() => {
-                        toggleSelected("Abnormal");
-                        setGeneralOpen(true);
-                      }}
-                    >
-                      {"Abnormal"}
-                    </div>
-                  </div>
-                </CCol>
-              </CRow>
-              {generalOpen && (
-                <>
-                  {labelName === "Abnormal" && (
-                    <CRow>
-                      {options?.map((option, index) => (
-                        <CCol lg={"auto"}>
-                          <OptionItem
-                            key={index}
-                            label={option}
-                            onSelect={handleSelect}
-                            selected={selectedOptions.includes(option)}
-                            disabled={editView}
-                          />
-                        </CCol>
-                      ))}
-                      <CCol lg={12} className="mb-2">
-                        <div class="position-relative">
-                          <label for="validationTooltip01" class="form-label">
-                            Notes
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="validationTooltip01"
-                            placeholder="Enter"
-                            defaultValue={selectedData?.ga?.notes}
-                            disabled={editView}
-                          />
-                        </div>
-                      </CCol>
-                    </CRow>
-                  )}
-                </>
-              )}
-            </CRow>
-            <div className="vertical-line mt-2 mb-3"></div>
-            <CRow className="mb-2">
-              <CCol lg={12} className="d-flex align-items-center gap-2 mb-1">
-                {!heentOpen && (
-                  <img
-                    alt="plus"
-                    src={Assets?.PlusIcon}
-                    // onClick={heentTabOpen}
-                    className="cursor"
-                  />
-                )}
-                {heentOpen && (
-                  <img
-                    alt="plus"
-                    src={Assets?.MinusIcon}
-                    // onClick={heentTabClose}
-                    className="cursor"
-                  />
-                )}
-                <span className="fs-16 fw-600">Skin</span>
-              </CCol>
-              <CRow>
-                <CCol>
-                  <div className="d-flex justify-content-center align-items-center">
-                    <label class="form-label">Status:</label>
-                    <div
-                      className={`option-item ${
-                        labelName1 === "Normal" ? "selected primary-bg" : ""
-                      } ${editView ? "disabled" : ""}`}
-                      onClick={() => {
-                        toggleSelected1("Normal");
-                        setHeentOpen(false);
-                      }}
-                    >
-                      {"Normal"}
-                    </div>
-                    <div
-                      className={`option-item ${
-                        labelName1 === "Abnormal" ? "selected primary-bg" : ""
-                      } ${editView ? "disabled" : ""}`}
-                      onClick={() => {
-                        toggleSelected1("Abnormal");
-                        setHeentOpen(true);
-                      }}
-                    >
-                      {"Abnormal"}
-                    </div>
-                  </div>
-                </CCol>
-              </CRow>
-              {heentOpen && (
-                <>
-                  {labelName1 === "Abnormal" && (
-                    <>
-                      <CRow>
-                        {skinoptions?.map((option, index) => (
-                          <CCol lg={"auto"}>
-                            <OptionItem
-                              key={index}
-                              label={option}
-                              onSelect={handleSelectSkin}
-                              selected={skinselectedOptions?.includes(option)}
-                              disabled={editView}
-                            />
-                          </CCol>
-                        ))}
-                      </CRow>
-                      <CCol lg={12} className="mb-2">
-                        <div class="position-relative">
-                          <label for="validationTooltip01" class="form-label">
-                            Notes
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="validationTooltip01"
-                            placeholder="Enter"
-                            disabled={editView}
-                            defaultValue={selectedData?.skin?.notes}
-                          />
-                        </div>
-                      </CCol>
-                    </>
-                  )}
-                </>
-              )}
-            </CRow>
-          </CCardBody>
-        </CCard>
-      )} */}
       {from !== "Consult" && (
         <>
           <CRow className="mb-0">
@@ -516,6 +405,7 @@ const PhysicalExam = ({ onClose, from }) => {
                       onClick={() => {
                         addFormPage();
                         setSelectedData({});
+                        setDate(null);
                       }}
                     >
                       <div className="d-flex align-items-center gap-2">
@@ -527,23 +417,33 @@ const PhysicalExam = ({ onClose, from }) => {
                 </CCol>
               </CRow>
               <div className="mb-2">
-                <CRow>
-                  {getCurrentPageItems()?.map((item, i) => (
-                    <CCol lg={4} className="mb-3" key={i}>
-                      <DateCards data={item} onClick={getselected} />
-                    </CCol>
-                  ))}
-                </CRow>
-                <CRow className="mb-3">
-                  <CCol lg={12} className="d-flex justify-content-center">
-                    <Pagination
-                      currentPage={currentPage}
-                      onPageChange={onPageChange}
-                      totalItems={dateCards?.length}
-                      itemsPerPage={itemsPerPage}
-                    />
-                  </CCol>
-                </CRow>
+                {lists.length > 0 ? (
+                  <>
+                    <CRow>
+                      {lists?.map((item, i) => (
+                        <CCol lg={4} className="mb-3" key={i}>
+                          <DateCards data={item} onClick={getselected} />
+                        </CCol>
+                      ))}
+                    </CRow>
+                    <CRow className="mb-3">
+                      <CCol lg={12} className="d-flex justify-content-center">
+                        <Pagination
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                          totalItems={lists?.length}
+                          itemsPerPage={itemsPerPage}
+                        />
+                      </CCol>
+                    </CRow>
+                  </>
+                ) : (
+                  <>
+                    <div className="d-flex w-100 justify-content-center mt-5 mb-3">
+                      <h4>No Data Available</h4>
+                    </div>
+                  </>
+                )}
               </div>
             </>
           )}
@@ -560,7 +460,7 @@ const PhysicalExam = ({ onClose, from }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => setDeleteView(false)}>
+                        <PrimaryButton onClick={() => onDelete()}>
                           Yes
                         </PrimaryButton>
                       </div>
@@ -581,7 +481,10 @@ const PhysicalExam = ({ onClose, from }) => {
                 <CRow className="mb-2">
                   <CCol className="d-flex align-items-center gap-2">
                     <span>Date</span>
-                    <SingleDatePicker defaultDate={selectedData?.date} />
+                    <SingleDatePicker
+                      getStartDate={(date) => setDate(date)}
+                      date={date}
+                    />
                   </CCol>
                   <CCol className="d-flex justify-content-end">
                     <div style={{ width: "120px" }}>
@@ -601,220 +504,74 @@ const PhysicalExam = ({ onClose, from }) => {
                   </CCol>
                 </CRow>
                 <div className="vertical-line mb-3"></div>
-                <CRow className="mb-2">
-                  <CCol
-                    lg={12}
-                    className="d-flex align-items-center gap-2 mb-1"
-                  >
-                    {!generalOpen && (
-                      <img
-                        alt="plus"
-                        src={Assets?.PlusIcon}
-                        // onClick={generalTabOpen}
-                        className="cursor"
-                      />
-                    )}
-                    {generalOpen && (
-                      <img
-                        alt="plus"
-                        src={Assets?.MinusIcon}
-                        // onClick={generalTabClose}
-                        className="cursor"
-                      />
-                    )}
-                    <span className="fs-16 fw-600">General Appearance</span>
-                  </CCol>
-                  <CRow>
-                    <CCol>
-                      <div className="d-flex justify-content-center align-items-center">
-                        <label class="form-label">Status:</label>
-                        <div
-                          className={`option-item ${
-                            labelName === "Normal" ? "selected primary-bg" : ""
-                          } ${editView ? "disabled" : ""}`}
-                          onClick={() => {
-                            toggleSelected("Normal");
-                            setGeneralOpen(false);
-                          }}
-                        >
-                          {"Normal"}
-                        </div>
-                        <div
-                          className={`option-item ${
-                            labelName === "Abnormal"
-                              ? "selected primary-bg"
-                              : ""
-                          } ${editView ? "disabled" : ""}`}
-                          onClick={() => {
-                            toggleSelected("Abnormal");
-                            setGeneralOpen(true);
-                          }}
-                        >
-                          {"Abnormal"}
-                        </div>
-                      </div>
-                    </CCol>
-                  </CRow>
-                  {generalOpen && (
-                    <>
-                      {labelName === "Abnormal" && (
+                {headings?.map((item, i) => (
+                  <>
+                    <CRow className="mb-2" key={item?.id}>
+                      <CCol
+                        lg={12}
+                        className="d-flex align-items-center gap-2 mb-1"
+                      >
+                        {!generalOpen && (
+                          <img
+                            alt="plus"
+                            src={Assets?.PlusIcon}
+                            // onClick={generalTabOpen}
+                            className="cursor"
+                          />
+                        )}
+                        {generalOpen && (
+                          <img
+                            alt="plus"
+                            src={Assets?.MinusIcon}
+                            // onClick={generalTabClose}
+                            className="cursor"
+                          />
+                        )}
+                        <span className="fs-16 fw-600">{item?.name}</span>
+                      </CCol>
+                      <>
                         <CRow>
-                          {options?.map((option, index) => (
+                          {subOptions?.[item?.slug]?.map((option, index) => (
                             <CCol lg={"auto"}>
-                              <OptionItem
+                              <ExamOptions
                                 key={index}
                                 label={option}
                                 onSelect={handleSelect}
-                                selected={selectedOptions.includes(option)}
+                                // selected={selectedOptions.includes(
+                                //   option?.name
+                                // )}
+                                selected={!!selectedOptions[option.slug]}
                                 disabled={editView}
                               />
                             </CCol>
                           ))}
                           <CCol lg={12} className="mb-2">
-                            <div class="position-relative">
+                            <div className="position-relative">
                               <label
-                                for="validationTooltip01"
-                                class="form-label"
+                                htmlFor={`notes-${item?.slug}`}
+                                className="form-label"
                               >
                                 Notes
                               </label>
                               <input
                                 type="text"
-                                class="form-control"
-                                id="validationTooltip01"
-                                placeholder="Enter"
-                                defaultValue={selectedData?.ga?.notes}
+                                className="form-control"
+                                id={`notes-${item?.slug}`}
+                                placeholder="Enter notes"
+                                value={notes[item?.slug] || ""} // Use notes from state
+                                onChange={(e) =>
+                                  handleNotesChange(item?.slug, e.target.value)
+                                }
                                 disabled={editView}
                               />
                             </div>
                           </CCol>
                         </CRow>
-                      )}
-                    </>
-                  )}
-                </CRow>
-                <div className="vertical-line mt-2 mb-3"></div>
-                <CRow className="mb-2">
-                  <CCol
-                    lg={12}
-                    className="d-flex align-items-center gap-2 mb-1"
-                  >
-                    {!heentOpen && (
-                      <img
-                        alt="plus"
-                        src={Assets?.PlusIcon}
-                        // onClick={heentTabOpen}
-                        className="cursor"
-                      />
-                    )}
-                    {heentOpen && (
-                      <img
-                        alt="plus"
-                        src={Assets?.MinusIcon}
-                        // onClick={heentTabClose}
-                        className="cursor"
-                      />
-                    )}
-                    <span className="fs-16 fw-600">Skin</span>
-                  </CCol>
-                  <CRow>
-                    <CCol>
-                      <div className="d-flex justify-content-center align-items-center">
-                        <label class="form-label">Status:</label>
-                        <div
-                          className={`option-item ${
-                            labelName1 === "Normal" ? "selected primary-bg" : ""
-                          } ${editView ? "disabled" : ""}`}
-                          onClick={() => {
-                            toggleSelected1("Normal");
-                            setHeentOpen(false);
-                          }}
-                        >
-                          {"Normal"}
-                        </div>
-                        <div
-                          className={`option-item ${
-                            labelName1 === "Abnormal"
-                              ? "selected primary-bg"
-                              : ""
-                          } ${editView ? "disabled" : ""}`}
-                          onClick={() => {
-                            toggleSelected1("Abnormal");
-                            setHeentOpen(true);
-                          }}
-                        >
-                          {"Abnormal"}
-                        </div>
-                      </div>
-                    </CCol>
-                  </CRow>
-                  {heentOpen && (
-                    <>
-                      {/* <CRow>
-                    <CCol>
-                      <div className="d-flex justify-content-center align-items-center">
-                        <label class="form-label">Status:</label>
-                        <div
-                          className={`option-item ${
-                            labelName1 === "Normal" ? "selected primary-bg" : ""
-                          }`}
-                          onClick={() => toggleSelected1("Normal")}
-                        >
-                          {"Normal"}
-                        </div>
-                        <div
-                          className={`option-item ${
-                            labelName1 === "Abnormal"
-                              ? "selected primary-bg"
-                              : ""
-                          }`}
-                          onClick={() => toggleSelected1("Abnormal")}
-                        >
-                          {"Abnormal"}
-                        </div>
-                      </div>
-                    </CCol>
-                  </CRow> */}
-                      {labelName1 === "Abnormal" && (
-                        <>
-                          <CRow>
-                            {skinoptions?.map((option, index) => (
-                              <CCol lg={"auto"}>
-                                <OptionItem
-                                  key={index}
-                                  label={option}
-                                  onSelect={handleSelectSkin}
-                                  selected={skinselectedOptions?.includes(
-                                    option
-                                  )}
-                                  disabled={editView}
-                                />
-                              </CCol>
-                            ))}
-                          </CRow>
-                          <CCol lg={12} className="mb-2">
-                            <div class="position-relative">
-                              <label
-                                for="validationTooltip01"
-                                class="form-label"
-                              >
-                                Notes
-                              </label>
-                              <input
-                                type="text"
-                                class="form-control"
-                                id="validationTooltip01"
-                                placeholder="Enter"
-                                disabled={editView}
-                                defaultValue={selectedData?.skin?.notes}
-                              />
-                            </div>
-                          </CCol>
-                        </>
-                      )}
-                    </>
-                  )}
-                </CRow>
+                      </>
+                    </CRow>
+                    <div className="vertical-line mt-2 mb-3" key={i}></div>
+                  </>
+                ))}
               </CCardBody>
             </CCard>
           )}

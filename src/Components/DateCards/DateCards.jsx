@@ -4,6 +4,7 @@ import { Assets } from "../../assets/Assets";
 import { format } from "date-fns";
 
 const DateCards = ({ data, onClick }) => {
+  console.log(data);
   return (
     <>
       <CCard className="date-card cursor-default">
@@ -11,7 +12,7 @@ const DateCards = ({ data, onClick }) => {
           <div className="d-flex align-items-center justify-content-between">
             <div onClick={() => onClick(data, "edit")} className="cursor">
               <span className="fs-20 fw-600">
-                {format(data?.date, "dd-MM-yyyy")}
+                {format(data?.values?.date, "dd-MM-yyyy")}
               </span>
             </div>
             <div onClick={() => onClick(data, "delete")}>
