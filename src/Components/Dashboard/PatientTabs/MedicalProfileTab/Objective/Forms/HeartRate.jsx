@@ -15,10 +15,12 @@ import {
 import { toast } from "react-toastify";
 import useApi from "../../../../../../ApiServices/useApi";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
-
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [type, setType] = useState(defaultData?.type || null);
@@ -177,7 +179,7 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
           interpretation: interpretation,
           // result_file: ecgFile,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "heart-rate",
       };
       await post(url, body);
@@ -202,7 +204,7 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
           interpretation: interpretation,
           // result_file: ecgFile,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "heart-rate",
       };
       await patch(url, body);

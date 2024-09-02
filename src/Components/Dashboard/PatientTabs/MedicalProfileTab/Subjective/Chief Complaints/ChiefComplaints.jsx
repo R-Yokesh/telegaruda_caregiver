@@ -238,6 +238,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
       );
       if (response.code === 200) {
         console.log(response.data.docs);
+        
         setRowData(response.data.docs);
         setPagination(response.data.pagination);
       } else {

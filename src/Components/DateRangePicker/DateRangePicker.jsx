@@ -55,7 +55,7 @@ const DateRangePicker = ({ onClose, getFilterValues }) => {
             dateFormat={DATE_FORMAT}
           />
         </CCol>
-        <CCol md={3} className="d-flex flex-column gap-1 justify-content-end">
+        {/* <CCol md={3} className="d-flex flex-column gap-1 justify-content-end">
           <div
             className="search-bar"
             style={{ width: "100%", borderRadius: "10px" }}
@@ -68,7 +68,7 @@ const DateRangePicker = ({ onClose, getFilterValues }) => {
               onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
-        </CCol>
+        </CCol> */}
         <CCol
           md={3}
           className="d-flex flex-column gap-1 justify-content-end"

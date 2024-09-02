@@ -9,9 +9,11 @@ import { format, isValid, parse } from "date-fns";
 import { toast } from "react-toastify";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { DATE_FORMAT } from "../../../../../../Config/config";
+import { useLocation } from "react-router-dom";
 
 const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
-  console.log("first", defaultData);
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -229,7 +231,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
           fef2575Percent: Number(fef2575Percent),
           notes: notes,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "spirometer",
       };
       await post(url, body);
@@ -265,7 +267,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
           fef2575Percent: Number(fef2575Percent),
           notes: notes,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "spirometer",
       };
       await patch(url, body);

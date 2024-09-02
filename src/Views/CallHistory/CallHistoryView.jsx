@@ -81,7 +81,7 @@ function CallHistoryView() {
           filter.endDate !== null ? `&to_date=${filter.endDate}` : ""
         }`
       );
-      console.log(response); // Handle the data as needed
+     
       if (response.code === 200) {
         setDoctorDetail(response?.data?.consults);
         setTotalItems(response?.data?.pagination?.total);
@@ -99,7 +99,6 @@ function CallHistoryView() {
   const getRegisteredDoctors = useCallback(async () => {
     try {
       const response = await get(`resource/providers?order_by=id&dir=1`);
-      console.log(response); // Handle the data as needed
       if (response.code === 200) {
         setRegDoctors(response?.data?.providers);
         // setTotalItems(response?.data?.pagination?.total);
@@ -118,8 +117,6 @@ function CallHistoryView() {
   const getFilter = (data) => {
     setFilter(data);
   };
-
-  console.log("getFilter", filter);
 
   return (
     <section className="call-history-sec">

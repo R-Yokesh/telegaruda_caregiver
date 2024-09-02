@@ -41,8 +41,29 @@ const ChartTab = ({ data }) => {
         ))}
       </div>
       <div className="mt-2" style={{ overflow: "auto" }}>
-        {currentTab?.id === 1 && <LineChartDetails datas={data} />}
-        {currentTab?.id === 2 && <ColumnChartDetails datas={data} />}
+        {currentTab?.id === 1 &&
+          (data?.tableData.length > 0 ? (
+            <LineChartDetails datas={data} />
+          ) : (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ height: "175px" }}
+            >
+              <span className="no-data-message">No data available</span>
+            </div>
+          ))}
+        {/* {currentTab?.id === 2 && <ColumnChartDetails datas={data} />} */}
+        {currentTab?.id === 2 &&
+          (data?.tableData.length > 0 ? (
+            <ColumnChartDetails datas={data} />
+          ) : (
+            <div
+              className="d-flex justify-content-center align-items-center w-100"
+              style={{ height: "175px" }}
+            >
+              <span className="no-data-message">No data available</span>
+            </div>
+          ))}
       </div>
     </div>
   );

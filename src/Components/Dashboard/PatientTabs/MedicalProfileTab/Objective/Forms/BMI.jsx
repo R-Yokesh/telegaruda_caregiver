@@ -8,8 +8,11 @@ import { toast } from "react-toastify";
 import useApi from "../../../../../../ApiServices/useApi";
 import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const BMI = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -155,7 +158,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
           weight_unit: weightUnit,
           weight: weight,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "bmi",
       };
       await post(url, body);
@@ -180,7 +183,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
           weight_unit: weightUnit,
           weight: weight,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "bmi",
       };
       await patch(url, body);

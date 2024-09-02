@@ -9,13 +9,18 @@ import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
-  console.log("first", defaultData);
+  function removePercent(str) {
+    return str?.replace("%", "");
+  }
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [spO2, setSpO2] = useState(defaultData?.spo2 || "");
+  const [spO2, setSpO2] = useState(removePercent(defaultData?.spo2) || "");
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
 
@@ -106,7 +111,7 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
           spo2: Number(spO2),
           unit: "%",
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "spO2",
       };
       await post(url, body);
@@ -128,7 +133,7 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
           spo2: Number(spO2),
           unit: "%",
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "spO2",
       };
       await patch(url, body);

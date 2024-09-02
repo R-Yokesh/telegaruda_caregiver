@@ -9,8 +9,12 @@ import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const BPForm = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -24,34 +28,8 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
     (defaultData?.["pulse_(in_bpm)"] || "").toString()
   );
   const [errors, setErrors] = useState({});
-  const convertISOToTime = (isoString) => {
-    // Parse the ISO string into a Date object
-    const date = new Date(isoString);
 
-    // Ensure the Date object is valid
-    if (isNaN(date.getTime())) {
-      throw new Error("Invalid ISO string");
-    }
 
-    // Extract hours and minutes
-    const hours = String(date.getUTCHours()).padStart(2, "0");
-    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-
-    // Return the formatted time
-    return `${hours}:${minutes}`;
-  };
-  const getFormattedDate = (date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  };
-
-  const currentDate = new Date();
-  const formattedDate = getFormattedDate(currentDate);
-
-  console.log(formattedDate); // e.g., 25-08-2024
 
   const defaultDateTime = defaultData?.date || "";
 
@@ -197,7 +175,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
           diastolic: Number(diastolic),
           pulse: Number(pulse),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "blood-pressure",
       };
       await post(url, body);
@@ -220,7 +198,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
           diastolic: Number(diastolic),
           pulse: Number(pulse),
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "blood-pressure",
       };
       await patch(url, body);

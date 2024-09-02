@@ -62,7 +62,7 @@ export const ObjectiveDatas = [
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "Blood Sugar" },
+      { id: 3, label: "Blood Sugar (mg/dL)" },
       { id: 4, label: "Type" },
       { id: 5, label: "DATE" },
       { id: 6, label: "ACTION" },
@@ -140,6 +140,7 @@ export const ObjectiveDatas = [
   {
     id: 4,
     icon: Assets.VitalHCT,
+    slug: "hct",
     name: "Hematocrit (HCT)",
     category: "Hematologic Profile",
     date: "Recently Added 27-03-2024",
@@ -242,6 +243,7 @@ export const ObjectiveDatas = [
   {
     id: 6,
     icon: Assets.VitalHae,
+    slug: "hemoglobin",
     name: "Hemoglobin",
     category: "Hematologic Profile",
     date: "Recently Added 27-03-2024",
@@ -250,7 +252,7 @@ export const ObjectiveDatas = [
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "Hemoglobin" },
+      { id: 3, label: "Hemoglobin (g/dL)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -258,7 +260,7 @@ export const ObjectiveDatas = [
       {
         "no.": 1,
         result: { status: "success", name: "Normal" },
-        hemoglobin: "15 g/dL",
+        'hemoglobin_(g/dl)': "15",
         hemoglobinValue: "15",
         date: "06-24-2024 10:15",
         action: [{ type: "warning" }],
@@ -270,7 +272,7 @@ export const ObjectiveDatas = [
           status: "success",
           name: "Normal",
         },
-        hemoglobin: "15 g/dL",
+        'hemoglobin_(g/dl)': "15",
         hemoglobinValue: "15",
         date: "05-24-2024 10:15",
         action: [{ type: "edit" }, { type: "delete" }],
@@ -281,6 +283,7 @@ export const ObjectiveDatas = [
   {
     id: 7,
     icon: Assets.BKetone,
+    slug: "keytone",
     name: "Blood Ketone",
     category: "Hematologic Profile",
     date: "Recently Added 27-03-2024",
@@ -289,7 +292,7 @@ export const ObjectiveDatas = [
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "BLOOD KETONE" },
+      { id: 3, label: "BLOOD KETONE (mmol/L)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -297,7 +300,7 @@ export const ObjectiveDatas = [
       {
         "no.": 1,
         result: { status: "success", name: "Normal" },
-        blood_ketone: "0.33 mmol/L",
+        "blood_ketone_(mmol/l)": "0.33 mmol/L",
         blood_ketone_value: "0.33",
         date: "06-24-2024 10:15",
         action: [{ type: "warning" }],
@@ -309,7 +312,7 @@ export const ObjectiveDatas = [
           status: "warning",
           name: "Normal",
         },
-        blood_ketone: "0.33 mmol/L",
+        "blood_ketone_(mmol/l)": "0.33 mmol/L",
         blood_ketone_value: "0.33",
         date: "05-24-2024 10:15",
         action: [{ type: "edit" }, { type: "delete" }],
@@ -320,6 +323,7 @@ export const ObjectiveDatas = [
   {
     id: 8,
     icon: Assets.VitalLipid,
+    slug: "lipid-profile",
     name: "Lipid Profile",
     category: "Metabolic And Biochemical Profile",
     date: "Recently Added 27-03-2024",
@@ -330,12 +334,12 @@ export const ObjectiveDatas = [
       // { label: "TG: Optimal", color: "error" },
       { label: "Triglycerides: 150 mg/dL", color: "success" },
     ],
-    chartLabel1: "LDL (mg/dL",
-    chartLabel2: "HDL (mg/dL",
-    chartLabel3: "VLDL (mg/dL",
-    chartLabel4: "LDL/HDL (mg/dL",
-    chartLabel5: "Triglycerides (mg/dL",
-    chartLabel6: "Total Cholesterol (mg/dL",
+    chartLabel1: "LDL (mg/dL)",
+    chartLabel2: "HDL (mg/dL)",
+    chartLabel3: "VLDL (mg/dL)",
+    chartLabel4: "LDL/HDL (mg/dL)",
+    chartLabel5: "Triglycerides (mg/dL)",
+    chartLabel6: "Total Cholesterol (mg/dL)",
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
@@ -565,6 +569,7 @@ export const ObjectiveDatas = [
   {
     id: 13,
     icon: Assets.BUAcid,
+    slug: "uric_acid",
     name: "Blood Uric Acid",
     category: "Hematologic Profile",
     date: "Recently Added 27-03-2024",
@@ -573,7 +578,7 @@ export const ObjectiveDatas = [
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "BLOOD URIC ACID" },
+      { id: 3, label: "BLOOD URIC ACID (mg/dL)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -581,7 +586,7 @@ export const ObjectiveDatas = [
       {
         "no.": 1,
         result: { status: "success", name: "Normal" },
-        blood_uric_acid: "5 mg/dL",
+        "blood_uric_acid_(mg/dl)": "5 mg/dL",
         blood_uric_acid_value: "5",
         date: "06-24-2024 10:15",
         action: [{ type: "warning" }],
@@ -593,7 +598,7 @@ export const ObjectiveDatas = [
           status: "warning",
           name: "Normal",
         },
-        blood_uric_acid: "5 mg/dL",
+        "blood_uric_acid_(mg/dl)": "5 mg/dL",
         blood_uric_acid_value: "5",
         date: "05-24-2024 10:15",
         action: [{ type: "edit" }, { type: "delete" }],
@@ -659,6 +664,7 @@ export const ObjectiveDatas = [
   {
     id: 14,
     icon: Assets.Urinalysis,
+    slug: "urine",
     name: "Urinalysis",
     category: "Renal and Metabolic Markers",
     date: "Recently Added 27-03-2024",
@@ -726,6 +732,7 @@ export const ObjectiveDatas = [
   {
     id: 15,
     icon: Assets.Urea,
+    slug: "urea",
     name: "Urea",
     date: "Recently Added 27-03-2024",
     category: "Renal and Metabolic Markers",
@@ -734,7 +741,7 @@ export const ObjectiveDatas = [
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "UREA" },
+      { id: 3, label: "UREA (mg/dL)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -766,6 +773,7 @@ export const ObjectiveDatas = [
     id: 16,
     icon: Assets.Creatinine,
     name: "Creatinine",
+    slug: "creatinine",
     category: "Renal and Metabolic Markers",
     date: "Recently Added 27-03-2024",
     badge: [{ label: "1.7 mg/dL", color: "error" }],
@@ -773,7 +781,7 @@ export const ObjectiveDatas = [
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "CREATININE" },
+      { id: 3, label: "CREATININE (mg/dL)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -781,7 +789,7 @@ export const ObjectiveDatas = [
       {
         "no.": 1,
         result: { status: "success", name: "Normal" },
-        creatinine: "1.2 mg/dL",
+        "creatinine_(mg/dl)": "1.2 mg/dL",
         creatinine_value: "1.2",
         date: "06-24-2024 10:15",
         action: [{ type: "warning" }],
@@ -793,7 +801,7 @@ export const ObjectiveDatas = [
           status: "warning",
           name: "Normal",
         },
-        creatinine: "1.2 mg/dL",
+        "creatinine_(mg/dl)": "1.2 mg/dL",
         creatinine_value: "1.2",
         date: "05-24-2024 10:15",
         action: [{ type: "edit" }, { type: "delete" }],
@@ -804,6 +812,7 @@ export const ObjectiveDatas = [
   {
     id: 17,
     icon: Assets.GFR,
+    slug: "gfr",
     name: "GFR",
     category: "Renal and Metabolic Markers",
     date: "Recently Added 27-03-2024",
@@ -812,7 +821,7 @@ export const ObjectiveDatas = [
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "GFR" },
+      { id: 3, label: "GFR (mL/min/1.73m²)" },
       { id: 4, label: "DATE" },
       { id: 5, label: "ACTION" },
     ],
@@ -820,7 +829,7 @@ export const ObjectiveDatas = [
       {
         "no.": 1,
         result: { status: "success", name: "Normal" },
-        gfr: "92 mL/min/1.73m²",
+        "gfr_(ml/min/1.73m²)": "92 mL/min/1.73m²",
         gfr_value: "92",
         date: "06-24-2024 10:15",
         action: [{ type: "warning" }],
@@ -832,7 +841,7 @@ export const ObjectiveDatas = [
           status: "warning",
           name: "Normal",
         },
-        gfr: "90 mL/min/1.73m²",
+        "gfr_(ml/min/1.73m²)": "90 mL/min/1.73m²",
         gfr_value: "90",
         date: "05-24-2024 10:15",
         action: [{ type: "edit" }, { type: "delete" }],
