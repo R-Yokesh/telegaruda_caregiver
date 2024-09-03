@@ -1,60 +1,114 @@
 import { CCol, CFormCheck, CRow } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 
-const PsychiatricForm = ({ back, defaultValues, questions,formTitle }) => {
-    const [formData, setFormData] = useState({});
+const PsychiatricForm = ({
+  back,
+  defaultValues,
+  questions,
+  formTitle,
+  onAdd,
+  latest_form_submission,
+  isEditMode,
+}) => {
+  const [formData, setFormData] = useState({});
+  // Initialize formData with latest_form_submission
+  useEffect(() => {
+    if (latest_form_submission?.answers) {
+      const initializedData = {};
+      Object.keys(latest_form_submission.answers).forEach((key) => {
+        const answer = latest_form_submission.answers[key];
+        console.log("first", answer);
+        initializedData[key] = { answer: answer };
+      });
+      setFormData(initializedData);
+    }
+  }, [latest_form_submission]);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    const questionId = parseInt(name, 10);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData);
-        // Add your submit logic here
-    };
-
-    return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <h3>{formTitle}</h3>
-                <hr />
-                {questions?.map((question, index) => (
-                    <CRow key={index} className="mb-3">
-                        <CCol>
-                            <h5>{question?.label}</h5>
-                            {question?.options.map((option, cIndex) => (
-                                <CFormCheck
-                                    key={cIndex}
-                                    type="radio"
-                                    name={`question${index + 1}`}
-                                    id={`question${index + 1}_choice${cIndex + 1}`}
-                                    value={option}
-                                    label={option}
-                                    onChange={handleChange}
-                                    checked={formData[`question${index + 1}`] === option}
-                                />
-                            ))}
-                        </CCol>
-                    </CRow>
-                ))}
-            </form>
-            <CRow className="mb-1">
-        <div style={{ width: "128px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
-        </div>
-        <div style={{ width: "128px" }}>
-          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-        </div>
-      </CRow>
-        </>
+    // Find the selected option object
+    const selectedOption = defaultValues.questions[0].answers.find(
+      (answer) => answer.answer.name === value
     );
+
+    // Update formData with the selected option object
+    setFormData((prevData) => ({
+      ...prevData,
+      [questionId]: selectedOption || null,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    // Add your submit logic here
+    onAdd(formData);
+  };
+  console.log(formData, "first latest", isEditMode);
+  return (
+    <>
+      <form>
+        <div className="d-flex align-items-center justify-content-between">
+          <h3>{formTitle}</h3>
+          <div style={{ width: "128px" }}>
+            <PrimaryButton onClick={back}>BACK</PrimaryButton>
+          </div>
+        </div>
+        <hr />
+        {!defaultValues ||
+        !defaultValues.questions[0].question.sub_questions ? (
+          <>
+            <p>No questions available</p>
+          </>
+        ) : (
+          <>
+            {defaultValues?.questions[0]?.question.sub_questions?.map(
+              (question, index) => (
+                <CRow key={index} className="mb-3">
+                  <CCol>
+                    <h5>{question?.name}</h5>
+                    {defaultValues?.questions[0]?.answers?.map(
+                      (option, cIndex) => (
+                        <CFormCheck
+                          key={cIndex}
+                          type="radio"
+                          name={question.id} // Use question ID as the name
+                          id={`question${question.id}_choice${option?.id}`}
+                          // name={`question${index + 1}`}
+                          // id={`question${index + 1}_choice${cIndex + 1}`}
+                          value={option?.answer?.name}
+                          label={option?.answer?.name}
+                          onChange={handleChange}
+                          checked={
+                            formData[question.id]?.answer?.name ===
+                            option?.answer?.name
+                          }
+                          disabled={isEditMode}
+                        />
+                      )
+                    )}
+                  </CCol>
+                </CRow>
+              )
+            )}
+          </>
+        )}
+      </form>
+      {isEditMode ? null : (
+        <CRow className="mb-1">
+          <div style={{ width: "128px" }}>
+            <PrimaryButton onClick={handleSubmit}>SAVE</PrimaryButton>
+          </div>
+          <div style={{ width: "128px" }}>
+            <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+          </div>
+        </CRow>
+      )}
+    </>
+  );
 };
 
 export default PsychiatricForm;

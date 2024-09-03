@@ -6,10 +6,13 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Pagination from "../../../../../../Pagination/Pagination";
 import PsychiatricTable from "../../../../../../Tables/AssessmentTools/PsychiatricTable";
 import PsychiatricForm from "./PsychiatricForm";
+import useApi from "../../../../../../../ApiServices/useApi";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Psychiatric = ({ from }) => {
   const columnData = [
@@ -512,13 +515,16 @@ const Psychiatric = ({ from }) => {
       ],
     },
   ];
-
+  const { get, post, clearCache, del } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  const [qName, setQName] = useState();
   const [addFormView, setAddFormView] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
   const [formTitle, setFormTitle] = useState(""); // State for form title
-
+  const [edit, setEdit] = useState(false);
   const itemsPerPage = 12; // Number of items to display per page
 
   // Function to handle page change
@@ -541,18 +547,58 @@ const Psychiatric = ({ from }) => {
     console.log(type, "first", data);
     setSelectedData(data);
     setFormTitle(data?.name); // Set form title based on selected data
-    if (type === "view") {
+    if (type === "add") {
       viewFormPage();
+      setEdit(false);
+    }
+    if (type === "view") {
+      setAddFormView(true);
+      setEdit(true);
     }
   };
 
+  const onAdd = async (answerDatas) => {
+    console.log("first hello", selectedData);
+    try {
+      const url = `resource/form_submitted_answers`; // Replace with your API endpoint
+      const body = {
+        answers: answerDatas,
+        patient_id: data?.user_id,
+        form_id: selectedData?.id,
+        form_name: selectedData?.name,
+      };
+      await post(url, body);
+      clearCache();
+      await getTableLists();
+      toast.success("Added successfully");
+      setAddFormView(false);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+
+  const getTableLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/form?limit=20&slug=psychiatric-exam&page=1&searchkey=&order_by=id&dir=1&user_id=${data?.user_id}` //
+      );
+      const listData = response?.data?.forms; //pagination
+      setQName(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, addFormView]);
+
+  useEffect(() => {
+    getTableLists();
+  }, [getTableLists]);
   return (
     <>
       {!addFormView && (
         <>
           <div className="mb-2">
             <PsychiatricTable
-              rowData={getCurrentPageItems()}
+              rowData={qName}
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
@@ -582,6 +628,11 @@ const Psychiatric = ({ from }) => {
               defaultValues={selectedData}
               questions={selectedData.questions || []}
               formTitle={formTitle}
+              onAdd={onAdd}
+              latest_form_submission={
+                edit ? selectedData?.latest_form_submisson : null
+              }
+              isEditMode={edit}
             />
           </CCardBody>
         </CCard>

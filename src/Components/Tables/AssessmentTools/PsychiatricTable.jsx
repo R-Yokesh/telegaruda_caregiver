@@ -37,14 +37,19 @@ const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
                 <span className="fs-16 fw-500">{dt?.name}</span>
               </CTableDataCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.date}</span>
+                <span className="fs-16 fw-500">
+                  {dt?.latest_form_submisson?.created_at}
+                </span>
               </CTableDataCell>
               {/* <CTableDataCell>
               <span className="fs-16 fw-500">{dt?.result}</span>
               </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <Badge label={dt?.result} color={dt?.result ? "error" : ""} />
+                  <Badge
+                    label={dt?.latest_form_submisson?.score}
+                    color={"error"}
+                  />
                 </div>
               </CTableDataCell>
 
@@ -54,18 +59,21 @@ const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
                     <img
                       alt="edit"
                       src={
-                        i === 0 ? Assets?.testSubIcon : Assets?.testUnSubIcon
+                        dt?.latest_form_submisson?.score
+                          ? Assets?.testSubIcon
+                          : Assets?.testUnSubIcon
                       }
                       className="cursor"
+                      onClick={() => selectedData(dt, "add")}
                     />
-                    {i === 0 && (
-                    <img
-                      alt="delete"
-                      src={Assets?.testViewIcon}
-                      className="cursor"
-                      onClick={() => selectedData(dt, "view")}
-                    />
-                     )} 
+                    {dt?.latest_form_submisson?.score && (
+                      <img
+                        alt="delete"
+                        src={Assets?.testViewIcon}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "view")}
+                      />
+                    )}
                   </div>
                 </CTableDataCell>
               )}

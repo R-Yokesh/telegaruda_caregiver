@@ -151,6 +151,7 @@ const PhysicalExam = ({ onClose, from }) => {
   const data = location.state?.PatientDetail;
 
   const [lists, setLists] = useState([]);
+  const [totalItem, setTotalItem] = useState(0);
   const [generalOpen, setGeneralOpen] = useState(false);
   const [headings, setHeadings] = useState([]);
   const [subOptions, setSubOptions] = useState([]);
@@ -164,6 +165,8 @@ const PhysicalExam = ({ onClose, from }) => {
   );
   const [editView, setEditView] = useState(from === "Consult" ? true : false);
   const [date, setDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   // useEffect(() => {
   //   setEditView(true);
@@ -188,7 +191,6 @@ const PhysicalExam = ({ onClose, from }) => {
   };
 
   const getselected = (data, method) => {
-    console.log("first data", data);
     setSelectedData(data);
     if (method === "delete") {
       setDeleteView(true);
@@ -304,14 +306,19 @@ const PhysicalExam = ({ onClose, from }) => {
   const getLists = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHealth?limit=10&page=1&from=&to=&order_by=created_at&dir=2&user_id=${data?.user_id}&slug=&searchkey=&slug_array=allergy,breast,cvs,ears,endocrine,eyes,gastro,general,genito-urinary,head,hematology,mouththroat,musculoskeletal,neck,neurology,nose,peripheral-vascular-disease,psychiatry,respiratory,skin`
+        `resource/patientHealth?limit=10&page=1&from=${startDate ?? ""}&to=${
+          endDate ?? ""
+        }&order_by=created_at&dir=2&user_id=${
+          data?.user_id
+        }&slug=&searchkey=&slug_array=allergy,breast,cvs,ears,endocrine,eyes,gastro,general,genito-urinary,head,hematology,mouththroat,musculoskeletal,neck,neurology,nose,peripheral-vascular-disease,psychiatry,respiratory,skin`
       );
       const listData = response?.data?.patient_healths; //pagination
       setLists(listData);
+      setTotalItem(response?.data?.pagination);
     } catch (error) {
       console.error("Error fetching card data:", error);
     }
-  }, [get, deleteView, addFormView]);
+  }, [get, deleteView, addFormView, startDate, endDate]);
 
   useEffect(() => {
     getSavedValue();
@@ -331,7 +338,7 @@ const PhysicalExam = ({ onClose, from }) => {
       const body = {
         values: {
           ...formattedOptions,
-          date: date,
+          date: date === null ? format(new Date(), "dd-MM-yyyy") : date,
           // others: [], // option to add extra on the fly for perticular section
           notes: notes[selectedSlug] || "",
         },
@@ -357,7 +364,15 @@ const PhysicalExam = ({ onClose, from }) => {
       console.error("Failed to delete:", error);
     }
   };
-  console.log("first date", date);
+  const getFilterValues = (date1, date2) => {
+    console.log(date1, "first date", date2);
+    setStartDate(date1);
+    setEndDate(date2);
+  };
+  const clearDates = () => {
+    setStartDate(null);
+    setEndDate(null);
+  };
   return (
     <>
       {from !== "Consult" && (
@@ -394,7 +409,7 @@ const PhysicalExam = ({ onClose, from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSelector />
+                  <DateSelector getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
@@ -431,7 +446,7 @@ const PhysicalExam = ({ onClose, from }) => {
                         <Pagination
                           currentPage={currentPage}
                           onPageChange={onPageChange}
-                          totalItems={lists?.length}
+                          totalItems={totalItem?.total}
                           itemsPerPage={itemsPerPage}
                         />
                       </CCol>
@@ -493,6 +508,7 @@ const PhysicalExam = ({ onClose, from }) => {
                           setAddFormView(false);
                           setEditView(false);
                           setSelectedData({});
+                          clearDates();
                         }}
                       >
                         <div className="d-flex align-items-center gap-2">
