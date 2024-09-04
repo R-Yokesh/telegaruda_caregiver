@@ -6,10 +6,14 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Pagination from "../../../../../../Pagination/Pagination";
 import PsychiatricTable from "../../../../../../Tables/AssessmentTools/PsychiatricTable";
 import PsychiatricForm from "../Psychiatric/PsychiatricForm";
+import useApi from "../../../../../../../ApiServices/useApi";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import PeadiatricForm from "./PeadiatricForm";
 
 const Peadiatric = ({ from }) => {
   const columnData = [
@@ -54,7 +58,15 @@ const Peadiatric = ({ from }) => {
     },
   ];
 
-  const formTitle = "APGAR Score";
+  const { get, post, clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  const [qName, setQName] = useState();
+  const [qPagi, setQPagi] = useState();
+  const [edit, setEdit] = useState(false);
+  const [formTitle, setFormTitle] = useState("");
+
+  // const formTitle = "APGAR Score";
 
   const [addFormView, setAddFormView] = useState(false);
 
@@ -80,31 +92,84 @@ const Peadiatric = ({ from }) => {
   };
 
   const getselectedData = (data, type) => {
-    console.log(type, "first", data);
+    setFormTitle(data?.name);
     setSelectedData(data);
-    if (type === "view") {
+    if (type === "add") {
       viewFormPage();
+      setEdit(false);
+    }
+    if (type === "view") {
+      setAddFormView(true);
+      setEdit(true);
     }
   };
 
+  const onAdd = async (answerDatas) => {
+    console.log("first hello", selectedData);
+    try {
+      const url = `resource/form_submitted_answers`; // Replace with your API endpoint
+      const body = {
+        answers: answerDatas,
+        patient_id: data?.user_id,
+        form_id: selectedData?.id,
+        form_name: selectedData?.name,
+      };
+      await post(url, body);
+      clearCache();
+      await getTableLists();
+      toast.success("Added successfully");
+      setAddFormView(false);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+
+  const getTableLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/form?limit=${itemsPerPage}&page=${currentPage}&slug=apgar&searchkey=&order_by=id&dir=1&user_id=${data?.user_id}` //
+      );
+      const listData = response?.data?.forms; //pagination
+      setQName(listData);
+      setQPagi(response?.data?.pagination);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, addFormView, currentPage]);
+
+  useEffect(() => {
+    getTableLists();
+  }, [getTableLists]);
   return (
     <>
       {!addFormView && (
         <>
           <div className="mb-2">
             <PsychiatricTable
-              rowData={getCurrentPageItems()}
+              rowData={qName}
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
+              currentPage={currentPage || 1}
+              itemsPerPage={itemsPerPage || 5}
             />
+            <CRow className="mb-3">
+              <CCol lg={12} className="d-flex justify-content-center">
+                <Pagination
+                  currentPage={currentPage}
+                  onPageChange={onPageChange}
+                  totalItems={qPagi?.total || 0}
+                  itemsPerPage={itemsPerPage}
+                />
+              </CCol>
+            </CRow>
           </div>
         </>
       )}
       {addFormView && (
         <CCard className="p-2 cursor-default mb-5">
           <CCardBody className="mb-3">
-            <PsychiatricForm
+            <PeadiatricForm
               back={() => {
                 setAddFormView(false);
                 setSelectedData({});
@@ -112,6 +177,11 @@ const Peadiatric = ({ from }) => {
               defaultValues={selectedData}
               questions={selectedData.questions || []}
               formTitle={formTitle}
+              onAdd={onAdd}
+              latest_form_submission={
+                edit ? selectedData?.latest_form_submisson : null
+              }
+              isEditMode={edit}
             />
           </CCardBody>
         </CCard>

@@ -12,16 +12,23 @@ export const extractNum = (data) => {
 
 export const getFileTypeFromMime = (mimeType) => {
   const mimeTypes = {
-    'application/pdf': 'pdf',
-    'image/jpeg': 'jpg',
-    'image/png': 'png',
-    'text/plain': 'txt',
+    "application/pdf": "pdf",
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "text/plain": "txt",
     // Add more MIME types as needed
   };
 
-  return mimeTypes[mimeType] || 'unknown';
+  return mimeTypes[mimeType] || "unknown";
 };
 
 export const openFile = (contentUrl) => {
   window.open(contentUrl, "_blank");
+};
+
+export const getSerialNumber = (itemPerPage, pageNumber, index) => {
+  // Calculate the starting serial number for the given page
+  const startingSerialNumber = (pageNumber - 1) * itemPerPage + 1;
+  // Add the index of the item on the page to the starting serial number
+  return startingSerialNumber + index;
 };

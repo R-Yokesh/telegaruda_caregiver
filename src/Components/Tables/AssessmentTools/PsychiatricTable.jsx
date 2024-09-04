@@ -9,8 +9,18 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
+import { getSerialNumber } from "../../../Utils/commonUtils";
+import { format } from "date-fns";
+import { formatFetchDate } from "../../../Utils/dateUtils";
 
-const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
+const PsychiatricTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  currentPage,
+  itemsPerPage,
+}) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
@@ -31,14 +41,16 @@ const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{dt?.id}</span>
+                <span className="fs-16 fw-500">
+                  {getSerialNumber(itemsPerPage, currentPage, i)}
+                </span>
               </CTableHeaderCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">{dt?.name}</span>
               </CTableDataCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">
-                  {dt?.latest_form_submisson?.created_at}
+                  {formatFetchDate(dt?.latest_form_submisson?.created_at)}
                 </span>
               </CTableDataCell>
               {/* <CTableDataCell>
