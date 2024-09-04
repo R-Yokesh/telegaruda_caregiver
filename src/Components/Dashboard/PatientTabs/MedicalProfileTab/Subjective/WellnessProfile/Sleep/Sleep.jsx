@@ -6,17 +6,17 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Pagination from "../../../../../../Pagination/Pagination";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../../assets/Assets";
-import DateSelector from "../../../../../../DateRangePicker/DateSelector";
 import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
-import ExcerciseHabitForm from "../ExerciseHabit/ExcerciseHabitForm";
 import SleepTable from "../../../../../../Tables/Subjective/WellnessProfileTable/SleepTable";
 import SleepForm from "./SleepForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import useApi from "../../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 
 const Sleep = ({ from }) => {
   const columnData = [
@@ -26,49 +26,22 @@ const Sleep = ({ from }) => {
     { label: "DURATION (IN MINS)" },
     { label: "Actions" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      date: "02-04-2024 12:13",
-      type: "Undisturbed ",
-      duration: "360",
-    },
-    {
-      id: 2,
-      date: "02-04-2024 12:13",
-      type: "Undisturbed ",
-      duration: "360",
-    },
-    {
-      id: 3,
-      date: "02-04-2024 12:13",
-      type: "Undisturbed ",
-      duration: "360",
-    },
-    {
-      id: 4,
-      date: "02-04-2024 12:13",
-      type: "Undisturbed ",
-      duration: "360",
-    },
-    {
-      id: 5,
-      date: "02-04-2024 12:13",
-      type: "Undisturbed ",
-      duration: "360",
-    },
-    {
-      id: 6,
-      date: "02-04-2024 12:13",
-      type: "Undisturbed ",
-      duration: "360",
-    },
-  ];
+
+  const [pagination, setPagination] = useState({});
+  const [id, setId] = useState(null);
+  const { loading, error, get, del, clearCache } = useApi();
+
+
+  const [rowData, setRowData] = useState([]);
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [searchValue, setSearchValue] = useState("");
+  const [filters, setFilters] = useState(true);
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  // const { get } = useApi();
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -84,6 +57,34 @@ const Sleep = ({ from }) => {
     return rowData?.slice(startIndex, endIndex);
   };
 
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    console.log(startDate,endDate,searchValue,"ghghhghg")
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+    
+  };
+  // Fetch sleep data
+  const fetchSleepData = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&order_by=act_date&dir=2&act_catagory=sleep&user_id=10`
+      );
+      if (response.code === 200) {
+        setRowData(response.data.activity_wellnesses);
+        setPagination(response.data.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage, startDate, endDate]);
+
+  useEffect(() => {
+    fetchSleepData();
+  }, [fetchSleepData]);
+
   const addFormPage = () => {
     setAddFormView(true);
   };
@@ -91,14 +92,29 @@ const Sleep = ({ from }) => {
   const detailPage = () => {
     setDetailView(true);
   };
-
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
+  const deleteSleep = async () => {
+    try {
+      if (id) {
+        const response = await del(`resource/activity_wellness/${id}`);
+        if (response.code === 200) {
+          setDetailView(false);
+          clearCache();
+          deleteSleep();
+        } else {
+          console.error("Failed to delete data:", response.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
+    }
+  };
+  const getselectedData = (data,id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
     }
     if (type === "delete") {
+      setId(id);
       detailPage();
     }
   };
@@ -107,7 +123,7 @@ const Sleep = ({ from }) => {
     <>
       {from === "Consult" && (
         <SleepTable
-          rowData={getCurrentPageItems()}
+          rowData={rowData}
           columns={columnData}
           getselectedData={getselectedData}
           from={from}
@@ -118,8 +134,11 @@ const Sleep = ({ from }) => {
           {!addFormView && (
             <>
               <CRow className="mb-2">
-                <CCol lg={8} className="">
-                  <DateSearch />
+                <CCol lg={8}>
+                <DateRangePicker
+                    
+                    getFilterValues={getFilterValues}
+                   />
                 </CCol>
                 <CCol
                   lg={4}
@@ -144,7 +163,7 @@ const Sleep = ({ from }) => {
               </CRow>
               <div className="mb-2">
                 <SleepTable
-                  rowData={getCurrentPageItems()}
+                  rowData={rowData}
                   columns={columnData}
                   getselectedData={getselectedData}
                 />
@@ -154,7 +173,7 @@ const Sleep = ({ from }) => {
                     <Pagination
                       currentPage={currentPage}
                       onPageChange={onPageChange}
-                      totalItems={rowData?.length}
+                      totalItems={pagination?.total}
                       itemsPerPage={itemsPerPage}
                     />
                   </CCol>
@@ -170,7 +189,9 @@ const Sleep = ({ from }) => {
                     setAddFormView(false);
                     setSelectedData({});
                   }}
-                  // defaultValues={selectedData}
+                  setAddFormView={setAddFormView}
+                  fetchSleepData={fetchSleepData}
+                   defaultValues={selectedData}
                 />
               </CCardBody>
             </CCard>
@@ -186,12 +207,10 @@ const Sleep = ({ from }) => {
               >
                 <CModalBody className="p-3">
                   <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                    <h5>Are you sure want to delete ?</h5>
+                    <h5>Are you sure you want to delete?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => setDetailView(false)}>
-                          Yes
-                        </PrimaryButton>
+                      <PrimaryButton onClick={deleteSleep}>Yes</PrimaryButton>
                       </div>
                       <div style={{ width: "80px" }}>
                         <SecondaryButton onClick={() => setDetailView(false)}>

@@ -40,10 +40,11 @@ const ExerciseHabit = ({ from }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
-  const [startDate, setStartDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(());
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState(true);
-  const [endDate, setEndDate] = useState(new Date());
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const { loading, error, get, del, clearCache } = useApi();
 
 
@@ -71,7 +72,9 @@ const ExerciseHabit = ({ from }) => {
   const fetchExciseHabit = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&order_by=act_date&dir=2&act_catagory=activity&user_id=10`
+        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${
+          endDate ?? ""
+        }&order_by=act_date&dir=2&act_catagory=activity&user_id=10`
       );
       if (response.code === 200) {
         console.log(response?.data?.activity_wellnesses);

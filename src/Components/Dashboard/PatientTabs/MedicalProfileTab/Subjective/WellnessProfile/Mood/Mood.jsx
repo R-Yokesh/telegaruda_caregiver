@@ -6,7 +6,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Pagination from "../../../../../../Pagination/Pagination";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -16,7 +16,9 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import ExcerciseHabitForm from "../ExerciseHabit/ExcerciseHabitForm";
 import MoodTable from "../../../../../../Tables/Subjective/WellnessProfileTable/MoodTable";
 import MoodForm from "./MoodForm";
+import useApi from "../../../../../../../ApiServices/useApi";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 
 const Mood = ({ from }) => {
   const columnData = [
@@ -25,43 +27,20 @@ const Mood = ({ from }) => {
     { label: "Type" },
     { label: "Actions" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      date: "02-04-2024 12:13",
-      type: "Happy ",
-    },
-    {
-      id: 2,
-      date: "02-04-2024 12:13",
-      type: "Happy ",
-    },
-    {
-      id: 3,
-      date: "02-04-2024 12:13",
-      type: "Happy ",
-    },
-    {
-      id: 4,
-      date: "02-04-2024 12:13",
-      type: "Happy ",
-    },
-    {
-      id: 5,
-      date: "02-04-2024 12:13",
-      type: "Happy ",
-    },
-    {
-      id: 6,
-      date: "02-04-2024 12:13",
-      type: "Happy ",
-    },
-  ];
+
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
 
+  const [pagination, setPagination] = useState({});
+  const [id, setId] = useState(null);
+  const { loading, error, get, del, clearCache } = useApi();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [moodData, setMoodData] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [filters, setFilters] = useState(true);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -70,37 +49,78 @@ const Mood = ({ from }) => {
     setCurrentPage(pageNumber);
   };
 
-  // Function to get items for the current page
-  const getCurrentPageItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return rowData?.slice(startIndex, endIndex);
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    console.log(startDate, endDate, searchValue, "ghghhghg");
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
   };
 
+  const fetchMood = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${
+          endDate ?? ""
+        }&order_by=act_date&dir=2&act_catagory=mood&user_id=10`
+      );
+      if (response.code === 200) {
+        console.log(response?.data?.activity_wellnesses);
+        setMoodData(response?.data?.activity_wellnesses);
+        setPagination(response?.data?.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage, startDate, endDate]);
+
+  useEffect(() => {
+    fetchMood();
+  }, [fetchMood]);
+
+  const getselectedData = (data, id, type) => {
+    console.log(type, "first", data);
+    setSelectedData(data);
+    if (type === "edit") {
+      setAddFormView(true);
+    }
+    if (type === "delete") {
+      setId(id);
+      detailPage();
+    }
+  };
   const addFormPage = () => {
     setAddFormView(true);
+    setSelectedData({});
   };
 
   const detailPage = () => {
     setDetailView(true);
   };
 
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
-    setSelectedData(data);
-    if (type === "edit") {
-      addFormPage();
-    }
-    if (type === "delete") {
-      detailPage();
+  const deleteMood = async () => {
+    try {
+      if (id) {
+        const response = await del(`resource/activity_wellness/${id}`);
+        if (response.code === 200) {
+          setDetailView(false);
+          clearCache();
+          fetchMood();
+        } else {
+          console.error("Failed to delete data:", response.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
     }
   };
-
   return (
     <>
       {from === "Consult" && (
         <MoodTable
-          rowData={getCurrentPageItems()}
+          // rowData={getCurrentPageItems()}
+          moodData={moodData}
           columns={columnData}
           getselectedData={getselectedData}
           from={from}
@@ -112,7 +132,7 @@ const Mood = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSearch />
+                  <DateRangePicker getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
@@ -137,7 +157,7 @@ const Mood = ({ from }) => {
               </CRow>
               <div className="mb-2">
                 <MoodTable
-                  rowData={getCurrentPageItems()}
+                  moodData={moodData}
                   columns={columnData}
                   getselectedData={getselectedData}
                 />
@@ -147,7 +167,7 @@ const Mood = ({ from }) => {
                     <Pagination
                       currentPage={currentPage}
                       onPageChange={onPageChange}
-                      totalItems={rowData?.length}
+                      totalItems={pagination?.total}
                       itemsPerPage={itemsPerPage}
                     />
                   </CCol>
@@ -163,7 +183,9 @@ const Mood = ({ from }) => {
                     setAddFormView(false);
                     setSelectedData({});
                   }}
-                  //  defaultValues={selectedData}
+                  setAddFormView={setAddFormView}
+                  fetchMood={fetchMood}
+                  defaultValues={selectedData}
                 />
               </CCardBody>
             </CCard>
@@ -182,7 +204,7 @@ const Mood = ({ from }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => setDetailView(false)}>
+                        <PrimaryButton onClick={deleteMood}>
                           Yes
                         </PrimaryButton>
                       </div>

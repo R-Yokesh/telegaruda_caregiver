@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const Dropdown = ({ options, defaultValue, getSelectedValue }) => {
+const Dropdown = ({ options, defaultValue, getSelectedValue ,fetchDropdownOptions}) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
