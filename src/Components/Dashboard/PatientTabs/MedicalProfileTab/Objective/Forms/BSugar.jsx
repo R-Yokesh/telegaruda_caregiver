@@ -5,66 +5,171 @@ import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import Dropdown from "../../../../../Dropdown/Dropdown";
+import { format, isValid, parse } from "date-fns";
+import { toast } from "react-toastify";
+import useApi from "../../../../../../ApiServices/useApi";
+import { DATE_FORMAT } from "../../../../../../Config/config";
+import { findItemIndex } from "../../../../../../Utils/commonUtils";
+import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
-const BSugar = ({ addBack, defaultData }) => {
-  console.log("first", defaultData);
+const BSugar = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
+  const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [type, setType] = useState("");
+  const [type, setType] = useState(defaultData?.type || "");
+  const [bloodSugar, setBloodSugar] = useState(defaultData?.blood_sugar || "");
+
+  const [errors, setErrors] = useState({
+    date: "",
+    time: "",
+    type: "",
+    bloodSugar: "",
+  });
+  const defaultDateTime = defaultData?.date || "";
+  console.log("time", getCurrentTime());
+  // Split date and time
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const timePart = parts[1];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      const [hours, minutes] = timePart?.split(":")?.map(Number);
-      return new Date(year, month - 1, day, hours, minutes);
-    };
+    // Combine default date and time into a single Date object
+    let date = new Date();
 
-    // Example default date string
-    const defaultDateString = defaultData?.date;
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
 
-    // Parse default date string to Date object
-    const defaultDate = defaultData
-      ? parseDateString(defaultDateString)
-      : new Date();
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
 
-    // Set default date in state
-    setSelectedDate(defaultDate);
-    setSelectedTime(defaultDate);
-  }, [defaultData]);
+    setSelectedDate(date);
+    setSelectedTime(date); // Initialize time picker with the same Date object
+  }, [defaultDate, defaultTime]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+    if (date) {
+      setSelectedTime(date); // Sync time picker with the updated date
+    }
   };
 
-  const handleTimeChange = (date) => {
-    setSelectedTime(date);
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(selectedDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
+
+      setSelectedDate(updatedDateTime); // Optionally update date as well
+      setSelectedTime(time);
+    }
   };
-  const extractNum = (data) => {
-    const numbers = parseFloat(data?.match(/\d+(\.\d+)?/)[0]); // Replace non-digits with empty string
 
-    return numbers || "";
+  const options = ["Fasting", "Random", "Post Prandial "];
+
+  const getSelectedValue = (data) => {
+    setType(data);
   };
 
-  const options = ["Fasting", "Random", "Post Prandial ",];
-  const findIndex = defaultData?.type
-  ? options?.indexOf(defaultData?.type)
-  : 0;
+  const numWithDecimal = (e) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9.]/g, "")
+      .replace(/^(\d{4})\d*$/, "$1")
+      .replace(/^(\d{4})\.(\d{1}).*$/, "$1.$2")
+      .replace(/(\..*)\./g, "$1");
+  };
+  const validateInputs = () => {
+    let isValid = true;
+    let currentErrors = {};
 
-const getSelectedValue = (data) => {
-  setType(data);
-};
+    if (!selectedDate) {
+      currentErrors.date = "Date is required";
+      isValid = false;
+    }
+    if (!selectedTime) {
+      currentErrors.time = "Time is required";
+      isValid = false;
+    }
+    if (!type) {
+      currentErrors.type = "Type is required";
+      isValid = false;
+    }
+    if (!bloodSugar) {
+      currentErrors.bloodSugar = "Blood Sugar is required";
+      isValid = false;
+    }
 
-const numWithDecimal = (e) => {
-  e.target.value = e.target.value
-    .replace(/[^0-9.]/g, "")               
-    .replace(/^(\d{4})\d*$/, "$1")        
-    .replace(/^(\d{4})\.(\d{1}).*$/, "$1.$2") 
-    .replace(/(\..*)\./g, "$1");         
-}
+    setErrors(currentErrors);
+    return isValid;
+  };
+  const onSubmit = () => {
+    if (validateInputs()) {
+      if (defaultData) {
+        console.log("Edit clicked");
+        onEdit();
+      }
+      if (!defaultData) {
+        console.log("Add clicked");
+        onAdd();
+      }
+    }
+  };
 
+  const onAdd = async () => {
+    try {
+      const url = `resource/vitals`; // Replace with your API endpoint
+      const body = {
+        details: {
+          date: format(selectedDate, "dd-MM-yyyy"),
+          time: format(selectedTime, "HH:mm"),
+          unit: "mg/dL",
+          type: type,
+          blood_sugar: bloodSugar,
+        },
+        user_id: data?.user_id,
+        slug: "blood-sugar",
+      };
+      await post(url, body);
+      await getTableDatas(defaultData);
+      toast.success("Added successfully");
+      addBack();
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+
+  const onEdit = async () => {
+    try {
+      const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
+      const body = {
+        details: {
+          date: format(selectedDate, "dd-MM-yyyy"),
+          time: format(selectedTime, "HH:mm"),
+          unit: "mg/dL",
+          type: type,
+          blood_sugar: bloodSugar,
+        },
+        user_id: data?.user_id,
+        slug: "blood-sugar",
+      };
+      await patch(url, body);
+      await getTableDatas(defaultData);
+      toast.success("Updated successfully");
+      addBack();
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
   return (
     <>
       <CContainer>
@@ -81,7 +186,9 @@ const numWithDecimal = (e) => {
                 isClearable
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
+                dateFormat={DATE_FORMAT}
               />
+              {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </CCol>
           <CCol lg={4}>
@@ -100,12 +207,13 @@ const numWithDecimal = (e) => {
                 timeIntervals={5}
                 dateFormat="h:mm aa"
               />
+              {errors.time && <div className="error-text">{errors.time}</div>}
             </div>
           </CCol>
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-              Type *
+                Type *
               </label>
               <div
                 className="w-100"
@@ -116,12 +224,16 @@ const numWithDecimal = (e) => {
               >
                 <Dropdown
                   options={options}
-                  defaultValue={options[findIndex]}
+                  defaultValue={
+                    defaultData?.type
+                      ? options[findItemIndex(options, defaultData?.type)]
+                      : null
+                  }
                   getSelectedValue={getSelectedValue}
                 />
               </div>
+              {errors.type && <div className="error-text">{errors.type}</div>}
             </div>
-            
           </CCol>
         </CRow>
         <CRow className="mb-3">
@@ -141,21 +253,26 @@ const numWithDecimal = (e) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-              Blood Sugar (mg/dL)  *
+                Blood Sugar (mg/dL) *
               </label>
               <input
                 type="text"
                 class="form-control"
                 id="validationTooltip01"
-                 defaultValue={defaultData?.blood_sugar_value}
-               onInput={numWithDecimal}
+                // defaultValue={defaultData?.blood_sugar}
+                onInput={numWithDecimal}
+                value={bloodSugar}
+                onChange={(e) => setBloodSugar(e.target.value)}
               />
+              {errors.bloodSugar && (
+                <div className="error-text">{errors.bloodSugar}</div>
+              )}
             </div>
           </CCol>
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => addBack()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
             <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>

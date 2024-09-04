@@ -11,9 +11,11 @@ import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
 
 const MedicationTable = ({ columns, rowData, getselectedData, from }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+
+  const selectedData = (data,id, type) => {
+    getselectedData(data,id, type);
   };
+
   return (
     <>
       <CTable className="lab-responsive-table">
@@ -36,54 +38,38 @@ const MedicationTable = ({ columns, rowData, getselectedData, from }) => {
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100 flex-column">
-                  <span className="fs-16 fw-500">{dt?.name}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.name?.name ? dt?.values?.name?.name : "-" }</span>
                   <small>
-                    {dt?.strength} {dt?.strength_measurement} {dt?.dosage}
+                    {dt?.values?.strength ? dt?.values?.strength : "-"} {dt?.values?.strength_measurement ? dt?.values?.strength_measurement : "-"} {dt?.values?.dosage ? dt?.values?.dosage : "-"}
                   </small>
                 </div>
               </CTableDataCell>
-              {/* <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.strength}</span>
-                </div>
-              </CTableDataCell>
+
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <span className="fs-16 fw-500">
-                    {dt?.strength_measurement}
+                    {dt?.values?.m ? dt?.values?.m : "-"} | {dt?.values?.a}  | {dt?.values?.e} | {dt?.values?.n}
                   </span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.dosage}</span>
-                </div>
-              </CTableDataCell> */}
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">
-                    {dt?.m} | {dt?.a} | {dt?.e} | {dt?.n}
-                  </span>
+                  <span className="fs-16 fw-500">{dt?.values?.food_times ? dt?.values?.food_times : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.food_times}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.quantity ? dt?.values?.quantity : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.qty}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.start_date ? dt?.values?.start_date : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.start_date}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500"> {dt?.status} </span>
+                  <span className="fs-16 fw-500"> {dt?.values?.status ? dt?.values?.status : "-"} </span>
                 </div>
               </CTableDataCell>
 
@@ -99,7 +85,7 @@ const MedicationTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="edit"
                         src={Assets?.EditPencil}
                         className="cursor"
-                        onClick={() => selectedData(dt, "edit")}
+                        onClick={() => selectedData(dt,dt?.id, "edit")}
                       />
                     </div>
                     <div
@@ -113,7 +99,7 @@ const MedicationTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="delete"
                         src={Assets?.Delete}
                         className="cursor"
-                        onClick={() => selectedData(dt, "delete")}
+                        onClick={() => selectedData(dt,dt?.id, "delete")}
                       />
                     </div>
                   </div>

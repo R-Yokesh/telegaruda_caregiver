@@ -184,6 +184,7 @@ const DynamicTable = ({
                 <Temperature
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -191,36 +192,42 @@ const DynamicTable = ({
                 <LFTForm
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Heart" && (
                 <HeartRate
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Blood Sugar" && (
                 <BSugar
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Lipid Profile" && (
                 <LipidProfileForm
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Hematocrit (HCT)" && (
                 <HCT
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Hemoglobin" && (
                 <Hemogloin
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -228,6 +235,7 @@ const DynamicTable = ({
                 <BKetone
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -235,6 +243,7 @@ const DynamicTable = ({
                 <BUricAcid
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
 
@@ -242,18 +251,21 @@ const DynamicTable = ({
                 <GFR
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Creatinine" && (
                 <Creatinine
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Urea" && (
                 <Urea
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
               {selectedData?.name === "Urinalysis" && (
@@ -283,21 +295,23 @@ const DynamicTable = ({
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
 
-    if (columnKey === "ecg") {
+    if (columnKey === "result_file") {
       // Function to render PDF content
       const renderPdf = (contentUrl) => {
         window.open(contentUrl, "_blank");
       };
       return (
         <div style={{ width: "80px" }} onClick={() => renderPdf(value.link)}>
-          <span className="hyperlink">ECG</span>
+          <span className="hyperlink">{value?.name}</span>
         </div>
       );
     } else if (columnKey === "result") {
       return (
         <div style={{ width: "180px" }}>
-          {value?.name ? (
-            <Badge label={value?.name} color={value?.status} />
+          {value?.name !== "" ? (
+            <Badge label={value?.name ?? "-"} color={value?.status ?? "-"} />
+          ) : value?.name === "" ? (
+            <>--</>
           ) : (
             <span>{value}</span>
           )}

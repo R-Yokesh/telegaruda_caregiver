@@ -7,8 +7,12 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import { toast } from "react-toastify";
 import useApi from "../../../../../../ApiServices/useApi";
 import { format, isValid, parse } from "date-fns";
+import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { useLocation } from "react-router-dom";
 
 const BMI = ({ addBack, defaultData, getTableDatas }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -17,7 +21,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || "00:00";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -104,14 +108,14 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
       isValid = false;
     }
 
-    if (!heightUnit) {
-      currentErrors.heightUnit = "Height Unit is required";
-      isValid = false;
-    }
-    if (!weightUnit) {
-      currentErrors.weightUnit = "Weight Unit is required";
-      isValid = false;
-    }
+    // if (!heightUnit) {
+    //   currentErrors.heightUnit = "Height Unit is required";
+    //   isValid = false;
+    // }
+    // if (!weightUnit) {
+    //   currentErrors.weightUnit = "Weight Unit is required";
+    //   isValid = false;
+    // }
 
     setErrors(currentErrors);
     return isValid;
@@ -154,7 +158,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
           weight_unit: weightUnit,
           weight: weight,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "bmi",
       };
       await post(url, body);
@@ -179,7 +183,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
           weight_unit: weightUnit,
           weight: weight,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         slug: "bmi",
       };
       await patch(url, body);
@@ -233,7 +237,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
               {errors.time && <div className="error-text">{errors.time}</div>}
             </div>
           </CCol>
-          <CCol lg={4}>
+          {/* <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Unit (Height) *
@@ -249,9 +253,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
                 <div className="error-text">{errors.heightUnit}</div>
               )}
             </div>
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
+          </CCol> */}
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -276,7 +278,9 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
               )}
             </div>
           </CCol>
-          <CCol lg={4}>
+        </CRow>
+        <CRow className="mb-3">
+          {/* <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
                 Unit (Weight)*
@@ -293,7 +297,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
                 <div className="error-text">{errors.weightUnit}</div>
               )}
             </div>
-          </CCol>
+          </CCol> */}
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -318,8 +322,6 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
               )}
             </div>
           </CCol>
-        </CRow>
-        <CRow className="mb-3">
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -337,6 +339,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
             </div>
           </CCol>
         </CRow>
+        <CRow className="mb-3"></CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
             <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>

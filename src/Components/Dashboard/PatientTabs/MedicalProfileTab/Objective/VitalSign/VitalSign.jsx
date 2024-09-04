@@ -11,13 +11,32 @@ import { ObjectiveDatas } from "../../../../../Consultant/TableColumnsJson/Objec
 import CardChart from "../../../../../Charts/CardChart";
 import Badge from "../../../../../Badge/Badge";
 import {
+  transformBloodKetoneData,
+  transformBloodSugarData,
+  transformBloodUricAcidData,
   transformBMIData,
   transformBPData,
+  transformCreatinineData,
+  transformGFRData,
+  transformHeartRateData,
+  transformHematocritData,
+  transformHemoglobinData,
+  transformLFTData,
+  transformLipidProfileData,
   transformRespirationRateData,
   transformSpO2Data,
+  transformTemperatureData,
+  transformUreaData,
+  transformUrinalysisData,
 } from "./FormattedDatas";
+import { useLocation } from "react-router-dom";
+import Loader from "../../../../../Loader/Loader";
+import { findColorCodefev1_fvc } from "../../../../../../Utils/colorUtils";
 
 const VitalSign = ({ setVitalView, onClose }) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
   const tabs = [
     { id: 1, title: "Primary Vitals" },
     { id: 2, title: "Metabolic And Biochemical Profile" },
@@ -73,6 +92,10 @@ const VitalSign = ({ setVitalView, onClose }) => {
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [vitalsLoading, setVitalsLoading] = useState(false);
+
+  const [modalStatic, setModalStatic] = useState({});
+
   const { loading, error, get } = useApi();
 
   const onPageChange = (pageNumber) => {
@@ -85,191 +108,606 @@ const VitalSign = ({ setVitalView, onClose }) => {
     setSearchValue(searchValue);
   };
 
+  const modalStaticData = (card) => {
+    const filteredModal = card?.filter(
+      (product) => product?.id === cardSelectedData?.id
+    );
+    setModalStatic(filteredModal);
+  };
+
+  const [change, setChange] = useState(false);
+
   useEffect(() => {
-    const fetchCardData = async () => {
-      try {
-        // Create an array of promises to fetch data for each card
-        const fetchPromises = ObjectiveDatas.map(async (card) => {
-          if (card.slug !== null) {
-            try {
-              const response = await get(
-                `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=10&slug=${card?.slug}`
-              );
-              const tableData = response?.data?.vitals;
-
-              const cardbadge =
-                tableData.length > 0
-                  ? card?.slug === "blood-pressure"
-                    ? [
-                        {
-                          label: `${tableData[0].details?.systolic}/${tableData[0]?.details?.diastolic} mm Hg`,
-                          color: tableData[0].details?.bpFlagColor,
-                        },
-                        {
-                          label: `${tableData[0].details?.pulse} Pulse (bpm)`,
-                          color: tableData[0].details?.bpFlagColor,
-                        },
-                      ]
-                    : card?.slug === "bmi"
-                    ? [
-                        {
-                          label: `${tableData[0].details?.bmi}kg/m²`,
-                          color: tableData[0].details?.bmiFlagColor,
-                        },
-                      ]
-                    : card?.slug === "respiration"
-                    ? [
-                        {
-                          label: `${tableData[0].details?.respiration} bpm`,
-                          color: tableData[0].details?.respirationFlagColor,
-                        },
-                      ]
-                    : card?.slug === "spO2"
-                    ? [
-                        {
-                          label: `${tableData[0].details?.spo2} %`,
-                          color: tableData[0].details?.spo2FlagColor,
-                        },
-                      ]
-                    : []
-                  : [];
-              const formattedData =
-                card?.slug === "blood-pressure"
-                  ? transformBPData(
-                      response?.data?.vitals,
-                      response?.data?.pagination
-                    )
-                  : card?.slug === "bmi"
-                  ? transformBMIData(
-                      response?.data?.vitals,
-                      response?.data?.pagination
-                    )
-                  : card?.slug === "respiration"
-                  ? transformRespirationRateData(
-                      response?.data?.vitals,
-                      response?.data?.pagination
-                    )
-                  : card?.slug === "spO2"
-                  ? transformSpO2Data(
-                      response?.data?.vitals,
-                      response?.data?.pagination
-                    )
-                  : null;
-
-              return {
-                ...card,
-                created: response?.data?.vitals[0]?.details?.date,
-                cardbadge,
-                ...formattedData,
-              };
-            } catch (error) {
-              console.error(`Error fetching data for card ${card.id}:`, error);
-              return {
-                ...card,
-                cardbadge: card.badge,
-                created: "N/A",
-              };
-            }
-          }
-        });
-
-        // Wait for all fetches to complete
-        const updatedCards = await Promise.all(fetchPromises);
-        setCards(updatedCards);
-        getFilter();
-      } catch (error) {
-        console.error("Error fetching card data:", error);
-      }
-    };
-    if (filters) {
-      fetchCardData();
-    }
-  }, [entities, cardSelectedData]);
+    fetchCardData();
+  }, [change]);
   // entities, cardSelectedData
 
-  const fetchCardData = async (card) => {
-    console.log(card, "searchValue");
+  const fetchCardData = async () => {
+    setChange(false);
+    setVitalsLoading(true);
     try {
-      const response = await get(
-        `resource/vitals?limit=10&page=${currentPage ?? ""}&searchkey=${
-          searchValue ?? ""
-        }&from=${startDate ?? ""}&to=${
-          endDate ?? ""
-        }&order_by=details-%3Edate&dir=2&user_id=10&slug=${
-          cardSelectedData?.slug
-        }`
-      );
-      const tableData = response?.data?.vitals;
+      // Create an array of promises to fetch data for each card
+      const fetchPromises = ObjectiveDatas.map(async (card) => {
+        if (card.slug !== null) {
+          try {
+            const response = await get(
+              `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=${data?.user_id}&slug=${card?.slug}`
+            );
+            const tableData = response?.data?.vitals;
 
-      const cardbadge =
-        tableData.length > 0
-          ? cardSelectedData?.slug === "blood-pressure"
-            ? [
-                {
-                  label: `${tableData[0].details?.systolic}/${tableData[0]?.details?.diastolic} mm Hg`,
-                  color: tableData[0].details?.bpFlagColor,
-                },
-              ]
-            : cardSelectedData?.slug === "bmi"
-            ? [
-                {
-                  label: `${tableData[0].details?.bmi}kg/m²`,
-                  color: tableData[0].details?.bmiFlagColor,
-                },
-              ]
-            : card?.slug === "respiration"
-            ? [
-                {
-                  label: `${tableData[0].details?.respiration} bpm`,
-                  color: tableData[0].details?.respirationFlagColor,
-                },
-              ]
-            : card?.slug === "spO2"
-            ? [
-                {
-                  label: `${tableData[0].details?.spo2} %`,
-                  color: tableData[0].details?.spo2FlagColor,
-                },
-              ]
-            : []
-          : [];
+            const cardbadge =
+              tableData.length > 0
+                ? card?.slug === "blood-pressure"
+                  ? [
+                      {
+                        label: `${tableData[0].details?.systolic}/${tableData[0]?.details?.diastolic} mm Hg`,
+                        color: tableData[0].details?.bpFlagColor,
+                      },
+                      {
+                        label: `${tableData[0].details?.pulse} Pulse (bpm)`,
+                        color: tableData[0].details?.bpFlagColor,
+                      },
+                    ]
+                  : card?.slug === "bmi"
+                  ? [
+                      {
+                        label: `${tableData[0].details?.bmi} kg/m²`,
+                        color: tableData[0].details?.bmiFlagColor,
+                      },
+                    ]
+                  : card?.slug === "respiration"
+                  ? [
+                      {
+                        label: `${tableData[0].details?.respiration} bpm`,
+                        color: tableData[0].details?.respirationFlagColor,
+                      },
+                    ]
+                  : card?.slug === "spO2"
+                  ? [
+                      {
+                        label: `${tableData[0].details?.spo2} %`,
+                        color: tableData[0].details?.spo2FlagColor,
+                      },
+                    ]
+                  : card?.slug === "temperature"
+                  ? [
+                      {
+                        label: `${tableData[0]?.details?.temperature} ${
+                          tableData[0].details?.unit === "Fahrenheit"
+                            ? "°F"
+                            : "°C"
+                        }`,
+                        color: tableData[0].details?.temperatureFlagColor,
+                      },
+                    ]
+                  : card?.slug === "spirometer"
+                  ? [
+                      {
+                        label: `FVC (%):  ${tableData[0].details?.fvc}L`,
+                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                      },
+                      {
+                        label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                      },
+                      {
+                        label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
+                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                      },
+                      {
+                        label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                        color: `${findColorCodefev1_fvc(
+                          tableData[0].details?.fev1_fvc
+                        )}`,
+                      },
+                    ]
+                  : card?.slug === "heart-rate"
+                  ? [
+                      {
+                        label: `${tableData[0]?.details?.heart || "N/A"} bpm`,
+                        color: tableData[0].details?.heartRateFlagColor,
+                      },
+                    ]
+                  : card?.slug === "blood-sugar"
+                  ? [
+                      {
+                        label: `${
+                          tableData[0]?.details?.blood_sugar || "N/A"
+                        } mg/dL`,
+                        color: tableData[0].details?.bsFlagColor,
+                      },
+                    ]
+                  : card?.slug === "lipid-profile"
+                  ? [
+                      {
+                        label: `Total Cholesterol:${
+                          tableData[0]?.details?.total || "N/A"
+                        } mg/dL`,
+                        color: tableData[0].details?.total_message_flag,
+                      },
+                      // {
+                      //   label: `LDL:${
+                      //     tableData[0]?.details?.ldl || "N/A"
+                      //   } mg/dL`,
+                      //   color: tableData[0].details?.ldl_message_flag,
+                      // },
+                      // {
+                      //   label: `HDL:${
+                      //     tableData[0]?.details?.hdl || "N/A"
+                      //   } mg/dL`,
+                      //   color: tableData[0].details?.hdl_message_flag,
+                      // },
+                      // {
+                      //   label: `Triglycerides:${
+                      //     tableData[0]?.details?.triglycerides || "N/A"
+                      //   } mg/dL`,
+                      //   color: tableData[0].details?.triglycerides_message_flag,
+                      // },
+                    ]
+                  : card?.slug === "hct"
+                  ? [
+                      {
+                        label: `${tableData[0]?.details?.hct || "N/A"} %`,
+                        color: tableData[0].details?.hctFlagColor,
+                      },
+                    ]
+                  : card?.slug === "hemoglobin"
+                  ? [
+                      {
+                        label: `${
+                          tableData[0]?.details?.hemoglobin || "N/A"
+                        } g/dL`,
+                        color: tableData[0].details?.hemoglobinFlagColor,
+                      },
+                    ]
+                  : card?.slug === "keytone"
+                  ? [
+                      {
+                        label: `${
+                          tableData[0]?.details?.keytone || "N/A"
+                        } mmol/L`,
+                        color: tableData[0].details?.keytoneFlagColor,
+                      },
+                    ]
+                  : card?.slug === "uric_acid"
+                  ? [
+                      {
+                        label: `${
+                          tableData[0]?.details?.uric_acid || "N/A"
+                        } mg/dL`,
+                        color: "success",
+                      },
+                    ]
+                  : card?.slug === "urea"
+                  ? [
+                      {
+                        label: `${tableData[0]?.details?.urea || "N/A"} mg/dL`,
+                        color: `${tableData[0]?.details?.ureaFlagColor}`,
+                      },
+                    ]
+                  : card?.slug === "creatinine"
+                  ? [
+                      {
+                        label: `${
+                          tableData[0]?.details?.creatinine || "N/A"
+                        } mg/dL`,
+                        color: `${tableData[0]?.details?.creatinineFlagColor}`,
+                      },
+                    ]
+                  : card?.slug === "gfr"
+                  ? [
+                      {
+                        label: `${
+                          tableData[0]?.details?.gfr || "N/A"
+                        } mL/min/1.73m²`,
+                        color: `${tableData[0]?.details?.gfrFlagColor}`,
+                      },
+                    ]
+                  : []
+                : [];
 
-      const formattedData =
-        card?.slug === "blood-pressure"
-          ? transformBPData(response?.data?.vitals, response?.data?.pagination)
-          : card?.slug === "bmi"
-          ? transformBMIData(response?.data?.vitals, response?.data?.pagination)
-          : card?.slug === "respiration"
-          ? transformRespirationRateData(
-              response?.data?.vitals,
-              response?.data?.pagination
-            )
-          : card?.slug === "spO2"
-          ? transformSpO2Data(
-              response?.data?.vitals,
-              response?.data?.pagination
-            )
-          : null;
+            const formattedData =
+              card?.slug === "blood-pressure"
+                ? transformBPData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "bmi"
+                ? transformBMIData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "respiration"
+                ? transformRespirationRateData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "spO2"
+                ? transformSpO2Data(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "temperature"
+                ? transformTemperatureData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "spirometer"
+                ? transformLFTData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "heart-rate"
+                ? transformHeartRateData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "blood-sugar"
+                ? transformBloodSugarData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "lipid-profile"
+                ? transformLipidProfileData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "hct"
+                ? transformHematocritData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "hemoglobin"
+                ? transformHemoglobinData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "keytone"
+                ? transformBloodKetoneData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "uric_acid"
+                ? transformBloodUricAcidData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "urea"
+                ? transformUreaData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "creatinine"
+                ? transformCreatinineData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "gfr"
+                ? transformGFRData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : card?.slug === "urine"
+                ? transformUrinalysisData(
+                    response?.data?.vitals,
+                    response?.data?.pagination
+                  )
+                : null;
+            setVitalsLoading(false);
+            return {
+              ...card,
+              created: response?.data?.vitals[0]?.details?.date,
+              cardbadge,
+              ...formattedData,
+            };
+          } catch (error) {
+            setVitalsLoading(false);
+            console.error(`Error fetching data for card ${card.id}:`, error);
+            return {
+              ...card,
+              cardbadge: card.badge,
+              created: "N/A",
+            };
+          }
+        }
+      });
 
-      const updatedCard = {
-        ...card,
-        created: response?.data?.vitals[0]?.details?.date,
-        cardbadge,
-        ...formattedData,
-      };
-      setSelectedCardData(updatedCard);
+      // Wait for all fetches to complete
+      const updatedCards = await Promise.all(fetchPromises);
+      setCards(updatedCards);
+      getFilter();
+      modalStaticData(updatedCards);
     } catch (error) {
-      console.error(
-        `Error fetching data for card ${cardSelectedData?.id}:`,
-        error
-      );
-      return {
-        ...card,
-        cardbadge: card.badge,
-        created: "N/A",
-      };
+      console.error("Error fetching card data:", error);
     }
   };
+
+  const fetchSingleCardData = useCallback(
+    async (card) => {
+      try {
+        const response = await get(
+          `resource/vitals?limit=10&page=${currentPage ?? ""}&searchkey=${
+            searchValue ?? ""
+          }&from=${startDate ?? ""}&to=${
+            endDate ?? ""
+          }&order_by=details-%3Edate&dir=2&user_id=${data?.user_id}&slug=${
+            cardSelectedData?.slug
+          }`
+        );
+        const tableData = response?.data?.vitals;
+        const cardbadge =
+          tableData.length > 0
+            ? cardSelectedData?.slug === "blood-pressure"
+              ? [
+                  {
+                    label: `${tableData[0].details?.systolic}/${tableData[0]?.details?.diastolic} mm Hg`,
+                    color: tableData[0].details?.bpFlagColor,
+                  },
+                ]
+              : cardSelectedData?.slug === "bmi"
+              ? [
+                  {
+                    label: `${tableData[0].details?.bmi} kg/m²`,
+                    color: tableData[0].details?.bmiFlagColor,
+                  },
+                ]
+              : card?.slug === "respiration"
+              ? [
+                  {
+                    label: `${tableData[0].details?.respiration} bpm`,
+                    color: tableData[0].details?.respirationFlagColor,
+                  },
+                ]
+              : card?.slug === "spO2"
+              ? [
+                  {
+                    label: `${tableData[0].details?.spo2} %`,
+                    color: tableData[0].details?.spo2FlagColor,
+                  },
+                ]
+              : card?.slug === "temperature"
+              ? [
+                  {
+                    label: `${tableData[0]?.details?.temperature} ${
+                      tableData[0]?.details?.unit === "Fahrenheit" ? "°F" : "°C"
+                    }`,
+                    color: tableData[0]?.details?.temperatureFlagColor,
+                  },
+                ]
+              : card?.slug === "spirometer"
+              ? [
+                  {
+                    label: `FVC (%):  ${tableData[0].details?.fvc}L`,
+                    color: `${tableData[0].details?.spirometerFlagColor}`,
+                  },
+                  {
+                    label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                    color: `${tableData[0].details?.spirometerFlagColor}`,
+                  },
+                  {
+                    label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
+                    color: `${tableData[0].details?.spirometerFlagColor}`,
+                  },
+                  {
+                    label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                    color: `${findColorCodefev1_fvc(
+                      tableData[0].details?.fev1_fvc
+                    )}`,
+                  },
+                ]
+              : card?.slug === "heart-rate"
+              ? [
+                  {
+                    label: `${tableData[0]?.details?.heart || "N/A"} bpm`,
+                    color: tableData[0].details?.heartRateFlagColor,
+                  },
+                ]
+              : card?.slug === "blood-sugar"
+              ? [
+                  {
+                    label: `${
+                      tableData[0]?.details?.blood_sugar || "N/A"
+                    } mg/dL`,
+                    color: tableData[0].details?.bsFlagColor,
+                  },
+                ]
+              : card?.slug === "lipid-profile"
+              ? [
+                  {
+                    label: `Total Cholesterol:${
+                      tableData[0]?.details?.total || "N/A"
+                    } mg/dL`,
+                    color: tableData[0].details?.total_message_flag,
+                  },
+                  // {
+                  //   label: `LDL:${tableData[0]?.details?.ldl || "N/A"} mg/dL`,
+                  //   color: tableData[0].details?.ldl_message_flag,
+                  // },
+                  // {
+                  //   label: `HDL:${tableData[0]?.details?.hdl || "N/A"} mg/dL`,
+                  //   color: tableData[0].details?.hdl_message_flag,
+                  // },
+                  // {
+                  //   label: `Triglycerides:${
+                  //     tableData[0]?.details?.triglycerides || "N/A"
+                  //   } mg/dL`,
+                  //   color: tableData[0].details?.triglycerides_message_flag,
+                  // },
+                ]
+              : card?.slug === "hct"
+              ? [
+                  {
+                    label: `${tableData[0]?.details?.hct || "N/A"} %`,
+                    color: tableData[0].details?.hctFlagColor,
+                  },
+                ]
+              : card?.slug === "hemoglobin"
+              ? [
+                  {
+                    label: `${tableData[0]?.details?.hemoglobin || "N/A"} g/dL`,
+                    color: tableData[0].details?.hemoglobinFlagColor,
+                  },
+                ]
+              : card?.slug === "keytone"
+              ? [
+                  {
+                    label: `${tableData[0]?.details?.keytone || "N/A"} mmol/L`,
+                    color: tableData[0].details?.keytoneFlagColor,
+                  },
+                ]
+              : card?.slug === "uric_acid"
+              ? [
+                  {
+                    label: `${tableData[0]?.details?.uric_acid || "N/A"} mg/dL`,
+                    color: "success",
+                  },
+                ]
+              : card?.slug === "urea"
+              ? [
+                  {
+                    label: `${tableData[0]?.details?.urea || "N/A"} mg/dL`,
+                    color: `${tableData[0]?.details?.ureaFlagColor}`,
+                  },
+                ]
+              : card?.slug === "creatinine"
+              ? [
+                  {
+                    label: `${
+                      tableData[0]?.details?.creatinine || "N/A"
+                    } mg/dL`,
+                    color: `${tableData[0]?.details?.creatinineFlagColor}`,
+                  },
+                ]
+              : card?.slug === "gfr"
+              ? [
+                  {
+                    label: `${
+                      tableData[0]?.details?.gfr || "N/A"
+                    } mL/min/1.73m²`,
+                    color: `${tableData[0]?.details?.gfrFlagColor}`,
+                  },
+                ]
+              : []
+            : [];
+
+        const formattedData =
+          card?.slug === "blood-pressure"
+            ? transformBPData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "bmi"
+            ? transformBMIData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "respiration"
+            ? transformRespirationRateData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "spO2"
+            ? transformSpO2Data(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "temperature"
+            ? transformTemperatureData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "spirometer"
+            ? transformLFTData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "heart-rate"
+            ? transformHeartRateData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "blood-sugar"
+            ? transformBloodSugarData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "lipid-profile"
+            ? transformLipidProfileData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "hct"
+            ? transformHematocritData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "hemoglobin"
+            ? transformHemoglobinData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "keytone"
+            ? transformBloodKetoneData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "uric_acid"
+            ? transformBloodUricAcidData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "urea"
+            ? transformUreaData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "creatinine"
+            ? transformCreatinineData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "gfr"
+            ? transformGFRData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : card?.slug === "urine"
+            ? transformUrinalysisData(
+                response?.data?.vitals,
+                response?.data?.pagination
+              )
+            : null;
+
+        const updatedCard = {
+          ...card,
+          created: response?.data?.vitals[0]?.details?.date,
+          cardbadge,
+          ...formattedData,
+        };
+        setSelectedCardData(updatedCard);
+      } catch (error) {
+        console.error(
+          `Error fetching data for card ${cardSelectedData?.id}:`,
+          error
+        );
+        return {
+          ...card,
+          cardbadge: card.badge,
+          created: "N/A",
+        };
+      }
+    },
+    [
+      get,
+      currentPage,
+      searchValue,
+      startDate,
+      endDate,
+      data?.user_id,
+      cardSelectedData?.slug,
+      cardSelectedData?.id,
+    ]
+  );
 
   const openModal = (data) => {
     setSelectedCardData(data);
@@ -277,7 +715,12 @@ const VitalSign = ({ setVitalView, onClose }) => {
     setIsModalOpen(true);
   };
 
+  useEffect(() => {
+    modalStaticData(cards);
+  }, [isModalOpen]);
+
   const closeModal = () => {
+    setModalStatic({});
     setIsModalOpen(false);
   };
 
@@ -320,8 +763,8 @@ const VitalSign = ({ setVitalView, onClose }) => {
   };
 
   useEffect(() => {
-    fetchCardData(cardSelectedData);
-  }, [startDate, endDate, searchValue, currentPage]);
+    fetchSingleCardData(cardSelectedData);
+  }, [fetchSingleCardData]);
 
   return (
     <>
@@ -362,63 +805,73 @@ const VitalSign = ({ setVitalView, onClose }) => {
           />
         </CCol>
       </CRow>
-      <CRow className="mt-3">
-        {/* <CCol md={12}>
+      {!vitalsLoading ? (
+        <CRow className="mt-3">
+          {/* <CCol md={12}>
           <VitalsTab category={currentTabtitle} openModal={openModal} />
         </CCol> */}
-        {filtered?.map((item, index) => (
-          <CCol md={6} xl={4} key={index} className="mb-3">
-            <CCard
-              className={`vital-cards`}
-              onClick={() => {
-                openModal(item);
-              }}
-            >
-              <CCardBody>
-                <div className="vital-icon-and-title">
-                  <div>
-                    <img alt="bp" src={item?.icon} />
+          {filtered?.map((item, index) => (
+            <CCol md={6} xl={4} key={index} className="mb-3">
+              <CCard
+                className={`vital-cards`}
+                onClick={() => {
+                  openModal(item);
+                }}
+              >
+                <CCardBody>
+                  <div className="vital-icon-and-title">
+                    <div>
+                      <img alt="bp" src={item?.icon} />
+                    </div>
+                    <div className="vital-card-title">
+                      <span className="vital-card-text-bold">{item?.name}</span>
+                      <span className="vital-card-text">
+                        Recently Added{" "}
+                        {item?.created
+                          ?.split(" ")[0]
+                          .split("-")
+                          .reverse()
+                          .join("-")}
+                      </span>
+                    </div>
                   </div>
-                  <div className="vital-card-title">
-                    <span className="vital-card-text-bold">{item?.name}</span>
-                    <span className="vital-card-text">
-                      Recently Added{" "}
-                      {item?.created
-                        ?.split(" ")[0]
-                        .split("-")
-                        .reverse()
-                        .join("-")}
-                    </span>
+                  <div className="vital-badge">
+                    <div className="vital-badge-list">
+                      {item?.cardbadge?.map((dt, i) => (
+                        <div key={i} style={{ height: "24px" }}>
+                          <Badge label={dt?.label} color={dt?.color} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="vital-badge">
-                  <div className="vital-badge-list">
-                    {item?.cardbadge?.map((dt, i) => (
-                      <div key={i} style={{ height: "24px" }}>
-                        <Badge label={dt?.label} color={dt?.color} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="vital-line-container">
-                  {/* <img alt="line" src={Assets.Vitalline} /> */}
-                  {item?.name === "Heart" ? (
+                  <div className="vital-line-container">
+                    {/* <img alt="line" src={Assets.Vitalline} /> */}
+                    {/* {item?.name === "Heart" ? (
                     <div className="chart-item">
-                      {/* <div className="rectangle">
+                      <div className="rectangle">
                             <img src={Assets.ecgSample} alt="ecg" />
-                          </div> */}
+                          </div>
                       {renderImage(Assets.ecgSample)}
-                      {/* {renderPdf("https://www.orimi.com/pdf-test.pdf")} */}
+                      {renderPdf("https://www.orimi.com/pdf-test.pdf")}
                     </div>
                   ) : (
                     <CardChart datas={item} />
-                  )}
-                </div>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        ))}
-      </CRow>
+                  )} */}
+                    <CardChart datas={item} />
+                  </div>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          ))}
+        </CRow>
+      ) : (
+        <div
+          className="d-flex w-100 justify-content-center mb-3 align-items-center"
+          style={{ height: "350px", maxHeight: "100%" }}
+        >
+          <Loader />
+        </div>
+      )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CContainer className="p-0">
@@ -426,15 +879,20 @@ const VitalSign = ({ setVitalView, onClose }) => {
             <CCol className="mb-3">
               <ObjectiveDetailPage
                 data={cardSelectedData}
-                getTableDatas={(data) =>
-                  fetchCardData(data || cardSelectedData)
-                }
+                getTableDatas={(data) => {
+                  setModalStatic({});
+                  fetchSingleCardData(data || cardSelectedData);
+                  modalStaticData(cards);
+                  setChange(true);
+                }}
                 getFilterValues={(data1, data2, data3) => {
                   getFilterValues(data1, data2, data3);
                   setFilters(false);
                 }}
                 currentPage={currentPage}
                 onPageChange={onPageChange}
+                topData={modalStatic}
+                setModalStatic={setModalStatic}
               />
               {/* <ObjectiveDetailPage
                 data={entities}

@@ -4,7 +4,7 @@
 @import url('./assets/Css/Chart.css');
 @import url('./assets/Css/BlurBackground.css');
 @import url('./assets/Css/DateRangePicker.css');
-@import url('./assets/Css/Pagination.css');
+@import url('./assets/Css/PaginationHome.css');
 @import url('./assets/Css/OptionItem.css');
 @import url('./assets/Css/Filter.css');
 @import url('./assets/Css/PatientDetailCard.css');
@@ -559,4 +559,44 @@ body {
   text-decoration: none;
   display: block;
   cursor: pointer;
+}
+
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skeleton-badge {
+  width: 80px; /* Adjust based on the badge size */
+  height: 24px; /* Adjust based on the badge size */
+  background-color: #e0e0e0;
+  border-radius: 12px; /* Adjust based on your badge shape */
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-date {
+  width: 150px; /* Adjust based on the date text length */
+  height: 16px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f5f5f5;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
 }

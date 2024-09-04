@@ -108,6 +108,7 @@ import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import DateSelector from "../../../../../DateRangePicker/DateSelector";
 import { useNavigate } from "react-router-dom";
 import useApi from "../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 
 const ChiefComplaints = ({ OnClose, from }) => {
   const columnData = [
@@ -183,12 +184,20 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-  
-
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
 
   const itemsPerPage = 5; // Number of items to display per page
+
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+   
+  };
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
@@ -225,7 +234,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const getChiefComplaints = useCallback(async () => {
     try {
       const response = await get(
-        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&searchkey=&order_by=created_at&dir=2&slug=chief-complaints&user_id=10&scanOrdersOnly=&scanstatus=`
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=created_at&dir=2&slug=chief-complaints&user_id=10&scanOrdersOnly=&scanstatus=`
       );
       if (response.code === 200) {
         console.log(response.data.docs);
@@ -238,7 +247,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,addFormView]);
+  }, [get, currentPage,addFormView,startDate,endDate,searchValue]);
 
   useEffect(() => {
     getChiefComplaints();
@@ -303,18 +312,19 @@ const ChiefComplaints = ({ OnClose, from }) => {
         <>
           {from !== "Consult" && (
             <CRow>
-              <CCol md={7} xl={7} className="mb-3 chief-complaints">
+              <CCol lg={8} md={8} xl={8} className="mb-3 chief-complaints">
                 {/* <div className="search-bar">
                 <input type="text" placeholder="Search" />
                 <button type="submit">
                   <i className="fas fa-search"></i>
                 </button>
               </div> */}
-                <DateSelector />
+                <DateRangePicker getFilterValues={getFilterValues} />
               </CCol>
               <CCol
-                md={5}
-                xl={5}
+                lg={4}
+                md={4}
+                xl={4}
                 className="mb-3 d-flex justify-content-end align-items-center gap-15"
               >
                 <div className="patient-adding" onClick={() => addFormPage()}>

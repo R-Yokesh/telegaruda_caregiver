@@ -20,7 +20,7 @@ const AssessmentTool = ({ onClose }) => {
   const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-3");
   const ParsedPatientSubMenu = PatientSubMenu2
     ? JSON.parse(PatientSubMenu2)
-    : 0;
+    : 1;
   const GoTOConsultPage = localStorage.getItem("PatientConsultTab");
   const parsedConsult = GoTOConsultPage ? JSON.parse(GoTOConsultPage) : false;
   const [currentTab, setCurrentTab] = useState(ParsedPatientSubMenu);

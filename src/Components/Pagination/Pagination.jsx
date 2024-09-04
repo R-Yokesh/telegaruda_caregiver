@@ -1,49 +1,14 @@
-// import React, { useState, useEffect } from "react";
-
-// const Pagination = ({
-//   currentPage,
-//   onPageChange,
-//   totalItems,
-//   itemsPerPage,
-// }) => {
-//   const [totalPages, setTotalPages] = useState(1);
-//   const [pages, setPages] = useState([]);
-
-//   useEffect(() => {
-//     // Calculate total pages based on totalItems and itemsPerPage
-//     const pagesCount = Math.ceil(totalItems / itemsPerPage);
-//     setTotalPages(pagesCount);
-
-//     // Generate array of pages dynamically
-//     setPages(Array.from(Array(pagesCount).keys()));
-//   }, [totalItems, itemsPerPage]);
-
-//   const handlePageClick = (pageNumber) => {
-//     onPageChange(pageNumber);
-//   };
-
-//   return (
-//     <div className="pagination">
-//       {pages.map((page) => (
-//         <button
-//           key={page}
-//           onClick={() => handlePageClick(page + 1)}
-//           className={currentPage === page + 1 ? "active-page" : ""}
-//         >
-//           {page + 1}
-//         </button>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default Pagination;
-
 import React, { useEffect, useState } from "react";
+import "../../assets/Css/PaginationHome.css";
 
-const Pagination = ({ currentPage, totalItems, onPageChange, itemsPerPage }) => {
+const Pagination = ({
+  currentPage,
+  totalItems,
+  onPageChange,
+  itemsPerPage,
+}) => {
   const [totalPages, setTotalPages] = useState(1);
-  
+
   useEffect(() => {
     // Calculate total pages based on totalItems and itemsPerPage
     const pagesCount = Math.ceil(totalItems / itemsPerPage);
@@ -72,70 +37,131 @@ const Pagination = ({ currentPage, totalItems, onPageChange, itemsPerPage }) => 
         for (let i = 1; i <= 3; i++) {
           pageNumbers.push(i);
         }
-        pageNumbers.push('...');
+        pageNumbers.push("...");
         pageNumbers.push(totalPages);
       } else if (currentPage >= totalPages - 2) {
         // Show last few pages and the first page
         pageNumbers.push(1);
-        pageNumbers.push('...');
+        pageNumbers.push("...");
         for (let i = totalPages - 2; i <= totalPages; i++) {
           pageNumbers.push(i);
         }
       } else {
         // Show a range around the current page
         pageNumbers.push(1);
-        pageNumbers.push('...');
+        pageNumbers.push("...");
         for (let i = currentPage - range; i <= currentPage + range; i++) {
           if (i > 0 && i <= totalPages) {
             pageNumbers.push(i);
           }
         }
-        pageNumbers.push('...');
+        pageNumbers.push("...");
         pageNumbers.push(totalPages);
       }
     }
 
     // Remove duplicate ellipses
-    return pageNumbers.filter((item, index, arr) => item !== '...' || (index > 0 && arr[index - 1] !== '...'));
+    return pageNumbers.filter(
+      (item, index, arr) =>
+        item !== "..." || (index > 0 && arr[index - 1] !== "...")
+    );
   };
 
   const pageNumbers = getPageNumbers();
 
-
   return (
-    <div className="pagination">
-      <button
+    <div
+      // className="pagination-home"
+      style={{
+        display: "flex",
+      }}
+    >
+      <div
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Previous"
+        // className="div-pagination"
+        style={{
+          width: "56px",
+          height: "56px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0px",
+          borderRadius: "8px",
+          opacity: "0px",
+          boxShadow: "0px 4px 24px 0px #0084CF14",
+          marginLeft: "10px",
+          outline: "none",
+          border: "none",
+          fontSize: "20px",
+          fontWeight: "600",
+          lineHeight: "28.9px",
+          cursor: "pointer",
+        }}
       >
         &lt;
-      </button>
+      </div>
       {pageNumbers.map((number, index) => (
-        <button
+        <div
           key={index}
           onClick={() => {
             if (number !== "...") {
               handlePageChange(number);
             }
           }}
-          className={number === currentPage ? "active-page" : ""}
+          className={number === currentPage ? "active-home-page" : ""}
           disabled={number === "..."}
           aria-current={number === currentPage ? "page" : undefined}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0px ",
+            borderRadius: "8px ",
+            opacity: "0px ",
+            boxShadow: "0px 4px 24px 0px #0084CF14 ",
+            marginLeft: "10px ",
+            outline: "none ",
+            border: "none ",
+            fontSize: "20px ",
+            fontWeight: "600 ",
+            lineHeight: "28.9px ",
+            cursor: "pointer",
+            width: "56px",
+            height: "56px",
+          }}
         >
           {number}
-        </button>
+        </div>
       ))}
-      <button
+      <div
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="Next"
+        style={{
+          width: "56px",
+          height: "56px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "0px",
+          borderRadius: "8px",
+          opacity: "0px",
+          boxShadow: "0px 4px 24px 0px #0084CF14",
+          marginLeft: "10px",
+          outline: "none",
+          border: "none",
+          fontSize: "20px",
+          fontWeight: "600",
+          lineHeight: "28.9px",
+          cursor: "pointer",
+        }}
       >
         &gt;
-      </button>
+      </div>
     </div>
   );
 };
-
 
 export default Pagination;

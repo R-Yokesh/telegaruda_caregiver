@@ -23,6 +23,7 @@ import MedicationOrderTable from "../../../../../../Tables/MedicationOrderTable"
 import SymtomsTable from "../../../../../../Tables/Subjective/SymtomsTable";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 
 const SignsSymptoms = ({ from }) => {
   const detailsData = [
@@ -59,9 +60,6 @@ const SignsSymptoms = ({ from }) => {
     { id: 3, label: "LOCATION" },
     { id: 5, label: "Symptoms" },
     { id: 4, label: "DURATION IN DAYS" },
-    // { id: 6, label: "aggravating factors" },
-    // { id: 7, label: "Relieving factors" },
-    // { id: 8, label: "Temporal factors" },
     { id: 6, label: "Severity" },
     // { id: 10, label: "Notes" },
     { id: 6, label: "Actions" },
@@ -198,27 +196,28 @@ const SignsSymptoms = ({ from }) => {
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
 
   const itemsPerPage = 5; // Number of items to display per page
+
+
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+   
+  };
+ 
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };  
 
-
-
-  
-
-  // Function to get items for the current page
-  const getCurrentPageItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return rowData?.slice(startIndex, endIndex);
-  };
 
   const addFormPage = () => {
     setAddFormView(true);
@@ -243,7 +242,7 @@ const SignsSymptoms = ({ from }) => {
   const fetchSignsSymptoms = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHealth?slug=hpi&user_id=261&limit=${itemsPerPage}&page=${currentPage}&order_by=values->date&dir=2`
+        `resource/patientHealth?slug=hpi&user_id=261&limit=${itemsPerPage}&page=${currentPage}&dir=2&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
       );
       if (response.code === 200) {
         console.log(response.data.patient_healths);
@@ -255,7 +254,7 @@ const SignsSymptoms = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage]);
+  }, [get, currentPage,startDate,endDate,searchValue]);
 
   useEffect(() => {
     fetchSignsSymptoms();
@@ -291,7 +290,7 @@ const SignsSymptoms = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSearch />
+              <DateRangePicker getFilterValues={getFilterValues} />
               </CCol>
               <CCol
                 lg={4}
@@ -346,6 +345,8 @@ const SignsSymptoms = ({ from }) => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
+              setAddFormView={setAddFormView}
+              fetchSignsSymptoms={fetchSignsSymptoms}
               defaultValues={selectedData}
             />
           </CCardBody>

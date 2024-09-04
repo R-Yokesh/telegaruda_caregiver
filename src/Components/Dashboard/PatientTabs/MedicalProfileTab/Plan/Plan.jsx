@@ -13,7 +13,7 @@ const Plan = () => {
   const cardData = [
     { id: 1, name: "Orders", image: Assets.Orders },
     { id: 2, name: "Therapies", image: Assets.Therapies },
-    { id: 3, name: "Vaccinations", image: Assets.Vaccine },
+    // { id: 3, name: "Vaccinations", image: Assets.Vaccine },
     { id: 4, name: "Procedure (CPT Code)", image: Assets.CPT },
     { id: 5, name: "Patient Education", image: Assets.PatEdu },
     { id: 6, name: "Next Appointment", image: Assets.History },

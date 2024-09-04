@@ -53,6 +53,7 @@ const ObjectiveDetailPage = ({
   getFilterValues,
   currentPage,
   onPageChange,
+  topData,
 }) => {
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
@@ -87,16 +88,38 @@ const ObjectiveDetailPage = ({
         <CContainer className="mt-2 mb-3">
           <CRow>
             <CCol lg={7}>
-              <div className="d-flex flex-row gap-3">
-                <img src={data?.icon} alt="icon" />
+              <div className="d-flex flex-row gap-3 align-items-center">
+                <img src={data?.icon} alt="icon" style={{ width: "100px" }} />
                 <div className="d-flex flex-column gap-2">
                   <span className="fs-20 fw-600">{data?.name}</span>
-                  <div className="d-flex flex-row gap-2 flex-wrap">
-                    {data?.badge?.map((dt, i) => (
-                      <Badge label={dt?.label} color={dt?.color} />
-                    ))}
-                  </div>
-                  <span className="fs-14 fw-500">{data?.date}</span>
+                  {topData.length === undefined ? (
+                    <>
+                      <div className="d-flex flex-row gap-2 flex-wrap">
+                        {data?.badge?.map((dt, i) => (
+                          <Badge label={dt?.label} color={dt?.color} />
+                        ))}
+                      </div>
+                      <span className="fs-14 fw-500">{data?.date}</span>
+                    </>
+                  ) : topData[0]?.date === undefined ? (
+                    <div className="skeleton-container">
+                      <div className="skeleton-badges">
+                        {[...Array(3)].map((_, i) => (
+                          <div key={i} className="skeleton-badge"></div>
+                        ))}
+                      </div>
+                      <div className="skeleton-date"></div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="d-flex flex-row gap-2 flex-wrap">
+                        {topData[0]?.badge?.map((dt, i) => (
+                          <Badge label={dt?.label} color={dt?.color} />
+                        ))}
+                      </div>
+                      <span className="fs-14 fw-500">{topData[0]?.date}</span>
+                    </>
+                  )}
                 </div>
               </div>
             </CCol>
@@ -195,16 +218,18 @@ const ObjectiveDetailPage = ({
                   tableData={data?.tableData}
                   getTableDatas={getTableDatas}
                 />
-                <CRow className="mb-3">
-                  <CCol lg={12} className="d-flex justify-content-center">
-                    <Pagination
-                      currentPage={currentPage}
-                      onPageChange={onPageChange}
-                      totalItems={data?.total}
-                      itemsPerPage={10}
-                    />
-                  </CCol>
-                </CRow>
+                {data?.tableData.length > 0 && (
+                  <CRow className="mb-3 mt-3">
+                    <CCol lg={12} className="d-flex justify-content-center">
+                      <Pagination
+                        currentPage={currentPage}
+                        onPageChange={onPageChange}
+                        totalItems={data?.total}
+                        itemsPerPage={10}
+                      />
+                    </CCol>
+                  </CRow>
+                )}
               </>
             )}
           </CCol>
@@ -227,15 +252,23 @@ const ObjectiveDetailPage = ({
                 {data?.name === "Blood Pressure" && (
                   <BPForm addBack={addBack} getTableDatas={getTableDatas} />
                 )}
-                {data?.name === "Heart" && <HeartRate addBack={addBack} />}
+                {data?.name === "Heart" && (
+                  <HeartRate addBack={addBack} getTableDatas={getTableDatas} />
+                )}
                 {data?.name === "Lung Function Test (LFT)" && (
-                  <LFTForm addBack={addBack} />
+                  <LFTForm addBack={addBack} getTableDatas={getTableDatas} />
                 )}
                 {data?.name === "Lipid Profile" && (
-                  <LipidProfileForm addBack={addBack} />
+                  <LipidProfileForm
+                    addBack={addBack}
+                    getTableDatas={getTableDatas}
+                  />
                 )}
                 {data?.name === "Temperature" && (
-                  <Temperature addBack={addBack} />
+                  <Temperature
+                    addBack={addBack}
+                    getTableDatas={getTableDatas}
+                  />
                 )}
                 {data?.name === "SpO2" && (
                   <Spo2 addBack={addBack} getTableDatas={getTableDatas} />
@@ -249,18 +282,30 @@ const ObjectiveDetailPage = ({
                 {data?.name === "BMI" && (
                   <BMI addBack={addBack} getTableDatas={getTableDatas} />
                 )}
-                {data?.name === "Blood Sugar" && <BSugar addBack={addBack} />}
-                {data?.name === "Hemoglobin" && <Hemogloin addBack={addBack} />}
-                {data?.name === "Hematocrit (HCT)" && <HCT addBack={addBack} />}
+                {data?.name === "Blood Sugar" && (
+                  <BSugar addBack={addBack} getTableDatas={getTableDatas} />
+                )}
+                {data?.name === "Hemoglobin" && (
+                  <Hemogloin addBack={addBack} getTableDatas={getTableDatas} />
+                )}
+                {data?.name === "Hematocrit (HCT)" && (
+                  <HCT addBack={addBack} getTableDatas={getTableDatas} />
+                )}
                 {data?.name === "Blood Uric Acid" && (
-                  <BUricAcid addBack={addBack} />
+                  <BUricAcid addBack={addBack} getTableDatas={getTableDatas} />
                 )}
-                {data?.name === "Blood Ketone" && <BKetone addBack={addBack} />}
-                {data?.name === "Urea" && <Urea addBack={addBack} />}
+                {data?.name === "Blood Ketone" && (
+                  <BKetone addBack={addBack} getTableDatas={getTableDatas} />
+                )}
+                {data?.name === "Urea" && (
+                  <Urea addBack={addBack} getTableDatas={getTableDatas} />
+                )}
                 {data?.name === "Creatinine" && (
-                  <Creatinine addBack={addBack} />
+                  <Creatinine addBack={addBack} getTableDatas={getTableDatas} />
                 )}
-                {data?.name === "GFR" && <GFR addBack={addBack} />}
+                {data?.name === "GFR" && (
+                  <GFR addBack={addBack} getTableDatas={getTableDatas} />
+                )}
                 {data?.name === "Urinalysis" && (
                   <Urinalysis addBack={addBack} />
                 )}
