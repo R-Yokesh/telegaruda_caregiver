@@ -6,7 +6,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Pagination from "../../../../../../Pagination/Pagination";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -16,6 +16,8 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import MedHistoryForm from "./MedHistoryForm";
 import MedicalHistoryTable from "../../../../../../Tables/Subjective/MedicalHistoryTable";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import useApi from "../../../../../../../ApiServices/useApi";
+
 
 const MedicalHistory = ({ from }) => {
   const columnData = [
@@ -25,108 +27,111 @@ const MedicalHistory = ({ from }) => {
     { id: 4, label: "ICD" },
     { id: 5, label: "Chronic" },
     { id: 6, label: "Previous Illness" },
-    // { id: 7, label: "Notes" },
     { id: 7, label: "Actions" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      onset: "02-04-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "Yes",
-      prev_illness: "Yes",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 2,
-      onset: "02-04-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "Yes",
-      prev_illness: "Yes",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 3,
-      onset: "02-04-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "No",
-      prev_illness: "Yes",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 4,
-      onset: "01-04-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "No",
-      prev_illness: "No",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 5,
-      onset: "01-04-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "Yes",
-      prev_illness: "No",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 6,
-      onset: "02-04-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "No",
-      prev_illness: "No",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 7,
-      onset: "02-04-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "Yes",
-      prev_illness: "Yes",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 8,
-      onset: "02-04-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "Yes",
-      prev_illness: "Yes",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 9,
-      onset: "12-03-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "Yes",
-      prev_illness: "Yes",
-      notes: "Lorem ipsum",
-    },
-    {
-      id: 10,
-      onset: "02-03-2024",
-      conditions: "Lorem ipsum",
-      icd10: "E11.6 - Type 2 diabetes mellitus without complications",
-      chronic: "Yes",
-      prev_illness: "Yes",
-      notes: "Lorem ipsum",
-    },
-  ];
+  // const rowData = [
+  //   {
+  //     id: 1,
+  //     onset: "02-04-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "Yes",
+  //     prev_illness: "Yes",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 2,
+  //     onset: "02-04-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "Yes",
+  //     prev_illness: "Yes",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 3,
+  //     onset: "02-04-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "No",
+  //     prev_illness: "Yes",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 4,
+  //     onset: "01-04-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "No",
+  //     prev_illness: "No",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 5,
+  //     onset: "01-04-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "Yes",
+  //     prev_illness: "No",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 6,
+  //     onset: "02-04-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "No",
+  //     prev_illness: "No",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 7,
+  //     onset: "02-04-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "Yes",
+  //     prev_illness: "Yes",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 8,
+  //     onset: "02-04-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "Yes",
+  //     prev_illness: "Yes",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 9,
+  //     onset: "12-03-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "Yes",
+  //     prev_illness: "Yes",
+  //     notes: "Lorem ipsum",
+  //   },
+  //   {
+  //     id: 10,
+  //     onset: "02-03-2024",
+  //     conditions: "Lorem ipsum",
+  //     icd10: "E11.6 - Type 2 diabetes mellitus without complications",
+  //     chronic: "Yes",
+  //     prev_illness: "Yes",
+  //     notes: "Lorem ipsum",
+  //   },
+  // ];
+
+  const { loading, error, get, del, clearCache } = useApi();
+  const [rowData, setRowData] = useState([]);
+  const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
-
+  const [id, setId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
 
-  const itemsPerPage = 5; // Number of items to display per page
+  const itemsPerPage = 10; // Number of items to display per page
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
@@ -148,14 +153,57 @@ const MedicalHistory = ({ from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data, type) => {
+  const getselectedData = (data, id, type) => {
     console.log(type, "first", data);
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
     }
     if (type === "delete") {
+      setId(id);
       detailPage();
+    }
+  };
+
+  // api integration of list,filter and search of medical history
+  const getMedicalLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHistories?user_id=10&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values->onset_date&dir=2&from=&to=&searchkey=fever`
+      );
+      if (response.code === 200) {
+        // console.log("data", response.data.patient_histories);
+        setRowData(response.data.patient_histories);
+        setPagination(response.data.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+        setRowData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setRowData([]);
+    }
+  }, [get, currentPage, addFormView]);
+
+  useEffect(() => {
+    getMedicalLists();
+  }, [getMedicalLists]);
+
+  // api integration of delete list from the table
+  const deleteMedicalLists = async () => {
+    try {
+      const response = await del(`resource/patientHistories/${id}`);
+
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        getMedicalLists();
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -192,7 +240,7 @@ const MedicalHistory = ({ from }) => {
           )}
           <div className="mb-2">
             <MedicalHistoryTable
-              rowData={getCurrentPageItems()}
+              rowData={rowData}
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
@@ -203,7 +251,7 @@ const MedicalHistory = ({ from }) => {
                   <Pagination
                     currentPage={currentPage}
                     onPageChange={onPageChange}
-                    totalItems={rowData?.length}
+                    totalItems={pagination?.total}
                     itemsPerPage={itemsPerPage}
                   />
                 </CCol>
@@ -220,6 +268,8 @@ const MedicalHistory = ({ from }) => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
+              setAddFormView={setAddFormView}
+              getMedicalLists={getMedicalLists}
               defaultValues={selectedData}
             />
           </CCardBody>
@@ -239,7 +289,7 @@ const MedicalHistory = ({ from }) => {
                 <h5>Are you sure want to delete ?</h5>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setDetailView(false)}>
+                    <PrimaryButton onClick={() => deleteMedicalLists()}>
                       Yes
                     </PrimaryButton>
                   </div>
