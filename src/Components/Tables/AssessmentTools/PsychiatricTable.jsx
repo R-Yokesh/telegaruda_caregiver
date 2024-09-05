@@ -25,6 +25,33 @@ const PsychiatricTable = ({
     getselectedData(data, type);
   };
 
+  const formatText = (text, score) => {
+    let cleanedText = text?.replace(/@\w+\s*/g, "");
+
+    // Extract status between ! markers
+    const statusMatch = text?.match(/!(.*?)!/);
+    const status = statusMatch ? statusMatch[1] : "";
+
+    // Remove the status part from the cleaned text
+    cleanedText = cleanedText?.replace(/!.*!/, "")?.trim();
+
+    // Extract title and sub-title
+    const titleMatch = cleanedText?.match(/^([^,]*?)(?:,|$)/);
+    const subTitMatch = cleanedText?.match(/, (.+)$/);
+
+    // Prepare the final object
+    console.log({
+      title: titleMatch ? titleMatch[1]?.trim() : "",
+      subTit: subTitMatch ? subTitMatch[1]?.trim() : "",
+      status: status?.trim(),
+    });
+    return (
+      <div className="d-flex flex-column align-items-center">
+        <Badge label={score} color={status} />
+      </div>
+    );
+  };
+
   return (
     <>
       <CTable className="lab-responsive-table">
@@ -51,6 +78,7 @@ const PsychiatricTable = ({
               <CTableDataCell>
                 <span className="fs-16 fw-500">
                   {formatFetchDate(dt?.latest_form_submisson?.created_at)}
+                  {/* {formatText(dt?.latest_form_submisson?.message)} */}
                 </span>
               </CTableDataCell>
               {/* <CTableDataCell>
