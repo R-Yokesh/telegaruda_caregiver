@@ -12,8 +12,8 @@ import moment from "moment";
 const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
   const [date, setDate] = useState(null);
   const { loading, error, post, patch, clearCache } = useApi();
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(new Date()); 
+  const [selectedDate, setSelectedDate] = useState(new Date()); 
   const [dietType, setDietType] = useState(defaultValues?.act_type || ""); // Initialize diet type
   const [notes, setNotes] = useState(defaultValues?.detail?.notes || "");
   const [errors, setErrors] = useState({});
@@ -21,8 +21,8 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
   useEffect(() => {
     // Initialize the state with default values if available
     if (defaultValues) {
-      setSelectedDate(parseDate(defaultValues.act_date)); // Update to use `act_date`
-      setSelectedTime(parseTime(defaultValues.act_time)); // Update to use `act_time`
+      setSelectedDate(parseDate(defaultValues?.details?.act_date) || new Date());
+      setSelectedTime(parseTime(defaultValues.act_time)|| new Date());
       setDietType(defaultValues.act_type || ""); // Set the diet type from default values
       setNotes(defaultValues.detail?.notes || ""); // Set the notes from the new format
     }
@@ -76,11 +76,11 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date || null);
+    setSelectedDate(date || new Date());
   };
 
   const handleTimeChange = (time) => {
-    setSelectedTime(time || null);
+    setSelectedTime(time || new Date());
   };
 
   const addDiet = async () => {

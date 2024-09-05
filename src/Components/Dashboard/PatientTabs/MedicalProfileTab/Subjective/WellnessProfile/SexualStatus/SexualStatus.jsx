@@ -19,20 +19,15 @@ import SexualStatusTable from "../../../../../../Tables/Subjective/WellnessProfi
 import SexualStatusForm from "./SexualStatusForm";
 
 const SexualStatus = ({ back, from }) => {
-  const Data = {
-    id: 1,
-    sexual_activity: "Active",
-    history: "Yes ",
-    screening_date: "06-06-2024 ",
-    current_status: "Active ",
-    sti_current_notes: "lorem",
-  };
+  
+
+
 
   return (
     <>
       <CCard className="p-2 cursor-default mb-5">
         <CCardBody className="mb-3">
-          <SexualStatusForm back={back} defaultValues={Data} from={from} />
+          <SexualStatusForm  />
         </CCardBody>
       </CCard>
     </>
