@@ -258,7 +258,7 @@ const Nutrition = ({ from }) => {
                 <CRow className="mb-2">
                   <CCol lg={8} className="">
                    
-                    <DateRangePicker
+                    <DateSearch
                     
                      getFilterValues={getFilterValues}
                     />
