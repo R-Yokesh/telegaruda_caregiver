@@ -1,5 +1,5 @@
 import { CCol, CFormTextarea, CRow } from "@coreui/react";
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import DatePicker from "react-datepicker";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
@@ -7,7 +7,7 @@ import { isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import useApi from "../../../../../../ApiServices/useApi";
 import { format } from "date-fns";
-import moment  from "moment";
+import moment from "moment";
 
 const parseDate = (dateString) => {
   if (!dateString) return null;
@@ -23,9 +23,9 @@ const parseTime = (timeString) => {
   return now;
 };
 
-const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultValues }) => {
+const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, defaultValues }) => {
 
-  const { loading, error, post,clearCache } = useApi();
+  const { loading, error, post, clearCache } = useApi();
   const [selectedTime, setSelectedTime] = useState(
   );
   const [selectedDate, setSelectedDate] = useState(
@@ -70,7 +70,7 @@ const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultVa
       setSelectedDate(null);
     }
   };
-  
+
   const handleTimeChange = (time) => {
     if (time) {
       // console.log("Time-----",moment(time).format("hh:mm "))
@@ -80,9 +80,9 @@ const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultVa
       setSelectedTime(null);
     }
   };
-  
-  
-  
+
+
+
 
   // Validate the form
   const validate = () => {
@@ -118,23 +118,23 @@ const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultVa
     try {
       const body = {
         addition_info: {
-          date:formattedDate,
-          time:formattedTime,
-          title:complaints,
-          notes:notes,
+          date: formattedDate,
+          time: formattedTime,
+          title: complaints,
+          notes: notes,
         },
         user_id: "10",
         document_source: "chief-complaints",
       };
-  
+
       // Use the provided `post` function to send the request
       const response = await post(`resource/docs`, body);
-  
+
       if (response.code === 201) {
         clearCache();
         await getChiefComplaints();
         setAddFormView(false);
-         
+
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -142,21 +142,21 @@ const ChiefComplaintsForm = ({ back,setAddFormView,getChiefComplaints, defaultVa
       console.error("Error fetching data:", error);
     }
   };
-  
 
- 
+
+
 
 
   const onSubmit = () => {
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-      
+
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
         addChiefComplaints();
-        
+
       }
     }
   };
