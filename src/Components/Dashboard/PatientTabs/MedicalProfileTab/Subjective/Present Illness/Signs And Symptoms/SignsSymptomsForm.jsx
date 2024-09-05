@@ -24,7 +24,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    // location: defaultValues?.values?.location || "",
+    //location: defaultValues?.values?.location || "",
     duration_days: defaultValues?.values?.duration || "",
     symptoms: defaultValues?.values?.symptoms || "",
     aggravating_factors: defaultValues?.values?.aggravating_factors || "",
@@ -34,8 +34,8 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
     notes: defaultValues?.values?.notes || "",
 
   });
-  const [location, setLocation] = useState([defaultValues?.values?.locationy || ""]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [location, setLocation] = useState([]);
+  const [searchTerm, setSearchTerm] = useState([defaultValues?.values?.location || null]);
 
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -140,8 +140,8 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
       newErrors.time = "Time is required.";
       isValid = false;
     }
-    if (!location) {
-      newErrors.location = "Location is required.";
+    if (!searchTerm) {
+      newErrors.searchTerm = "Location is required.";
       isValid = false;
     }
     if (!formData.duration_days) {
@@ -178,16 +178,19 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
     }
   };
 
+  console.log('searchTEEEE',searchTerm)
+
   //api integration of medical conditions list
   useEffect(() => {
     const getLocation = async () => {
+      console.log('searchTEEEE',searchTerm)
       if (searchTerm) {
+        console.log('AAAAAAAAAA');
         try {
           const response = await get(
             `resource/masters/all?slug=hpi_location&order_by=name&dir=1&searchkey=${searchTerm}`
           );
           if (response.code === 200) {
-            console.log("data", response.data.masters);
             setLocation(response.data.masters);
           } else {
             console.error("Failed to fetch data:", response.message);
@@ -263,7 +266,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
         values: {
           date: format(selectedDate, "dd-MM-yyyy"),
           time: format(selectedTime, "HH:mm"),
-          location: formData.location,
+          location: searchTerm,
           duration: Number(formData.duration_days),
           symptoms: formData.symptoms,
           aggravating_factors: formData.aggravating_factors,
@@ -344,7 +347,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                value={defaultValues?.values?.location}
+                value={searchTerm}
                 onChange={handleInputChange}
               />
               {loading ? (
@@ -367,7 +370,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
                   ))}
                 </ul>
               ) : null}
-              {errors.location && <div className="error-text">{errors.location}</div>}
+              {errors.searchTerm && <div className="error-text">{errors.searchTerm}</div>}
 
             </div>
           </div>
