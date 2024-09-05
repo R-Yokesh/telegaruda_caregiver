@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktelegaruda_caregiver=self.webpackChunktelegaruda_caregiver||[]).push([[304],{91304:(e,a,r)=>{r.r(a),r.d(a,{default:()=>c});r(65043);var s=r(70579);const d=()=>(0,s.jsx)("div",{children:"Dashboard"}),c=()=>(0,s.jsx)("div",{children:(0,s.jsx)(d,{})})}}]);
+//# sourceMappingURL=304.eb5c0aae.chunk.js.map
