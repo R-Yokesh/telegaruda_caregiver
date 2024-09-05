@@ -9,10 +9,31 @@ import {
 import React from "react";
 import { Assets } from "../../assets/Assets";
 
+// Add this CSS styling
+const tableCellStyle = {
+  borderRight: "1px solid #ccc", // Light grey vertical line
+  padding: "8px",
+};
+
+// Helper function to format date to dd-MM-yyyy
+const formatDate = (dateString) => {
+  const parsedDate = Date.parse(dateString);
+  if (isNaN(parsedDate)) return "N/A"; // Return "N/A" if the date is invalid
+
+  const date = new Date(parsedDate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`; // Format as dd-MM-yyyy
+};
+
+
 const ImmunizationTable = ({ columns, rowData, getselectedData, from }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+  const selectedData = (data, slug, type) => {
+    getselectedData(data, slug, type);
   };
+
   return (
     <>
       <CTable className="lab-responsive-table">
@@ -26,58 +47,71 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from }) => {
         <CTableBody>
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
-              <CTableHeaderCell>
+              <CTableHeaderCell style={tableCellStyle}>
                 <span className="fs-16 fw-500">{dt?.id}</span>
               </CTableHeaderCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.vaccine}</span>
+              <CTableDataCell style={tableCellStyle}>
+                <span className="fs-16 fw-500">{dt?.name}</span>
               </CTableDataCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.period}</span>
-              </CTableDataCell>
-              <CTableDataCell>
-                <div className="d-flex align-items-center justify-content-center gap-2">
-                  {!dt.taken_date ? (
-                    <img
-                      alt="edit"
-                      src={Assets?.vaccined}
-                      className="cursor"
-                      style={{ width: "40px" }}
-                      onClick={() => {
-                        if (from !== "Consult") {
-                          selectedData(dt, "delete");
-                        }
-                      }}
-                    />
-                  ) : (
-                    <img
-                      alt="delete"
-                      style={{ width: "40px" }}
-                      src={Assets?.colorVaccined}
-                      className="cursor"
-                      // onClick={() => selectedData(dt, "edit")}
-                    />
-                  )}
+              <CTableDataCell style={tableCellStyle}>
+                <div>
+                  {dt?.attributes?.values.map((value, index) => (
+                    <div key={index} className="fs-16 fw-500">
+                      {value?.periods}
+                    </div>
+                  ))}
                 </div>
               </CTableDataCell>
-              <CTableDataCell>{dt?.dosage_date}</CTableDataCell>
-              <CTableDataCell>{dt?.taken_date}</CTableDataCell>
-              {/* <CTableDataCell>
-                <div className="d-flex align-items-center justify-content-center gap-2">
-                  <img
-                    alt="edit"
-                    src={Assets?.TableEdit}
-                    className="cursor"
-                    onClick={() => selectedData(dt, "edit")}
-                  />
-                  <img
-                    alt="delete"
-                    src={Assets?.TableDelete}
-                    className="cursor"
-                    onClick={() => selectedData(dt, "delete")}
-                  />
+
+              <CTableDataCell style={tableCellStyle}>
+                {dt?.attributes?.values.map((value, index) => (
+                  <div
+                    key={index}
+                    className="d-flex align-items-center justify-content-center gap-2"
+                  >
+                    {!value.taken_at ? (
+                      <img
+                        alt="edit"
+                        src={Assets?.vaccined}
+                        className="cursor"
+                        style={{ width: "25px" }}
+                        onClick={() => {
+                          if (from !== "Consult") {
+                            selectedData(value, dt?.slug, "delete");
+                          }
+                        }}
+                      />
+                    ) : (
+                      <img
+                        alt="delete"
+                        style={{ width: "25px" }}
+                        src={Assets?.colorVaccined}
+                        className="cursor"
+                      />
+                    )}
+                  </div>
+                ))}
+              </CTableDataCell>
+
+              <CTableDataCell style={tableCellStyle}>
+                <div>
+                  {dt?.attributes?.values.map((value, index) => (
+                    <div key={index} className="fs-16 fw-500">
+                      {formatDate(value?.dosage_date)}
+                    </div>
+                  ))}
                 </div>
-              </CTableDataCell> */}
+              </CTableDataCell>
+
+              <CTableDataCell style={tableCellStyle}>
+                <div>
+                  {dt?.attributes?.values.map((value, index) => (
+                    <div key={index} className="fs-16 fw-500">
+                      {formatDate(value?.taken_at)}
+                    </div>
+                  ))}
+                </div>
+              </CTableDataCell>
             </CTableRow>
           ))}
         </CTableBody>

@@ -55,7 +55,7 @@ const Allergies = () => {
       // ];
 
 
-      const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get,del,clearCache } = useApi();
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});

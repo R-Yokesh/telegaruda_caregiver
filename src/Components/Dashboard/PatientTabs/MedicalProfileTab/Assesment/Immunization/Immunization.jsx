@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useCallback } from "react";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import {
   CCard,
@@ -19,6 +19,11 @@ import ImmunizationTable from "../../../../../Tables/ImmunizationTable";
 import DatePicker from "react-datepicker";
 import Dropdown from "../../../../../Dropdown/Dropdown";
 import SingleDatePicker from "../../../../../DateRangePicker/SingleDatePicker";
+import { toast } from "react-toastify";
+import { format, isValid, parse } from "date-fns";
+import useApi from "../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const Immunization = ({ onClose, from }) => {
   const columnData = [
@@ -30,101 +35,124 @@ const Immunization = ({ onClose, from }) => {
     { id: 6, label: "TAKEN DATE" },
     // { id: 7, label: "ACTIONS" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
-    },
-    {
-      id: 2,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
-    },
-    {
-      id: 3,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "",
-    },
-    {
-      id: 4,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "",
-    },
-    {
-      id: 5,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
-    },
-    {
-      id: 6,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
-    },
-    {
-      id: 7,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
-    },
-    {
-      id: 8,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
-    },
-    {
-      id: 9,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "",
-    },
-    {
-      id: 10,
-      vaccine: "Lorem Ipsum",
-      period: "Lorem Ipsum",
-      status: "Lorem Ipsum",
-      dosage_date: "06-07-2024",
-      taken_date: "06-07-2024",
-    },
-  ];
-  const [currentPage, setCurrentPage] = useState(1);
+
+  // const rowData = [
+  //   {
+  //     id: 1,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "06-07-2024",
+  //   },
+  //   {
+  //     id: 2,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "06-07-2024",
+  //   },
+  //   {
+  //     id: 3,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "",
+  //   },
+  //   {
+  //     id: 4,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "",
+  //   },
+  //   {
+  //     id: 5,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "06-07-2024",
+  //   },
+  //   {
+  //     id: 6,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "06-07-2024",
+  //   },
+  //   {
+  //     id: 7,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "06-07-2024",
+  //   },
+  //   {
+  //     id: 8,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "06-07-2024",
+  //   },
+  //   {
+  //     id: 9,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "",
+  //   },
+  //   {
+  //     id: 10,
+  //     vaccine: "Lorem Ipsum",
+  //     period: "Lorem Ipsum",
+  //     status: "Lorem Ipsum",
+  //     dosage_date: "06-07-2024",
+  //     taken_date: "06-07-2024",
+  //   },
+  // ];
+    
+  const { loading, error, get,post,del,clearCache } = useApi();
+
+  const [rowData, setRowData] = useState([]);
+  const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [deleteView, setDeleteView] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [id, setId] = useState(null);
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedData, setSelectedData] = useState({});
   const [tkDate, setTkDate] = useState(new Date());
+  const [slug, setSlug] = useState("");
+  
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
+
 
   // Get today's date
   const today = new Date();
 
-  const [selectedData, setSelectedData] = useState({});
 
   const itemsPerPage = 5; // Number of items to display per page
+
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+   
+  };
+
+  
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
@@ -141,11 +169,11 @@ const Immunization = ({ onClose, from }) => {
   const addFormPage = () => {
     setAddFormView(true);
   };
-  const options = ["Severity", "Option 2", "Option 3"]; // Example options
 
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
+
+  const getselectedData = (data,slug, type) => {
     setSelectedData(data);
+    setSlug(slug)
     if (type === "edit") {
       addFormPage();
     }
@@ -153,7 +181,58 @@ const Immunization = ({ onClose, from }) => {
       setDeleteView(true);
     }
   };
+  console.log("selectedData111",selectedData,slug)
+    
+  const fetchImmunization = useCallback(async () => {
+    try {
+      // clearCache();
+      const response = await get(
+        `resource/masters/all?slug=immunisation&order_by=id&dir=1&patient_id=${data?.user_id}`
+      );
+      if (response.code === 200) {
+        setRowData(response?.data?.masters);
+        setPagination(response?.data?.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get]);
 
+  useEffect(() => {
+    fetchImmunization();
+  }, [fetchImmunization]);
+
+
+   // Add API 
+   const addImmunization = async () => {
+
+    try {
+      const body = {
+        slug: slug,
+        details: selectedData.periods,
+        patient_id: data?.user_id,
+        status: selectedData.status,
+        taken_at: format(tkDate, "yyyy-MM-dd"),
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/immunisation`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchImmunization();
+        setDeleteView(false)
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
   return (
     <>
       {from === "Consult" && (
@@ -200,7 +279,7 @@ const Immunization = ({ onClose, from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                {/* <DateSelector /> */}
+                {/* <DateRangePicker getFilterValues={getFilterValues} /> */}
                 </CCol>
                 <CCol
                   lg={4}
@@ -282,13 +361,14 @@ const Immunization = ({ onClose, from }) => {
                             selected={tkDate}
                             onChange={(date) => setTkDate(date)}
                             maxDate={today}
+                            dateFormat="dd-MM-yyyy"
                           />
                         </div>
                       </div>
                     </div>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => setDeleteView(false)}>
+                        <PrimaryButton onClick={() => addImmunization()}>
                           Yes
                         </PrimaryButton>
                       </div>

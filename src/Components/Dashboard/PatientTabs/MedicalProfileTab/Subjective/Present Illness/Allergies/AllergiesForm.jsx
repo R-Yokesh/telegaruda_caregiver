@@ -194,7 +194,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
     setSelectedAllergy(selectedOption);
     setFormData((prevState) => ({
       ...prevState,
-      category: selectedOption.value,
+      category: selectedOption.label,
     }));
   };
 
@@ -222,7 +222,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
           // Format the data for react-select: { label: "Name", value: "Name" }
           const formattedData = response?.data?.masters?.map((item) => ({
             label: item?.name,
-            value: item?.name,
+            value: item,
           }));
           setAllergyName(formattedData);
         } else {
@@ -237,7 +237,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
     getAllergy();
   }, [searchTerm]);
-
+  
 
   // API integration of allergies list
   useEffect(() => {
@@ -250,7 +250,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
           // Format the data for react-select: { label: "Name", value: "Name" }
           const formattedData = response?.data?.masters?.map((item) => ({
             label: item?.name,
-            value: item?.name,
+            value: item,
           }));
           setRaction(formattedData);
         } else {
@@ -294,6 +294,9 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
     getProvider();
   }, [searchTerm]);
+  
+
+
 
 
   // Add Allergy
@@ -306,34 +309,34 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
         slug: "allergy",
         values: {
           name: {
-            id: 62827,
+            id: selectedAllergy?.value?.id,
             attributes: {
-              allergy_type: "Drug",
-              allergy_category: "Drug"
+              allergy_type: selectedAllergy?.value?.attributes?.allergy_type,
+              allergy_category: selectedAllergy?.value?.attributes?.allergy_category,
             },
-            master_type_slug: "Generic",
-            name: selectedAllergy.label,
-            slug: "zuclopenthixol",
-            is_active: 1
+            master_type_slug: selectedAllergy?.value?.master_type_slug,
+            name: selectedAllergy?.label,
+            slug: selectedAllergy?.value?.slug,
+            is_active: selectedAllergy?.value?.is_active
           },
-          type: "Drug",
+          // type: "Drug",
           category: formData.category,
           reaction: {
-            id: 166865,
-            attributes: null,
-            master_type_slug: "reaction",
-            name: selectedReaction.label,
-            slug: "excessive sleeping",
-            is_active: 1
+            id: selectedReaction?.value?.id,
+            attributes: selectedReaction?.value?.attributes,
+            master_type_slug: selectedReaction?.value?.master_type_slug,
+            name: selectedReaction?.label,
+            slug: selectedReaction?.value?.slug,
+            is_active: selectedReaction?.value?.is_active
           },
-          other_reaction: formData.other_reaction,
+          other_reaction: formData?.other_reaction,
           date: format(selectedDate, "dd-MM-yyyy"),
-          severity: formData.severity,
-          provider: selectedProvider.label,
-          notes: formData.notes,
-          status: formData.status,
-          treated_by: "d",
-          is_active: 1,
+          severity: formData?.severity,
+          provider: selectedProvider?.label,
+          notes: formData?.notes,
+          status: formData?.status,
+          // treated_by: "d",
+          // is_active: 1,
         }
       };
 
@@ -360,39 +363,39 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
       try {
         const body = {
-  
+
           patient_id: "10",
           slug: "allergy",
           values: {
             name: {
-              id: 62827,
+              id: selectedAllergy?.value?.id,
               attributes: {
-                allergy_type: "Drug",
-                allergy_category: "Drug"
+                allergy_type: selectedAllergy?.value?.attributes?.allergy_type,
+                allergy_category: selectedAllergy?.value?.attributes?.allergy_category,
               },
-              master_type_slug: "Generic",
+              master_type_slug: selectedAllergy?.value?.master_type_slug,
               name: selectedAllergy.label,
-              slug: "zuclopenthixol",
-              is_active: 1
+              slug: selectedAllergy?.value?.slug,
+              is_active: selectedAllergy?.value?.is_active
             },
-            type: "Drug",
+            // type: "Drug",
             category: formData.category,
             reaction: {
-              id: 166865,
-              attributes: null,
-              master_type_slug: "reaction",
-              name: selectedReaction.label,
-              slug: "excessive sleeping",
-              is_active: 1
+              id: selectedReaction?.value?.id,
+              attributes: selectedReaction?.value?.attributes,
+              master_type_slug: selectedReaction?.value?.master_type_slug,
+              name: selectedReaction?.label,
+              slug: selectedReaction?.value?.slug,
+              is_active: selectedReaction?.value?.is_active
             },
-            other_reaction: formData.other_reaction,
+            other_reaction: formData?.other_reaction,
             date: format(selectedDate, "dd-MM-yyyy"),
-            severity: formData.severity,
-            provider: selectedProvider.label,
-            notes: formData.notes,
-            status: formData.status,
-            treated_by: "d",
-            is_active: 1,
+            severity: formData?.severity,
+            provider: selectedProvider?.label,
+            notes: formData?.notes,
+            status: formData?.status,
+            // treated_by: "d",
+            // is_active: 1,
           }
         };
   

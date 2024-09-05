@@ -30,18 +30,15 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from }) => {
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{dt?.no}</span>
+                <span className="fs-16 fw-500">{dt?.id ? dt?.id : "-"}</span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.date}</span>
+                <span className="fs-16 fw-500">{dt?.values?.date ? dt?.values?.date : "-"}</span>
               </CTableDataCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.time}</span>
+                <span className="fs-16 fw-500">{dt?.values?.code ? dt?.values?.code : "-"}</span>
               </CTableDataCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.id}</span>
-              </CTableDataCell>
-              <CTableDataCell>{dt?.description}</CTableDataCell>
+              <CTableDataCell>{dt?.values?.description ? dt?.values?.description : "-"}</CTableDataCell>
               {/* <CTableDataCell>
                 <div className="d-flex align-items-center justify-content-center gap-2">
                   <img

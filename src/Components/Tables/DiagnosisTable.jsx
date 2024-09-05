@@ -11,9 +11,11 @@ import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
 
 const DiagnosisTable = ({ columns, rowData, getselectedData, from }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+ 
+  const selectedData = (data,id, type) => {
+    getselectedData(data,id, type);
   };
+
   return (
     <>
       <CTable className="lab-responsive-table">
@@ -30,15 +32,15 @@ const DiagnosisTable = ({ columns, rowData, getselectedData, from }) => {
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{dt?.id}</span>
+                <span className="fs-16 fw-500">{dt?.id ? dt?.id : "-"}</span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.date}</span>
+                <span className="fs-16 fw-500">{dt?.addition_info?.date ? dt?.addition_info?.date : "-"}</span>
               </CTableDataCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.condition}</span>
+                <span className="fs-16 fw-500">{dt?.addition_info?.title ? dt?.addition_info?.title : "-"}</span>
               </CTableDataCell>
-              <CTableDataCell>{dt?.treatment}</CTableDataCell>
+              <CTableDataCell>{dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}</CTableDataCell>
               {/* <CTableDataCell>{dt?.remark}</CTableDataCell> */}
               {from !== "Consult" && (
                 <CTableDataCell>
@@ -47,13 +49,13 @@ const DiagnosisTable = ({ columns, rowData, getselectedData, from }) => {
                       alt="edit"
                       src={Assets?.TableEdit}
                       className="cursor"
-                      onClick={() => selectedData(dt, "edit")}
+                      onClick={() => selectedData(dt,dt?.id, "edit")}
                     />
                     <img
                       alt="delete"
                       src={Assets?.TableDelete}
                       className="cursor"
-                      onClick={() => selectedData(dt, "delete")}
+                      onClick={() => selectedData(dt,dt?.id, "delete")}
                     />
                   </div>
                 </CTableDataCell>
