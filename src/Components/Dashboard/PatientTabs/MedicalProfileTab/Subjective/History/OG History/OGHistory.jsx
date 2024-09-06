@@ -411,6 +411,7 @@ const OGHistory = ({ from, back }) => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const [obsData, setObsData] = useState([]);
+  const [mensuData, setMensuData] = useState({});
   const [obsPagi, setObsPagi] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
@@ -570,6 +571,53 @@ const OGHistory = ({ from, back }) => {
     setEndDate(endDate);
     setSearchValue(searchValue);
   };
+  const getMensuralLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=1&page=1&order_by=id&dir=2` //${data?.user_id}
+      );
+      const listData = response?.data?.patient_histories[0]; //
+      setMensuData(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get]);
+  const mensuEdit = async (answerDatas, selectedId) => {
+    try {
+      const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id, //data?.user_id
+        slug: "menstrual-history",
+      };
+      await patch(url, body);
+      clearCache();
+      await getMensuralLists();
+      toast.success("Updated successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  const mensuAdd = async (answerDatas) => {
+    try {
+      const url = `resource/patientHistories`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id, //data?.user_id
+        slug: "menstrual-history",
+      };
+      await post(url, body);
+      clearCache();
+      await getMensuralLists();
+      toast.success("Added successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  useEffect(() => {
+    getMensuralLists();
+  }, [getMensuralLists]);
+
   useEffect(() => {
     getObsLists();
   }, [getObsLists]);
@@ -748,7 +796,7 @@ const OGHistory = ({ from, back }) => {
                         <Pagination
                           currentPage={currentPage}
                           onPageChange={onPageChange}
-                          totalItems={obsPagi?.total}
+                          totalItems={obsPagi?.total || 0}
                           itemsPerPage={itemsPerPage}
                         />
                       </CCol>
@@ -850,7 +898,9 @@ const OGHistory = ({ from, back }) => {
                   {currentTab === 2 && currentHistoryTab === 1 && (
                     <MensturalHistoryForm
                       back={back}
-                      defaultValues={selectedData}
+                      defaultValues={mensuData}
+                      mensuEdit={mensuEdit}
+                      mensuAdd={mensuAdd}
                     />
                   )}
                   {currentTab === 2 && currentHistoryTab === 2 && (

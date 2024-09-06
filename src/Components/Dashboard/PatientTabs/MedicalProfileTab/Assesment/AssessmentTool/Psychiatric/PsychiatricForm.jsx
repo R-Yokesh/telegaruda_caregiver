@@ -2,6 +2,7 @@ import { CCol, CFormCheck, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
+import { capitalizeFirstLetter } from "../../../../../../../Utils/commonUtils";
 
 const PsychiatricForm = ({
   back,
@@ -47,12 +48,11 @@ const PsychiatricForm = ({
     // Add your submit logic here
     onAdd(formData);
   };
-  console.log(formData, "first latest", isEditMode);
   return (
     <>
       <form>
         <div className="d-flex align-items-center justify-content-between">
-          <h3>{formTitle}</h3>
+          <h3>{capitalizeFirstLetter(formTitle)}</h3>
           <div style={{ width: "128px" }}>
             <PrimaryButton onClick={back}>BACK</PrimaryButton>
           </div>
@@ -65,11 +65,12 @@ const PsychiatricForm = ({
           </>
         ) : (
           <>
+            <h4 className="mb-3">{defaultValues?.questions[0]?.question?.name}</h4>
             {defaultValues?.questions[0]?.question.sub_questions?.map(
               (question, index) => (
                 <CRow key={index} className="mb-3">
                   <CCol>
-                    <h5>{question?.name}</h5>
+                    <h5>{index + 1}. {question?.name}</h5>
                     {defaultValues?.questions[0]?.answers?.map(
                       (option, cIndex) => (
                         <CFormCheck

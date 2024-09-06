@@ -32,3 +32,8 @@ export const getSerialNumber = (itemPerPage, pageNumber, index) => {
   // Add the index of the item on the page to the starting serial number
   return startingSerialNumber + index;
 };
+
+export const capitalizeFirstLetter = (text) => {
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+};

@@ -9,7 +9,7 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
-import { getSerialNumber } from "../../../Utils/commonUtils";
+import { capitalizeFirstLetter, getSerialNumber } from "../../../Utils/commonUtils";
 import { format } from "date-fns";
 import { formatFetchDate } from "../../../Utils/dateUtils";
 
@@ -73,7 +73,7 @@ const PsychiatricTable = ({
                 </span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.name}</span>
+                <span className="fs-16 fw-500">{capitalizeFirstLetter(dt?.name)}</span>
               </CTableDataCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">
