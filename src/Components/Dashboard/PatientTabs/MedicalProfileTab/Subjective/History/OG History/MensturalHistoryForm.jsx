@@ -144,7 +144,7 @@ const MensturalHistoryForm = ({
         newErrors.cycleLengthDays = "Cycle Length in days is required.";
       }
       if (!flowDur) {
-        newErrors.fowdur = "Flow duration is required.";
+        newErrors.flowdur = "Flow duration is required.";
       }
       if (!flowType) {
         newErrors.flowtype = "Flow type is required.";
