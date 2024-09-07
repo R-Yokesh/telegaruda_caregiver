@@ -14,6 +14,7 @@ import {
   getFileTypeFromMime,
   openFile,
 } from "../../../../../../../Utils/commonUtils";
+import { useLocation } from "react-router-dom";
 
 const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
 
@@ -21,11 +22,12 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
-  const [formData, setFormData] = useState({
-    cpt_code: defaultValues?.values?.code || "",
-    description: defaultValues?.values?.name || "",
 
-  });
+  const [cpt, setCpt] = useState([]);
+  const [Description, setDescription] = useState([defaultValues?.values?.code || null])
+  const [searchTerm, setSearchTerm] = useState([defaultValues?.values?.name || null]);
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
 
   const getFormattedDate = (date) => {
@@ -87,19 +89,6 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
     }
   };
 
-
-  const options = ["93000", "93009", "93001", "93002", "93003"];
-
-
-  // Function to update Type
-  const getSelectedValue = (data) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      cpt_code: data,
-    }));
-
-  };
-
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -108,8 +97,8 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
       newErrors.date = "Date is required.";
       isValid = false;
     }
-    if (!formData.cpt_code) {
-      newErrors.cpt_code = "Cpt Code is required.";
+    if (!searchTerm) {
+      newErrors.searchTerm = "CPT Code is required.";
       isValid = false;
     }
 
@@ -133,6 +122,39 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
     }
   };
 
+
+
+  //api integration of ICD Code list
+  useEffect(() => {
+    const getCptCode = async () => {
+      if (searchTerm) {
+        try {
+          const response = await get(
+            `resource/masters?slug=procedure&searchkey=${searchTerm}&limit=50&country=undefined`
+          );
+          if (response.code === 200) {
+            setCpt(response.data.masters);
+          } else {
+            console.error("Failed to fetch data:", response.message);
+            setCpt([]);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          setCpt([]);
+        }
+      } else {
+        setCpt([]);
+      }
+    };
+
+    getCptCode();
+  }, [searchTerm, get]);
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+  };
+
   // Add Therapies
   const addCpt = async () => {
 
@@ -141,11 +163,9 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
         patient_id: "263",
         slug: "procedure",
         values: {
-          date: "2024-08-05T06:24:16.545Z",
-          code: "70553",
-          name: "Mri brain w/o & w/dye",
-          description:"",
-
+          date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
+          code: searchTerm,
+          name: Description,
         }
       };
       // Use the provided `post` function to send the request
@@ -166,7 +186,6 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
   };
 
   // Edit Therapies
-
   const editCpt = async () => {
 
     try {
@@ -174,11 +193,9 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
         patient_id: "263",
         slug: "procedure",
         values: {
-          date: "2024-08-05T06:24:16.545Z",
-          code: "70553",
-          name: "Mri brain w/o & w/dye",
-          description:"",
-
+          date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
+          code: searchTerm,
+          name: Description,
         }
       };
       // Use the provided `post` function to send the request
@@ -242,36 +259,42 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
           </div>
         </CCol>
         <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
+        <div style={{ width: "100%" }}>
+            <div class="position-relative dropdown-container">
               <label for="validationTooltip01" class="form-label">
-                CPT Code *
+                ICD Code *
               </label>
-              {/* <input
+              <input
                 type="text"
-                class="form-control  pad-10"
+                class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.treatment}
-              /> */}
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={options}
-                  defaultValue={
-                    defaultValues?.type
-                      ? options[findItemIndex(options, defaultValues?.type)]
-                      : null
-                  }
-                  getSelectedValue={getSelectedValue}
-                />
-              </div>
-              {errors.type && <div className="error-text">{errors.type}</div>}
+                value={searchTerm}
+                onChange={handleInputChange}
+              />
+              {loading ? (
+                <p>Loading...</p>
+              ) : error ? (
+                <p>{error}</p>
+              ) : cpt?.length > 0 ? (
+                <ul className="dropdown-list">
+                  {cpt?.map((cpt) => (
+                    <li
+                      key={cpt?.id}
+                      className="list-group-item"
+                      onClick={() => {
+                        setSearchTerm(cpt?.attributes?.cpt_code);
+                        setCpt([]);
+                        setDescription(cpt?.name)
+                      }}
+                    >
+                      {cpt?.attributes?.cpt_code}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {errors.searchTerm && <div className="error-text">{errors.searchTerm}</div>}
+
             </div>
           </div>
         </CCol>
@@ -289,7 +312,8 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
                 id="validationTooltip01"
                 placeholder="Enter"
                 // defaultValue={defaultValues?.remark}
-               
+                disabled
+                 value={Description}
               />
             </div>
           </div>

@@ -10,15 +10,29 @@ import React from "react";
 import { Assets } from "../../assets/Assets";
 import { format, parse } from "date-fns";
 
+
+// Helper function to format date to dd-MM-yyyy HH:mm:ss
+const formatDate = (dateString) => {
+  const parsedDate = Date.parse(dateString);
+  if (isNaN(parsedDate)) return "N/A"; // Return "N/A" if the date is invalid
+
+  const date = new Date(parsedDate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+  const year = date.getFullYear();
+
+  
+
+  return `${day}-${month}-${year} `; // Format as dd-MM-yyyy HH:mm
+};
+
+
 const PatientEducationTable = ({ columns, rowData, getselectedData, from }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+  const selectedData = (data,id, type) => {
+    getselectedData(data,id, type);
   };
 
-  const formattedDate = (dateStr) => {
-    const parsedDate = parse(dateStr, "yyyy-MM-dd", new Date());
-    return format(parsedDate, "dd-MM-yyyy");
-  };
+ 
 
   return (
     <>
@@ -36,19 +50,18 @@ const PatientEducationTable = ({ columns, rowData, getselectedData, from }) => {
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{dt?.id}</span>
+                <span className="fs-16 fw-500">{dt?.id ? dt?.id : "-"}</span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{formattedDate(dt?.date)}</span>
+                <span className="fs-16 fw-500">{formatDate(dt?.addition_info?.date)}</span>
+                <span className="fs-16 fw-500">{dt?.addition_info?.time ? dt?.addition_info?.time : "-"}</span>
+              </CTableDataCell>
+          
+              <CTableDataCell>
+                <span className="fs-16 fw-500">{dt?.addition_info?.title ? dt?.addition_info?.title : "-"}</span>
               </CTableDataCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.time}</span>
-              </CTableDataCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.title}</span>
-              </CTableDataCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.notes}</span>
+                <span className="fs-16 fw-500">{dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}</span>
               </CTableDataCell>
               {from !== "Consult" && (
                 <CTableDataCell>
@@ -57,13 +70,13 @@ const PatientEducationTable = ({ columns, rowData, getselectedData, from }) => {
                       alt="edit"
                       src={Assets?.TableEdit}
                       className="cursor"
-                      onClick={() => selectedData(dt, "edit")}
+                      onClick={() => selectedData(dt,dt?.id, "edit")}
                     />
                     <img
                       alt="delete"
                       src={Assets?.TableDelete}
                       className="cursor"
-                      onClick={() => selectedData(dt, "delete")}
+                      onClick={() => selectedData(dt,dt?.id, "delete")}
                     />
                   </div>
                 </CTableDataCell>
