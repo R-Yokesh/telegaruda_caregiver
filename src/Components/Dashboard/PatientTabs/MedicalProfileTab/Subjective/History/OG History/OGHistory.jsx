@@ -412,6 +412,8 @@ const OGHistory = ({ from, back }) => {
   const data = location.state?.PatientDetail;
   const [obsData, setObsData] = useState([]);
   const [mensuData, setMensuData] = useState({});
+  const [screeningData, setScreeningData] = useState({});
+
   const [obsPagi, setObsPagi] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
@@ -614,6 +616,53 @@ const OGHistory = ({ from, back }) => {
       console.error("Failed to delete:", error);
     }
   };
+
+  const getScreeningLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHistories?slug=screening-diagnostic-history&user_id=${data?.user_id}&limit=1&page=1&order_by=id&dir=2` //${data?.user_id}
+      );
+      const listData = response?.data?.patient_histories[0]; //
+      setScreeningData(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get]);
+  const screeningEdit = async (answerDatas, selectedId) => {
+    try {
+      const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id, //data?.user_id
+        slug: "screening-diagnostic-history",
+      };
+      await patch(url, body);
+      clearCache();
+      await getScreeningLists();
+      toast.success("Updated successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  const screeningAdd = async (answerDatas) => {
+    try {
+      const url = `resource/patientHistories`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id, //data?.user_id
+        slug: "screening-diagnostic-history",
+      };
+      await post(url, body);
+      clearCache();
+      await getScreeningLists();
+      toast.success("Added successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  useEffect(() => {
+    getScreeningLists();
+  }, [getScreeningLists]);
   useEffect(() => {
     getMensuralLists();
   }, [getMensuralLists]);
@@ -906,7 +955,9 @@ const OGHistory = ({ from, back }) => {
                   {currentTab === 2 && currentHistoryTab === 2 && (
                     <ScreeningHistoryForm
                       back={back}
-                      defaultValues={selectedData}
+                      defaultValues={screeningData}
+                      screeningAdd={screeningAdd}
+                      screeningEdit={screeningEdit}
                     />
                   )}
                 </CCardBody>

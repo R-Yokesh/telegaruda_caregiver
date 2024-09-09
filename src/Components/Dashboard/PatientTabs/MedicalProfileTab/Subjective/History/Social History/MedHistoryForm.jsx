@@ -5,75 +5,115 @@ import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import DatePicker from "react-datepicker";
 
-const MedHistoryForm = ({ back, defaultValues, from }) => {
-  const [date, setDate] = useState(null);
+const MedHistoryForm = ({
+  back,
+  defaultValues,
+  from,
+  socialAdd,
+  socialEdit,
+}) => {
+  console.log("first", defaultValues);
   const [smokingStatus, setSmokingStatus] = useState(
-    defaultValues?.smoking || "No"
+    defaultValues?.values?.smoking || "no"
   );
-
+  const [smokingDesc, setSmokingDesc] = useState(
+    defaultValues?.values?.smoking_desc || ""
+  );
   const [alcoholStatus, setAlcoholStatus] = useState(
-    defaultValues?.alcohol || "No"
+    defaultValues?.values?.alcohol || "no"
   );
+  const [alcoholDesc, setAlcoholDesc] = useState(
+    defaultValues?.values?.alcohol_desc || ""
+  );
+  const [drugStatus, setDrugStatus] = useState(
+    defaultValues?.values?.drugs || "no"
+  );
+  const [drugDesc, setDrugDesc] = useState(
+    defaultValues?.values?.drugs_desc || ""
+  );
+  const [errors, setErrors] = useState({
+    smokingDesc: "",
+    alcoholDesc: "",
+    drugDesc: "",
+  });
+  const validateForm = () => {
+    const newErrors = {
+      smokingDesc: "",
+      alcoholDesc: "",
+      drugDesc: "",
+    };
 
-  const [drugStatus, setDrugStatus] = useState(defaultValues?.drugs || "No");
+    if (smokingStatus === "yes" && !smokingDesc.trim()) {
+      newErrors.smokingDesc = "Smoking details are required.";
+    }
+
+    if (alcoholStatus === "yes" && !alcoholDesc.trim()) {
+      newErrors.alcoholDesc = "Alcohol details are required.";
+    }
+
+    if (drugStatus === "yes" && !drugDesc.trim()) {
+      newErrors.drugDesc = "Drugs details are required.";
+    }
+
+    setErrors(newErrors);
+
+    return !Object.values(newErrors).some((error) => error);
+  };
 
   const handleSmokingStatus = (event) => {
-    setSmokingStatus(event.target.value === "yes" ? "Yes" : "No");
+    setSmokingStatus(event.target.value);
   };
 
   const handleAlcoholStatus = (event) => {
-    setAlcoholStatus(event.target.value === "yes" ? "Yes" : "No");
+    setAlcoholStatus(event.target.value);
   };
 
   const handleDrugStatus = (event) => {
-    setDrugStatus(event.target.value === "yes" ? "Yes" : "No");
+    setDrugStatus(event.target.value);
   };
 
-  useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      return new Date(year, month - 1, day);
-    };
-
-    // Example default date string
-    const defaultDateString = defaultValues?.onset;
-
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.onset
-      ? parseDateString(defaultDateString)
-      : new Date();
-
-    // Set default date in state
-    setDate(defaultDate);
-  }, [defaultValues]);
   const options = ["Yes", "No"];
 
   const getSelectedValue1 = (data) => {
     setSmokingStatus(data);
   };
 
-  const findIndex = defaultValues?.smoking
-    ? options?.indexOf(defaultValues?.smoking)
-    : 1;
-
   const getSelectedValue2 = (data) => {
     setAlcoholStatus(data);
   };
-
-  const findIndex2 = defaultValues?.alcohol
-    ? options?.indexOf(defaultValues?.alcohol)
-    : 1;
 
   const getSelectedValue3 = (data) => {
     setDrugStatus(data);
   };
 
-  const findIndex3 = defaultValues?.drugs
-    ? options?.indexOf(defaultValues?.drugs)
-    : 1;
+  const onSubmit = async () => {
+    const values = {
+      smoking: smokingStatus,
+      smoking_desc: smokingDesc,
+      alcohol: alcoholStatus,
+      alcohol_desc: alcoholDesc,
+      drugs: drugStatus,
+      drugs_desc: drugDesc,
+    };
+    if (validateForm()) {
+      if (defaultValues?.id === undefined) {
+        await socialAdd(values);
+      }
+      if (defaultValues?.id !== undefined) {
+        await socialEdit(values, defaultValues?.id);
+        if (smokingStatus === "no") {
+          setSmokingDesc("");
+        }
+        if (alcoholStatus === "no") {
+          setAlcoholDesc("");
+        }
+        if (drugStatus === "no") {
+          setDrugDesc("");
+        }
+      }
+    }
+  };
+
   return (
     <>
       <CRow className="mb-3">
@@ -96,7 +136,7 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="smoking"
-                checked={smokingStatus === "Yes"}
+                checked={smokingStatus === "yes"}
                 onChange={handleSmokingStatus}
                 disabled={from === "Consult" ? true : false}
               />
@@ -108,14 +148,14 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="smoking"
-                checked={smokingStatus === "No"}
+                checked={smokingStatus === "no"}
                 onChange={handleSmokingStatus}
                 disabled={from === "Consult" ? true : false}
               />
             </div>
           </div>
         </CCol>
-        {smokingStatus === "Yes" && (
+        {smokingStatus === "yes" && (
           <CCol lg={4} className="mb-3">
             <div style={{ width: "100%" }}>
               <div class="position-relative">
@@ -126,9 +166,14 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
                   rows={3}
+                  defaultValue={smokingDesc}
+                  onChange={(e) => setSmokingDesc(e.target.value)}
                   // text="Must be 8-20 words long."
-                disabled={from === "Consult" ? true : false}
+                  disabled={from === "Consult" ? true : false}
                 ></CFormTextarea>
+                {errors.smokingDesc && (
+                  <div className="text-danger">{errors.smokingDesc}</div>
+                )}
               </div>
             </div>
           </CCol>
@@ -152,7 +197,7 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="alcohol"
-                checked={alcoholStatus === "Yes"}
+                checked={alcoholStatus === "yes"}
                 onChange={handleAlcoholStatus}
                 disabled={from === "Consult" ? true : false}
               />
@@ -164,14 +209,14 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="alcohol"
-                checked={alcoholStatus === "No"}
+                checked={alcoholStatus === "no"}
                 onChange={handleAlcoholStatus}
                 disabled={from === "Consult" ? true : false}
               />
             </div>
           </div>
         </CCol>
-        {alcoholStatus === "Yes" && (
+        {alcoholStatus === "yes" && (
           <CCol lg={4} className="mb-3">
             <div style={{ width: "100%" }}>
               <div class="position-relative">
@@ -182,9 +227,14 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
                   rows={3}
+                  defaultValue={alcoholDesc}
+                  onChange={(e) => setAlcoholDesc(e.target.value)}
                   // text="Must be 8-20 words long."
-                disabled={from === "Consult" ? true : false}
+                  disabled={from === "Consult" ? true : false}
                 ></CFormTextarea>
+                {errors.alcoholDesc && (
+                  <div className="text-danger">{errors.alcoholDesc}</div>
+                )}
               </div>
             </div>
           </CCol>
@@ -208,7 +258,7 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="drugs"
-                checked={drugStatus === "Yes"}
+                checked={drugStatus === "yes"}
                 onChange={handleDrugStatus}
                 disabled={from === "Consult" ? true : false}
               />
@@ -220,14 +270,14 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="drugs"
-                checked={drugStatus === "No"}
+                checked={drugStatus === "no"}
                 onChange={handleDrugStatus}
                 disabled={from === "Consult" ? true : false}
               />
             </div>
           </div>
         </CCol>
-        {drugStatus === "Yes" && (
+        {drugStatus === "yes" && (
           <CCol lg={4} className="mb-3">
             <div style={{ width: "100%" }}>
               <div class="position-relative">
@@ -238,9 +288,14 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
                   rows={3}
+                  defaultValue={drugDesc}
+                  onChange={(e) => setDrugDesc(e.target.value)}
                   // text="Must be 4-20 words long."
-                disabled={from === "Consult" ? true : false}
+                  disabled={from === "Consult" ? true : false}
                 ></CFormTextarea>
+                {errors.drugDesc && (
+                  <div className="text-danger">{errors.drugDesc}</div>
+                )}
               </div>
             </div>
           </CCol>
@@ -249,7 +304,9 @@ const MedHistoryForm = ({ back, defaultValues, from }) => {
       {from !== "Consult" && (
         <CRow className="mb-1">
           <div style={{ width: "128px" }}>
-            <PrimaryButton>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit}>
+              {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
+            </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

@@ -5,95 +5,83 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
+import { format } from "date-fns";
 
-const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
-  const [date, setDate] = useState(null);
-  const [date2, setDate2] = useState(null);
-  const [date3, setDate3] = useState(null);
+const ScreeningHistoryForm = ({
+  back,
+  defaultValues,
+  from,
+  screeningAdd,
+  screeningEdit,
+}) => {
+  const [date, setDate] = useState(
+    defaultValues?.values?.last_pap_smear_at || new Date()
+  );
+  const [date2, setDate2] = useState(
+    defaultValues?.values?.last_mamogram_at || new Date()
+  );
+  const [date3, setDate3] = useState(
+    defaultValues?.values?.last_breast_exam_at || new Date()
+  );
   const [abnormalStatus, setAbnormalStatus] = useState(
-    defaultValues?.history_of_abnormal || "No"
+    defaultValues?.values?.is_abnormal_pap_smear || "no"
   );
   const [mamogramStatus, setMamogramStatus] = useState(
-    defaultValues?.history_of_mamogram || "No"
+    defaultValues?.values?.is_mammogram || "no"
   );
   const [breastStatus, setBreastStatus] = useState(
-    defaultValues?.history_of_breast || "No"
+    defaultValues?.values?.is_breast_exam || "no"
+  );
+  const [abnormalDesc, setAbnormalDesc] = useState(
+    defaultValues?.values?.abnormal_pap_smear_desc || ""
+  );
+  const [mamogramDesc, setMamogramDesc] = useState(
+    defaultValues?.values?.mammogram_desc || ""
+  );
+  const [breastDesc, setBreastDesc] = useState(
+    defaultValues?.values?.breast_exam_desc || ""
   );
 
   const handleAbnormalStatus = (event) => {
-    setAbnormalStatus(event.target.value === "yes" ? "Yes" : "No");
+    setAbnormalStatus(event.target.value);
   };
 
   const handleMamogramStatus = (event) => {
-    setMamogramStatus(event.target.value === "yes" ? "Yes" : "No");
+    setMamogramStatus(event.target.value);
   };
 
   const handleBreastStatus = (event) => {
-    setBreastStatus(event.target.value === "yes" ? "Yes" : "No");
+    setBreastStatus(event.target.value);
   };
-  useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      return new Date(year, month - 1, day);
+
+  const onSubmit = async () => {
+    const values = {
+      last_pap_smear_at: format(date, "yyyy-MM-dd"),
+      is_abnormal_pap_smear: abnormalStatus,
+      abnormal_pap_smear_desc: abnormalStatus === "yes" ? abnormalDesc : "",
+      last_mamogram_at: format(date2, "yyyy-MM-dd"),
+      is_mammogram: mamogramStatus,
+      mammogram_desc: mamogramStatus === "yes" ? mamogramDesc : "",
+      last_breast_exam_at: format(date3, "yyyy-MM-dd"),
+      is_breast_exam: breastStatus,
+      breast_exam_desc: breastStatus === "yes" ? breastDesc : "",
     };
-
-    // Example default date string
-    const defaultDateString = defaultValues?.date_of_last_pap;
-
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.date_of_last_pap
-      ? parseDateString(defaultDateString)
-      : new Date();
-
-    // Example default date string
-    const defaultDateString2 = defaultValues?.date_of_last_mamogram;
-
-    // Parse default date string to Date object
-    const defaultDate2 = defaultValues?.date_of_last_mamogram
-      ? parseDateString(defaultDateString2)
-      : new Date();
-
-    // Example default date string
-    const defaultDateString3 = defaultValues?.date_of_last_breast;
-
-    // Parse default date string to Date object
-    const defaultDate3 = defaultValues?.date_of_last_breast
-      ? parseDateString(defaultDateString3)
-      : new Date();
-
-    // Set default date in state
-    setDate(defaultDate);
-    setDate2(defaultDate2);
-    setDate3(defaultDate3);
-  }, [defaultValues]);
-  const options = ["Yes", "No"];
-
-  const getSelectedValue2 = (data) => {
-    setAbnormalStatus(data);
+    if (defaultValues?.id === undefined) {
+      await screeningAdd(values);
+    }
+    if (defaultValues?.id !== undefined) {
+      await screeningEdit(values, defaultValues?.id);
+      if (breastStatus === "no") {
+        setBreastDesc("");
+      }
+      if (mamogramStatus === "no") {
+        setMamogramDesc("");
+      }
+      if (abnormalStatus === "no") {
+        setAbnormalDesc("");
+      }
+    }
   };
-
-  const findIndex = defaultValues?.history_of_abnormal
-    ? options?.indexOf(defaultValues?.history_of_abnormal)
-    : 1;
-
-  const getSelectedValue3 = (data) => {
-    setMamogramStatus(data);
-  };
-
-  const getSelectedValue4 = (data) => {
-    setBreastStatus(data);
-  };
-
-  const findIndex3 = defaultValues?.history_of_mamogram
-    ? options?.indexOf(defaultValues?.history_of_mamogram)
-    : 1;
-
-  const findIndex4 = defaultValues?.history_of_breast
-    ? options?.indexOf(defaultValues?.history_of_breast)
-    : 1;
   return (
     <>
       <CRow className="mb-3">
@@ -132,7 +120,7 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="abnormal"
-                checked={abnormalStatus === "Yes"}
+                checked={abnormalStatus === "yes"}
                 onChange={handleAbnormalStatus}
                 disabled={from === "Consult-Screen" ? true : false}
               />
@@ -144,14 +132,14 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="abnormal"
-                checked={abnormalStatus === "No"}
+                checked={abnormalStatus === "no"}
                 onChange={handleAbnormalStatus}
                 disabled={from === "Consult-Screen" ? true : false}
               />
             </div>
           </div>
         </CCol>
-        {abnormalStatus === "Yes" && (
+        {abnormalStatus === "yes" && (
           <CCol lg={4} className="mb-3">
             <div style={{ width: "100%" }}>
               <div class="position-relative">
@@ -162,6 +150,8 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
                   rows={3}
+                  defaultValue={abnormalDesc}
+                  onChange={(e) => setAbnormalDesc(e.target.value)}
                   // text="Must be 8-20 words long."
                   disabled={from === "Consult-Screen" ? true : false}
                 ></CFormTextarea>
@@ -204,7 +194,7 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="mamogram"
-                checked={mamogramStatus === "Yes"}
+                checked={mamogramStatus === "yes"}
                 onChange={handleMamogramStatus}
                 disabled={from === "Consult-Screen" ? true : false}
               />
@@ -216,14 +206,14 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="mamogram"
-                checked={mamogramStatus === "No"}
+                checked={mamogramStatus === "no"}
                 onChange={handleMamogramStatus}
                 disabled={from === "Consult-Screen" ? true : false}
               />
             </div>
           </div>
         </CCol>
-        {mamogramStatus === "Yes" && (
+        {mamogramStatus === "yes" && (
           <CCol lg={4} className="mb-3">
             <div style={{ width: "100%" }}>
               <div class="position-relative">
@@ -234,6 +224,8 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
                   rows={3}
+                  defaultValue={mamogramDesc}
+                  onChange={(e) => setMamogramDesc(e.target.value)}
                   // text="Must be 8-20 words long."
                   disabled={from === "Consult-Screen" ? true : false}
                 ></CFormTextarea>
@@ -276,7 +268,7 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="breast"
-                checked={breastStatus === "Yes"}
+                checked={breastStatus === "yes"}
                 onChange={handleBreastStatus}
                 disabled={from === "Consult-Screen" ? true : false}
               />
@@ -288,14 +280,14 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="breast"
-                checked={breastStatus === "No"}
+                checked={breastStatus === "no"}
                 onChange={handleBreastStatus}
                 disabled={from === "Consult-Screen" ? true : false}
               />
             </div>
           </div>
         </CCol>
-        {breastStatus === "Yes" && (
+        {breastStatus === "yes" && (
           <CCol lg={4} className="mb-3">
             <div style={{ width: "100%" }}>
               <div class="position-relative">
@@ -306,6 +298,8 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
                   rows={3}
+                  defaultValue={breastDesc}
+                  onChange={(e) => setBreastDesc(e.target.value)}
                   // text="Must be 8-20 words long."
                   disabled={from === "Consult-Screen" ? true : false}
                 ></CFormTextarea>
@@ -318,7 +312,9 @@ const ScreeningHistoryForm = ({ back, defaultValues, from }) => {
       {from !== "Consult-Screen" && (
         <CRow className="mb-1">
           <div style={{ width: "130px" }}>
-            <PrimaryButton>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit}>
+              {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
+            </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

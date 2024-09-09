@@ -4,9 +4,8 @@ import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
-import { format, isValid, parse } from "date-fns";
+import { format } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
-import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
 import { findItemIndex } from "../../../../../../../Utils/commonUtils";
 
 const MensturalHistoryForm = ({
