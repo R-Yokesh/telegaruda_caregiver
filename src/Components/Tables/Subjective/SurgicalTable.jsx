@@ -8,8 +8,16 @@ import {
 } from "@coreui/react";
 import React from "react";
 import { Assets } from "../../../assets/Assets";
+import { getSerialNumber } from "../../../Utils/commonUtils";
 
-const SurgicalTable = ({ columns, rowData, getselectedData, from }) => {
+const SurgicalTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  itemsPerPage,
+  currentPage,
+}) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
@@ -30,33 +38,43 @@ const SurgicalTable = ({ columns, rowData, getselectedData, from }) => {
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.id}</span>
+                  <span className="fs-16 fw-500">
+                    {getSerialNumber(itemsPerPage, currentPage, i)}
+                  </span>
                 </div>
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.date}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.values?.surgery_date
+                      ?.split(" ")[0]
+                      .split("-")
+                      .reverse()
+                      .join("-")}
+                  </span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.name}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.values?.surgical_name?.name}
+                  </span>
                 </div>
               </CTableDataCell>
 
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.icd_code}</span>
+                  <span>{dt?.values?.icd?.slug}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.Performed_by}</span>
+                  <span>{dt?.values?.surgery_done_by}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.hospital}</span>
+                  <span>{dt?.values?.hospital_name}</span>
                 </div>
               </CTableDataCell>
 

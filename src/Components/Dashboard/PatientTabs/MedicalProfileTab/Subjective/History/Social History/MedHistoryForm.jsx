@@ -72,20 +72,6 @@ const MedHistoryForm = ({
     setDrugStatus(event.target.value);
   };
 
-  const options = ["Yes", "No"];
-
-  const getSelectedValue1 = (data) => {
-    setSmokingStatus(data);
-  };
-
-  const getSelectedValue2 = (data) => {
-    setAlcoholStatus(data);
-  };
-
-  const getSelectedValue3 = (data) => {
-    setDrugStatus(data);
-  };
-
   const onSubmit = async () => {
     const values = {
       smoking: smokingStatus,
