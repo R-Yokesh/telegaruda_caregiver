@@ -10,9 +10,9 @@ import React from "react";
 import Badge from "../../../Badge/Badge";
 import { Assets } from "../../../../assets/Assets";
 
-const MoodTable = ({ columns, rowData, getselectedData, from }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+const MoodTable = ({ columns, rowData, getselectedData, from ,moodData}) => {
+  const selectedData = (data, id,type) => {
+    getselectedData(data,id, type);
   };
   return (
     <>
@@ -27,21 +27,21 @@ const MoodTable = ({ columns, rowData, getselectedData, from }) => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {rowData?.map((dt, i) => (
+          {moodData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.id}</span>
+                <span className="fs-16 fw-500">{dt?.id}</span>
                 </div>
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.date}</span>
+                <span className="fs-16 fw-500">{dt?.act_date}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.type}</span>
+                <span className="fs-16 fw-500">{dt?.act_type}</span>
                 </div>
               </CTableDataCell>
               {from !== "Consult" && (
@@ -56,7 +56,7 @@ const MoodTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="edit"
                         src={Assets?.EditPencil}
                         className="cursor"
-                        onClick={() => selectedData(dt, "edit")}
+                        onClick={() => selectedData(dt,dt?.id, "edit")}
                       />
                     </div>
                     <div
@@ -70,7 +70,7 @@ const MoodTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="delete"
                         src={Assets?.Delete}
                         className="cursor"
-                        onClick={() => selectedData(dt, "delete")}
+                        onClick={() => selectedData(dt,dt?.id, "delete")}
                       />
                     </div>
                   </div>

@@ -9,8 +9,16 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
+import { getSerialNumber } from "../../../Utils/commonUtils";
 
-const ObstetricHistoryTable = ({ columns, rowData, getselectedData, from }) => {
+const ObstetricHistoryTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  itemsPerPage,
+  currentPage,
+}) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
@@ -31,37 +39,39 @@ const ObstetricHistoryTable = ({ columns, rowData, getselectedData, from }) => {
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.id}</span>
+                  <span className="fs-16 fw-500">
+                    {getSerialNumber(itemsPerPage, currentPage, i)}
+                  </span>
                 </div>
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.lmp_date}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.lmp}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.ed_date}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.edd}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.trimster}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.trimester}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  {dt?.gravida}
+                  {dt?.values?.gravida}
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  {dt?.para}
+                  {dt?.values?.para}
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  {dt?.boh}
+                  {dt?.values?.boh}
                 </div>
               </CTableDataCell>
               {/* <CTableDataCell style={{ height: "10px" }}>

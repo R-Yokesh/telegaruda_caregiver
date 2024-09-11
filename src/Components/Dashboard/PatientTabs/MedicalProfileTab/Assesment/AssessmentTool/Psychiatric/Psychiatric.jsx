@@ -6,10 +6,13 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Pagination from "../../../../../../Pagination/Pagination";
 import PsychiatricTable from "../../../../../../Tables/AssessmentTools/PsychiatricTable";
 import PsychiatricForm from "./PsychiatricForm";
+import useApi from "../../../../../../../ApiServices/useApi";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Psychiatric = ({ from }) => {
   const columnData = [
@@ -512,25 +515,22 @@ const Psychiatric = ({ from }) => {
       ],
     },
   ];
-
+  const { get, post, clearCache, del } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  const [qName, setQName] = useState();
+  const [qPagi, setQPagi] = useState();
   const [addFormView, setAddFormView] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
   const [formTitle, setFormTitle] = useState(""); // State for form title
-
-  const itemsPerPage = 12; // Number of items to display per page
+  const [edit, setEdit] = useState(false);
+  const itemsPerPage = 6; // Number of items to display per page
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };
-
-  // Function to get items for the current page
-  const getCurrentPageItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return rowData?.slice(startIndex, endIndex);
   };
 
   const viewFormPage = () => {
@@ -541,33 +541,76 @@ const Psychiatric = ({ from }) => {
     console.log(type, "first", data);
     setSelectedData(data);
     setFormTitle(data?.name); // Set form title based on selected data
-    if (type === "view") {
+    if (type === "add") {
       viewFormPage();
+      setEdit(false);
+    }
+    if (type === "view") {
+      setAddFormView(true);
+      setEdit(true);
     }
   };
 
+  const onAdd = async (answerDatas) => {
+    console.log("first hello", selectedData);
+    try {
+      const url = `resource/form_submitted_answers`; // Replace with your API endpoint
+      const body = {
+        answers: answerDatas,
+        patient_id: data?.user_id,
+        form_id: selectedData?.id,
+        form_name: selectedData?.name,
+      };
+      await post(url, body);
+      clearCache();
+      await getTableLists();
+      toast.success("Added successfully");
+      setAddFormView(false);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+
+  const getTableLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/form?limit=${itemsPerPage}&page=${currentPage}&slug=psychiatric-exam&searchkey=&order_by=id&dir=1&user_id=${data?.user_id}` //
+      );
+      const listData = response?.data?.forms; //pagination
+      setQName(listData);
+      setQPagi(response?.data?.pagination);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, addFormView, currentPage]);
+
+  useEffect(() => {
+    getTableLists();
+  }, [getTableLists]);
   return (
     <>
       {!addFormView && (
         <>
           <div className="mb-2">
             <PsychiatricTable
-              rowData={getCurrentPageItems()}
+              rowData={qName}
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
+              currentPage={currentPage || 1}
+              itemsPerPage={itemsPerPage || 5}
             />
 
-            {/* <CRow className="mb-3">
-                            <CCol lg={12} className="d-flex justify-content-center">
-                                <Pagination
-                                    currentPage={currentPage}
-                                    onPageChange={onPageChange}
-                                    totalItems={rowData?.length}
-                                    itemsPerPage={itemsPerPage}
-                                />
-                            </CCol>
-                        </CRow> */}
+            <CRow className="mb-3">
+              <CCol lg={12} className="d-flex justify-content-center">
+                <Pagination
+                  currentPage={currentPage}
+                  onPageChange={onPageChange}
+                  totalItems={qPagi?.total || 0}
+                  itemsPerPage={itemsPerPage}
+                />
+              </CCol>
+            </CRow>
           </div>
         </>
       )}
@@ -582,6 +625,11 @@ const Psychiatric = ({ from }) => {
               defaultValues={selectedData}
               questions={selectedData.questions || []}
               formTitle={formTitle}
+              onAdd={onAdd}
+              latest_form_submission={
+                edit ? selectedData?.latest_form_submisson : null
+              }
+              isEditMode={edit}
             />
           </CCardBody>
         </CCard>

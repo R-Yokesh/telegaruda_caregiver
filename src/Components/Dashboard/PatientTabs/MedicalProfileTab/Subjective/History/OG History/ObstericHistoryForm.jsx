@@ -4,104 +4,62 @@ import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import { format, isValid, parse } from "date-fns";
+import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
 
-const ObstericHistoryForm = ({ back, defaultValues }) => {
+const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit }) => {
   const [date, setDate] = useState(null);
   const [date2, setDate2] = useState(null);
-  const [fert_treatment, setFert_treatment] = useState(
-    defaultValues?.fert_treatment || "No"
+  const [prev, setPrev] = useState(defaultValues?.fert_treatment || "No");
+  const [trimester, setTrimester] = useState(
+    defaultValues?.values?.trimester || ""
   );
-  const [para, setPara] = useState("");
-  const [lacating, setLacating] = useState("");
-  const [gravida, setGravida] = useState("");
-  const [trimester, setTrimester] = useState("");
+  const [obstetricDesc, setObstetricDesc] = useState(
+    defaultValues?.values?.boh_desc || ""
+  );
+  const [fertTreatmentDesc, setFertTreatmentDesc] = useState(
+    defaultValues?.values?.fertility_treatment_desc || ""
+  );
+  const [preg, setPreg] = useState(defaultValues?.values?.pregnant || "No");
+  const [fertTreat, setFertTreat] = useState(
+    defaultValues?.values?.fertility_treatment || "No"
+  );
+  const [lact, setLact] = useState(defaultValues?.values?.lactation || "No");
+  const [cesarean, setCesarean] = useState(
+    defaultValues?.values?.previous_cesarean_sections || "No"
+  );
+  const [obstetric, setObsteric] = useState(defaultValues?.values?.boh || "No");
+  const [gravidaValue, setGravidaValue] = useState(
+    defaultValues?.values?.gravida || ""
+  );
+  const [errors, setErrors] = useState({});
+  const [paraValue, setParaValue] = useState(defaultValues?.values?.para || "");
+  // This should match your expected format
+  const defaultDateTime = defaultValues?.values?.lmp || "";
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
 
-  const getSelectedTrimster = (data) => {
-    setTrimester(data);
-  };
-
-  const getSelectedGravida = (data) => {
-    setGravida(data);
-  };
-  const getSelectedLacating = (data) => {
-    setLacating(data);
-  };
-  const getSelectedPara = (data) => {
-    setPara(data);
-  };
-  const getSelectedFertValue = (data) => {
-    setFert_treatment(data);
-  };
-
+  const defaultDateTime1 = defaultValues?.values?.edd || "";
+  const defaultDate1 = defaultDateTime1.split(" ")[0] || "";
   useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      return new Date(year, month - 1, day);
-    };
+    // Parse the date string into a Date object
+    if (defaultDate) {
+      // Define the format of the date string you are parsing
+      const parsedDate = parse(defaultDate, DATE_FORMAT, new Date());
+      if (isValid(parsedDate)) {
+        setDate(parsedDate);
+      }
+      const parsedDate1 = parse(defaultDate1, DATE_FORMAT, new Date());
+      if (isValid(parsedDate1)) {
+        setDate2(parsedDate1);
+      }
+    }
+  }, [defaultDate, defaultDate1]);
 
-    // Example default date string
-    const defaultDateString = defaultValues?.lmp_date;
-
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.lmp_date
-      ? parseDateString(defaultDateString)
-      : new Date();
-
-    // Example default date string
-    const defaultDateString2 = defaultValues?.ed_date;
-
-    // Parse default date string to Date object
-    const defaultDate2 = defaultValues?.ed_date
-      ? parseDateString(defaultDateString2)
-      : new Date();
-
-    // Set default date in state
-    setDate(defaultDate);
-    setDate2(defaultDate2);
-  }, [defaultValues]);
   const options = ["First", "Second", "Third"];
   const findIndex = defaultValues?.trimster
     ? options?.indexOf(defaultValues?.trimster)
     : 0;
-
-  const lacatingoptions = ["Yes", "No"];
-  const findlacatingIndex = defaultValues?.lacating
-    ? lacatingoptions?.indexOf(defaultValues?.lacating)
-    : 1;
-  const findtreatmentIndex = defaultValues?.fert_treatment
-    ? lacatingoptions?.indexOf(defaultValues?.fert_treatment)
-    : 1;
-  const gravidaoptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-  const findgravidaIndex = defaultValues?.gravida
-    ? gravidaoptions?.indexOf(defaultValues?.gravida)
-    : 0;
-  const findparaIndex = defaultValues?.para
-    ? gravidaoptions?.indexOf(defaultValues?.para)
-    : 0;
-  const findingIndex5 = defaultValues?.lacating
-    ? lacatingoptions?.indexOf(defaultValues?.lacating)
-    : 1;
-  const getSelectedValue5 = (data) => {
-    console.log(data);
-  };
-  const [bad, setBad] = useState("No");
-  const findingIndex6 = defaultValues?.bad
-    ? lacatingoptions?.indexOf(defaultValues?.bad)
-    : 1;
-  const getSelectedValue6 = (data) => {
-    setBad(data);
-  };
-
-  const [preg, setPreg] = useState(defaultValues?.pregnant || "No");
-  const [fertTreat, setFertTreat] = useState(
-    defaultValues?.fert_treatment || "No"
-  );
-  const [lact, setLact] = useState(defaultValues?.lacating || "No");
-  const [cesarean, setCesarean] = useState(defaultValues?.cesarean || "No");
-  const [obstetric, setObsteric] = useState(defaultValues?.obstetric || "No");
 
   const handleChangeObste = (e) => {
     setObsteric(e.target.value);
@@ -116,24 +74,16 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
   const handleChangeFert = (e) => {
     setFertTreat(e.target.value);
   };
-  const findingIndex7 = defaultValues?.bad
-    ? lacatingoptions?.indexOf(defaultValues?.bad)
-    : 1;
-  const getSelectedValue7 = (data) => {
-    setPreg(data);
-  };
+
   const handleChange = (e) => {
     setPreg(e.target.value);
   };
-  const [gravidaValue, setGravidaValue] = useState(
-    defaultValues?.gravida || ""
-  );
-  const [paraValue, setParaValue] = useState(defaultValues?.para || "");
+
   const numCheck = (e) => {
     const input = e.target.value;
     const name = e.target.name;
 
-    const newstrValue = input.replace(/[^0-9]/g, "").slice(0, 2);
+    const newstrValue = input?.replace(/[^0-9]/g, "")?.slice(0, 2);
 
     if (name === "gravida") {
       setGravidaValue(newstrValue);
@@ -141,7 +91,77 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
     if (name === "para") {
       setParaValue(newstrValue);
     }
+    if (name === "trimester") {
+      setTrimester(newstrValue);
+    }
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = {};
+
+    // Validate fields
+    if (!preg) {
+      newErrors.preg = "Pregnant field is required";
+    }
+    if (preg === "Yes") {
+      if (!date) {
+        newErrors.date = "LMP Date is required";
+      }
+      if (!trimester) {
+        newErrors.trimester = "Trimester is required";
+      }
+      if (!gravidaValue) {
+        newErrors.gravidaValue = "Gravida is required";
+      }
+      if (!paraValue) {
+        newErrors.paraValue = "Para is required";
+      }
+    }
+    if (fertTreat === "Yes" && !fertTreatmentDesc) {
+      newErrors.fertTreatmentDesc =
+        "Fertility Treatment Description is required";
+    }
+    if (obstetric === "Yes" && !obstetricDesc) {
+      newErrors.obstetricDesc = "Bad Obstetric History Description is required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Handle successful form submission
+    setErrors({});
+    formsubmit();
+  };
+
+  const formsubmit = () => {
+    const values = {
+      lmp: preg === "Yes" ? format(date, "dd-MM-yyyy") : "",
+      edd: preg === "Yes" ? format(date2, "dd-MM-yyyy") : "",
+      trimester: preg === "Yes" ? trimester : "",
+      gravida: preg === "Yes" ? gravidaValue : "",
+      para: preg === "Yes" ? paraValue : "",
+      lactation: preg === "Yes" ? lact : "",
+      fertility_treatment: preg === "Yes" ? fertTreat : "",
+      fertility_treatment_desc: preg === "Yes" ? fertTreatmentDesc : "",
+      previous_cesarean_sections: cesarean,
+      pregnant: preg,
+      boh: obstetric,
+      boh_desc: obstetric === "Yes" ? obstetricDesc : "",
+    };
+    if (defaultValues?.id) {
+      console.log("Edit clicked");
+      obsEdit(values, defaultValues?.id);
+    }
+    if (!defaultValues?.id) {
+      obsAdd(values);
+    }
+    console.log("clicked");
+  };
+
   return (
     <>
       <CRow className="mb-3">
@@ -168,6 +188,7 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                 checked={preg === "No"}
                 onChange={handleChange}
               />
+              {errors.preg && <div className="text-danger">{errors.preg}</div>}
             </div>
           </div>
         </CCol>
@@ -183,8 +204,12 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                     showIcon
                     selected={date}
                     onChange={(date) => setDate(date)}
+                    dateFormat={DATE_FORMAT}
                   />
                 </div>
+                {errors.date && (
+                  <div className="text-danger">{errors.date}</div>
+                )}
               </div>
             </CCol>
             <CCol lg={4} className="mb-3">
@@ -197,6 +222,7 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                     showIcon
                     selected={date2}
                     onChange={(date) => setDate2(date)}
+                    dateFormat={DATE_FORMAT}
                   />
                 </div>
               </div>
@@ -207,14 +233,17 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                   <label for="validationTooltip01" class="form-label">
                     Trimester *
                   </label>
-                  {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.trimster}
-              /> */}
-                  <div
+                  <input
+                    type="text"
+                    class="form-control  pad-10"
+                    id="validationTooltip01"
+                    name="trimester"
+                    placeholder="00"
+                    // defaultValue={defaultValues?.trimster}
+                    value={trimester}
+                    onChange={numCheck}
+                  />
+                  {/* <div
                     className="w-100"
                     style={{
                       border: "1px solid #17171D33",
@@ -226,7 +255,10 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                       defaultValue={options[findIndex]}
                       getSelectedValue={getSelectedTrimster}
                     />
-                  </div>
+                  </div> */}
+                  {errors.trimester && (
+                    <div className="text-danger">{errors.trimester}</div>
+                  )}
                 </div>
               </div>
             </CCol>
@@ -242,7 +274,7 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                     id="validationTooltip01"
                     name="gravida"
                     placeholder="00"
-                    defaultValue={defaultValues?.gravida}
+                    // defaultValue={defaultValues?.gravida}
                     value={gravidaValue}
                     onChange={numCheck}
                   />
@@ -259,6 +291,9 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                       defaultValue={gravidaoptions[findgravidaIndex]}
                     />
                   </div> */}
+                  {errors.gravidaValue && (
+                    <div className="text-danger">{errors.gravidaValue}</div>
+                  )}
                 </div>
               </div>
             </CCol>
@@ -291,6 +326,9 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                       defaultValue={gravidaoptions[findparaIndex]}
                     />
                   </div> */}
+                  {errors.paraValue && (
+                    <div className="text-danger">{errors.paraValue}</div>
+                  )}
                 </div>
               </div>
             </CCol>
@@ -350,7 +388,14 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                       id="validationTooltip01"
                       placeholder="Enter"
                       // defaultValue={defaultValues?.fert_treatment}
+                      value={fertTreatmentDesc}
+                      onChange={(e) => setFertTreatmentDesc(e.target.value)}
                     />
+                    {errors.fertTreatmentDesc && (
+                      <div className="text-danger">
+                        {errors.fertTreatmentDesc}
+                      </div>
+                    )}
                   </div>
                 </div>
               </CCol>
@@ -408,19 +453,6 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Previous Cesarean Sections
               </label>
-              {/* <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={lacatingoptions}
-                  defaultValue={lacatingoptions[findingIndex5]}
-                  getSelectedValue={getSelectedValue5}
-                />
-              </div> */}
               <CFormCheck
                 type="radio"
                 label="Yes"
@@ -446,19 +478,6 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Bad Obstetric History
               </label>
-              {/* <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
-                  options={lacatingoptions}
-                  defaultValue={lacatingoptions[findingIndex6]}
-                  getSelectedValue={getSelectedValue6}
-                />
-              </div> */}
               <CFormCheck
                 type="radio"
                 label="Yes"
@@ -489,7 +508,12 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
                   id="validationTooltip01"
                   placeholder="Enter"
                   // defaultValue={defaultValues?.fert_treatment}
+                  value={obstetricDesc}
+                  onChange={(e) => setObstetricDesc(e.target.value)}
                 />
+                {errors.obstetricDesc && (
+                  <div className="text-danger">{errors.obstetricDesc}</div>
+                )}
               </div>
             </div>
           </CCol>
@@ -497,7 +521,7 @@ const ObstericHistoryForm = ({ back, defaultValues }) => {
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "130px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
+          <PrimaryButton onClick={handleSubmit}>SAVE</PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

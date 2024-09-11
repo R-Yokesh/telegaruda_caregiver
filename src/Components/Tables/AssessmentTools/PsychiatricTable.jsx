@@ -9,10 +9,47 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
+import { capitalizeFirstLetter, getSerialNumber } from "../../../Utils/commonUtils";
+import { format } from "date-fns";
+import { formatFetchDate } from "../../../Utils/dateUtils";
 
-const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
+const PsychiatricTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  currentPage,
+  itemsPerPage,
+}) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
+  };
+
+  const formatText = (text, score) => {
+    let cleanedText = text?.replace(/@\w+\s*/g, "");
+
+    // Extract status between ! markers
+    const statusMatch = text?.match(/!(.*?)!/);
+    const status = statusMatch ? statusMatch[1] : "";
+
+    // Remove the status part from the cleaned text
+    cleanedText = cleanedText?.replace(/!.*!/, "")?.trim();
+
+    // Extract title and sub-title
+    const titleMatch = cleanedText?.match(/^([^,]*?)(?:,|$)/);
+    const subTitMatch = cleanedText?.match(/, (.+)$/);
+
+    // Prepare the final object
+    console.log({
+      title: titleMatch ? titleMatch[1]?.trim() : "",
+      subTit: subTitMatch ? subTitMatch[1]?.trim() : "",
+      status: status?.trim(),
+    });
+    return (
+      <div className="d-flex flex-column align-items-center">
+        <Badge label={score} color={status} />
+      </div>
+    );
   };
 
   return (
@@ -31,20 +68,28 @@ const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{dt?.id}</span>
+                <span className="fs-16 fw-500">
+                  {getSerialNumber(itemsPerPage, currentPage, i)}
+                </span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.name}</span>
+                <span className="fs-16 fw-500">{capitalizeFirstLetter(dt?.name)}</span>
               </CTableDataCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.date}</span>
+                <span className="fs-16 fw-500">
+                  {formatFetchDate(dt?.latest_form_submisson?.created_at)}
+                  {/* {formatText(dt?.latest_form_submisson?.message)} */}
+                </span>
               </CTableDataCell>
               {/* <CTableDataCell>
               <span className="fs-16 fw-500">{dt?.result}</span>
               </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <Badge label={dt?.result} color={dt?.result ? "error" : ""} />
+                  <Badge
+                    label={dt?.latest_form_submisson?.score}
+                    color={"error"}
+                  />
                 </div>
               </CTableDataCell>
 
@@ -54,18 +99,21 @@ const PsychiatricTable = ({ columns, rowData, getselectedData, from }) => {
                     <img
                       alt="edit"
                       src={
-                        i === 0 ? Assets?.testSubIcon : Assets?.testUnSubIcon
+                        dt?.latest_form_submisson?.score
+                          ? Assets?.testSubIcon
+                          : Assets?.testUnSubIcon
                       }
                       className="cursor"
+                      onClick={() => selectedData(dt, "add")}
                     />
-                    {i === 0 && (
-                    <img
-                      alt="delete"
-                      src={Assets?.testViewIcon}
-                      className="cursor"
-                      onClick={() => selectedData(dt, "view")}
-                    />
-                     )} 
+                    {dt?.latest_form_submisson?.score && (
+                      <img
+                        alt="delete"
+                        src={Assets?.testViewIcon}
+                        className="cursor"
+                        onClick={() => selectedData(dt, "view")}
+                      />
+                    )}
                   </div>
                 </CTableDataCell>
               )}

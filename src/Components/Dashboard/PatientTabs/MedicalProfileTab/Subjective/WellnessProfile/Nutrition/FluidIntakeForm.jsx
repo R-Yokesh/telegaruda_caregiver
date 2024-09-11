@@ -12,8 +12,8 @@ import moment from "moment";
 const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) => {
   const [date, setDate] = useState(null);
   const { loading, error, post, patch, clearCache } = useApi();
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(new Date()); 
+  const [selectedDate, setSelectedDate] =  useState(new Date()); 
   const [fluidType, setFluidType] = useState(defaultValues?.act_type || "");
   const [water, setWater] = useState("");
   const [intake, setIntake] = useState(defaultValues?.act_intake || "");
@@ -22,8 +22,8 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
   useEffect(() => {
     // Initialize the state with default values if available
     if (defaultValues) {
-      setSelectedDate(parseDate(defaultValues.act_date));
-      setSelectedTime(parseTime(defaultValues.act_time));
+      setSelectedDate(parseDate(defaultValues?.details?.act_date) || new Date());
+      setSelectedTime(parseTime(defaultValues.act_time)|| new Date());
       setFluidType(defaultValues.act_type || "");
       setWater(defaultValues.act_intake?.water || ""); // Set water for add mode
       setIntake(defaultValues.act_intake || ""); // Set intake for edit mode
@@ -56,11 +56,11 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date || null);
+    setSelectedDate(date || new Date());
   };
 
   const handleTimeChange = (time) => {
-    setSelectedTime(time || null);
+    setSelectedTime(time || new Date());
   };
 
   const addFluid = async () => {

@@ -11,8 +11,8 @@ import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
 
 const MedicalHistoryTable = ({ columns, rowData, getselectedData, from }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+  const selectedData = (data, id, type) => {
+    getselectedData(data, id, type);
   };
   return (
     <>
@@ -36,12 +36,13 @@ const MedicalHistoryTable = ({ columns, rowData, getselectedData, from }) => {
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.onset}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.onset_date ? dt?.values?.onset_date.split('T')[0].split('-').reverse().join('-')
+                    : ''}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.conditions}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.condition?.name}</span>
                 </div>
               </CTableDataCell>
 
@@ -79,7 +80,7 @@ const MedicalHistoryTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="edit"
                         src={Assets?.EditPencil}
                         className="cursor"
-                        onClick={() => selectedData(dt, "edit")}
+                        onClick={() => selectedData(dt,dt?.id, "edit")}
                       />
                     </div>
                     <div
@@ -93,7 +94,7 @@ const MedicalHistoryTable = ({ columns, rowData, getselectedData, from }) => {
                         alt="delete"
                         src={Assets?.Delete}
                         className="cursor"
-                        onClick={() => selectedData(dt, "delete")}
+                        onClick={() => selectedData(dt, dt?.id, "delete")}
                       />
                     </div>
                   </div>

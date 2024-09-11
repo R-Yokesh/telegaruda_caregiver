@@ -22,7 +22,6 @@ function CallHistoryView() {
     startDate: null,
     endDate: null,
   });
-
   const { loading, error, get, post } = useApi();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
@@ -79,7 +78,7 @@ function CallHistoryView() {
           filter.id !== null ? `&participant_ref_number=${filter.id}` : ""
         }${filter.startDate !== null ? `&from_date=${filter.startDate}` : ""}${
           filter.endDate !== null ? `&to_date=${filter.endDate}` : ""
-        }`
+        }&participant_ref_number=${data?.user_id}`
       );
      
       if (response.code === 200) {

@@ -4,87 +4,85 @@ import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
+import { format } from "date-fns";
+import { DATE_FORMAT } from "../../../../../../../Config/config";
+import { findItemIndex } from "../../../../../../../Utils/commonUtils";
 
-const MensturalHistoryForm = ({ back, defaultValues, from }) => {
-  const [date, setDate] = useState(null);
-  const [date2, setDate2] = useState(null);
+const MensturalHistoryForm = ({
+  back,
+  defaultValues,
+  from,
+  mensuEdit,
+  mensuAdd,
+}) => {
+  const [date, setDate] = useState(defaultValues?.values?.lmp || new Date());
 
-  useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      return new Date(year, month - 1, day);
-    };
+  // useEffect(() => {
+  //   // This should match your expected format
+  //   const defaultDateTime = defaultValues?.values?.lmp || "";
+  //   const defaultDate = defaultDateTime.split(" ")[0] || "";
+  //   // Parse the date string into a Date object
+  //   if (defaultDate) {
+  //     // Define the format of the date string you are parsing
+  //     const parsedDate = parse(defaultDate, DATE_FORMAT, new Date());
+  //     if (isValid(parsedDate)) {
+  //       setDate(parsedDate);
+  //     }
+  //   }
+  // }, [defaultValues?.values?.lmp]);
 
-    // Example default date string
-    const defaultDateString = defaultValues?.lmp;
-
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.lmp
-      ? parseDateString(defaultDateString)
-      : new Date();
-
-    // Example default date string
-    const defaultDateString2 = defaultValues?.ed_date;
-
-    // Parse default date string to Date object
-    const defaultDate2 = defaultValues?.ed_date
-      ? parseDateString(defaultDateString2)
-      : new Date();
-
-    // Set default date in state
-    setDate(defaultDate);
-    setDate2(defaultDate2);
-  }, [defaultValues]);
-
-  const options = ["Yes", "No"];
   const flow_duration = ["2-7 days", "< 2 Days", "> 7 Days"];
   const flow_type = ["Less", "Moderate", "Severe"];
 
-  const findIndex = defaultValues?.trimster
-    ? options?.indexOf(defaultValues?.trimster)
-    : 1;
+  const [menopause, setMenopause] = useState(
+    defaultValues?.values?.menopause || "no"
+  );
+  const [irregular, setIrregular] = useState(
+    defaultValues?.values?.cycle?.irregular || "no"
+  );
 
-  const [menopause, setMenopause] = useState(defaultValues.menopause || "No");
+  const [dysmenorrhea, setDysmenorrhea] = useState(
+    defaultValues?.values?.dysmenorrhea || "no"
+  );
+  const [bleeding, setBleeding] = useState(
+    defaultValues?.values?.bleeding || "no"
+  );
+  const [flowType, setFlowType] = useState(
+    defaultValues?.values?.flow?.type || ""
+  );
+  const [flowDur, setFlowDur] = useState(
+    defaultValues?.values?.flow?.duration || ""
+  );
 
   const handleClick = (event) => {
-    setMenopause(event.target.value === "yes" ? "Yes" : "No");
+    setMenopause(event.target.value);
   };
-  const getSelected = (data) => {
-    console.log(data);
-    setMenopause(data);
+
+  const getSelectedValue = (data) => {
+    setFlowType(data);
   };
   const getSelectedValue2 = (data) => {
-    console.log(data);
-  };
-
-  const getSelectedBleeding = (data) => {
-    console.log(data);
-  };
-
-  const getSelectedCycle = (data) => {
-    console.log(data);
-  };
-
-  const getSelectedDysmen = (data) => {
-    console.log(data);
+    setFlowDur(data);
   };
 
   const [value, setValue] = useState(
-    defaultValues?.age ? defaultValues?.age : ""
+    defaultValues?.values?.menopause_age
+      ? defaultValues?.values?.menopause_age
+      : ""
   );
   const [value1, setValue1] = useState(
-    defaultValues?.age ? defaultValues?.age : ""
+    defaultValues?.values?.menarche_age
+      ? defaultValues?.values?.menarche_age
+      : ""
   );
   const [value2, setValue2] = useState(
-    defaultValues?.cycle_per_year ? defaultValues?.cycle_per_year : ""
+    defaultValues?.values?.cycle?.year ? defaultValues?.values?.cycle?.year : ""
   );
   const [value3, setValue3] = useState(
-    defaultValues?.cycle_in_days ? defaultValues?.cycle_in_days : ""
+    defaultValues?.values?.cycle?.days ? defaultValues?.values?.cycle?.days : ""
   );
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState("");
 
   const handleChange = (e) => {
     const input = e.target.value;
@@ -128,6 +126,77 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
       setError("");
     }
   };
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate Menarche Age
+    if (!value1) {
+      newErrors.menarcheAge = "Menarche Age is required.";
+    }
+
+    // Validate Cycle Information if Menopause is not "yes"
+    if (menopause !== "yes") {
+      if (!value2) {
+        newErrors.cyclePerYear = "Cycle per Year is required.";
+      }
+      if (!value3) {
+        newErrors.cycleLengthDays = "Cycle Length in days is required.";
+      }
+      if (!flowDur) {
+        newErrors.flowdur = "Flow duration is required.";
+      }
+      if (!flowType) {
+        newErrors.flowtype = "Flow type is required.";
+      }
+    }
+
+    // Validate LMP Date
+    if (!date) {
+      newErrors.lmpDate = "LMP Date is required.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors); // Set errors to state
+      return false;
+    }
+
+    return true;
+  };
+
+  const onSubmit = async () => {
+    if (!validateForm()) {
+      return; // Stop form submission if validation fails
+    }
+    const values = {
+      lmp: format(date, "yyyy-MM-dd"),
+      menarche_age: value1,
+      cycle: {
+        year: value2,
+        days: value3,
+        irregular: irregular,
+      },
+      flow: {
+        duration: flowDur,
+        type: flowType,
+      },
+      dysmenorrhea: dysmenorrhea,
+      menopause: menopause,
+      bleeding: bleeding,
+      menopause_age: menopause === "yes" ? value : "",
+    };
+    if (defaultValues?.id === undefined) {
+      await mensuAdd(values);
+      setErrors({});
+    }
+    if (defaultValues?.id !== undefined) {
+      await mensuEdit(values, defaultValues?.id);
+      setErrors({});
+      if (menopause === "no") {
+        setValue();
+      }
+    }
+  };
+
   return (
     <>
       <CRow className="mb-3">
@@ -150,14 +219,17 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
-            {error && <p className="error-message">{error}</p>}
+            {error && <p className="text-danger">{error}</p>}
+            {errors.menarcheAge && (
+              <p className="text-danger">{errors.menarcheAge}</p>
+            )}
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Cycles per Year {menopause !== "Yes" && "*"}
+                Cycles per Year {menopause !== "yes" && "*"}
               </label>
               <input
                 type="text"
@@ -171,6 +243,9 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 onPaste={handlePaste}
                 disabled={from === "Consult-Gynaec" ? true : false}
               />
+              {errors.cyclePerYear && (
+                <p className="text-danger">{errors.cyclePerYear}</p>
+              )}
             </div>
           </div>
         </CCol>
@@ -178,7 +253,7 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Cycle Length in days {menopause !== "Yes" && "*"}
+                Cycle Length in days {menopause !== "yes" && "*"}
               </label>
               <input
                 type="text"
@@ -192,6 +267,9 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 onPaste={handlePaste}
                 disabled={from === "Consult-Gynaec" ? true : false}
               />
+              {errors.cycleLengthDays && (
+                <p className="text-danger">{errors.cycleLengthDays}</p>
+              )}
             </div>
           </div>
         </CCol>
@@ -199,7 +277,7 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Flow Duration {menopause !== "Yes" && "*"}
+                Flow Duration {menopause !== "yes" && "*"}
               </label>
               <div
                 className="w-100"
@@ -210,9 +288,22 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
               >
                 <Dropdown
                   options={flow_duration}
+                  defaultValue={
+                    defaultValues?.values?.flow?.duration
+                      ? flow_duration[
+                          findItemIndex(
+                            flow_duration,
+                            defaultValues?.values?.flow?.duration
+                          )
+                        ]
+                      : null
+                  }
                   getSelectedValue={getSelectedValue2}
                 />
               </div>
+              {errors.flowdur && (
+                <p className="text-danger">{errors.flowdur}</p>
+              )}
             </div>
           </div>
         </CCol>
@@ -220,7 +311,7 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Flow Type {menopause !== "Yes" && "*"}
+                Flow Type {menopause !== "yes" && "*"}
               </label>
               <div
                 className="w-100"
@@ -231,9 +322,22 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
               >
                 <Dropdown
                   options={flow_type}
-                  getSelectedValue={getSelectedValue2}
+                  defaultValue={
+                    defaultValues?.values?.flow?.type
+                      ? flow_type[
+                          findItemIndex(
+                            flow_type,
+                            defaultValues?.values?.flow?.type
+                          )
+                        ]
+                      : null
+                  }
+                  getSelectedValue={getSelectedValue}
                 />
               </div>
+              {errors.flowtype && (
+                <p className="text-danger">{errors.flowtype}</p>
+              )}
             </div>
           </div>
         </CCol>
@@ -257,6 +361,8 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 label={<label className="form-label mb-0">Yes</label>}
                 name="menstrual"
                 disabled={from === "Consult-Gynaec" ? true : false}
+                onChange={(e) => setBleeding(e.target.value)}
+                checked={bleeding === "yes"}
               />
               <CFormCheck
                 className="mb-0"
@@ -267,6 +373,8 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 label={<label className="form-label mb-0">No</label>}
                 name="menstrual"
                 disabled={from === "Consult-Gynaec" ? true : false}
+                onChange={(e) => setBleeding(e.target.value)}
+                checked={bleeding === "no"}
               />
             </div>
           </div>
@@ -291,6 +399,8 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 label={<label className="form-label mb-0">Yes</label>}
                 name="irregularity"
                 disabled={from === "Consult-Gynaec" ? true : false}
+                checked={irregular === "yes"}
+                onChange={(e) => setIrregular(e.target.value)}
               />
               <CFormCheck
                 className="mb-0"
@@ -301,6 +411,8 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 label={<label className="form-label mb-0">No</label>}
                 name="irregularity"
                 disabled={from === "Consult-Gynaec" ? true : false}
+                checked={irregular === "no"}
+                onChange={(e) => setIrregular(e.target.value)}
               />
             </div>
           </div>
@@ -325,6 +437,8 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 label={<label className="form-label mb-0">Yes</label>}
                 name="dysmenorrhea"
                 disabled={from === "Consult-Gynaec" ? true : false}
+                onChange={(e) => setDysmenorrhea(e.target.value)}
+                checked={dysmenorrhea === "yes"}
               />
               <CFormCheck
                 className="mb-0"
@@ -335,6 +449,8 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 label={<label className="form-label mb-0">No</label>}
                 name="dysmenorrhea"
                 disabled={from === "Consult-Gynaec" ? true : false}
+                onChange={(e) => setDysmenorrhea(e.target.value)}
+                checked={dysmenorrhea === "no"}
               />
             </div>
           </div>
@@ -349,6 +465,7 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 showIcon
                 selected={date}
                 onChange={(date) => setDate(date)}
+                dateFormat={DATE_FORMAT}
               />
             </div>
           </div>
@@ -372,7 +489,7 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 value="yes"
                 label={<label className="form-label mb-0">Yes</label>}
                 name="menopause"
-                checked={menopause === "Yes"}
+                checked={menopause === "yes"}
                 onChange={handleClick}
                 disabled={from === "Consult-Gynaec" ? true : false}
               />
@@ -384,14 +501,14 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
                 value="no"
                 label={<label className="form-label mb-0">No</label>}
                 name="menopause"
-                checked={menopause === "No"}
+                checked={menopause === "no"}
                 onChange={handleClick}
                 disabled={from === "Consult-Gynaec" ? true : false}
               />
             </div>
           </div>
         </CCol>
-        {menopause === "Yes" && (
+        {menopause === "yes" && (
           <CCol lg={4} className="mb-3">
             <div style={{ width: "100%" }}>
               <div class="position-relative">
@@ -419,7 +536,9 @@ const MensturalHistoryForm = ({ back, defaultValues, from }) => {
       {from !== "Consult-Gynaec" && (
         <CRow className="mb-1">
           <div style={{ width: "130px" }}>
-            <PrimaryButton>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit}>
+              {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
+            </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

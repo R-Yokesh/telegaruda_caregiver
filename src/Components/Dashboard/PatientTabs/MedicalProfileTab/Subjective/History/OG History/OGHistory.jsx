@@ -7,7 +7,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import LabForm from "../../../Objective/Lab/LabForm";
 import Pagination from "../../../../../../Pagination/Pagination";
 import LabTable from "../../../../../../Tables/LabTable";
@@ -26,6 +26,9 @@ import ScreeningHistory from "../../../../../../Tables/Subjective/ScreeningHisto
 import MensturalHistoryForm from "./MensturalHistoryForm";
 import ScreeningHistoryForm from "./ScreeningHistoryForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
+import useApi from "../../../../../../../ApiServices/useApi";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const OGHistory = ({ from, back }) => {
   const columnData = [
@@ -403,11 +406,24 @@ const OGHistory = ({ from, back }) => {
       history_of_breast: "Yes",
     },
   ];
+
+  const { get, post, clearCache, patch, del } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  const [obsData, setObsData] = useState([]);
+  const [mensuData, setMensuData] = useState({});
+  const [screeningData, setScreeningData] = useState({});
+
+  const [obsPagi, setObsPagi] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -445,7 +461,6 @@ const OGHistory = ({ from, back }) => {
   };
 
   const getselectedData = (data, type) => {
-    console.log(type, "first", data);
     setSelectedData(data);
     if (type === "edit") {
       setAddFormView(true);
@@ -455,7 +470,6 @@ const OGHistory = ({ from, back }) => {
     }
   };
 
-  const options = ["Yes", "No"];
   const PatientSubMenu4 = localStorage.getItem("PatientSubMenu-4");
   const ParsedPatientSubMenu = PatientSubMenu4
     ? JSON.parse(PatientSubMenu4)
@@ -489,17 +503,174 @@ const OGHistory = ({ from, back }) => {
     setAddFormView(false);
   };
 
-  const getSelectedValue = (data) => {
-    console.log(data);
+  const getObsLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHistories?limit=${itemsPerPage}&page=${currentPage}&slug=obstetric-history&searchkey=${
+          searchValue ?? ""
+        }&order_by=id&dir=2&user_id=${data?.user_id}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}` //${data?.user_id}
+      );
+      const listData = response?.data?.patient_histories; //
+      setObsData(listData);
+      setObsPagi(response?.data?.pagination);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, currentPage, searchValue, data?.user_id, startDate, endDate]);
+
+  const obsAdd = async (answerDatas) => {
+    try {
+      const url = `resource/patientHistories`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id,
+        slug: "obstetric-history",
+      };
+      await post(url, body);
+      clearCache();
+      await getObsLists();
+      toast.success("Added successfully");
+      setAddFormView(false);
+      setCurrentTab(1);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  const obsEdit = async (answerDatas, selectedId) => {
+    try {
+      const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id,
+        slug: "obstetric-history",
+      };
+      await patch(url, body);
+      clearCache();
+      await getObsLists();
+      toast.success("Added successfully");
+      setAddFormView(false);
+      setCurrentTab(1);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  const onDelete = async () => {
+    try {
+      const url = `resource/patientHistories/${selectedData?.id}`; // Replace with your API endpoint
+      await del(url);
+      clearCache();
+      await getObsLists();
+      toast.success("Deleted successfully");
+      setDetailView(false);
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+  };
+  const getMensuralLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=1&page=1&order_by=id&dir=2` //${data?.user_id}
+      );
+      const listData = response?.data?.patient_histories[0]; //
+      setMensuData(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get]);
+  const mensuEdit = async (answerDatas, selectedId) => {
+    try {
+      const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id, //data?.user_id
+        slug: "menstrual-history",
+      };
+      await patch(url, body);
+      clearCache();
+      await getMensuralLists();
+      toast.success("Updated successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  const mensuAdd = async (answerDatas) => {
+    try {
+      const url = `resource/patientHistories`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id, //data?.user_id
+        slug: "menstrual-history",
+      };
+      await post(url, body);
+      clearCache();
+      await getMensuralLists();
+      toast.success("Added successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
   };
 
-  const getSelectedValue1 = (data) => {
-    console.log(data);
+  const getScreeningLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/patientHistories?slug=screening-diagnostic-history&user_id=${data?.user_id}&limit=1&page=1&order_by=id&dir=2` //${data?.user_id}
+      );
+      const listData = response?.data?.patient_histories[0]; //
+      setScreeningData(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get]);
+  const screeningEdit = async (answerDatas, selectedId) => {
+    try {
+      const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id, //data?.user_id
+        slug: "screening-diagnostic-history",
+      };
+      await patch(url, body);
+      clearCache();
+      await getScreeningLists();
+      toast.success("Updated successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
   };
+  const screeningAdd = async (answerDatas) => {
+    try {
+      const url = `resource/patientHistories`; // Replace with your API endpoint
+      const body = {
+        values: answerDatas,
+        patient_id: data?.user_id, //data?.user_id
+        slug: "screening-diagnostic-history",
+      };
+      await post(url, body);
+      clearCache();
+      await getScreeningLists();
+      toast.success("Added successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  useEffect(() => {
+    getScreeningLists();
+  }, [getScreeningLists]);
+  useEffect(() => {
+    getMensuralLists();
+  }, [getMensuralLists]);
 
-  const getSelectedValue2 = (data) => {
-    console.log(data);
-  };
+  useEffect(() => {
+    getObsLists();
+  }, [getObsLists]);
+
   return (
     <>
       {from === "Consult" && (
@@ -631,7 +802,7 @@ const OGHistory = ({ from, back }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSearch />
+                  <DateSearch getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
@@ -660,10 +831,12 @@ const OGHistory = ({ from, back }) => {
                   <>
                     <CRow>
                       <ObstetricHistoryTable
-                        rowData={getCurrentPageItems()}
+                        rowData={obsData}
                         columns={columnData}
                         getselectedData={getselectedData}
                         from={from}
+                        currentPage={currentPage || 1}
+                        itemsPerPage={itemsPerPage || 5}
                       />
                     </CRow>
 
@@ -672,7 +845,7 @@ const OGHistory = ({ from, back }) => {
                         <Pagination
                           currentPage={currentPage}
                           onPageChange={onPageChange}
-                          totalItems={rowData?.length}
+                          totalItems={obsPagi?.total || 0}
                           itemsPerPage={itemsPerPage}
                         />
                       </CCol>
@@ -740,6 +913,8 @@ const OGHistory = ({ from, back }) => {
                         setSelectedData({});
                       }}
                       defaultValues={selectedData}
+                      obsAdd={obsAdd}
+                      obsEdit={obsEdit}
                     />
                   )}
                   {/* {currentTab === 2 && currentHistoryTab === 1 && (
@@ -772,13 +947,17 @@ const OGHistory = ({ from, back }) => {
                   {currentTab === 2 && currentHistoryTab === 1 && (
                     <MensturalHistoryForm
                       back={back}
-                      defaultValues={selectedData}
+                      defaultValues={mensuData}
+                      mensuEdit={mensuEdit}
+                      mensuAdd={mensuAdd}
                     />
                   )}
                   {currentTab === 2 && currentHistoryTab === 2 && (
                     <ScreeningHistoryForm
                       back={back}
-                      defaultValues={selectedData}
+                      defaultValues={screeningData}
+                      screeningAdd={screeningAdd}
+                      screeningEdit={screeningEdit}
                     />
                   )}
                 </CCardBody>
@@ -799,7 +978,7 @@ const OGHistory = ({ from, back }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => setDetailView(false)}>
+                        <PrimaryButton onClick={() => onDelete()}>
                           Yes
                         </PrimaryButton>
                       </div>

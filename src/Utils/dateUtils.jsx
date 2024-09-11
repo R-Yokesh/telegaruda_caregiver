@@ -1,4 +1,4 @@
-import { format, isValid, parse } from "date-fns";
+import { format, isValid, parse, parseISO } from "date-fns";
 
 // Function to format date as DD-MM-YYYY HH:mm AM/PM
 export function formatDateTime(originalDateStr) {
@@ -61,3 +61,15 @@ export function getCurrentTime() {
   const minutes = now.getMinutes().toString().padStart(2, "0");
   return `${hours}:${minutes}`;
 }
+
+export const formatFetchDate = (dateString) => {
+  if (!dateString) return ''; // Handle cases where dateString might be null or undefined
+
+  try {
+    const parsedDate = parseISO(dateString); // Convert the ISO string to a Date object
+    return format(parsedDate, 'dd-MM-yyyy'); // Format the Date object
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return ''; // Return an empty string or handle the error as needed
+  }
+};

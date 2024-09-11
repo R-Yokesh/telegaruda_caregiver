@@ -1,46 +1,200 @@
-import { CCol, CRow ,CFormTextarea} from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import { CCol, CRow, CFormTextarea } from "@coreui/react";
+import React, { useCallback, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
+import SearchInput from "../../../../../../Input/SearchInput";
+import useApi from "../../../../../../../ApiServices/useApi";
+import { useLocation } from "react-router-dom";
+import ICDDrop from "../../../../../../Dropdown/ICDDrop";
+import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import { format, isValid, parse } from "date-fns";
 
-const SurgicalForm = ({ back, defaultValues }) => {
+const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  const [date, setDate] = useState(null);
+  const { get, post, clearCache, patch, del, loading } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  const [surgeryDetails, setSurgeryDetails] = useState([]);
+  const [surgerykey, setSurgeryKey] = useState(
+    defaultValues?.values?.surgical_name?.name || ""
+  );
+  const [surgeryName, setSurgeryName] = useState(
+    defaultValues?.values?.surgical_name || {}
+  );
+
+  const [reasonDetails, setReasonDetails] = useState([]);
+  const [reasonkey, setReasonKey] = useState(
+    defaultValues?.values?.pre_surgery_diagnosis?.name || ""
+  );
+  const [reasonName, setReasonName] = useState(
+    defaultValues?.values?.pre_surgery_diagnosis || {}
+  );
+
+  const [icd10, setIcd10] = useState([]);
+  const [icdkey, setIcdKey] = useState(defaultValues?.values?.icd?.name || "");
+  const [icd, setIcd] = useState(defaultValues?.values?.icd || {});
+
+  const [notes, setNotes] = useState(
+    defaultValues?.values?.pre_surgery_notes || ""
+  );
+  const [hospital, setHospital] = useState(
+    defaultValues?.values?.hospital_name || ""
+  );
+  const [refby, setRefby] = useState(
+    defaultValues?.values?.prescribed_by || ""
+  );
+  const [performby, setPerformby] = useState(
+    defaultValues?.values?.surgery_done_by || ""
+  );
+  const [errors, setErrors] = useState({});
+  const defaultDateTime = defaultValues?.values?.surgery_date || "";
+
+  // Split date and time
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultValues?.values?.surgery_time || getCurrentTime();
+  useEffect(() => {
+    // Combine default date and time into a single Date object
+    let date = new Date();
+
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
+
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
+
+    setSelectedDate(date);
+    setSelectedTime(date); // Initialize time picker with the same Date object
+  }, [defaultDate, defaultTime]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    if (date) {
+      setSelectedTime(date); // Sync time picker with the updated date
+    }
+  };
+
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(selectedDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
+
+      setSelectedDate(updatedDateTime); // Optionally update date as well
+      setSelectedTime(time);
+    }
+  };
+
+  const getSelectedGravida = (data) => {
+    setIcd(data);
+  };
+
+  const getSurgeryName = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters?slug=procedure&searchkey=${surgerykey}&limit=50&country=undefined`
+      );
+      const listData = response?.data?.masters; //
+      setSurgeryDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, surgerykey]);
+  const getSelectedData = (data) => {
+    setSurgeryName(data);
+  };
+
+  const getSurgeryReasons = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters?slug=condition&searchkey=${reasonkey}&limit=50&country=undefined`
+      );
+      const listData = response?.data?.masters; //
+      setReasonDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, reasonkey]);
+
+  const getSelectedReasonData = (data) => {
+    setReasonName(data);
+  };
+
+  const getICDCode = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters?slug=icd&searchkey=${icdkey}&limit=50&country=undefined`
+      );
+      const listData = response?.data?.masters; //
+      setIcd10(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, icdkey]);
 
   useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const timePart = parts[1];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      const [hours, minutes] = timePart?.split(":")?.map(Number);
-      const date = new Date(year, month - 1, day, hours, minutes);
-      return date;
+    getICDCode();
+  }, [getICDCode]);
+
+  useEffect(() => {
+    getSurgeryReasons();
+  }, [getSurgeryReasons]);
+  useEffect(() => {
+    getSurgeryName();
+  }, [getSurgeryName]);
+  const validateForm = () => {
+    const newErrors = {};
+    if (!selectedDate) newErrors.date = "Date is required.";
+    if (!selectedTime) newErrors.time = "Time is required.";
+    if (!surgeryName || !surgeryName?.name)
+      newErrors.surgeryName = "Surgery Name is required.";
+    if (!reasonName || !reasonName?.name)
+      newErrors.reasonName = "Surgery Reason is required.";
+    // if (!icd || !icd?.name) newErrors.icd = "ICD Code is required.";
+    if (!hospital) newErrors.hospital = "Hospital is required.";
+    if (!performby) newErrors.performby = "Performed by Doctor is required.";
+
+    setErrors(newErrors);
+
+    // Return false if there are errors
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const onSubmit = async () => {
+    const values = {
+      icd: icd,
+      hospital_name: hospital,
+      pre_surgery_notes: notes, // pass the notes in this field
+      post_operative_problems: "",
+      surgery_date: format(selectedDate, "yyyy-MM-dd"),
+      surgery_time: format(selectedTime, "HH:mm"),
+      surgical_name: surgeryName,
+      pre_surgery_diagnosis: reasonName,
+      prescribed_by: refby,
+      surgery_done_by: performby,
     };
-
-    // Example default date string
-    const defaultDateString = defaultValues?.date;
-
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.date
-      ? parseDateString(defaultDateString)
-      : new Date();
-
-    // Set default date in state
-    setDate(defaultDate);
-  }, [defaultValues]);
-
-  const gravidaoptions = ["Lorem Ipsum", "Lorem Ipsum"];
-  const findgravidaIndex = defaultValues?.gravida
-    ? gravidaoptions?.indexOf(defaultValues?.gravida)
-    : 0;
-  const getSelectedGravida = (data) => {
-    console.log(data);
+    if (validateForm()) {
+      if (defaultValues?.id === undefined) {
+        surgicalAdd(values);
+      }
+      if (defaultValues?.id !== undefined) {
+        surgicalEdit(values, defaultValues?.id);
+      }
+    }
   };
   return (
     <>
@@ -53,11 +207,12 @@ const SurgicalForm = ({ back, defaultValues }) => {
             <div className="date-size">
               <DatePicker
                 showIcon
-                selected={date}
-                onChange={(date) => setDate(date)}
+                selected={selectedDate}
+                onChange={handleDateChange}
                 dateFormat={DATE_FORMAT}
               />
             </div>
+            {errors.date && <div className="text-danger">{errors.date}</div>}
           </div>
         </CCol>
         <CCol lg={6}>
@@ -68,8 +223,8 @@ const SurgicalForm = ({ back, defaultValues }) => {
             <div className="date-size">
               <DatePicker
                 showIcon
-                selected={date}
-                onChange={(date) => setDate(date)}
+                selected={selectedTime}
+                onChange={handleTimeChange}
                 showTimeSelect
                 showTimeSelectOnly
                 timeIntervals={15}
@@ -77,6 +232,7 @@ const SurgicalForm = ({ back, defaultValues }) => {
                 dateFormat="h:mm aa"
               />
             </div>
+            {errors.date && <div className="text-danger">{errors.date}</div>}
           </div>
         </CCol>
       </CRow>
@@ -88,20 +244,20 @@ const SurgicalForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Surgery Name *
               </label>
-
-              <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
-              >
-                <Dropdown
+              <SearchInput
+                data={surgeryDetails}
+                setSurgeryKey={setSurgeryKey}
+                getSelectedData={getSelectedData}
+                defaultkey={surgerykey}
+              />
+              {errors.surgeryName && (
+                <div className="text-danger">{errors.surgeryName}</div>
+              )}
+              {/* <Dropdown
                   getSelectedValue={getSelectedGravida}
                   options={gravidaoptions}
                   // defaultValue={gravidaoptions[findgravidaIndex]}
-                />
-              </div>
+                /> */}
             </div>
           </div>
         </CCol>
@@ -111,13 +267,22 @@ const SurgicalForm = ({ back, defaultValues }) => {
               <label for="validationTooltip01" class="form-label">
                 Surgery Reason *
               </label>
-              <input
+              {/* <input
                 type="text"
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.name}
+              /> */}
+              <SearchInput
+                data={reasonDetails}
+                setSurgeryKey={setReasonKey}
+                getSelectedData={getSelectedReasonData}
+                defaultkey={reasonkey}
               />
+              {errors.reasonName && (
+                <div className="text-danger">{errors.reasonName}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -131,16 +296,17 @@ const SurgicalForm = ({ back, defaultValues }) => {
               </label>
 
               <div
-                className="w-100"
-                style={{
-                  border: "1px solid #17171D33",
-                  borderRadius: "5px",
-                }}
+              // className="w-100"
+              // style={{
+              //   border: "1px solid #17171D33",
+              //   borderRadius: "5px",
+              // }}
               >
-                <Dropdown
+                <ICDDrop
                   getSelectedValue={getSelectedGravida}
-                  options={gravidaoptions}
-                  // defaultValue={gravidaoptions[findgravidaIndex]}
+                  options={icd10}
+                  defaultValue={icdkey}
+                  icdKey={setIcdKey}
                 />
               </div>
             </div>
@@ -157,8 +323,12 @@ const SurgicalForm = ({ back, defaultValues }) => {
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.name}
+                defaultValue={performby}
+                onChange={(e) => setPerformby(e.target.value)}
               />
+              {errors.performby && (
+                <div className="text-danger">{errors.performby}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -175,7 +345,8 @@ const SurgicalForm = ({ back, defaultValues }) => {
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.notes}
+                defaultValue={refby}
+                onChange={(e) => setRefby(e.target.value)}
               />
             </div>
           </div>
@@ -191,33 +362,38 @@ const SurgicalForm = ({ back, defaultValues }) => {
                 class="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                defaultValue={defaultValues?.notes}
+                defaultValue={hospital}
+                onChange={(e) => setHospital(e.target.value)}
               />
+              {errors.hospital && (
+                <div className="text-danger">{errors.hospital}</div>
+              )}
             </div>
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-3">
-      <CCol lg={6}>
-        <div style={{ width: "100%" }}>
-          <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
-              Notes
-            </label>
-            <CFormTextarea
-                  id="exampleFormControlTextarea1"
-                  // label="Example textarea"
-                  rows={3} >
-                
-                </CFormTextarea>
+        <CCol lg={6}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Notes
+              </label>
+              <CFormTextarea
+                id="exampleFormControlTextarea1"
+                // label="Example textarea"
+                defaultValue={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={3}
+              ></CFormTextarea>
+            </div>
           </div>
-        </div>
         </CCol>
       </CRow>
 
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSubmit}>SAVE</PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
