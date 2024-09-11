@@ -19,6 +19,7 @@ import MoodForm from "./MoodForm";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const Mood = ({ from }) => {
   const columnData = [
@@ -27,7 +28,8 @@ const Mood = ({ from }) => {
     { label: "Type" },
     { label: "Actions" },
   ];
-
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
 
@@ -59,9 +61,11 @@ const Mood = ({ from }) => {
   const fetchMood = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${
+        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${
           endDate ?? ""
-        }&order_by=act_date&dir=2&act_catagory=mood&user_id=10`
+        }&order_by=act_date&dir=2&act_catagory=mood&user_id=${data?.user_id}`
       );
       if (response.code === 200) {
         console.log(response?.data?.activity_wellnesses);
@@ -167,7 +171,7 @@ const Mood = ({ from }) => {
                     <Pagination
                       currentPage={currentPage}
                       onPageChange={onPageChange}
-                      totalItems={pagination?.total}
+                      totalItems={pagination?.total || 0}
                       itemsPerPage={itemsPerPage}
                     />
                   </CCol>
@@ -204,9 +208,7 @@ const Mood = ({ from }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={deleteMood}>
-                          Yes
-                        </PrimaryButton>
+                        <PrimaryButton onClick={deleteMood}>Yes</PrimaryButton>
                       </div>
                       <div style={{ width: "80px" }}>
                         <SecondaryButton onClick={() => setDetailView(false)}>

@@ -23,11 +23,11 @@ import FluidIntakeForm from "./FluidIntakeForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const Nutrition = ({ from }) => {
-
-
-
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [pagination, setPagination] = useState({});
   const [rowData, setRowData] = useState([]);
   const [rowFluidata, setRowFluiData] = useState([]);
@@ -84,9 +84,9 @@ const Nutrition = ({ from }) => {
   const fetchDiet = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?act_catagory=diet&user_id=10&limit=${itemsPerPage}&page=${currentPage ?? ""}&from=${startDate ?? ""}&to=${
+        `resource/activity_wellness?act_catagory=diet&user_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage ?? ""}&from=${startDate ?? ""}&to=${
           endDate ?? ""
-        }&order_by=act_date&dir=2`
+        }&order_by=act_date&dir=1`
       );
       if (response.code === 200) {
         console.log(response?.data?.activity_wellnesses);
@@ -107,7 +107,7 @@ const Nutrition = ({ from }) => {
   const fetchFluid = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?&limit=${itemsPerPage}&page=${currentPage}&order_by=act_date&dir=2&act_catagory=fluid&user_id=10`
+        `resource/activity_wellness?&limit=${itemsPerPage}&page=${currentPage}&order_by=act_date&dir=2&act_catagory=fluid&user_id=${data?.user_id}`
       );
       // &from=${startDate}&to=${endDate}&
       if (response.code === 200) {
@@ -275,13 +275,13 @@ const Nutrition = ({ from }) => {
                         </div>
                       </PrimaryButton>
                     </div>
-                    <div>
+                    {/* <div>
                       <PrimaryButton onClick={() => addFormPage()}>
                         <div className="d-flex align-items-center gap-2">
                           <img src={Assets.OptionsIcon} alt="add" />
                         </div>
                       </PrimaryButton>
-                    </div>
+                    </div> */}
                   </CCol>
                 </CRow>
                 <div className="mb-2">

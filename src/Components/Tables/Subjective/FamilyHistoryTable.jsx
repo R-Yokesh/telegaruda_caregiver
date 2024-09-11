@@ -9,15 +9,17 @@ import {
 } from "@coreui/react";
 import React from "react";
 import { Assets } from "../../../assets/Assets";
+import { getSerialNumber } from "../../../Utils/commonUtils";
 
 const FamilyHistoryTable = ({
   columns,
   rowData,
   getselectedData,
-  addFormView,
+  currentPage,
+  itemsPerPage,
 }) => {
-  const selectedData = (data, type) => {
-    getselectedData(data, type);
+  const selectedData = (fullData, data) => {
+    getselectedData(fullData, data);
   };
   return (
     <>
@@ -34,20 +36,24 @@ const FamilyHistoryTable = ({
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.id}</span>
+                  <span className="fs-16 fw-500">
+                    {getSerialNumber(itemsPerPage, currentPage, i)}
+                  </span>
                 </div>
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.disease}</span>
+                  <span className="fs-16 fw-500">{dt?.name}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <CFormCheck
                     id="flexCheckChecked"
-                    defaultChecked={dt?.grandparents === "yes" ? true : false}
-                    disabled={!addFormView}
+                    defaultChecked={dt?.attributes?.values[0]?.status}
+                    onChange={(e) =>
+                      selectedData(dt, dt?.attributes?.values[0])
+                    }
                   />
                 </div>
               </CTableDataCell>
@@ -56,8 +62,10 @@ const FamilyHistoryTable = ({
                 <div className="d-flex flex-column align-items-center">
                   <CFormCheck
                     id="flexCheckChecked"
-                    defaultChecked={dt?.father === "yes" ? true : false}
-                    disabled={!addFormView}
+                    defaultChecked={dt?.attributes?.values[1]?.status}
+                    onChange={(e) =>
+                      selectedData(dt, dt?.attributes?.values[1])
+                    }
                   />
                 </div>
               </CTableDataCell>
@@ -65,27 +73,10 @@ const FamilyHistoryTable = ({
                 <div className="d-flex flex-column align-items-center">
                   <CFormCheck
                     id="flexCheckChecked"
-                    defaultChecked={dt?.mother === "yes" ? true : false}
-                    disabled={!addFormView}
-                  />
-                </div>
-              </CTableDataCell>
-
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <CFormCheck
-                    id="flexCheckChecked"
-                    defaultChecked={dt?.Brother === "yes" ? true : false}
-                    disabled={!addFormView}
-                  />
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <CFormCheck
-                    id="flexCheckChecked"
-                    defaultChecked={dt?.Sister === "yes" ? true : false}
-                    disabled={!addFormView}
+                    defaultChecked={dt?.attributes?.values[2]?.status}
+                    onChange={(e) =>
+                      selectedData(dt, dt?.attributes?.values[2])
+                    }
                   />
                 </div>
               </CTableDataCell>
@@ -94,8 +85,10 @@ const FamilyHistoryTable = ({
                 <div className="d-flex flex-column align-items-center">
                   <CFormCheck
                     id="flexCheckChecked"
-                    defaultChecked={dt?.Daughter === "yes" ? true : false}
-                    disabled={!addFormView}
+                    defaultChecked={dt?.attributes?.values[3]?.status}
+                    onChange={(e) =>
+                      selectedData(dt, dt?.attributes?.values[3])
+                    }
                   />
                 </div>
               </CTableDataCell>
@@ -103,8 +96,33 @@ const FamilyHistoryTable = ({
                 <div className="d-flex flex-column align-items-center">
                   <CFormCheck
                     id="flexCheckChecked"
-                    defaultChecked={dt?.Son === "yes" ? true : false}
-                    disabled={!addFormView}
+                    defaultChecked={dt?.attributes?.values[4]?.status}
+                    onChange={(e) =>
+                      selectedData(dt, dt?.attributes?.values[4])
+                    }
+                  />
+                </div>
+              </CTableDataCell>
+
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex flex-column align-items-center">
+                  <CFormCheck
+                    id="flexCheckChecked"
+                    defaultChecked={dt?.attributes?.values[5]?.status}
+                    onChange={(e) =>
+                      selectedData(dt, dt?.attributes?.values[5])
+                    }
+                  />
+                </div>
+              </CTableDataCell>
+              <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex flex-column align-items-center">
+                  <CFormCheck
+                    id="flexCheckChecked"
+                    defaultChecked={dt?.attributes?.values[6]?.status}
+                    onChange={(e) =>
+                      selectedData(dt, dt?.attributes?.values[6])
+                    }
                   />
                 </div>
               </CTableDataCell>

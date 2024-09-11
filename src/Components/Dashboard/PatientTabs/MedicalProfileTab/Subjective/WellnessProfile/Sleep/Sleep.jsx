@@ -17,6 +17,7 @@ import SleepForm from "./SleepForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const Sleep = ({ from }) => {
   const columnData = [
@@ -26,11 +27,11 @@ const Sleep = ({ from }) => {
     { label: "DURATION (IN MINS)" },
     { label: "Actions" },
   ];
-
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [pagination, setPagination] = useState({});
   const [id, setId] = useState(null);
   const { loading, error, get, del, clearCache } = useApi();
-
 
   const [rowData, setRowData] = useState([]);
   const [addFormView, setAddFormView] = useState(false);
@@ -39,7 +40,7 @@ const Sleep = ({ from }) => {
   const [selectedData, setSelectedData] = useState({});
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState(true);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   // const { get } = useApi();
 
@@ -58,17 +59,20 @@ const Sleep = ({ from }) => {
   };
 
   const getFilterValues = (startDate, endDate, searchValue) => {
-    console.log(startDate,endDate,searchValue,"ghghhghg")
+    console.log(startDate, endDate, searchValue, "ghghhghg");
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-    
   };
   // Fetch sleep data
   const fetchSleepData = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&order_by=act_date&dir=2&act_catagory=sleep&user_id=10`
+        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${
+          endDate ?? ""
+        }&order_by=act_date&dir=2&act_catagory=sleep&user_id=${data?.user_id}`
       );
       if (response.code === 200) {
         setRowData(response.data.activity_wellnesses);
@@ -108,7 +112,7 @@ const Sleep = ({ from }) => {
       console.error("Error deleting data:", error);
     }
   };
-  const getselectedData = (data,id, type) => {
+  const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
@@ -135,10 +139,7 @@ const Sleep = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8}>
-                <DateSearch
-                    
-                    getFilterValues={getFilterValues}
-                   />
+                  <DateSearch getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
@@ -173,7 +174,7 @@ const Sleep = ({ from }) => {
                     <Pagination
                       currentPage={currentPage}
                       onPageChange={onPageChange}
-                      totalItems={pagination?.total}
+                      totalItems={pagination?.total || 0}
                       itemsPerPage={itemsPerPage}
                     />
                   </CCol>
@@ -191,7 +192,7 @@ const Sleep = ({ from }) => {
                   }}
                   setAddFormView={setAddFormView}
                   fetchSleepData={fetchSleepData}
-                   defaultValues={selectedData}
+                  defaultValues={selectedData}
                 />
               </CCardBody>
             </CCard>
@@ -210,7 +211,7 @@ const Sleep = ({ from }) => {
                     <h5>Are you sure you want to delete?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                      <PrimaryButton onClick={deleteSleep}>Yes</PrimaryButton>
+                        <PrimaryButton onClick={deleteSleep}>Yes</PrimaryButton>
                       </div>
                       <div style={{ width: "80px" }}>
                         <SecondaryButton onClick={() => setDetailView(false)}>

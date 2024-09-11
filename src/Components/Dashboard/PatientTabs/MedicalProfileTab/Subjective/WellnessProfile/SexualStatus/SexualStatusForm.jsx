@@ -5,40 +5,45 @@ import SecondaryButton from "../../../../../../Buttons/SecondaryButton/Secondary
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import useApi from "../../../../../../../ApiServices/useApi";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
+import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
+import { format, parse } from "date-fns";
 
 const SexualStatusForm = ({ back, defaultValues, from }) => {
   const [date, setDate] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date()); 
-  const [historySti, setHistorySti] = useState(false);
-  const [historySexual, setHistorySexual] = useState(false);
-  const [currentSti, setCurrentSti] = useState(false);
-  const [stiNotes, setStiNotes] = useState('');
-  const [currentStiNotes, setCurrentStiNotes] = useState('');
-  const { loading, error, post, patch,get, clearCache } = useApi();
-  
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [historySti, setHistorySti] = useState("no");
+  const [historySexual, setHistorySexual] = useState("no");
+  const [currentSti, setCurrentSti] = useState();
+  const [stiNotes, setStiNotes] = useState("");
+  const [allStatus, setAllStatus] = useState({});
+  const [currentStiNotes, setCurrentStiNotes] = useState("");
+  const { loading, error, post, patch, get, clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  const [errors, setErrors] = useState("");
 
   // Fetch the latest record
   const fetchSexualStatus = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?limit=10&page=1&order_by=act_date&dir=desc&act_catagory=sexual-status&user_id=10`
+        `resource/activity_wellness?act_catagory=sexual-status&user_id=${data?.user_id}&limit=1&page=1&order_by=act_date&dir=1`
       );
       if (response.code === 200) {
-        const records = response?.data?.activity_wellnesses;
-        if (records && records.length > 0) {
-          // Sort records by date in descending order to get the latest record
-          const sortedRecords = records.sort((a, b) => new Date(b.detail.sti.screen_date) - new Date(a.detail.sti.screen_date));
-          const latestRecord = sortedRecords[0];
-          const { sti, is_sti, sexual_activity } = latestRecord.detail;
-
-          // Set state directly based on API response values
-          setHistorySti(is_sti); // Dynamic value from API response
-          setDate(sti.screen_date ? new Date(sti.screen_date) : null); // Set the date picker if date is available
-          setCurrentSti(sti.status); // Dynamic value from API response
-          setStiNotes(sti.screen_notes); // Dynamic value from API response
-          setCurrentStiNotes(sti.status_notes); // Dynamic value from API response
-          setHistorySexual(sexual_activity); // Dynamic value from API response
-        }
+        const records = response?.data?.activity_wellnesses[0];
+        console.log(records);
+        setAllStatus(records);
+        setHistorySexual(records?.act_type === "Active" ? "yes" : "no");
+        setHistorySti(records?.detail?.is_sti || "no");
+        const defaultDate = parse(
+          records?.detail?.sti?.screen_date,
+          DATE_FORMAT,
+          new Date()
+        );
+        setSelectedDate(defaultDate);
+        setStiNotes(records?.detail?.sti?.screen_notes);
+        setCurrentSti(records?.detail?.sti?.status || "unknown");
+        setCurrentStiNotes(records?.detail?.sti?.status_notes);
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -54,7 +59,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
   const handleHistoryStiClick = (event) => {
     setHistorySti(event.target.value);
   };
-  
+
   const handleHistorySexualClick = (event) => {
     setHistorySexual(event.target.value);
   };
@@ -63,10 +68,91 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
     setCurrentSti(event.target.value);
   };
 
+  const statusEdit = async (selectedId) => {
+    try {
+      const url = `resource/activity_wellness/${selectedId}`; // Replace with your API endpoint
+      const body = {
+        patient_id: data?.user_id, //data?.user_id
+        act_catagory: "sexual-status",
+        act_type: historySexual === "yes" ? "Active" : "In active",
+        detail: {
+          is_sti: historySti,
+          sti:
+            historySti === "yes"
+              ? {
+                  screen_date: format(selectedDate, DATE_FORMAT),
+                  screen_notes: stiNotes,
+                  status: currentSti,
+                  status_notes:
+                    currentSti === "positive" ? currentStiNotes : "",
+                }
+              : {},
+        },
+      };
+      await patch(url, body);
+      clearCache();
+      await fetchSexualStatus();
+      toast.success("Updated successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  const statusAdd = async () => {
+    try {
+      const url = `resource/activity_wellness`; // Replace with your API endpoint
+      const body = {
+        patient_id: data?.user_id, //data?.user_id
+        act_catagory: "sexual-status",
+        act_type: historySexual === "yes" ? "Active" : "In active",
+        detail: {
+          is_sti: historySti,
+          sti:
+            historySti === "yes"
+              ? {
+                  screen_date: format(selectedDate, DATE_FORMAT),
+                  screen_notes: stiNotes,
+                  status: currentSti,
+                  status_notes:
+                    currentSti === "positive" ? currentStiNotes : "",
+                }
+              : {},
+        },
+      };
+      await post(url, body);
+      clearCache();
+      await fetchSexualStatus();
+      toast.success("Added successfully");
+    } catch (error) {
+      console.error("Failed to delete:", error);
+    }
+  };
+  const validation = () => {
+    const newErrors = {};
 
-  
+    if (historySti === "yes") {
+      if (!selectedDate) {
+        newErrors.selectedDate = "Last STI Screening Date is required.";
+      }
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors); // Set errors to state
+      return false;
+    }
 
- 
+    return true;
+  };
+  const onSubmit = async () => {
+    if (validation()) {
+      if (allStatus?.id === undefined) {
+        await statusAdd();
+        setErrors("");
+      }
+      if (allStatus?.id !== undefined) {
+        await statusEdit(allStatus?.id);
+        setErrors("");
+      }
+    }
+  };
   return (
     <>
       <CRow className="mb-3">
@@ -158,11 +244,14 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                 <div className="date-size">
                   <DatePicker
                     showIcon
-                    selected={date}
-                    onChange={(date) => setDate(date)}
+                    selected={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
                     dateFormat={DATE_FORMAT}
                   />
                 </div>
+                {errors.selectedDate && (
+                  <p className="text-danger">{errors.selectedDate}</p>
+                )}
               </div>
             </CCol>
             <CCol lg={6}>
@@ -176,6 +265,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                     placeholder="Enter"
                     defaultValue={stiNotes}
                     disabled={from === "Consult"}
+                    onChange={(e) => setStiNotes(e.target.value)}
                   />
                 </div>
               </div>
@@ -236,7 +326,9 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
               <CCol lg={6}>
                 <div style={{ width: "100%" }}>
                   <div className="position-relative">
-                    <label className="form-label">Current STI Status Notes</label>
+                    <label className="form-label">
+                      Current STI Status Notes
+                    </label>
                     <CFormTextarea
                       type="text"
                       className="form-control pad-10"
@@ -244,6 +336,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                       placeholder="Enter"
                       defaultValue={currentStiNotes}
                       disabled={from === "Consult"}
+                      onChange={(e) => setCurrentStiNotes(e.target.value)}
                     />
                   </div>
                 </div>
@@ -253,10 +346,12 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
         </>
       )}
 
-{from !== "Consult" && (
+      {from !== "Consult" && (
         <CRow className="mb-1">
           <div style={{ width: "128px" }}>
-            <PrimaryButton>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit}>
+              {allStatus?.id !== undefined ? "UPDATE" : "ADD"}
+            </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
