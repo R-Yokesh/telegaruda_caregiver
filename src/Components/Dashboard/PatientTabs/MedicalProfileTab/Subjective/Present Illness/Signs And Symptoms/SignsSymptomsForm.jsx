@@ -1,5 +1,5 @@
 import { CCol, CFormTextarea, CRow } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
@@ -16,6 +16,7 @@ import {
   getFileTypeFromMime,
   openFile,
 } from "../../../../../../../Utils/commonUtils";
+import SearchInput from "../../../../../../Input/SearchInput";
 
 const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymptoms }) => {
 
@@ -34,9 +35,9 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
     notes: defaultValues?.values?.notes || "",
 
   });
-  const [location, setLocation] = useState([]);
-  const [searchTerm, setSearchTerm] = useState([defaultValues?.values?.location || null]);
-
+  const [locationDetails, setLocationDetails] = useState([]);
+  const [locationKey, setLocationKey] = useState(defaultValues?.values?.location || "" );
+  const [location, setLocation] = useState(defaultValues?.values?.location || {});
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
@@ -140,8 +141,8 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
       newErrors.time = "Time is required.";
       isValid = false;
     }
-    if (!searchTerm) {
-      newErrors.searchTerm = "Location is required.";
+    if (!location || !location?.name) {
+      newErrors.location = "Location is required.";
       isValid = false;
     }
     if (!formData.duration_days) {
@@ -178,44 +179,30 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
     }
   };
 
-  console.log('searchTEEEE',searchTerm)
+  
 
   //api integration of medical conditions list
+  const getLocation = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters/all?slug=hpi_location&order_by=name&dir=1&searchkey=${locationKey}`
+      );
+      const listData = response?.data?.masters; //
+      setLocationDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, locationKey]);
+
   useEffect(() => {
-    const getLocation = async () => {
-      console.log('searchTEEEE',searchTerm)
-      if (searchTerm) {
-        console.log('AAAAAAAAAA');
-        try {
-          const response = await get(
-            `resource/masters/all?slug=hpi_location&order_by=name&dir=1&searchkey=${searchTerm}`
-          );
-          if (response.code === 200) {
-            setLocation(response.data.masters);
-          } else {
-            console.error("Failed to fetch data:", response.message);
-            setLocation([]);
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          setLocation([]);
-        }
-      } else {
-        setLocation([]);
-      }
-    };
-
     getLocation();
-  }, [searchTerm, get]);
+  }, [getLocation]);
 
-
-  const handleInputChange = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
+  const getSelectedlocation = (data) => {
+    setLocation(data);
   };
 
-  // console.log('searchvalue111111',searchTerm);
- 
+  console.log('Locationnnn',location,locationKey)
   const addSymptoms = async () => {
 
     try {
@@ -227,7 +214,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
         values: {
           date: format(selectedDate, "dd-MM-yyyy"),
           time: format(selectedTime, "HH:mm"),
-          location: searchTerm,
+          location: location?.name,
           duration: formData.duration_days,
           symptoms: formData.symptoms,
           aggravating_factors: formData.aggravating_factors,
@@ -266,7 +253,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
         values: {
           date: format(selectedDate, "dd-MM-yyyy"),
           time: format(selectedTime, "HH:mm"),
-          location: searchTerm,
+          location: location?.name,
           duration: Number(formData.duration_days),
           symptoms: formData.symptoms,
           aggravating_factors: formData.aggravating_factors,
@@ -342,35 +329,14 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
               <label for="validationTooltip01" class="form-label">
               Location *
               </label>
-              <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                value={searchTerm}
-                onChange={handleInputChange}
+              <SearchInput
+                data={locationDetails}
+                setSurgeryKey={setLocationKey}
+                getSelectedData={getSelectedlocation}
+                defaultkey={locationKey}
               />
-              {loading ? (
-                <p>Loading...</p>
-              ) : error ? (
-                <p>{error}</p>
-              ) : location?.length > 0 ? (
-                <ul className="dropdown-list">
-                  {location?.map((location) => (
-                    <li
-                      key={location?.id}
-                      className="list-group-item"
-                      onClick={() => {
-                        setSearchTerm(location?.name);
-                        setLocation([]);
-                      }}
-                    >
-                      {location?.name}
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-              {errors.searchTerm && <div className="error-text">{errors.searchTerm}</div>}
+             
+              {errors.location && <div className="error-text">{errors.location}</div>}
 
             </div>
           </div>

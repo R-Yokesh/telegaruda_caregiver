@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useCallback } from "react";
 import {
   CCard,
   CCardBody,
@@ -15,96 +15,154 @@ import Pagination from "../../../../../../Pagination/Pagination";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PatientEducationTable from "../../../../../../Tables/PatientEducationTable";
 import PatientEducationForm from "./PatientEducationForm";
+import useApi from "../../../../../../../ApiServices/useApi";
+import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+
+
 
 const PatientEducationTab = ({ from }) => {
   const columnData = [
     { id: 1, label: "No" },
     { id: 2, label: "Date" },
-    { id: 3, label: "Time" },
-    { id: 4, label: "Title" },
-    { id: 5, label: "Notes" },
-    { id: 7, label: "ACTIONS" },
+    { id: 3, label: "Title" },
+    { id: 4, label: "Notes" },
+    { id: 5, label: "ACTIONS" },
   ];
-  const rowData = [
-    {
-      id: 1,
-      date: "2024-08-16",
-      time: "12:30",
-      title: "Lorem ipsum",
-      notes: "Lorem ipsum Lorem ipsum",
-    },
-    {
-      id: 2,
-      date: "2024-08-16",
-      time: "12:20",
-      title: "Lorem ipsum",
-      notes: "Lorem ipsum Lorem ipsum",
-    },
-    {
-      id: 3,
-      date: "2024-08-16",
-      time: "15:30",
-      title: "Lorem ipsum",
-      notes: "Lorem ipsum Lorem ipsum",
-    },
-    {
-      id: 4,
-      date: "2024-08-16",
-      time: "12:30",
-      title: "Lorem ipsum",
-      notes: "Lorem ipsum Lorem ipsum",
-    },
-    {
-      id: 5,
-      date: "2024-08-16",
-      time: "12:30",
-      title: "Lorem ipsum",
-      notes: "Lorem ipsum Lorem ipsum",
-    },
-  ];
-  const [currentPage, setCurrentPage] = useState(1);
-  const [addFormView, setAddFormView] = useState(false);
-  const [deleteView, setDeleteView] = useState(false);
 
+  // const rowData = [
+  //   {
+  //     id: 1,
+  //     date: "2024-08-16",
+  //     time: "12:30",
+  //     title: "Lorem ipsum",
+  //     notes: "Lorem ipsum Lorem ipsum",
+  //   },
+  //   {
+  //     id: 2,
+  //     date: "2024-08-16",
+  //     time: "12:20",
+  //     title: "Lorem ipsum",
+  //     notes: "Lorem ipsum Lorem ipsum",
+  //   },
+  //   {
+  //     id: 3,
+  //     date: "2024-08-16",
+  //     time: "15:30",
+  //     title: "Lorem ipsum",
+  //     notes: "Lorem ipsum Lorem ipsum",
+  //   },
+  //   {
+  //     id: 4,
+  //     date: "2024-08-16",
+  //     time: "12:30",
+  //     title: "Lorem ipsum",
+  //     notes: "Lorem ipsum Lorem ipsum",
+  //   },
+  //   {
+  //     id: 5,
+  //     date: "2024-08-16",
+  //     time: "12:30",
+  //     title: "Lorem ipsum",
+  //     notes: "Lorem ipsum Lorem ipsum",
+  //   },
+  // ];
+
+
+  const { loading, error, get,del,clearCache } = useApi();
+
+  const [rowData, setRowData] = useState([]);
+  const [pagination, setPagination] = useState({});
+  const [addFormView, setAddFormView] = useState(false);
+  const [detailView, setDetailView] = useState(false);
+  const [id, setId] = useState(null);
+  const [ startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
 
   const itemsPerPage = 5; // Number of items to display per page
 
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+   
+  };
+
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };
+  };  
 
-  // Function to get items for the current page
-  const getCurrentPageItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return rowData?.slice(startIndex, endIndex);
-  };
 
   const addFormPage = () => {
     setAddFormView(true);
   };
 
-  const getselectedData = (data, type) => {
-    console.log(type, "first", data);
+  const detailPage = () => {
+    setDetailView(true);
+  };
+
+  const getselectedData = (data,id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
     }
     if (type === "delete") {
-      setDeleteView(true);
+      setId(id)
+      detailPage();
     }
   };
+
+  
+  const fetchPatientEducation = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/docs?user_id=10&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=id&dir=2&slug=patient-education`
+      );
+      if (response.code === 200) {
+        setRowData(response.data.docs);
+        setPagination(response.data.pagination);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [get, currentPage,startDate,endDate,searchValue]);
+
+  useEffect(() => {
+    fetchPatientEducation();
+  }, [fetchPatientEducation]);
+
+  // Delte Patient Education
+  const deletePatientEducation = async () => {
+    try {
+      const response = await del(`resource/doc/${id}`);
+  
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        fetchPatientEducation();
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+ 
 
   return (
     <>
       {from === "Consult" && (
         <CRow>
           <PatientEducationTable
-            rowData={getCurrentPageItems()}
-            columns={columnData}
-            getselectedData={getselectedData}
+           rowData={rowData}
+           columns={columnData}
+           getselectedData={getselectedData}
             from={from}
           />
         </CRow>
@@ -115,7 +173,7 @@ const PatientEducationTab = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSearch />
+                <DateRangePicker getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
@@ -134,7 +192,7 @@ const PatientEducationTab = ({ from }) => {
               <div className="mb-2">
                 <CRow>
                   <PatientEducationTable
-                    rowData={getCurrentPageItems()}
+                    rowData={rowData}
                     columns={columnData}
                     getselectedData={getselectedData}
                   />
@@ -142,10 +200,10 @@ const PatientEducationTab = ({ from }) => {
                 <CRow className="mb-3">
                   <CCol lg={12} className="d-flex justify-content-center">
                     <Pagination
-                      currentPage={currentPage}
-                      onPageChange={onPageChange}
-                      totalItems={rowData?.length}
-                      itemsPerPage={itemsPerPage}
+                     currentPage={currentPage}
+                     onPageChange={onPageChange}
+                     totalItems={pagination?.total}
+                     itemsPerPage={itemsPerPage}
                     />
                   </CCol>
                 </CRow>
@@ -160,18 +218,20 @@ const PatientEducationTab = ({ from }) => {
                     setAddFormView(false);
                     setSelectedData({});
                   }}
+                  fetchPatientEducation={fetchPatientEducation}
+                  setAddFormView={setAddFormView}
                   defaultValues={selectedData}
                 />
               </CCardBody>
             </CCard>
           )}
 
-          {deleteView && (
+          {detailView && (
             <BlurBackground>
               <CModal
                 alignment="center"
-                visible={deleteView}
-                onClose={() => setDeleteView(false)}
+                visible={detailView}
+                onClose={() => setDetailView(false)}
                 aria-labelledby="VerticallyCenteredExample"
               >
                 <CModalBody className="p-3">
@@ -179,12 +239,12 @@ const PatientEducationTab = ({ from }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => setDeleteView(false)}>
+                        <PrimaryButton onClick={() => deletePatientEducation()}>
                           Yes
                         </PrimaryButton>
                       </div>
                       <div style={{ width: "80px" }}>
-                        <SecondaryButton onClick={() => setDeleteView(false)}>
+                        <SecondaryButton onClick={() => setDetailView(false)}>
                           No
                         </SecondaryButton>
                       </div>

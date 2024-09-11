@@ -194,8 +194,7 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
         try {
             const body = {
                 patient_id: "10", 
-                date: format(selectedDate, "dd-MM-yyyy"),
-                time: format(selectedTime, "HH:mm"),
+                date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
                 type: formData?.type,
                 therapy_name: formData?.therapy_name,
                 therapist_name: formData?.therapist_name,

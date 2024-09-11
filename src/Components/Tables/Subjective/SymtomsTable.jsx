@@ -9,8 +9,9 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
+import { getSerialNumber } from "../../../Utils/commonUtils";
 
-const SymtomsTable = ({ columns, rowData, getselectedData, from }) => {
+const SymtomsTable = ({ columns, rowData, getselectedData, from,itemsPerPage,currentPage }) => {
 
   const selectedData = (data,id, type) => {
     getselectedData(data,id, type);
@@ -33,7 +34,7 @@ const SymtomsTable = ({ columns, rowData, getselectedData, from }) => {
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.id}</span>
+                {getSerialNumber(itemsPerPage, currentPage, i)}
                 </div>
               </CTableHeaderCell>
               <CTableHeaderCell>

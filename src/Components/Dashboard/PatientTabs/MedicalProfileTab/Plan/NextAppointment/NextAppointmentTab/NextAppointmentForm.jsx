@@ -1,139 +1,343 @@
 import { CCol, CRow } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
+import { format, isValid, parse } from "date-fns";
+import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import { toast } from "react-toastify";
+import useApi from "../../../../../../../ApiServices/useApi";
+import {
+  findItemIndex,
+  getFileTypeFromMime,
+  openFile,
+} from "../../../../../../../Utils/commonUtils";
+import Select from 'react-select';
 
-const NextAppointmentForm = ({ back, defaultValues }) => {
+const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextAppointment }) => {
 
-  const [date, setDate] = useState(null);
+
+  const { loading, error, get, post, clearCache, patch } = useApi();
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const [reason, setReason] = useState();
+  const [provider, setProvider] = useState([]);
+  const [selectedProvider, setSelectedProvider] = useState(
+    defaultValues?.provider?.first_name
+      ? { label: `${defaultValues.provider.first_name} ${defaultValues.provider.last_name}` }
+      : ""
+  );
+
   
+  const [searchTerm, setSearchTerm] = useState([]);
+
+
+  const getFormattedDate = (date) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
+  const currentDate = new Date();
+  const formattedDate = getFormattedDate(currentDate);
+
+  // console.log(formattedDate); // e.g., 25-08-2024
+
+  const defaultDateTime = defaultValues?.date || "";
+
+  // Split date and time
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
   useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-    const parseDateString = (dateString) => {
-      const parts = dateString?.split(" ");
-      const datePart = parts[0];
-      const timePart = parts[1];
-      const [month, day, year] = datePart?.split("-")?.map(Number);
-      const [hours, minutes] = timePart?.split(":")?.map(Number);
-      const date = new Date(year, month - 1, day, hours, minutes);
-      return date;
+    // Combine default date and time into a single Date object
+    let date = new Date();
+
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
+
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
+
+    setSelectedDate(date);
+    setSelectedTime(date); // Initialize time picker with the same Date object
+  }, [defaultDate, defaultTime]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    if (date) {
+      setSelectedTime(date); // Sync time picker with the updated date
+    }
+  };
+
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(selectedDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
+
+      setSelectedDate(updatedDateTime); // Optionally update date as well
+      setSelectedTime(time);
+    }
+  };
+
+
+
+  const validate = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    if (!selectedDate) {
+      newErrors.date = "Date is required.";
+      isValid = false;
+    }
+    if (!selectedTime) {
+      newErrors.time = "Time is required.";
+      isValid = false;
+    }
+    if (!selectedProvider) {
+      newErrors.selectedProvider = "provider is required.";
+      isValid = false;
+    }
+    if (!reason) {
+      newErrors.reason = "Reason is required.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+
+  const onSubmit = () => {
+    console.log('clicked checking')
+    if (validate()) {
+      if (defaultValues.id !== undefined) {
+        console.log("Edit clicked");
+        editNextAppointment()
+
+      }
+      if (defaultValues.id === undefined) {
+        console.log("Add clicked");
+        addNextAppointment();
+
+      }
+    }
+  };
+
+  const handleProviderChange = (selectedOption) => {
+    setSelectedProvider(selectedOption);
+
+  };
+
+  // API integration of Provider list
+  useEffect(() => {
+    const getProvider = async () => {
+      try {
+        const response = await get(
+          `resource/providers?order_by=id&dir=1`
+        );
+        if (response.code === 200) {
+          // Format the data for react-select: { label: "Name", value: "Name" }
+          const formattedData = response?.data?.providers?.map((item) => ({
+            label: `${item?.user?.first_name} ${item?.user?.last_name}`,
+            value: `${item?.user?.first_name} ${item?.user?.last_name}`,
+          }));
+          setProvider(formattedData);
+        } else {
+          console.error("Failed to fetch data:", response.message);
+          setProvider([]); // Ensure it's always an array
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setProvider([]); // Ensure it's always an array
+      }
     };
 
-    // Example default date string
-    const defaultDateString = defaultValues?.date;
+    getProvider();
+  }, [searchTerm]);
 
-    // Parse default date string to Date object
-    const defaultDate = defaultValues?.date
-      ? parseDateString(defaultDateString)
-      : new Date();
 
-    // Set default date in state
-    setDate(defaultDate);
-  }, [defaultValues]);
 
-  
-    const options = ["one", "Two","Three"];
-    const findIndex = defaultValues?.prev_illness
-      ? options?.indexOf(defaultValues?.prev_illness)
-      : 0;
 
-    const getSelectedValue = (data) => {
-      console.log(data);
-    };
+
+  // Add NextAppointment
+  const addNextAppointment = async () => {
+
+    try {
+      const body = {
+        patient_id: "10", 
+        provider_id: "9", 
+        date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
+       // date: format(selectedDate, "dd-MM-yyyy"),
+        // time: format(selectedTime,"HH:mm"),
+        reason: reason,
+        provider: selectedProvider?.label,
+      }
+
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/next-appointment`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchNextAppointment();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Edit NextAppointment
+
+  const editNextAppointment = async () => {
+
+    try {
+      const body = {
+        patient_id: "10", 
+        provider_id: "9", 
+        date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
+       // date: format(selectedDate, "dd-MM-yyyy"),
+        // time: format(selectedTime,"HH:mm"),
+        reason: reason,
+        provider: selectedProvider?.label,
+      }
+      
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/next-appointment/${defaultValues.id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchNextAppointment();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
+
+
 
   return (
     <>
-    <CRow className="mb-3">
-      <CCol lg={4}>
-      <div class="position-relative">
+      <CRow className="mb-3">
+        <CCol lg={4}>
+          <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
               Date *
             </label>
             <div className="date-size">
               <DatePicker
-               showIcon
-               selected={date}
-               onChange={(date) => setDate(date)}
-               dateFormat={DATE_FORMAT}
+                showIcon
+                selected={selectedDate}
+                onChange={handleDateChange}
+                dateFormat="MM-dd-yyyy"
               />
+              {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </div>
-      </CCol>
-      <CCol lg={4}>
-      <div class="position-relative">
+        </CCol>
+        <CCol lg={4}>
+          <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
               Time *
             </label>
             <div className="date-size">
               <DatePicker
-               showIcon
-               selected={date}
-               onChange={(date) => setDate(date)}
-               showTimeSelect
-               showTimeSelectOnly
-               timeIntervals={15}
-               timeCaption="Time"
-               dateFormat="h:mm aa"
+                showIcon
+                selected={selectedTime}
+                onChange={handleTimeChange}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="h:mm aa"
               />
+              {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </div>
-      </CCol>
-      <CCol lg={4}>
-        <div style={{ width: "100%" }}>
-          <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
-            Provider Name *
-            </label>
-            <div
-              className="w-100"
-              style={{
-                border: "1px solid #17171D33",
-                borderRadius: "5px",
-              }}
-            >
-               <Dropdown
-                options={options}
-                defaultValue={
-                  defaultValues? options[findIndex] : null
-                }
-                getSelectedValue={getSelectedValue}
-              />
+        </CCol>
+        <CCol lg={4}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Provider Name *
+              </label>
+              <div
+                className="w-100"
+                style={{
+                  border: "1px solid #17171D33",
+                  borderRadius: "5px",
+                }}
+              >
+                <Select
+                  options={provider}
+                  value={selectedProvider}
+                  onChange={handleProviderChange}
+                  isSearchable
+                  placeholder="Select"
+                />
+              </div>
+              {errors.selectedProvider && <div className="error-text">{errors.selectedProvider}</div>}
             </div>
           </div>
-        </div>
-      </CCol>
-    </CRow>
-    <CRow className="mb-3">
-      <CCol lg={12}>
-        <div style={{ width: "100%" }}>
-          <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
-            Reason *
-            </label>
-            <input
-              type="text"
-              class="form-control pad-10"
-              id="validationTooltip01"
-              placeholder="Enter"
-              defaultValue={defaultValues?.reason}
-            />
+        </CCol>
+      </CRow>
+      <CRow className="mb-3">
+        <CCol lg={12}>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Reason *
+              </label>
+              <input
+                type="text"
+                class="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                name="reason"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              />
+              {errors.reason && <div className="error-text">{errors.reason}</div>}
+            </div>
           </div>
+        </CCol>
+      </CRow>
+      <CRow className="mb-1">
+        <div style={{ width: "128px" }}>
+          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
         </div>
-      </CCol>
-    </CRow>
-    <CRow className="mb-1">
-      <div style={{ width: "128px" }}>
-        <PrimaryButton>SAVE</PrimaryButton>
-      </div>
-      <div style={{ width: "128px" }}>
-        <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-      </div>
-    </CRow>
-  </>
+        <div style={{ width: "128px" }}>
+          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+        </div>
+      </CRow>
+    </>
   )
 }
 

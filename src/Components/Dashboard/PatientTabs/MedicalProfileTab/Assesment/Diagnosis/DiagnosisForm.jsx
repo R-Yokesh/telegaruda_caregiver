@@ -107,13 +107,13 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
   };
 
 
-  //api integration of medical conditions list
+  //api integration of ICD Code list
   useEffect(() => {
     const getIcdCode = async () => {
       if (searchTerm) {
         try {
           const response = await get(
-            `resource/masters?slug=icd&searchkey=${searchTerm}&limit=50&country=undefined`
+            `resource/masters?slug=procedure&searchkey=${searchTerm}&limit=50&country=undefine`
           );
           if (response.code === 200) {
             setIcd(response.data.masters);
