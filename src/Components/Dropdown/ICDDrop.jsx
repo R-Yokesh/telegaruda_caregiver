@@ -12,9 +12,10 @@ const ICDDrop = ({ options, defaultValue, getSelectedValue, icdKey }) => {
 
   useEffect(() => {
     setFilteredOptions(
-      options?.filter((option) =>
-        option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-      )
+      // options?.filter((option) =>
+      //   option?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+      // )
+      options
     );
   }, [searchTerm, options]);
 
@@ -69,7 +70,7 @@ const ICDDrop = ({ options, defaultValue, getSelectedValue, icdKey }) => {
             {filteredOptions?.length > 0 ? (
               filteredOptions?.map((option, index) => (
                 <li key={index} onClick={() => handleOptionClick(option)}>
-                  {option?.name}
+                  {option?.slug ?? ""} - {option?.name}
                 </li>
               ))
             ) : (
