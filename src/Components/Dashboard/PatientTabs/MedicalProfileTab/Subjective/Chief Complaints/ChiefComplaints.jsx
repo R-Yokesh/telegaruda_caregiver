@@ -344,6 +344,8 @@ const ChiefComplaints = ({ OnClose, from }) => {
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
+              currentPage={currentPage || 1}
+              itemsPerPage={itemsPerPage || 5}
             />
             {from !== "Consult" && (
               <CRow className="mb-3">

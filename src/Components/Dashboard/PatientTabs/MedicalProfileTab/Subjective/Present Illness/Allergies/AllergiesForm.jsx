@@ -15,6 +15,7 @@ import {
   openFile,
 } from "../../../../../../../Utils/commonUtils";
 import Select from 'react-select';
+import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 
 const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) => {
 
@@ -32,12 +33,14 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
   });
 
-  const [allergyName, setAllergyName] = useState([]);
-  const [selectedAllergy, setSelectedAllergy] = useState(defaultValues?.values?.name?.name ? {label:defaultValues?.values?.name?.name} : "");
-  const [reaction, setRaction] = useState([]);
-  const [selectedReaction, setSelectedReaction] = useState(defaultValues?.values?.reaction?.name ? {label:defaultValues?.values?.reaction?.name} : "");
+  const [allergyDetails, setAlleryDetails] = useState([]);
+  const [allergyKey, setAllergyKey] = useState(defaultValues?.values?.name?.name || "");
+  const [allergyName, setAllergyName] = useState(defaultValues?.values?.name || {});
+  const [reactiondetails, setRactionDetails] = useState([]);
+  const [reactionKey, setRactionKey] = useState(defaultValues?.values?.reaction?.name || "");
+  const [reaction, setReaction] = useState(defaultValues?.values?.reaction?.name || {});
   const [provider, setProvider] = useState([]);
-  const [selectedProvider, setSelectedProvider] = useState(defaultValues?.values?.provider ? {label:defaultValues?.values?.provider} : "");
+  const [selectedProvider, setSelectedProvider] = useState(defaultValues?.values?.provider ? { label: defaultValues?.values?.provider } : "");
   const [searchTerm, setSearchTerm] = useState([]);
 
 
@@ -107,7 +110,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
 
 
-  const severityOptions = ["Normal","Mild", "Moderate", "Severe","Very Severe","Worst"];
+  const severityOptions = ["Normal", "Mild", "Moderate", "Severe", "Very Severe", "Worst"];
   const statusOptions = ["Active", "Inactive"];
 
   // Function to update Severity
@@ -125,11 +128,11 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
       ...prevState,
       status: data,
     }));
-   
+
   };
 
- 
-  
+
+
 
 
   const validate = () => {
@@ -140,16 +143,17 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
       newErrors.date = "Date is required.";
       isValid = false;
     }
-    if (!selectedAllergy) {
-      newErrors.selectedAllergy = "Allergy Name is required.";
+    if (!allergyName || !allergyName?.name) {
+      newErrors.allergyName = "Allergy Name is required.";
       isValid = false;
     }
+     
     if (!formData.category) {
       newErrors.category = "Category is required.";
       isValid = false;
     }
-    if (!selectedReaction) {
-      newErrors.selectedReaction = "Reaction is required.";
+    if (!reaction || !reaction?.name) {
+      newErrors.reaction = "Reaction is required.";
       isValid = false;
     }
     if (!formData.other_reaction) {
@@ -190,16 +194,24 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
     }
   };
 
-  const handleAllergyChange = (selectedOption) => {
-    setSelectedAllergy(selectedOption);
+  // const handleAllergyChange = (selectedOption) => {
+  //   setSelectedAllergy(selectedOption);
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     category: selectedOption.label,
+  //   }));
+  // };
+  const getSelectedAllergy = (data) => {
+   
+    setAllergyName(data);
     setFormData((prevState) => ({
-      ...prevState,
-      category: selectedOption.label,
-    }));
+          ...prevState,
+           category: data?.name,
+      }));
   };
 
-  const handleReactionChange = (selectedOption) => {
-    setSelectedReaction(selectedOption);
+  const getSelectedReaction = (selectedOption) => {
+    setReaction(selectedOption);
 
   };
 
@@ -212,64 +224,45 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
 
   // API integration of allergies list
-  useEffect(() => {
-    const getAllergy = async () => {
-      try {
-        const response = await get(
-          `resource/masters?slug=allergy&searchkey=${searchTerm ?? ""}&limit=50&country=IN`
-        );
-        if (response.code === 200) {
-          // Format the data for react-select: { label: "Name", value: "Name" }
-          const formattedData = response?.data?.masters?.map((item) => ({
-            label: item?.name,
-            value: item,
-          }));
-          setAllergyName(formattedData);
-        } else {
-          console.error("Failed to fetch data:", response.message);
-          setAllergyName([]); // Ensure it's always an array
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setAllergyName([]); // Ensure it's always an array
-      }
-    };
+  const getAllergy = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters?slug=allergy&searchkey=${allergyKey}&limit=50&country=IN`
+      );
+      const listData = response?.data?.masters; //
+      setAlleryDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, allergyKey]);
 
+  useEffect(() => {
     getAllergy();
-  }, [searchTerm]);
-  
+  }, [getAllergy]);
+
+
 
   // API integration of allergies list
+  const getReaction = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters?slug=reaction&searchkey=${reactionKey}&limit=50&country=IN`
+      );
+      const listData = response?.data?.masters; //
+      setRactionDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, allergyKey]);
+
   useEffect(() => {
-    const getReaction = async () => {
-      try {
-        const response = await get(
-          `resource/masters?slug=reaction&searchkey=${searchTerm ?? ""}&limit=50&country=IN`
-        );
-        if (response.code === 200) {
-          // Format the data for react-select: { label: "Name", value: "Name" }
-          const formattedData = response?.data?.masters?.map((item) => ({
-            label: item?.name,
-            value: item,
-          }));
-          setRaction(formattedData);
-        } else {
-          console.error("Failed to fetch data:", response.message);
-          setRaction([]); // Ensure it's always an array
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setRaction([]); // Ensure it's always an array
-      }
-    };
-
     getReaction();
-  }, [searchTerm]);
+  }, [getReaction]);
 
-   
 
-   // API integration of Provider list
-   useEffect(() => {
+
+  // API integration of Provider list
+  useEffect(() => {
     const getProvider = async () => {
       try {
         const response = await get(
@@ -294,7 +287,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
     getProvider();
   }, [searchTerm]);
-  
+
 
 
 
@@ -309,25 +302,25 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
         slug: "allergy",
         values: {
           name: {
-            id: selectedAllergy?.value?.id,
+            id: allergyName?.id,
             attributes: {
-              allergy_type: selectedAllergy?.value?.attributes?.allergy_type,
-              allergy_category: selectedAllergy?.value?.attributes?.allergy_category,
+              allergy_type: allergyName?.attributes?.allergy_type,
+              allergy_category: allergyName?.attributes?.allergy_category,
             },
-            master_type_slug: selectedAllergy?.value?.master_type_slug,
-            name: selectedAllergy?.label,
-            slug: selectedAllergy?.value?.slug,
-            is_active: selectedAllergy?.value?.is_active
+            master_type_slug: allergyName?.master_type_slug,
+            name: allergyName?.name,
+            slug: allergyName?.slug,
+            is_active: allergyName?.is_active
           },
           // type: "Drug",
           category: formData.category,
           reaction: {
-            id: selectedReaction?.value?.id,
-            attributes: selectedReaction?.value?.attributes,
-            master_type_slug: selectedReaction?.value?.master_type_slug,
-            name: selectedReaction?.label,
-            slug: selectedReaction?.value?.slug,
-            is_active: selectedReaction?.value?.is_active
+            id: reaction?.id,
+            attributes: reaction?.attributes,
+            master_type_slug: reaction?.master_type_slug,
+            name: reaction?.name,
+            slug: reaction?.slug,
+            is_active: reaction?.is_active
           },
           other_reaction: formData?.other_reaction,
           date: format(selectedDate, "dd-MM-yyyy"),
@@ -359,64 +352,64 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
   // Edit Allery
 
-    const editAllergy = async () => {
+  const editAllergy = async () => {
 
-      try {
-        const body = {
+    try {
+      const body = {
 
-          patient_id: "10",
-          slug: "allergy",
-          values: {
-            name: {
-              id: selectedAllergy?.value?.id,
-              attributes: {
-                allergy_type: selectedAllergy?.value?.attributes?.allergy_type,
-                allergy_category: selectedAllergy?.value?.attributes?.allergy_category,
-              },
-              master_type_slug: selectedAllergy?.value?.master_type_slug,
-              name: selectedAllergy.label,
-              slug: selectedAllergy?.value?.slug,
-              is_active: selectedAllergy?.value?.is_active
+        patient_id: "10",
+        slug: "allergy",
+        values: {
+          name: {
+            id: allergyName?.id,
+            attributes: {
+              allergy_type: allergyName?.attributes?.allergy_type,
+              allergy_category: allergyName?.attributes?.allergy_category,
             },
-            // type: "Drug",
-            category: formData.category,
-            reaction: {
-              id: selectedReaction?.value?.id,
-              attributes: selectedReaction?.value?.attributes,
-              master_type_slug: selectedReaction?.value?.master_type_slug,
-              name: selectedReaction?.label,
-              slug: selectedReaction?.value?.slug,
-              is_active: selectedReaction?.value?.is_active
-            },
-            other_reaction: formData?.other_reaction,
-            date: format(selectedDate, "dd-MM-yyyy"),
-            severity: formData?.severity,
-            provider: selectedProvider?.label,
-            notes: formData?.notes,
-            status: formData?.status,
-            // treated_by: "d",
-            // is_active: 1,
-          }
-        };
-  
-        // Use the provided `post` function to send the request
-        const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
-  
-        if (response.code === 200) {
-          clearCache();
-          await fetchAllergies();
-          setAddFormView(false);
-          toast.success("Added successfully");
-  
-        } else {
-          console.error("Failed to fetch data:", response.message);
+            master_type_slug: allergyName?.master_type_slug,
+            name: allergyName?.name,
+            slug: allergyName?.slug,
+            is_active: allergyName?.is_active
+          },
+          // type: "Drug",
+          category: formData.category,
+          reaction: {
+            id: reaction?.id,
+            attributes: reaction?.attributes,
+            master_type_slug: reaction?.master_type_slug,
+            name: reaction?.name,
+            slug: reaction?.slug,
+            is_active: reaction?.is_active
+          },
+          other_reaction: formData?.other_reaction,
+          date: format(selectedDate, "dd-MM-yyyy"),
+          severity: formData?.severity,
+          provider: selectedProvider?.label,
+          notes: formData?.notes,
+          status: formData?.status,
+          // treated_by: "d",
+          // is_active: 1,
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchAllergies();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
       }
-    };
-  
-   
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
 
 
 
@@ -453,16 +446,22 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
                   borderRadius: "5px",
                 }}
               >
-                <Select
+                {/* <Select
                   options={allergyName}
                   value={selectedAllergy}
                   onChange={handleAllergyChange}
                   isSearchable
                   placeholder="Select"
+                /> */}
+                <SearchableDrop
+                  getSelectedValue={getSelectedAllergy}
+                  options={allergyDetails}
+                  defaultValue={allergyKey}
+                  dropKey={setAllergyKey}
                 />
 
               </div>
-              {errors.selectedAllergy && <div className="error-text">{errors.selectedAllergy}</div>}
+              {errors.allergyName && <div className="error-text">{errors.allergyName}</div>}
             </div>
           </div>
         </CCol>
@@ -500,15 +499,14 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
                   borderRadius: "5px",
                 }}
               >
-                <Select
-                  options={reaction}
-                  value={selectedReaction}
-                  onChange={handleReactionChange}
-                  isSearchable
-                  placeholder="Select"
+                <SearchableDrop
+                  getSelectedValue={getSelectedReaction}
+                  options={reactiondetails}
+                  defaultValue={reactionKey}
+                  dropKey={setRactionKey}
                 />
               </div>
-              {errors.selectedReaction && <div className="error-text">{errors.selectedReaction}</div>}
+              {errors.reaction && <div className="error-text">{errors.reaction}</div>}
             </div>
           </div>
         </CCol>
@@ -544,14 +542,14 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
                   borderRadius: "5px",
                 }}
               >
-                <Dropdown 
-                options={severityOptions}
-                defaultValue={
-                  defaultValues?.values?.severity
-                    ? severityOptions[findItemIndex(severityOptions, defaultValues?.values?.severity)]
-                    : null
-                }
-                 getSelectedValue={getSeverityValue} />
+                <Dropdown
+                  options={severityOptions}
+                  defaultValue={
+                    defaultValues?.values?.severity
+                      ? severityOptions[findItemIndex(severityOptions, defaultValues?.values?.severity)]
+                      : null
+                  }
+                  getSelectedValue={getSeverityValue} />
               </div>
               {errors.severity && <div className="error-text">{errors.severity}</div>}
             </div>
@@ -596,8 +594,8 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
                 id="validationTooltip01"
                 placeholder="Enter"
                 name="notes"
-                 value={formData.notes}
-                 onChange={handleChange}
+                value={formData.notes}
+                onChange={handleChange}
               />
               {errors.notes && <div className="error-text">{errors.notes}</div>}
             </div>
@@ -616,14 +614,14 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
                   borderRadius: "5px",
                 }}
               >
-                <Dropdown 
-                 options={statusOptions}
-                 defaultValue={
-                   defaultValues?.values?.status
-                     ? statusOptions[findItemIndex(statusOptions, defaultValues?.values?.status)]
-                     : null
-                 }
-                  getSelectedValue={getStatusValue} 
+                <Dropdown
+                  options={statusOptions}
+                  defaultValue={
+                    defaultValues?.values?.status
+                      ? statusOptions[findItemIndex(statusOptions, defaultValues?.values?.status)]
+                      : null
+                  }
+                  getSelectedValue={getStatusValue}
                 />
               </div>
               {errors.status && <div className="error-text">{errors.status}</div>}

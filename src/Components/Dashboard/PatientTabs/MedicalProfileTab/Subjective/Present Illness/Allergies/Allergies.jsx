@@ -180,7 +180,8 @@ const Allergies = () => {
               rowData={rowData}
               columns={columnData}
               getselectedData={getselectedData}
-            
+              currentPage={currentPage || 1}
+              itemsPerPage={itemsPerPage || 5}
             />
             <CRow className="mb-3">
               <CCol lg={12} className="d-flex justify-content-center">

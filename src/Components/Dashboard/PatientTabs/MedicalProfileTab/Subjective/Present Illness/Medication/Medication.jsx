@@ -7,7 +7,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState,useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import LabForm from "../../../Objective/Lab/LabForm";
 import Pagination from "../../../../../../Pagination/Pagination";
 import LabTable from "../../../../../../Tables/LabTable";
@@ -214,14 +214,14 @@ const Medication = ({ from }) => {
   // ];
 
 
-  const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get, del, clearCache } = useApi();
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -233,14 +233,14 @@ const Medication = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-   
+
   };
- 
+
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };  
+  };
 
   const addFormPage = () => {
     setAddFormView(true);
@@ -250,7 +250,7 @@ const Medication = ({ from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data,id, type) => {
+  const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       console.log("Add Clicked")
@@ -277,7 +277,7 @@ const Medication = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,startDate,endDate,searchValue]);
+  }, [get, currentPage, startDate, endDate, searchValue]);
 
   useEffect(() => {
     fetchMedication();
@@ -287,7 +287,7 @@ const Medication = ({ from }) => {
   const deleteMedication = async () => {
     try {
       const response = await del(`resource/patientHealth/${id}`);
-  
+
       if (response.code === 200) {
         setDetailView(false);
         clearCache();
@@ -312,7 +312,7 @@ const Medication = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-              <DateRangePicker getFilterValues={getFilterValues} />
+                <DateRangePicker getFilterValues={getFilterValues} />
               </CCol>
               <CCol
                 lg={4}
@@ -338,10 +338,12 @@ const Medication = ({ from }) => {
           )}
           <div className="mb-2">
             <MedicationTable
-             rowData={rowData}
-             columns={columnData}
-             getselectedData={getselectedData}
-             from={from}
+              rowData={rowData}
+              columns={columnData}
+              getselectedData={getselectedData}
+              from={from}
+              currentPage={currentPage || 1}
+              itemsPerPage={itemsPerPage || 5}
             />
             {from !== "Consult" && (
               <CRow className="mb-3">
