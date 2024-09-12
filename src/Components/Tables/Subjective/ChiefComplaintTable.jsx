@@ -31,7 +31,14 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData, from,itemsPerP
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {rowData?.map((dt, i) => (
+        {rowData?.length <= 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="no-data-message">
+                No data available
+              </td>
+            </tr>
+          ) : (
+          rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
               {getSerialNumber(itemsPerPage, currentPage, i)}
@@ -84,7 +91,8 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData, from,itemsPerP
                 </CTableDataCell>
               )}
             </CTableRow>
-          ))}
+          ))
+          )}
         </CTableBody>
       </CTable>
     </>
