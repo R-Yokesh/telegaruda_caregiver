@@ -44,7 +44,14 @@ const NextAppointmentTable = ({ columns, rowData, getselectedData, from }) => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {rowData?.map((dt, i) => (
+        {rowData?.length <= 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="no-data-message">
+                No data available
+              </td>
+            </tr>
+          ) : (
+          rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
                 <span className="fs-16 fw-500">{dt?.id ? dt?.id : "-"}</span>
@@ -77,7 +84,8 @@ const NextAppointmentTable = ({ columns, rowData, getselectedData, from }) => {
                 </CTableDataCell>
               )}
             </CTableRow>
-          ))}
+          ))
+        )}
         </CTableBody>
       </CTable>
     </>
