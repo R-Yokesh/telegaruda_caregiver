@@ -136,18 +136,7 @@ const FamilyHistory = ({ from }) => {
     }
   };
 
-  const getHistoryLists = useCallback(async () => {
-    try {
-      const response = await get(
-        `resource/masters/all?slug=family_history_diseases&order_by=id&dir=1&patient_id=${data?.user_id}`
-      );
-      const listData = response?.data?.masters; //
-      setFamilyDatas(listData);
-      setFamilyPagi(response?.data?.pagination);
-    } catch (error) {
-      console.error("Error fetching card data:", error);
-    }
-  }, [data?.user_id, get]);
+
   const familyHistAdd = async () => {
     try {
       const url = `resource/familyHistories`; // Replace with your API endpoint
@@ -166,6 +155,18 @@ const FamilyHistory = ({ from }) => {
       console.error("Failed to delete:", error);
     }
   };
+  const getHistoryLists = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters/all?slug=family_history_diseases&order_by=id&dir=1&patient_id=${data?.user_id}`
+      );
+      const listData = response?.data?.masters; //
+      setFamilyDatas(listData);
+      setFamilyPagi(response?.data?.pagination);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [data?.user_id, get]);
   useEffect(() => {
     getHistoryLists();
   }, [getHistoryLists]);
@@ -176,7 +177,7 @@ const FamilyHistory = ({ from }) => {
         {from !== "Consult" && (
           <CRow className="mb-2">
             <CCol lg={8} className="">
-              <DateSelector />
+              {/* <DateSelector /> */}
             </CCol>
             <CCol
               lg={4}
