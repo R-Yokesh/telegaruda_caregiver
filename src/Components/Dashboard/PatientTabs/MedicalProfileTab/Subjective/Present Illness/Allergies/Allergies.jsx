@@ -151,11 +151,11 @@ const Allergies = () => {
       {!addFormView && (
         <>
           <CRow className="mb-2">
-            <CCol lg={10} className="">
-            <DateRangePicker getFilterValues={getFilterValues} />
+            <CCol lg={8} className="">
+            <DateSearch getFilterValues={getFilterValues} />
             </CCol>
             <CCol
-              lg={2}
+              lg={4}
               className="d-flex justify-content-end align-items-center gap-2"
             >
               <div>
@@ -166,13 +166,13 @@ const Allergies = () => {
                   </div>
                 </PrimaryButton>
               </div>
-              <div>
+              {/* <div>
                 <PrimaryButton onClick={() => addFormPage()}>
                   <div className="d-flex align-items-center gap-2">
                     <img src={Assets.OptionsIcon} alt="add" />
                   </div>
                 </PrimaryButton>
-              </div>
+              </div> */}
             </CCol>
           </CRow>
           <div className="mb-2">

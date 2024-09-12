@@ -312,7 +312,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
         <>
           {from !== "Consult" && (
             <CRow>
-              <CCol lg={8} md={8} xl={8} className="mb-3 chief-complaints">
+              <CCol lg={8} md={8} xl={8} className="mb-3 ">
                 {/* <div className="search-bar">
                 <input type="text" placeholder="Search" />
                 <button type="submit">
@@ -330,11 +330,11 @@ const ChiefComplaints = ({ OnClose, from }) => {
                 <div className="patient-adding" onClick={() => addFormPage()}>
                   <button>+ ADD</button>
                 </div>
-                <div className="patient-adding">
+                {/* <div className="patient-adding">
                   <button>
                     <img src={Assets.ThreeDots} alt="settings" />
                   </button>
-                </div>
+                </div> */}
               </CCol>
             </CRow>
           )}

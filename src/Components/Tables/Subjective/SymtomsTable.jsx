@@ -11,6 +11,24 @@ import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
 import { getSerialNumber } from "../../../Utils/commonUtils";
 
+
+// Helper function to format date to dd-MM-yyyy HH:mm:ss
+const formatDate = (dateString) => {
+  const parsedDate = Date.parse(dateString);
+  if (isNaN(parsedDate)) return "N/A"; // Return "N/A" if the date is invalid
+
+  const date = new Date(parsedDate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+  const year = date.getFullYear();
+
+  
+
+  return `${day}-${month}-${year} `; // Format as dd-MM-yyyy HH:mm
+};
+
+
+
 const SymtomsTable = ({ columns, rowData, getselectedData, from,itemsPerPage,currentPage }) => {
 
   const selectedData = (data,id, type) => {
@@ -46,8 +64,7 @@ const SymtomsTable = ({ columns, rowData, getselectedData, from,itemsPerPage,cur
               </CTableHeaderCell>
               <CTableHeaderCell>
                 <span className="fs-16 fw-500">
-                  {dt?.values?.date ? dt?.values?.date : "-"}
-                  {" "}
+                <span className="fs-16 fw-500">{formatDate(dt?.values?.date )}</span>
                 </span>
                 <span className="fs-16 fw-500">
                   {dt?.values?.time ? dt?.values?.time : "-"}

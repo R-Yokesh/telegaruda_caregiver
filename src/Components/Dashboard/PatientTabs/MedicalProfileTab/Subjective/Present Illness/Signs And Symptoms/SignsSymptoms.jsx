@@ -304,13 +304,13 @@ const SignsSymptoms = ({ from }) => {
                     </div>
                   </PrimaryButton>
                 </div>
-                <div>
+                {/* <div>
                   <PrimaryButton onClick={() => addFormPage()}>
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.OptionsIcon} alt="add" />
                     </div>
                   </PrimaryButton>
-                </div>
+                </div> */}
               </CCol>
             </CRow>
           )}

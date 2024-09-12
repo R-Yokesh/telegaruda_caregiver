@@ -9,8 +9,8 @@ import PrimaryButton from "../Buttons/PrimaryButton/PrimaryButton";
 import { formatDate } from "../../Utils/dateUtils";
 
 const DateSearch = ({ getFilterValues }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   // Get today's date
   const today = new Date();

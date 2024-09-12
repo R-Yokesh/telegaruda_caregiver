@@ -9,6 +9,7 @@ import {
 import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
+import { getSerialNumber } from "../../Utils/commonUtils";
 
 
 
@@ -31,7 +32,7 @@ const formatDate = (dateString) => {
 };
 
 
-const ProcedurerTable = ({ columns, rowData, getselectedData, from }) => {
+const ProcedurerTable = ({ columns, rowData, getselectedData, from,itemsPerPage,currentPage  }) => {
   const selectedData = (data,id, type) => {
     getselectedData(data,id, type);
   };
@@ -48,10 +49,17 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from }) => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {rowData?.map((dt, i) => (
+        {rowData?.length <= 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="no-data-message">
+                No data available
+              </td>
+            </tr>
+          ) : (
+          rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{dt?.id ? dt?.id : "-"}</span>
+              {getSerialNumber(itemsPerPage, currentPage, i)}
               </CTableHeaderCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">{formatDate(dt?.values?.date)}</span>
@@ -89,7 +97,8 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from }) => {
                 </CTableDataCell>
               )}
             </CTableRow>
-          ))}
+          ))
+        )}
         </CTableBody>
       </CTable>
     </>

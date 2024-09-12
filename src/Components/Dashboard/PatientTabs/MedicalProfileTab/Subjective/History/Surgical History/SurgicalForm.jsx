@@ -100,8 +100,10 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
   };
 
   const getSelectedGravida = (data) => {
+    console.log('dddddddaaat',data)
     setIcd(data);
   };
+ 
 
   const getSurgeryName = useCallback(async () => {
     try {
@@ -196,6 +198,7 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
       }
     }
   };
+  console.log('iiicccdd111',icd)
   return (
     <>
       <CRow className="mb-3">

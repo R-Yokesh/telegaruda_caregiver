@@ -16,8 +16,11 @@ import {
 } from "../../../../../../../Utils/commonUtils";
 import Select from 'react-select';
 import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
+import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
 
 const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) => {
+
+  console.log('defaulttttt',defaultValues)
 
   const { loading, error, get, post, clearCache, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
@@ -39,9 +42,9 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
   const [reactiondetails, setRactionDetails] = useState([]);
   const [reactionKey, setRactionKey] = useState(defaultValues?.values?.reaction?.name || "");
   const [reaction, setReaction] = useState(defaultValues?.values?.reaction?.name || {});
-  const [provider, setProvider] = useState([]);
-  const [selectedProvider, setSelectedProvider] = useState(defaultValues?.values?.provider ? { label: defaultValues?.values?.provider } : "");
-  const [searchTerm, setSearchTerm] = useState([]);
+  const [providerDetails, setproviderDetails] = useState([]);
+  const [providerKey, setProviderKey] = useState(defaultValues?.values?.provider || "");
+  const [provider, setProvider] = useState(defaultValues?.values?.provider || {});
 
 
   const getFormattedDate = (date) => {
@@ -164,8 +167,8 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
       newErrors.severity = "Severity is required.";
       isValid = false;
     }
-    if (!selectedProvider) {
-      newErrors.selectedProvider = "provider is required.";
+    if (!provider) {
+      newErrors.provider = "provider is required.";
       isValid = false;
     }
     if (!formData.status) {
@@ -216,7 +219,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
   };
 
   const handleProviderChange = (selectedOption) => {
-    setSelectedProvider(selectedOption);
+    setProvider(selectedOption);
 
   };
 
@@ -261,32 +264,26 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
 
 
+  const getSelectedProvider = (data) => {
+    setProvider(data);
+  };
   // API integration of Provider list
-  useEffect(() => {
-    const getProvider = async () => {
-      try {
-        const response = await get(
-          `resource/providers?order_by=id&dir=1`
-        );
-        if (response.code === 200) {
-          // Format the data for react-select: { label: "Name", value: "Name" }
-          const formattedData = response?.data?.providers?.map((item) => ({
-            label: `${item?.user?.first_name} ${item?.user?.last_name}`,
-            value: `${item?.user?.first_name} ${item?.user?.last_name}`,
-          }));
-          setProvider(formattedData);
-        } else {
-          console.error("Failed to fetch data:", response.message);
-          setProvider([]); // Ensure it's always an array
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setProvider([]); // Ensure it's always an array
-      }
-    };
+  const getProvider = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/providers?order_by=id&searchkey=${providerKey}&dir=1`
+      );
+      const listData = response?.data?.providers; //
+      setproviderDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, providerKey]);
 
+  useEffect(() => {
     getProvider();
-  }, [searchTerm]);
+  }, [getProvider]);
+
 
 
 
@@ -325,7 +322,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
           other_reaction: formData?.other_reaction,
           date: format(selectedDate, "dd-MM-yyyy"),
           severity: formData?.severity,
-          provider: selectedProvider?.label,
+          provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
           notes: formData?.notes,
           status: formData?.status,
           // treated_by: "d",
@@ -384,7 +381,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
           other_reaction: formData?.other_reaction,
           date: format(selectedDate, "dd-MM-yyyy"),
           severity: formData?.severity,
-          provider: selectedProvider?.label,
+          provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
           notes: formData?.notes,
           status: formData?.status,
           // treated_by: "d",
@@ -412,7 +409,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
 
 
 
-
+console.log('proviiiderrr',provider)
   return (
     <>
       <CRow className="mb-3">
@@ -570,15 +567,14 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
                   borderRadius: "5px",
                 }}
               >
-                <Select
-                  options={provider}
-                  value={selectedProvider}
-                  onChange={handleProviderChange}
-                  isSearchable
-                  placeholder="Select"
+               <ProviderDrop
+                  getSelectedValue={getSelectedProvider}
+                  options={providerDetails}
+                  defaultValue={providerKey}
+                  dropKey={setProviderKey}
                 />
               </div>
-              {errors.selectedProvider && <div className="error-text">{errors.selectedProvider}</div>}
+              {errors.provider && <div className="error-text">{errors.provider}</div>}
             </div>
           </div>
         </CCol>

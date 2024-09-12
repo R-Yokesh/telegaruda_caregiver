@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import {
   CCard,
@@ -106,20 +106,20 @@ const Diagnosis = ({ onClose, from }) => {
   //   },
   // ];
 
-  const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get, del, clearCache } = useApi();
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
 
-   const location = useLocation();
+  const location = useLocation();
   const data = location.state?.PatientDetail;
 
   const itemsPerPage = 5; // Number of items to display per page
@@ -128,13 +128,13 @@ const Diagnosis = ({ onClose, from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-   
+
   };
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };  
+  };
 
 
   const addFormPage = () => {
@@ -145,7 +145,7 @@ const Diagnosis = ({ onClose, from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data,id, type) => {
+  const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
@@ -155,8 +155,8 @@ const Diagnosis = ({ onClose, from }) => {
       detailPage();
     }
   };
-    
-    
+
+
   const fetchDiagnosis = useCallback(async () => {
     try {
       // clearCache();
@@ -172,17 +172,17 @@ const Diagnosis = ({ onClose, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,startDate,endDate,searchValue,addFormView]);
+  }, [get, currentPage, startDate, endDate, searchValue, addFormView]);
 
   useEffect(() => {
     fetchDiagnosis();
-  }, [fetchDiagnosis,addFormView]);
+  }, [fetchDiagnosis, addFormView]);
 
   // Delte Allergies
   const deleteDiagnosis = async () => {
     try {
       const response = await del(`resource/docs/${id}`);
-  
+
       if (response.code === 200) {
         setDetailView(false);
         clearCache();
@@ -200,7 +200,7 @@ const Diagnosis = ({ onClose, from }) => {
 
 
 
- 
+
 
   return (
     <>
@@ -242,7 +242,7 @@ const Diagnosis = ({ onClose, from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-              <DateRangePicker getFilterValues={getFilterValues} />
+                <DateSearch getFilterValues={getFilterValues} />
               </CCol>
               <CCol
                 lg={4}
@@ -256,13 +256,13 @@ const Diagnosis = ({ onClose, from }) => {
                     </div>
                   </PrimaryButton>
                 </div>
-                <div>
+                {/* <div>
                   <PrimaryButton onClick={() => addFormPage()}>
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.OptionsIcon} alt="add" />
                     </div>
                   </PrimaryButton>
-                </div>
+                </div> */}
               </CCol>
             </CRow>
           )}
@@ -273,16 +273,18 @@ const Diagnosis = ({ onClose, from }) => {
                 columns={columnData}
                 getselectedData={getselectedData}
                 from={from}
+                currentPage={currentPage || 1}
+                itemsPerPage={itemsPerPage || 5}
               />
             </CRow>
             {from !== "Consult" && (
               <CRow className="mb-3">
                 <CCol lg={12} className="d-flex justify-content-center">
                   <Pagination
-                     currentPage={currentPage}
-                     onPageChange={onPageChange}
-                     totalItems={pagination?.total}
-                     itemsPerPage={itemsPerPage}
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                    totalItems={pagination?.total}
+                    itemsPerPage={itemsPerPage}
                   />
                 </CCol>
               </CRow>

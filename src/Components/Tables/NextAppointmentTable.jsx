@@ -8,6 +8,7 @@ import {
 } from "@coreui/react";
 import React from "react";
 import { Assets } from "../../assets/Assets";
+import { getSerialNumber } from "../../Utils/commonUtils";
 
   // Helper function to format date to dd-MM-yyyy HH:mm:ss
 const formatDate = (dateString) => {
@@ -26,7 +27,7 @@ const formatDate = (dateString) => {
   return `${day}-${month}-${year} ${hours}:${minutes}`; // Format as dd-MM-yyyy HH:mm
 };
 
-const NextAppointmentTable = ({ columns, rowData, getselectedData, from }) => {
+const NextAppointmentTable = ({ columns, rowData, getselectedData, from,itemsPerPage,currentPage  }) => {
   const selectedData = (data,id, type) => {
     getselectedData(data,id, type);
   };
@@ -54,7 +55,7 @@ const NextAppointmentTable = ({ columns, rowData, getselectedData, from }) => {
           rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{dt?.id ? dt?.id : "-"}</span>
+              {getSerialNumber(itemsPerPage, currentPage, i)}
               </CTableHeaderCell>
               <CTableDataCell>
               <span className="fs-16 fw-500">{formatDate(dt?.values?.date)}</span>

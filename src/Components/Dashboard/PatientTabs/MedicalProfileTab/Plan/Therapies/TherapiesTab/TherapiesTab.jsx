@@ -147,6 +147,8 @@ const TherapiesTab = ({ from }) => {
             columns={columnData}
             getselectedData={getselectedData}
             from={from}
+            currentPage={currentPage || 1}
+            itemsPerPage={itemsPerPage || 5}
           />
         </CRow>
       )}
@@ -178,6 +180,8 @@ const TherapiesTab = ({ from }) => {
                    rowData={rowData}
                    columns={columnData}
                    getselectedData={getselectedData}
+                   currentPage={currentPage || 1}
+                   itemsPerPage={itemsPerPage || 5}
                  
                   />
                 </CRow>
