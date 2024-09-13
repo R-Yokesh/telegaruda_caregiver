@@ -19,6 +19,7 @@
 }
 
 .search-bar {
+  position: relative;
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
@@ -46,6 +47,33 @@
 .search-bar button i {
   font-size: 16px;
 }
+.search-suggestions-sec{
+  position: absolute;
+  top: 13%;
+  background-color: #ffff;
+  border-radius: 10px;
+  width: 25%;
+  box-shadow: 2px 2px 60px 24px #00000017;
+  z-index: 9;
+}
+.search-suggestions{
+  list-style: none;
+  max-height: 200px; 
+  overflow-y: auto; 
+  /* border: 1px solid #ddd;  */
+ 
+}
+.suggestion-item{
+  cursor: pointer;
+}
+.no-data {
+  color: #888;
+  font-size: 14px; 
+  padding: 10px; 
+  text-align: center;
+}
+
+
 
 .profile-info {
   display: flex;

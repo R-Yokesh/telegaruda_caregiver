@@ -9,10 +9,13 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { format } from "date-fns";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
 const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, defaultValues }) => {
 
   const { loading, error, get, post, clearCache, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [complaints, setComplaints] = useState(defaultValues?.addition_info?.title || "");
@@ -135,7 +138,7 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
           title: complaints,
           notes: notes,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         document_source: "chief-complaints",
       };
 
@@ -166,7 +169,7 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
           title: complaints,
           notes: notes,
         },
-        user_id: "10",
+        user_id: data?.user_id,
         document_source: "chief-complaints",
       };
 

@@ -17,10 +17,13 @@ import {
   openFile,
 } from "../../../../../../../Utils/commonUtils";
 import SearchInput from "../../../../../../Input/SearchInput";
+import { useLocation } from "react-router-dom";
 
 const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymptoms }) => {
 
   const { loading,error, get, post, clearCache, patch } = useApi();
+   const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
@@ -37,7 +40,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
   });
   const [locationDetails, setLocationDetails] = useState([]);
   const [locationKey, setLocationKey] = useState(defaultValues?.values?.location || "" );
-  const [location, setLocation] = useState(defaultValues?.values?.location || {});
+  const [locationName, setLocationName] = useState(defaultValues?.values?.location || {});
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
@@ -141,8 +144,8 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
       newErrors.time = "Time is required.";
       isValid = false;
     }
-    if (!location || !location?.name) {
-      newErrors.location = "Location is required.";
+    if (!locationName || !locationName?.name) {
+      newErrors.locationName = "Location is required.";
       isValid = false;
     }
     if (!formData.duration_days) {
@@ -199,7 +202,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
   }, [getLocation]);
 
   const getSelectedlocation = (data) => {
-    setLocation(data);
+    setLocationName(data);
   };
 
   console.log('Locationnnn',location,locationKey)
@@ -209,12 +212,12 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
       const body = {
 
         slug: "hpi",
-        patient_id: "261",
+        patient_id: data?.user_id,
         consult_id: null,
         values: {
           date: format(selectedDate, "dd-MM-yyyy"),
           time: format(selectedTime, "HH:mm"),
-          location: location?.name,
+          location: locationName?.name,
           duration: formData.duration_days,
           symptoms: formData.symptoms,
           aggravating_factors: formData.aggravating_factors,
@@ -248,12 +251,12 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
       const body = {
 
         slug: "hpi",
-        patient_id: "261",
+        patient_id: data?.user_id,
         consult_id: null,
         values: {
           date: format(selectedDate, "dd-MM-yyyy"),
           time: format(selectedTime, "HH:mm"),
-          location: location?.name,
+          location: locationName?.name,
           duration: Number(formData.duration_days),
           symptoms: formData.symptoms,
           aggravating_factors: formData.aggravating_factors,
@@ -296,7 +299,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
                 showIcon
                 selected={selectedDate}
                 onChange={handleDateChange}
-                dateFormat="MM-dd-yyyy"
+                dateFormat={DATE_FORMAT}
                 disabled
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
@@ -336,7 +339,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
                 defaultkey={locationKey}
               />
              
-              {errors.location && <div className="error-text">{errors.location}</div>}
+              {errors.locationName && <div className="error-text">{errors.locationName}</div>}
 
             </div>
           </div>

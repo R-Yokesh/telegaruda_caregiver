@@ -46,7 +46,7 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
   const [providerKey, setProviderKey] = useState(defaultValues?.values?.provider || "");
   const [provider, setProvider] = useState(defaultValues?.values?.provider || {});
 
-
+console.log('allergyname',allergyName)
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based

@@ -93,7 +93,7 @@ function CallHistoryView() {
   };
   useEffect(() => {
     getDoctors();
-  }, [currentPage, filter]);
+  }, [currentPage, filter,data?.user_id]);
 
   const getRegisteredDoctors = useCallback(async () => {
     try {

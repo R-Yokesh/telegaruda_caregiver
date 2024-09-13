@@ -227,7 +227,7 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
           <div style={{ width: "100%" }}>
             <div class="position-relative dropdown-container">
               <label for="validationTooltip01" class="form-label">
-                ICD Code *
+                Code *
               </label>
               <ICDCodeDrop
                   getSelectedValue={getSelectedIcd}

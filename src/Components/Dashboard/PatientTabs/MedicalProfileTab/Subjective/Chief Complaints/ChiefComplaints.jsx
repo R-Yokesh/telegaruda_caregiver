@@ -109,6 +109,7 @@ import DateSelector from "../../../../../DateRangePicker/DateSelector";
 import { useNavigate } from "react-router-dom";
 import useApi from "../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const ChiefComplaints = ({ OnClose, from }) => {
   const columnData = [
@@ -178,6 +179,8 @@ const ChiefComplaints = ({ OnClose, from }) => {
   // ];
 
   const { loading, error, get,del,clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -234,7 +237,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const getChiefComplaints = useCallback(async () => {
     try {
       const response = await get(
-        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=created_at&dir=2&slug=chief-complaints&user_id=10&scanOrdersOnly=&scanstatus=`
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=created_at&dir=2&slug=chief-complaints&user_id=${data?.user_id}&scanOrdersOnly=&scanstatus=`
       );
       if (response.code === 200) {
         console.log(response.data.docs);
