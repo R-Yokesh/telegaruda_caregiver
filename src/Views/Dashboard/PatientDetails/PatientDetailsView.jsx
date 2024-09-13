@@ -11,6 +11,7 @@ import PairTab from "../../../Components/Dashboard/PatientTabs/PairTab/PairTab";
 import CallHistoryView from "../../CallHistory/CallHistoryView";
 import CallTab from "../../../Components/Dashboard/PatientTabs/CallTab/CallTab";
 import { useLocation } from "react-router-dom";
+import CameraControl from "../../../Components/Dashboard/PatientTabs/CameraControlTab/CameraControl";
 
 const PatientDetailsView = () => {
   const [currentTab, setCurrentTab] = useState(() => {
@@ -18,12 +19,15 @@ const PatientDetailsView = () => {
     const storedCount = localStorage.getItem("patiendDetailTab");
     const storedFrom = localStorage.getItem("PatientMenu");
     const parsedData = storedCount && JSON.parse(storedCount);
-    return storedCount ? parsedData?.id : storedFrom ? Number(storedFrom) : null;
+    return storedCount
+      ? parsedData?.id
+      : storedFrom
+      ? Number(storedFrom)
+      : null;
   });
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
-
 
   return (
     <div className="">
@@ -57,6 +61,13 @@ const PatientDetailsView = () => {
         <CRow>
           <CCol md={12}>
             <CallTab />
+          </CCol>
+        </CRow>
+      )}
+      {currentTab === 3 && (
+        <CRow>
+          <CCol md={12}>
+            <CameraControl />
           </CCol>
         </CRow>
       )}

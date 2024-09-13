@@ -17,22 +17,36 @@ import useApi from "../../ApiServices/useApi";
 import Pagination from "../../Components/Pagination/Pagination";
 import Loader from "../../Components/Loader/Loader";
 import PhoneNumberInput from "../../Components/PhoneNumberInput/PhoneNumberInput";
+import { toast } from "react-toastify";
 
 function ExistingPatientView() {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [PatientDetail, setPatientDetail] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [mrnNumber, setMrnNumber] = useState("");
 
   const [mobile, setMobile] = useState("");
   const [iso, setIso] = useState("");
+
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    age: "",
+    gender: "",
+    mobileNumber: "",
+  });
 
   const getPhone = (isoCode, mobilenum) => {
     setIso(isoCode);
     setMobile(mobilenum);
   };
 
-  const { loading, error, get, post } = useApi();
+  const { loading, clearCache, get, post } = useApi();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20; // Number of items to display per page
 
@@ -90,6 +104,37 @@ function ExistingPatientView() {
     setVisible(false);
   };
 
+  const validate = () => {
+    const newErrors = {
+      firstName: "",
+      lastName: "",
+      age: "",
+      gender: "",
+      mobileNumber: "",
+    };
+
+    if (!firstName) newErrors.firstName = "First Name is required.";
+    if (!lastName) newErrors.lastName = "Last Name is required.";
+    if (!age) newErrors.age = "Age is required.";
+    if (isNaN(age)) newErrors.age = "Age must be a number.";
+    if (!gender) newErrors.gender = "Gender is required.";
+    if (!mobile) newErrors.mobileNumber = "Mobile Number is required.";
+    if (mobile?.length > 10)
+      newErrors.mobileNumber = "Mobile Number must be in 10 digit.";
+    // You can add more validations for phone number if needed
+
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    return !Object.values(newErrors).some((error) => error);
+  };
+
+  const onSubmit = () => {
+    if (validate()) {
+      createPatient();
+    }
+  };
+
   const getPatients = async () => {
     try {
       const response = await get(
@@ -104,6 +149,37 @@ function ExistingPatientView() {
       }
     } catch (err) {
       console.error("Error fetching data:", err);
+    }
+  };
+
+  const createPatient = async () => {
+    try {
+      const url = `resource/patients`; // Replace with your API endpoint
+      const body = {
+        user: {
+          first_name: firstName,
+          last_name: lastName,
+          gender: gender,
+          mobile: mobile,
+          isd_code: iso,
+          role: "folio", //required fields from api so we give static
+          timezone_id: 1, //required fields from api so we give static
+          is_active: 1, //required fields from api so we give static
+          is_2fa: 0, //required fields from api so we give static
+          username: `0${mobile?.slice(0, 5)}417${age}07512`, //required fields from api so we give static
+        },
+        additional_info: {
+          mrn_number: mrnNumber,
+          age: age,
+        },
+      };
+      await post(url, body);
+      clearCache();
+      await getPatients();
+      toast.success("Added successfully");
+      addPatientModalClose();
+    } catch (error) {
+      console.error("Failed to delete:", error);
     }
   };
   useEffect(() => {
@@ -123,8 +199,9 @@ function ExistingPatientView() {
       alert("Please select a valid image file.");
     }
   };
-
-  console.log(mobile, "iso", iso);
+  const handleGenderChange = (e) => {
+    setGender(e.target.value);
+  };
   return (
     <section className="existing-patient">
       <div className="flex-sec top-sec">
@@ -229,7 +306,12 @@ function ExistingPatientView() {
                           class="form-control pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
                         />
+                        {errors.firstName && (
+                          <div className="text-danger">{errors.firstName}</div>
+                        )}
                       </div>
                     </div>
                   </CCol>
@@ -244,7 +326,12 @@ function ExistingPatientView() {
                           class="form-control pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
                         />
+                        {errors.lastName && (
+                          <div className="text-danger">{errors.lastName}</div>
+                        )}
                       </div>
                     </div>
                   </CCol>
@@ -259,7 +346,12 @@ function ExistingPatientView() {
                           class="form-control pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          value={age}
+                          onChange={(e) => setAge(e.target.value)}
                         />
+                        {errors.age && (
+                          <div className="text-danger">{errors.age}</div>
+                        )}
                       </div>
                     </div>
                   </CCol>
@@ -277,6 +369,8 @@ function ExistingPatientView() {
                             id="inlineCheckbox1"
                             value="Male"
                             label="Male"
+                            checked={gender === "Male"}
+                            onChange={handleGenderChange}
                           />
                           <CFormCheck
                             inline
@@ -285,6 +379,8 @@ function ExistingPatientView() {
                             id="inlineCheckbox2"
                             value="Female"
                             label="Female"
+                            checked={gender === "Female"}
+                            onChange={handleGenderChange}
                           />
                           <CFormCheck
                             inline
@@ -293,8 +389,13 @@ function ExistingPatientView() {
                             id="inlineCheckbox3"
                             value="Other"
                             label="Other"
+                            checked={gender === "Other"}
+                            onChange={handleGenderChange}
                           />
                         </div>
+                        {errors.gender && (
+                          <div className="text-danger">{errors.gender}</div>
+                        )}
                       </div>
                     </div>
                   </CCol>
@@ -311,6 +412,11 @@ function ExistingPatientView() {
                           placeholder="Enter"
                         /> */}
                         <PhoneNumberInput getPhone={getPhone} />
+                        {errors.mobileNumber && (
+                          <div className="text-danger">
+                            {errors.mobileNumber}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </CCol>
@@ -325,6 +431,8 @@ function ExistingPatientView() {
                           class="form-control pad-10"
                           id="validationTooltip01"
                           placeholder="Enter"
+                          value={mrnNumber}
+                          onChange={(e) => setMrnNumber(e.target.value)}
                         />
                       </div>
                     </div>
@@ -334,7 +442,7 @@ function ExistingPatientView() {
             </CRow>
             <CRow className="mb-1">
               <div style={{ width: "128px" }}>
-                <PrimaryButton>CREATE</PrimaryButton>
+                <PrimaryButton onClick={onSubmit}>CREATE</PrimaryButton>
               </div>
               <div style={{ width: "128px" }}>
                 <SecondaryButton onClick={addPatientModalClose}>
