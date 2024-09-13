@@ -58,7 +58,7 @@ const Header = () => {
       setLoading(false);
     }
   };
-console.log('Viewwww',view)
+  console.log("Viewwww", view);
   // Handle patient selection
   const handlePatientSelect = (patient) => {
     navigate("/patients/history", { state: { PatientDetail: patient } });
@@ -81,7 +81,12 @@ console.log('Viewwww',view)
               type="text"
               placeholder="Search Patient"
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                if (e.target.value.length === 0) {
+                  setView(false);
+                }
+              }}
               aria-label="Search Patient"
             />
             <button
@@ -94,7 +99,7 @@ console.log('Viewwww',view)
             </button>
           </div>
           <div className="search-suggestions-sec">
-            {searchValue && view &&(
+            {searchValue && view && (
               <>
                 {loading ? (
                   <div className="loading">Loading...</div>
@@ -114,7 +119,9 @@ console.log('Viewwww',view)
                   </ul>
                 ) : !searchValue && noData ? (
                   <div className="no-data">1No data</div>
-                ) : patientDetail?.length === 0 && searchValue ?   <div className="no-data">No data</div> : null}
+                ) : patientDetail?.length === 0 && searchValue ? (
+                  <div className="no-data">No data</div>
+                ) : null}
               </>
             )}
           </div>
