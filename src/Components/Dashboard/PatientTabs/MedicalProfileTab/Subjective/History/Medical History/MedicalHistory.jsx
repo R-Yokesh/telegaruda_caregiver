@@ -17,7 +17,7 @@ import MedHistoryForm from "./MedHistoryForm";
 import MedicalHistoryTable from "../../../../../../Tables/Subjective/MedicalHistoryTable";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
-
+import { useLocation } from "react-router-dom";
 
 const MedicalHistory = ({ from }) => {
   const columnData = [
@@ -121,7 +121,8 @@ const MedicalHistory = ({ from }) => {
   //     notes: "Lorem ipsum",
   //   },
   // ];
-
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { loading, error, get, del, clearCache } = useApi();
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -169,7 +170,7 @@ const MedicalHistory = ({ from }) => {
   const getMedicalLists = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHistories?user_id=10&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values->onset_date&dir=2&from=&to=&searchkey=fever`
+        `resource/patientHistories?user_id=${data?.user_id}&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values->onset_date&dir=2&from=&to=&searchkey=fever`
       );
       if (response.code === 200) {
         // console.log("data", response.data.patient_histories);
@@ -198,7 +199,6 @@ const MedicalHistory = ({ from }) => {
         setDetailView(false);
         clearCache();
         getMedicalLists();
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }

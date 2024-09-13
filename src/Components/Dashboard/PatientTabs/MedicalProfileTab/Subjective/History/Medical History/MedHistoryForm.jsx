@@ -7,9 +7,14 @@ import DatePicker from "react-datepicker";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 import useApi from "../../../../../../../ApiServices/useApi";
 import { format } from "date-fns";
+import { useLocation } from "react-router-dom";
 
-
-const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }) => {
+const MedHistoryForm = ({
+  back,
+  defaultValues,
+  getMedicalLists,
+  setAddFormView,
+}) => {
   const { loading, error, get, post, clearCache } = useApi();
   // const [date, setDate] = useState(null);
   const [conditions, setConditions] = useState([]);
@@ -19,7 +24,8 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
   const [notes, setNotes] = useState("");
-
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   useEffect(() => {
     if (defaultValues?.values) {
@@ -35,10 +41,9 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
 
   const parseDate = (dateString) => {
     if (!dateString) return null;
-    const [day, month, year] = dateString.split('-').map(Number);
+    const [day, month, year] = dateString.split("-").map(Number);
     return new Date(year, month - 1, day);
   };
-
 
   // useEffect(() => {
   //   // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -85,7 +90,6 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
   const getSelectedValue = (data) => {
     setTrimester(data);
   };
-
 
   //api integration of medical conditions list
   useEffect(() => {
@@ -159,13 +163,13 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
           onset_date: formattedDate,
           notes: notes,
         },
-        patient_id: "10",
+        patient_id: data?.user_id,
         slug: "medical-history",
       };
 
       console.log("Form Data:", body);
 
-      const response = await post(`resource/patientHistories`, body)
+      const response = await post(`resource/patientHistories`, body);
 
       if (response.code === 201) {
         clearCache();
@@ -181,11 +185,11 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
 
   const handleChronicChange = (event) => {
     setSelectChronic(event.target.value === "Yes");
-  }
+  };
 
   const handlePreviousIllnessChange = (event) => {
     setSelectPreviousIllness(event.target.value === "Yes");
-  }
+  };
 
   const handleDateChange = (date) => {
     if (date) {
@@ -216,7 +220,10 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
 
       console.log("Editing Form Data:", body);
 
-      const response = await post(`resource/patientHistories/${defaultValues.id}`, body);
+      const response = await post(
+        `resource/patientHistories/${defaultValues.id}`,
+        body
+      );
 
       if (response.code === 200) {
         clearCache();
@@ -262,7 +269,9 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
                   wrapperClassName="date-picker-wrapper"
                   dateFormat={DATE_FORMAT}
                 />
-                {errors.onset_date && <div className="error-text">{errors.onset_date}</div>}
+                {errors.onset_date && (
+                  <div className="error-text">{errors.onset_date}</div>
+                )}
               </div>
             </div>
           </div>
@@ -302,7 +311,6 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
                   ))}
                 </ul>
               ) : null}
-
             </div>
           </div>
         </CCol>
@@ -378,7 +386,6 @@ const MedHistoryForm = ({ back, defaultValues, getMedicalLists, setAddFormView }
                 value="No"
                 checked={!selectPreviousIllness}
                 onChange={handlePreviousIllnessChange}
-
               />
             </div>
           </div>

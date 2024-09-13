@@ -27,81 +27,98 @@ const MedicalHistoryTable = ({ columns, rowData, getselectedData, from }) => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {rowData?.map((dt, i) => (
-            <CTableRow key={i}>
-              <CTableHeaderCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.id}</span>
-                </div>
-              </CTableHeaderCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.values?.onset_date ? dt?.values?.onset_date.split('T')[0].split('-').reverse().join('-')
-                    : ''}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.values?.condition?.name}</span>
-                </div>
-              </CTableDataCell>
+          {rowData?.length <= 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="no-data-message">
+                No data available
+              </td>
+            </tr>
+          ) : (
+            rowData?.map((dt, i) => (
+              <CTableRow key={i}>
+                <CTableHeaderCell style={{ height: "10px" }}>
+                  <div className="d-flex align-items-center justify-content-center h-100">
+                    <span className="fs-16 fw-500">{dt?.id}</span>
+                  </div>
+                </CTableHeaderCell>
+                <CTableDataCell style={{ height: "10px" }}>
+                  <div className="d-flex align-items-center justify-content-center h-100">
+                    <span className="fs-16 fw-500">
+                      {dt?.values?.onset_date
+                        ? dt?.values?.onset_date
+                            .split("T")[0]
+                            .split("-")
+                            .reverse()
+                            .join("-")
+                        : ""}
+                    </span>
+                  </div>
+                </CTableDataCell>
+                <CTableDataCell style={{ height: "10px" }}>
+                  <div className="d-flex align-items-center justify-content-center h-100">
+                    <span className="fs-16 fw-500">
+                      {dt?.values?.condition?.name}
+                    </span>
+                  </div>
+                </CTableDataCell>
 
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.icd10}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.chronic}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.prev_illness}</span>
-                </div>
-              </CTableDataCell>
+                <CTableDataCell style={{ height: "10px" }}>
+                  <div className="d-flex flex-column align-items-center">
+                    <span>{dt?.icd10}</span>
+                  </div>
+                </CTableDataCell>
+                <CTableDataCell style={{ height: "10px" }}>
+                  <div className="d-flex flex-column align-items-center">
+                    <span>{dt?.chronic}</span>
+                  </div>
+                </CTableDataCell>
+                <CTableDataCell style={{ height: "10px" }}>
+                  <div className="d-flex flex-column align-items-center">
+                    <span>{dt?.prev_illness}</span>
+                  </div>
+                </CTableDataCell>
 
-              {/* <CTableDataCell style={{ height: "10px" }}>
+                {/* <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
                   <span>{dt?.notes}</span>
                 </div>
               </CTableDataCell> */}
 
-              {from !== "Consult" && (
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                    <div
-                      style={{
-                        width: "50%",
-                      }}
-                    >
-                      <img
-                        alt="edit"
-                        src={Assets?.EditPencil}
-                        className="cursor"
-                        onClick={() => selectedData(dt,dt?.id, "edit")}
-                      />
+                {from !== "Consult" && (
+                  <CTableDataCell style={{ height: "10px" }}>
+                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                      <div
+                        style={{
+                          width: "50%",
+                        }}
+                      >
+                        <img
+                          alt="edit"
+                          src={Assets?.EditPencil}
+                          className="cursor"
+                          onClick={() => selectedData(dt, dt?.id, "edit")}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          width: "50%",
+                          display: "flex",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <img
+                          alt="delete"
+                          src={Assets?.Delete}
+                          className="cursor"
+                          onClick={() => selectedData(dt, dt?.id, "delete")}
+                        />
+                      </div>
                     </div>
-                    <div
-                      style={{
-                        width: "50%",
-                        display: "flex",
-                        justifyContent: "flex-start",
-                      }}
-                    >
-                      <img
-                        alt="delete"
-                        src={Assets?.Delete}
-                        className="cursor"
-                        onClick={() => selectedData(dt, dt?.id, "delete")}
-                      />
-                    </div>
-                  </div>
-                </CTableDataCell>
-              )}
-            </CTableRow>
-          ))}
+                  </CTableDataCell>
+                )}
+              </CTableRow>
+            ))
+          )}
         </CTableBody>
       </CTable>
     </>
