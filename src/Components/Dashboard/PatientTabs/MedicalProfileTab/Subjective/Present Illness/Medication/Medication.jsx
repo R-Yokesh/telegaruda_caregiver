@@ -23,6 +23,7 @@ import MedicationTable from "../../../../../../Tables/Subjective/MedicationTable
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const Medication = ({ from }) => {
 
@@ -215,6 +216,8 @@ const Medication = ({ from }) => {
 
 
   const { loading, error, get, del, clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -266,7 +269,7 @@ const Medication = ({ from }) => {
   const fetchMedication = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=values-%3Estart_date&dir=2&user_id=10&slug=medicine&slug_array=`
+        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=values-%3Estart_date&dir=2&user_id=${data?.user_id}&slug=medicine&slug_array=`
       );
       if (response.code === 200) {
         setRowData(response?.data?.patient_healths);

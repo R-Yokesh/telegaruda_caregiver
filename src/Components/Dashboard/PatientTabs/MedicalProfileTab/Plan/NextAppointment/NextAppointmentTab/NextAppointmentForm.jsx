@@ -18,11 +18,14 @@ import {
 import Select from 'react-select';
 import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
+import { useLocation } from "react-router-dom";
 
 const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextAppointment }) => {
 
 
   const { loading, error, get, post, clearCache, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
@@ -165,7 +168,7 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
 
     try {
       const body = {
-        patient_id: "10",
+        patient_id: data?.user_id,
         provider_id: "9",
         date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
         // date: format(selectedDate, "dd-MM-yyyy"),
@@ -201,7 +204,7 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
 
     try {
       const body = {
-        patient_id: "10",
+        patient_id: data?.user_id,
         provider_id: "9",
         date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
         // date: format(selectedDate, "dd-MM-yyyy"),

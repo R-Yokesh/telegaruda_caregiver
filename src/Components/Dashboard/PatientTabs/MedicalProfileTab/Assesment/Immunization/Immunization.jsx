@@ -120,6 +120,8 @@ const Immunization = ({ onClose, from }) => {
   // ];
     
   const { loading, error, get,post,del,clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -134,8 +136,7 @@ const Immunization = ({ onClose, from }) => {
   const [tkDate, setTkDate] = useState(new Date());
   const [slug, setSlug] = useState("");
   
-  const location = useLocation();
-  const data = location.state?.PatientDetail;
+
 
 
 

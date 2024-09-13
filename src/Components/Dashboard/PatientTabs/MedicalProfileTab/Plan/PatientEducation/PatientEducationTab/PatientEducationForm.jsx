@@ -21,6 +21,8 @@ const PatientEducationForm = ({ back, defaultValues, fetchPatientEducation, setA
 
 
   const { loading, error, get, post, clearCache, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
@@ -31,8 +33,7 @@ const PatientEducationForm = ({ back, defaultValues, fetchPatientEducation, setA
  
 
 
-  const location = useLocation();
-  const data = location.state?.PatientDetail;
+
 
 
   const getFormattedDate = (date) => {
@@ -139,7 +140,7 @@ const PatientEducationForm = ({ back, defaultValues, fetchPatientEducation, setA
 
     try {
       const body = {
-        user_id: "10",
+        user_id: data?.user_id,
         document_source: "patient-education",
         addition_info: {
           date: format(selectedDate, "yyyy-MM-dd"),
@@ -170,6 +171,8 @@ const PatientEducationForm = ({ back, defaultValues, fetchPatientEducation, setA
 
     try {
       const body = {
+        user_id: data?.user_id,
+        document_source: "patient-education",
         addition_info: {
           date: format(selectedDate, "yyyy-MM-dd"),
           time: format(selectedTime,  "HH:mm"),

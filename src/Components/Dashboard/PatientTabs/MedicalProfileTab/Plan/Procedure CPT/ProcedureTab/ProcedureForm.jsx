@@ -20,6 +20,8 @@ import ICDCodeDrop from "../../../../../../Dropdown/ICDCodeDrop";
 const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
 
   const { loading, error, get, post, clearCache, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
@@ -27,8 +29,7 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
   const [icdkey, setIcdKey] = useState(defaultValues?.values?.code || "");
   const [icd, setIcd] = useState(defaultValues?.values?.code || "");
   const [Description, setDescription] = useState([defaultValues?.values?.name || null])
-  const location = useLocation();
-  const data = location.state?.PatientDetail;
+ 
 
 
   const getFormattedDate = (date) => {
@@ -152,7 +153,7 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
 
     try {
       const body = {
-        patient_id: "263",
+        patient_id: data?.user_id,
         slug: "procedure",
         values: {
           date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
@@ -182,7 +183,7 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
 
     try {
       const body = {
-        patient_id: "263",
+        patient_id: data?.user_id,
         slug: "procedure",
         values: {
           date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,

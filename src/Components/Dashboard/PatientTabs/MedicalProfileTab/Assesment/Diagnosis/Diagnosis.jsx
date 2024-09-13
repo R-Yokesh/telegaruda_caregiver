@@ -24,6 +24,7 @@ import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
 
 
+
 const Diagnosis = ({ onClose, from }) => {
   const columnData = [
     { id: 1, label: "No." },
@@ -107,6 +108,8 @@ const Diagnosis = ({ onClose, from }) => {
   // ];
 
   const { loading, error, get, del, clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -118,9 +121,6 @@ const Diagnosis = ({ onClose, from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
-
-  const location = useLocation();
-  const data = location.state?.PatientDetail;
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -161,7 +161,7 @@ const Diagnosis = ({ onClose, from }) => {
     try {
       // clearCache();
       const response = await get(
-        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=created_at&dir=2&slug=icd&user_id=10&scanOrdersOnly=&scanstatus=`
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=created_at&dir=2&slug=icd&user_id=${data?.user_id}&scanOrdersOnly=&scanstatus=`
       );
       if (response.code === 200) {
         setRowData(response?.data?.docs);

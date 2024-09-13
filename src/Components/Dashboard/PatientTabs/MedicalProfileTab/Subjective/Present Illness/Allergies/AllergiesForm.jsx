@@ -17,12 +17,16 @@ import {
 import Select from 'react-select';
 import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
+import { useLocation } from "react-router-dom";
+
 
 const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) => {
 
   console.log('defaulttttt',defaultValues)
 
   const { loading, error, get, post, clearCache, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
@@ -295,7 +299,7 @@ console.log('allergyname',allergyName)
     try {
       const body = {
 
-        patient_id: "10",
+        patient_id: data?.user_id,
         slug: "allergy",
         values: {
           name: {
@@ -354,7 +358,7 @@ console.log('allergyname',allergyName)
     try {
       const body = {
 
-        patient_id: "10",
+        patient_id: data?.user_id,
         slug: "allergy",
         values: {
           name: {

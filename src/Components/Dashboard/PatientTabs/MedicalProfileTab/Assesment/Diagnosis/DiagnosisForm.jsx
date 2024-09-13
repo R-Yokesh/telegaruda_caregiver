@@ -9,12 +9,14 @@ import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import useApi from "../../../../../../ApiServices/useApi";
-import { useLocation } from "react-router-dom";
 import ICDCodeDrop from "../../../../../Dropdown/ICDCodeDrop";
+import { useLocation } from "react-router-dom";
 
 const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) => {
 
   const { loading, error, get, post, clearCache, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
@@ -22,8 +24,6 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
   const [icdkey, setIcdKey] = useState(defaultValues?.addition_info?.title || "");
   const [icd, setIcd] = useState(defaultValues?.addition_info?.title || "");
   const [Description, setDescription] = useState([defaultValues?.addition_info?.notes || null])
-  const location = useLocation();
-  const data = location.state?.PatientDetail;
 
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -138,7 +138,7 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
 
     try {
       const body = {
-        user_id: "10",
+        user_id: data?.user_id,
         document_source: "icd",
         addition_info: {
           date: format(selectedDate, "dd-MM-yyyy"),
@@ -167,7 +167,7 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
   const editDiagnosis = async () => {
     try {
       const body = {
-        user_id: "10",
+        user_id: data?.user_id,
         document_source: "icd",
         addition_info: {
           date: format(selectedDate, "dd-MM-yyyy"),

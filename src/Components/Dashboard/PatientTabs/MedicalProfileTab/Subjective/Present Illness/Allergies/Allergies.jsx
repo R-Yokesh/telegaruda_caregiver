@@ -20,6 +20,7 @@ import AllergiesForm from "./AllergiesForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const Allergies = () => {
 
@@ -56,6 +57,8 @@ const Allergies = () => {
 
 
   const { loading, error, get,del,clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -106,7 +109,7 @@ const Allergies = () => {
   const fetchAllergies = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&dir=2&user_id=10&slug=allergy&searchkey=&slug_array=`
+        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&dir=2&user_id=${data?.user_id}&slug=allergy&searchkey=&slug_array=`
       );
       if (response.code === 200) {
         setRowData(response.data.patient_healths);

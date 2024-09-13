@@ -19,6 +19,7 @@ import TherapiesForm from "./TherapiesForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const TherapiesTab = ({ from }) => {
   const columnData = [
@@ -51,6 +52,8 @@ const TherapiesTab = ({ from }) => {
   // ];
 
   const { loading, error, get,del,clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -101,7 +104,7 @@ const TherapiesTab = ({ from }) => {
   const fetchTherapies = useCallback(async () => {
     try {
       const response = await get(
-        `resource/therapy?patient_id=10&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&order_by=date&dir=2`
+        `resource/therapy?patient_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&order_by=date&dir=2`
       );
       if (response.code === 200) {
         setRowData(response.data.therapies);

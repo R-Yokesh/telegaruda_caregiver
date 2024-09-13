@@ -16,11 +16,15 @@ import {
     openFile,
 } from "../../../../../../../Utils/commonUtils";
 import { duration } from "moment";
+import { useLocation } from "react-router-dom";
+
 
 const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) => {
 
 
     const { loading, error, get, post, clearCache, patch } = useApi();
+    const location = useLocation();
+    const data = location.state?.PatientDetail;
     const [selectedTime, setSelectedTime] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
     const [errors, setErrors] = useState({});
@@ -162,7 +166,7 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
 
         try {
             const body = {
-                patient_id: "10", 
+                patient_id: data?.user_id, 
                 date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
                 type: formData?.type,
                 therapy_name: formData?.therapy_name,
@@ -193,7 +197,7 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
 
         try {
             const body = {
-                patient_id: "10", 
+                patient_id: data?.user_id, 
                 date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
                 type: formData?.type,
                 therapy_name: formData?.therapy_name,

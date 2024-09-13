@@ -15,6 +15,7 @@ import {
   getFileTypeFromMime,
   openFile,
 } from "../../../../../../../Utils/commonUtils";
+import { useLocation } from "react-router-dom";
 
 
 const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }) => {
@@ -22,6 +23,8 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
 
 
   const { loading, error, get, post, clearCache, patch } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -46,7 +49,7 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
 
 
   });
-  const [location, setLocation] = useState([defaultValues?.values?.locationy || ""]);
+  
   const [searchTerm, setSearchTerm] = useState("");
 
 
@@ -255,7 +258,7 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
       const body = {
 
         slug: "prescription",
-        patient_id: "10",
+        patient_id: data?.user_id,
        
         values: {
           start_date: format(selectedStartDate, "dd-MM-yyyy"),
@@ -299,7 +302,7 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
       const body = {
 
         slug: "prescription",
-        patient_id: "10",
+        patient_id: data?.user_id,
        
         values: {
           start_date: format(selectedStartDate, "dd-MM-yyyy"),

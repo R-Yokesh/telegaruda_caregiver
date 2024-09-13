@@ -18,6 +18,7 @@ import NextAppointmentTable from "../../../../../../Tables/NextAppointmentTable"
 import NextAppointmentForm from "./NextAppointmentForm";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 const NextAppointmentTab = ({ from }) => {
   const columnData = [
@@ -63,6 +64,8 @@ const NextAppointmentTab = ({ from }) => {
   // ];
 
   const { loading, error, get,del,clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -113,7 +116,7 @@ const NextAppointmentTab = ({ from }) => {
   const fetchNextAppointment = useCallback(async () => {
     try {
       const response = await get(
-        `resource/next-appointment?patient_id=10&provider_id=9&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=date&dir=2`
+        `resource/next-appointment?patient_id=${data?.user_id}&provider_id=9&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=date&dir=2`
       );
       if (response.code === 200) {
         setRowData(response.data.next_appointments);

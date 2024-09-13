@@ -17,6 +17,7 @@ import PatientEducationTable from "../../../../../../Tables/PatientEducationTabl
 import PatientEducationForm from "./PatientEducationForm";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
 
 
 
@@ -69,6 +70,9 @@ const PatientEducationTab = ({ from }) => {
 
 
   const { loading, error, get,del,clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -119,7 +123,7 @@ const PatientEducationTab = ({ from }) => {
   const fetchPatientEducation = useCallback(async () => {
     try {
       const response = await get(
-        `resource/docs?user_id=10&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=id&dir=2&slug=patient-education`
+        `resource/docs?user_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=id&dir=2&slug=patient-education`
       );
       if (response.code === 200) {
         setRowData(response.data.docs);
