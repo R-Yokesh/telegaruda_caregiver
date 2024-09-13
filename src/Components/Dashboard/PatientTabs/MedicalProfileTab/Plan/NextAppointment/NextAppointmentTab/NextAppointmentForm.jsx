@@ -16,6 +16,8 @@ import {
   openFile,
 } from "../../../../../../../Utils/commonUtils";
 import Select from 'react-select';
+import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
+import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
 
 const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextAppointment }) => {
 
@@ -25,17 +27,11 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
 
-  const [reason, setReason] = useState();
-  const [provider, setProvider] = useState([]);
-  const [selectedProvider, setSelectedProvider] = useState(
-    defaultValues?.provider?.first_name
-      ? { label: `${defaultValues.provider.first_name} ${defaultValues.provider.last_name}` }
-      : ""
-  );
-
-  
-  const [searchTerm, setSearchTerm] = useState([]);
-
+  const [reason, setReason] = useState(defaultValues?.reason || "");
+  const [providerDetails, setproviderDetails] = useState([]);
+  const [providerKey, setProviderKey] = useState(`${defaultValues?.provider?.first_name || ''} ${defaultValues?.provider?.last_name || ''}`);
+  const [provider, setProvider] = useState(defaultValues?.provider || {});
+ 
 
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -110,8 +106,8 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
       newErrors.time = "Time is required.";
       isValid = false;
     }
-    if (!selectedProvider) {
-      newErrors.selectedProvider = "provider is required.";
+    if (!provider) {
+      newErrors.provider = "provider is required.";
       isValid = false;
     }
     if (!reason) {
@@ -140,38 +136,26 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
     }
   };
 
-  const handleProviderChange = (selectedOption) => {
-    setSelectedProvider(selectedOption);
-
+  const getSelectedValue = (data) => {
+    setProvider(data);
   };
 
   // API integration of Provider list
+  const getProvider = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/providers?order_by=id&searchkey=${providerKey}&dir=1`
+      );
+      const listData = response?.data?.providers; //
+      setproviderDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, providerKey]);
+
   useEffect(() => {
-    const getProvider = async () => {
-      try {
-        const response = await get(
-          `resource/providers?order_by=id&dir=1`
-        );
-        if (response.code === 200) {
-          // Format the data for react-select: { label: "Name", value: "Name" }
-          const formattedData = response?.data?.providers?.map((item) => ({
-            label: `${item?.user?.first_name} ${item?.user?.last_name}`,
-            value: `${item?.user?.first_name} ${item?.user?.last_name}`,
-          }));
-          setProvider(formattedData);
-        } else {
-          console.error("Failed to fetch data:", response.message);
-          setProvider([]); // Ensure it's always an array
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setProvider([]); // Ensure it's always an array
-      }
-    };
-
     getProvider();
-  }, [searchTerm]);
-
+  }, [getProvider]);
 
 
 
@@ -181,13 +165,17 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
 
     try {
       const body = {
-        patient_id: "10", 
-        provider_id: "9", 
+        patient_id: "10",
+        provider_id: "9",
         date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
-       // date: format(selectedDate, "dd-MM-yyyy"),
+        // date: format(selectedDate, "dd-MM-yyyy"),
         // time: format(selectedTime,"HH:mm"),
         reason: reason,
-        provider: selectedProvider?.label,
+         provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
+        // provider:{
+        //   first_name:provider?.user?.first_name,
+        //   last_name:provider?.user?.last_name
+        // }
       }
 
       // Use the provided `post` function to send the request
@@ -213,15 +201,15 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
 
     try {
       const body = {
-        patient_id: "10", 
-        provider_id: "9", 
+        patient_id: "10",
+        provider_id: "9",
         date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
-       // date: format(selectedDate, "dd-MM-yyyy"),
+        // date: format(selectedDate, "dd-MM-yyyy"),
         // time: format(selectedTime,"HH:mm"),
         reason: reason,
-        provider: selectedProvider?.label,
+        provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
       }
-      
+
       // Use the provided `post` function to send the request
       const response = await patch(`resource/next-appointment/${defaultValues.id}`, body);
 
@@ -295,15 +283,14 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
                   borderRadius: "5px",
                 }}
               >
-                <Select
-                  options={provider}
-                  value={selectedProvider}
-                  onChange={handleProviderChange}
-                  isSearchable
-                  placeholder="Select"
+                <ProviderDrop
+                  getSelectedValue={getSelectedValue}
+                  options={providerDetails}
+                  defaultValue={providerKey}
+                  dropKey={setProviderKey}
                 />
               </div>
-              {errors.selectedProvider && <div className="error-text">{errors.selectedProvider}</div>}
+              {errors.provider && <div className="error-text">{errors.provider}</div>}
             </div>
           </div>
         </CCol>

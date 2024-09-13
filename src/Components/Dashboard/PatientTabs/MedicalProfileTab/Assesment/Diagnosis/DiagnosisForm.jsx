@@ -1,5 +1,5 @@
 import { CCol, CRow } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useCallback} from "react";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import DatePicker from "react-datepicker";
@@ -10,6 +10,7 @@ import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import useApi from "../../../../../../ApiServices/useApi";
 import { useLocation } from "react-router-dom";
+import ICDCodeDrop from "../../../../../Dropdown/ICDCodeDrop";
 
 const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) => {
 
@@ -17,9 +18,10 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
-  const [icd, setIcd] = useState([]);
+  const [icd10, setIcd10] = useState([]);
+  const [icdkey, setIcdKey] = useState(defaultValues?.addition_info?.title || "");
+  const [icd, setIcd] = useState(defaultValues?.addition_info?.title || "");
   const [Description, setDescription] = useState([defaultValues?.addition_info?.notes || null])
-  const [searchTerm, setSearchTerm] = useState([defaultValues?.addition_info?.title || null]);
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -80,8 +82,8 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
       newErrors.date = "Date is required.";
       isValid = false;
     }
-    if (!searchTerm) {
-      newErrors.searchTerm = "ICD Code is required.";
+    if (!icd ) {
+      newErrors.icd = "Code is required.";
       isValid = false;
     }
 
@@ -105,39 +107,31 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
       }
     }
   };
-
+  
+  const getSelectedIcd = (data) => {
+    setIcd(data?.slug);
+    setDescription(data?.name);
+  };
 
   //api integration of ICD Code list
+  const getICDCode = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters?slug=icd&searchkey=${icdkey}&limit=50&country=undefined`
+      );
+      const listData = response?.data?.masters; //
+      setIcd10(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, icdkey]);
+
   useEffect(() => {
-    const getIcdCode = async () => {
-      if (searchTerm) {
-        try {
-          const response = await get(
-            `resource/masters?slug=procedure&searchkey=${searchTerm}&limit=50&country=undefine`
-          );
-          if (response.code === 200) {
-            setIcd(response.data.masters);
-          } else {
-            console.error("Failed to fetch data:", response.message);
-            setIcd([]);
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          setIcd([]);
-        }
-      } else {
-        setIcd([]);
-      }
-    };
-
-    getIcdCode();
-  }, [searchTerm, get]);
+    getICDCode();
+  }, [getICDCode]);
 
 
-  const handleInputChange = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-  };
+
 
   // Add API 
   const addDiagnosis = async () => {
@@ -148,7 +142,7 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
         document_source: "icd",
         addition_info: {
           date: format(selectedDate, "dd-MM-yyyy"),
-          title: searchTerm,
+          title: icd,
           notes: Description,
         },
       };
@@ -177,7 +171,7 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
         document_source: "icd",
         addition_info: {
           date: format(selectedDate, "dd-MM-yyyy"),
-          title: searchTerm,
+          title: icd,
           notes: Description,
         },
       };
@@ -233,38 +227,15 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
           <div style={{ width: "100%" }}>
             <div class="position-relative dropdown-container">
               <label for="validationTooltip01" class="form-label">
-                ICD Code *
+                Code *
               </label>
-              <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                value={searchTerm}
-                onChange={handleInputChange}
-              />
-              {loading ? (
-                <p>Loading...</p>
-              ) : error ? (
-                <p>{error}</p>
-              ) : icd?.length > 0 ? (
-                <ul className="dropdown-list">
-                  {icd?.map((icd) => (
-                    <li
-                      key={icd?.id}
-                      className="list-group-item"
-                      onClick={() => {
-                        setSearchTerm(icd?.slug);
-                        setIcd([]);
-                        setDescription(icd?.name)
-                      }}
-                    >
-                      {icd?.slug}
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-              {errors.searchTerm && <div className="error-text">{errors.searchTerm}</div>}
+              <ICDCodeDrop
+                  getSelectedValue={getSelectedIcd}
+                  options={icd10}
+                  defaultValue={icdkey}
+                  icdKey={setIcdKey}
+                />
+              {errors.icd && <div className="error-text">{errors.icd}</div>}
 
             </div>
           </div>

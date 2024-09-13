@@ -8,6 +8,7 @@ import {
 } from "@coreui/react";
 import React from "react";
 import { Assets } from "../../assets/Assets";
+import { getSerialNumber } from "../../Utils/commonUtils";
 
 // Add this CSS styling
 const tableCellStyle = {
@@ -29,7 +30,7 @@ const formatDate = (dateString) => {
 };
 
 
-const ImmunizationTable = ({ columns, rowData, getselectedData, from }) => {
+const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPage,currentPage }) => {
   const selectedData = (data, slug, type) => {
     getselectedData(data, slug, type);
   };
@@ -48,7 +49,7 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from }) => {
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell style={tableCellStyle}>
-                <span className="fs-16 fw-500">{dt?.id}</span>
+              {getSerialNumber(itemsPerPage, currentPage, i)}
               </CTableHeaderCell>
               <CTableDataCell style={tableCellStyle}>
                 <span className="fs-16 fw-500">{dt?.name}</span>

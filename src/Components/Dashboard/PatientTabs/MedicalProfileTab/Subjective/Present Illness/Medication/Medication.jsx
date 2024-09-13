@@ -312,7 +312,7 @@ const Medication = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateRangePicker getFilterValues={getFilterValues} />
+                <DateSearch getFilterValues={getFilterValues} />
               </CCol>
               <CCol
                 lg={4}
@@ -326,13 +326,13 @@ const Medication = ({ from }) => {
                     </div>
                   </PrimaryButton>
                 </div>
-                <div>
+                {/* <div>
                   <PrimaryButton onClick={() => addFormPage()}>
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.OptionsIcon} alt="add" />
                     </div>
                   </PrimaryButton>
-                </div>
+                </div> */}
               </CCol>
             </CRow>
           )}

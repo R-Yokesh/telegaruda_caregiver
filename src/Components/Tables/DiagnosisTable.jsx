@@ -9,8 +9,9 @@ import {
 import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
+import { getSerialNumber } from "../../Utils/commonUtils";
 
-const DiagnosisTable = ({ columns, rowData, getselectedData, from }) => {
+const DiagnosisTable = ({ columns, rowData, getselectedData, from ,itemsPerPage,currentPage }) => {
  
   const selectedData = (data,id, type) => {
     getselectedData(data,id, type);
@@ -39,7 +40,7 @@ const DiagnosisTable = ({ columns, rowData, getselectedData, from }) => {
           rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell>
-                <span className="fs-16 fw-500">{dt?.id ? dt?.id : "-"}</span>
+              {getSerialNumber(itemsPerPage, currentPage, i)}
               </CTableHeaderCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">{dt?.addition_info?.date ? dt?.addition_info?.date : "-"}</span>

@@ -242,6 +242,8 @@ const Immunization = ({ onClose, from }) => {
             columns={columnData}
             getselectedData={getselectedData}
             from={from}
+            currentPage={currentPage || 1}
+            itemsPerPage={itemsPerPage || 5}
           />
         </CRow>
       )}
@@ -293,14 +295,14 @@ const Immunization = ({ onClose, from }) => {
                   </div>
                 </PrimaryButton>
               </div> */}
-                  <div>
-                    {/* onClick={() => addFormPage()} */}
+                  {/* <div>
+                    onClick={() => addFormPage()}
                     <PrimaryButton>
                       <div className="d-flex align-items-center gap-2">
                         <img src={Assets.OptionsIcon} alt="add" />
                       </div>
                     </PrimaryButton>
-                  </div>
+                  </div> */}
                 </CCol>
               </CRow>
               <div className="mb-2">
@@ -309,6 +311,8 @@ const Immunization = ({ onClose, from }) => {
                     rowData={getCurrentPageItems()}
                     columns={columnData}
                     getselectedData={getselectedData}
+                    currentPage={currentPage || 1}
+                    itemsPerPage={itemsPerPage || 5}
                   />
                 </CRow>
                 <CRow className="mb-3">

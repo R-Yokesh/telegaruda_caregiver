@@ -24,6 +24,8 @@ import SymtomsTable from "../../../../../../Tables/Subjective/SymtomsTable";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
+import { useLocation } from "react-router-dom";
+
 
 const SignsSymptoms = ({ from }) => {
   const detailsData = [
@@ -190,6 +192,8 @@ const SignsSymptoms = ({ from }) => {
   // ];
 
   const { loading, error, get,del,clearCache } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -242,7 +246,7 @@ const SignsSymptoms = ({ from }) => {
   const fetchSignsSymptoms = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHealth?slug=hpi&user_id=261&limit=${itemsPerPage}&page=${currentPage}&dir=2&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
+        `resource/patientHealth?slug=hpi&user_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage}&dir=2&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
       );
       if (response.code === 200) {
         console.log(response.data.patient_healths);
@@ -304,13 +308,13 @@ const SignsSymptoms = ({ from }) => {
                     </div>
                   </PrimaryButton>
                 </div>
-                <div>
+                {/* <div>
                   <PrimaryButton onClick={() => addFormPage()}>
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.OptionsIcon} alt="add" />
                     </div>
                   </PrimaryButton>
-                </div>
+                </div> */}
               </CCol>
             </CRow>
           )}

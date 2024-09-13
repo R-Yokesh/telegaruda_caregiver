@@ -164,6 +164,8 @@ const PatientEducationTab = ({ from }) => {
            columns={columnData}
            getselectedData={getselectedData}
             from={from}
+            currentPage={currentPage || 1}
+            itemsPerPage={itemsPerPage || 5}
           />
         </CRow>
       )}
@@ -173,7 +175,7 @@ const PatientEducationTab = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                <DateRangePicker getFilterValues={getFilterValues} />
+                <DateSearch getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
@@ -195,6 +197,8 @@ const PatientEducationTab = ({ from }) => {
                     rowData={rowData}
                     columns={columnData}
                     getselectedData={getselectedData}
+                    currentPage={currentPage || 1}
+                    itemsPerPage={itemsPerPage || 5}
                   />
                 </CRow>
                 <CRow className="mb-3">
