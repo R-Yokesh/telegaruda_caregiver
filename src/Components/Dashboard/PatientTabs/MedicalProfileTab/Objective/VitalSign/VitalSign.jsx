@@ -33,6 +33,22 @@ import { useLocation } from "react-router-dom";
 import Loader from "../../../../../Loader/Loader";
 import { findColorCodefev1_fvc } from "../../../../../../Utils/colorUtils";
 
+
+
+const formatDateTime = (dateString) => {
+  const dateObj = new Date(dateString);
+  
+  const day = String(dateObj.getDate()).padStart(2, '0'); // Get day and ensure 2 digits
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Get month (0-indexed) and ensure 2 digits
+  const year = dateObj.getFullYear(); // Get full year
+
+  const hours = String(dateObj.getHours()).padStart(2, '0'); // Get hours and ensure 2 digits
+  const minutes = String(dateObj.getMinutes()).padStart(2, '0'); // Get minutes and ensure 2 digits
+
+  // Format the string as DD-MM-YYYY HH:MM
+  return `${day}-${month}-${year} ${hours}:${minutes}`;
+};
+
 const VitalSign = ({ setVitalView, onClose }) => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -41,7 +57,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
     { id: 1, title: "Primary Vitals" },
     { id: 2, title: "Metabolic And Biochemical Profile" },
     { id: 3, title: "Hematologic Profile" },
-    { id: 4, title: "Renal and Metabolic Markers" },
+    { id: 4, title: "Renal And Metabolic Markers" },
   ];
   const PatientSubMenu3 = localStorage.getItem("PatientSubMenu-3");
   const ParsedPatientSubMenu = PatientSubMenu3
@@ -766,6 +782,8 @@ const VitalSign = ({ setVitalView, onClose }) => {
     fetchSingleCardData(cardSelectedData);
   }, [fetchSingleCardData]);
 
+  console.log('filtered',filtered)
+
   return (
     <>
       <CRow>
@@ -825,13 +843,19 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     </div>
                     <div className="vital-card-title">
                       <span className="vital-card-text-bold">{item?.name}</span>
-                      <span className="vital-card-text">
+                      {/* <span className="vital-card-text">
                         Recently Added{" "}
                         {item?.created
                           ?.split(" ")[0]
                           .split("-")
                           .reverse()
                           .join("-")}
+                      </span> */}
+                        <span className="fs-14 fw-500">
+                        {item?.tableData?.[0]?.date
+                        ? formatDateTime(item?.tableData[0].date) // Format date to DD-MM-YYYY HH:MM
+                        : ""}
+                         
                       </span>
                     </div>
                   </div>

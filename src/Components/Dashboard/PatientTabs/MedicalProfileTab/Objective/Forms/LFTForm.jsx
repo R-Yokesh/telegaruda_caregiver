@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { useLocation } from "react-router-dom";
+import "./LFTForm.css"
 
 const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
   const location = useLocation();
@@ -129,7 +130,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
         value: fvcL,
         maxLength: 5,
         required: true,
-        label: "FVC (L)",
+        label: "FVC (l)",
       },
       {
         name: "fvcPercent",
@@ -143,7 +144,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
         value: fev1L,
         maxLength: 5,
         required: true,
-        label: "FEV1 (L)",
+        label: "FEV1 (l)",
       },
       {
         name: "fev1Percent",
@@ -282,7 +283,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
     <>
       <CContainer>
         <CRow className="mb-3">
-          <CCol lg={4}>
+          <CCol lg={6}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
                 Date *
@@ -299,7 +300,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </CCol>
-          <CCol lg={4}>
+          <CCol lg={6}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
                 Time *
@@ -318,123 +319,252 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               {errors.time && <div className="error-text">{errors.time}</div>}
             </div>
           </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FVC (L) *
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["fvc_(l)"]}
-                maxLength={5}
-                onInput={numWithDecimal}
-                value={fvcL}
-                onChange={(e) => setFvcL(e.target.value)}
-              />
-              {errors.fvcL && <div className="error-text">{errors.fvcL}</div>}
-            </div>
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FVC (%)*
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["fvc_(l)"]}
-                maxLength={2}
-                onInput={convertNum}
-                value={fvcPercent}
-                onChange={(e) => setFvcPercent(e.target.value)}
-              />
-              {errors.fvcPercent && (
-                <div className="error-text">{errors.fvcPercent}</div>
-              )}
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEV1 (L) *
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["fev1_(l)"]}
-                maxLength={5}
-                onInput={numWithDecimal}
-                value={fev1L}
-                onChange={(e) => setFev1L(e.target.value)}
-              />
-              {errors.fev1L && <div className="error-text">{errors.fev1L}</div>}
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEV1 (%) *
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["fev1_(l)"]}
-                maxLength={2}
-                onInput={convertNum}
-                value={fev1Percent}
-                onChange={(e) => setFev1Percent(e.target.value)}
-              />
-              {errors.fev1Percent && (
-                <div className="error-text">{errors.fev1Percent}</div>
-              )}
-            </div>
-          </CCol>
         </CRow>
 
         <CRow className="mb-3">
           <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                PEF (L/s) 
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["pef_(l/min)"]}
-                maxLength={5}
-                onInput={numWithDecimal}
-                value={pefL}
-                onChange={(e) => setPefL(e.target.value)}
-              />
-              {errors.pefL && <div className="error-text">{errors.pefL}</div>}
+            <div className="fvc-container">
+              <table className="fvc-table">
+                <thead>
+                  <tr>
+                    <th colSpan="2" className="head">FVC *</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                        maxLength={5}
+                        onInput={numWithDecimal}
+                        value={fvcL}
+                        onChange={(e) => setFvcL(e.target.value)}
+
+                      />(l)
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                        maxLength={2}
+                        onInput={convertNum}
+                        value={fvcPercent}
+                        onChange={(e) => setFvcPercent(e.target.value)}
+
+                      />(%)
+                    </td>
+                  </tr>
+                  {errors.fvcL && <div className="error-text">{errors.fvcL}</div>}
+                  {errors.fvcPercent && (
+                    <div className="error-text">{errors.fvcPercent}</div>)}
+                </tbody>
+              </table>
             </div>
           </CCol>
           <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                PEF (%) 
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["pef_(l/min)"]}
-                maxLength={2}
-                onInput={convertNum}
-                value={pefPercent}
-                onChange={(e) => setPefPercent(e.target.value)}
-              />
-              {errors.pefPercent && (
+            <div className="fvc-container">
+              <table className="fvc-table">
+                <thead>
+                  <tr>
+                    <th colSpan="2" className="head"> FEV1 *</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                        maxLength={5}
+                        onInput={numWithDecimal}
+                        value={fev1L}
+                        onChange={(e) => setFev1L(e.target.value)}
+
+                      />(l)
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                        maxLength={2}
+                        onInput={convertNum}
+                        value={fev1Percent}
+                        onChange={(e) => setFev1Percent(e.target.value)}
+
+                      />(%)
+                    </td>
+                  </tr>
+                  {errors.fev1L && <div className="error-text">{errors.fev1L}</div>}
+                {errors.fev1Percent && (
+                <div className="error-text">{errors.fev1Percent}</div>
+              )}
+                </tbody>
+              </table>
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div className="fvc-container">
+              <table className="fvc-table">
+                <thead>
+                  <tr>
+                    <th colSpan="2" className="head"> PEF</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                         maxLength={5}
+                         onInput={numWithDecimal}
+                         value={pefL}
+                         onChange={(e) => setPefL(e.target.value)}
+
+                      />(l/s)
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                       maxLength={2}
+                       onInput={convertNum}
+                       value={pefPercent}
+                       onChange={(e) => setPefPercent(e.target.value)}
+
+                      />(%)
+                    </td>
+                  </tr>
+                </tbody>
+                 
+              </table>
+            </div>
+          </CCol>
+        </CRow>
+
+       
+        <CRow className="mb-3">
+        <CCol lg={4}>
+            <div className="fvc-container">
+              <table className="fvc-table">
+                <thead>
+                  <tr>
+                    <th colSpan="2" className="head">FEF25</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                         maxLength={5}
+                         onInput={numWithDecimal}
+                         value={fef25L}
+                         onChange={(e) => setFef25L(e.target.value)}
+                      />(l/s)
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                       maxLength={2}
+                       onInput={convertNum}
+                       value={fef25Percent}
+                       onChange={(e) => setFef25Percent(e.target.value)}
+                      />(%)
+                    </td>
+                  </tr>
+                </tbody>
+                 
+              </table>
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div className="fvc-container">
+              <table className="fvc-table">
+                <thead>
+                  <tr>
+                    <th colSpan="2" className="head">FEF50</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                      maxLength={5}
+                      onInput={numWithDecimal}
+                      value={fef50L}
+                      onChange={(e) => setFef50L(e.target.value)}      
+                      />(l/s)
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                       maxLength={2}
+                       onInput={convertNum}
+                       value={fef50Percent}
+                       onChange={(e) => setFef50Percent(e.target.value)}
+                      />(%)
+                    </td>
+                  </tr>
+                </tbody>
+                 
+              </table>
+            </div>
+          </CCol>
+          <CCol lg={4}>
+            <div className="fvc-container">
+              <table className="fvc-table">
+                <thead>
+                  <tr>
+                    <th colSpan="2" className="head">FEF75</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                        maxLength={5}
+                        onInput={numWithDecimal}
+                        value={fef75L}
+                        onChange={(e) => setFef75L(e.target.value)}    
+                      />(l/s)
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                       maxLength={2}
+                       onInput={convertNum}
+                       value={fef75Percent}
+                       onChange={(e) => setFef75Percent(e.target.value)}
+                      />(%)
+                    </td>
+                  </tr>
+                </tbody>
+                 
+              </table>
+            </div>
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+        <CCol lg={4}>
+            <div className="fvc-container">
+              <table className="fvc-table">
+                <thead>
+                  <tr>
+                    <th colSpan="2" className="head">FEF2575  </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                         maxLength={5}
+                         onInput={numWithDecimal}
+                         value={fef2575L}
+                         onChange={(e) => setFef2575L(e.target.value)} 
+                      />(l/s)
+                    </td>
+                    <td>
+                      <input type="text" placeholder="Enter" className="fvc-input"
+                       maxLength={2}
+                       onInput={convertNum}
+                       value={fef2575Percent}
+                       onChange={(e) => setFef2575Percent(e.target.value)}
+                      />(%)
+                    </td>
+                  </tr>
+                  {errors.pefL && <div className="error-text">{errors.pefL}</div>}
+                  {errors.pefPercent && (
                 <div className="error-text">{errors.pefPercent}</div>
               )}
+                </tbody>
+                 
+              </table>
             </div>
           </CCol>
           <CCol lg={4}>
@@ -457,155 +587,18 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               )}
             </div>
           </CCol>
+         
         </CRow>
-        <CRow className="mb-3">
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEF25 (L/s)
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["svc_(l)"]}
-                maxLength={5}
-                onInput={numWithDecimal}
-                value={fef25L}
-                onChange={(e) => setFef25L(e.target.value)}
-              />
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEF25 (%)
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["svc_(l)"]}
-                maxLength={2}
-                onInput={convertNum}
-                value={fef25Percent}
-                onChange={(e) => setFef25Percent(e.target.value)}
-              />
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEF50 (L/s)
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["svc_(l)"]}
-                maxLength={5}
-                onInput={numWithDecimal}
-                value={fef50L}
-                onChange={(e) => setFef50L(e.target.value)}
-              />
-            </div>
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEF50 (%)
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["svc_(l)"]}
-                maxLength={2}
-                onInput={convertNum}
-                value={fef50Percent}
-                onChange={(e) => setFef50Percent(e.target.value)}
-              />
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEF75 (L/s)
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["svc_(l)"]}
-                maxLength={5}
-                onInput={numWithDecimal}
-                value={fef75L}
-                onChange={(e) => setFef75L(e.target.value)}
-              />
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEF75 (%)
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["svc_(l)"]}
-                maxLength={2}
-                onInput={convertNum}
-                value={fef75Percent}
-                onChange={(e) => setFef75Percent(e.target.value)}
-              />
-            </div>
-          </CCol>
-        </CRow>
+     
 
         <CRow className="mb-3">
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEF2575 (L/s)
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["svc_(l)"]}
-                maxLength={5}
-                onInput={numWithDecimal}
-                value={fef2575L}
-                onChange={(e) => setFef2575L(e.target.value)}
-              />
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                FEF2575 (%)
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="validationTooltip01"
-                // defaultValue={defaultData?.["svc_(l)"]}
-                maxLength={2}
-                onInput={convertNum}
-                value={fef2575Percent}
-                onChange={(e) => setFef2575Percent(e.target.value)}
-              />
-            </div>
-          </CCol>
+        
         </CRow>
         <CRow className="mb-3">
           <CCol lg={8}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Notes 
+                Notes
               </label>
               <CFormTextarea
                 type="text"

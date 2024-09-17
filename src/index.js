@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <AuthProvider>
-    <ToastContainer />
+    <ToastContainer  autoClose={500}/>
     <App />
   </AuthProvider>
 );

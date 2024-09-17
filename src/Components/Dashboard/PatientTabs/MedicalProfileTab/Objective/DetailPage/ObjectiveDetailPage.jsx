@@ -47,6 +47,21 @@ import useApi from "../../../../../../ApiServices/useApi";
 import DateSearch from "../../../../../DateRangePicker/DateSearch";
 import Pagination from "../../../../../Pagination/Pagination";
 
+const formatDateTime = (dateString) => {
+  const dateObj = new Date(dateString);
+  
+  const day = String(dateObj.getDate()).padStart(2, '0'); // Get day and ensure 2 digits
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Get month (0-indexed) and ensure 2 digits
+  const year = dateObj.getFullYear(); // Get full year
+
+  const hours = String(dateObj.getHours()).padStart(2, '0'); // Get hours and ensure 2 digits
+  const minutes = String(dateObj.getMinutes()).padStart(2, '0'); // Get minutes and ensure 2 digits
+
+  // Format the string as DD-MM-YYYY HH:MM
+  return `${day}-${month}-${year} ${hours}:${minutes}`;
+};
+
+
 const ObjectiveDetailPage = ({
   data,
   getTableDatas,
@@ -55,6 +70,8 @@ const ObjectiveDetailPage = ({
   onPageChange,
   topData,
 }) => {
+
+
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
   const [filterView, setFilterView] = useState(false);
@@ -82,6 +99,9 @@ const ObjectiveDetailPage = ({
   const getFilters = async (startDate, endDate, searchValue) => {
     getFilterValues(startDate, endDate, searchValue);
   };
+
+  console.log('data1111111111', data)
+  // console.log('topDatatopDatatopDatatopData', topData)
   return (
     <>
       <CContainer className="p-0">
@@ -117,7 +137,10 @@ const ObjectiveDetailPage = ({
                           <Badge label={dt?.label} color={dt?.color} />
                         ))}
                       </div>
-                      <span className="fs-14 fw-500">{topData[0]?.date}</span>
+                      <span className="fs-14 fw-500">
+                        {topData[0]?.tableData?.[0]?.date}
+                         
+                      </span>
                     </>
                   )}
                 </div>

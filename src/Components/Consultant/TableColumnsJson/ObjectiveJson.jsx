@@ -18,7 +18,7 @@ export const ObjectiveDatas = [
       { id: 2, label: "RESULT" },
       { id: 3, label: "SYSTOLIC" },
       { id: 4, label: "DIASTOLIC" },
-      { id: 5, label: "PULSE (IN BPM)" },
+      { id: 5, label: "PULSE (bpm)" },
       { id: 6, label: "DATE" },
       { id: 7, label: "ACTION" },
     ],
@@ -62,7 +62,7 @@ export const ObjectiveDatas = [
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "Blood Sugar (mg/dL)" },
+      { id: 3, label: "Blood Sugar (mg/dl)" },
       { id: 4, label: "Type" },
       { id: 5, label: "DATE" },
       { id: 6, label: "ACTION" },

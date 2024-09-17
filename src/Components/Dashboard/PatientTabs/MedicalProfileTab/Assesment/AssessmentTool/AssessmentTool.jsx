@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const AssessmentTool = ({ onClose }) => {
   const tabs = [
-    { id: 1, title: "psychiatric" },
+    { id: 1, title: "Psychiatric" },
     { id: 2, title: "Neurological" },
     { id: 3, title: "Pediatric" },
     { id: 4, title: "Ophthalmic" },

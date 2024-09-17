@@ -1,0 +1,27 @@
+
+  
+  .fvc-table {
+    border-collapse: collapse;
+    width: 200px;
+    text-align: center;
+  }
+  .head{
+    color: #17171D99;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  
+  .fvc-table th,
+  .fvc-table td {
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    padding: 5px;
+  }
+  
+  .fvc-input {
+    border: none;
+    outline: none;
+    width: 60px;
+    text-align: center;
+  }
+
+  
