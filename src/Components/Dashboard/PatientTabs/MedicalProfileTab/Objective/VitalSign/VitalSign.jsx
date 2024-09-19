@@ -199,15 +199,15 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   : card?.slug === "spirometer"
                   ? [
                       {
-                        label: `FVC (%):  ${tableData[0].details?.fvc}L`,
+                        label: `FVC (%):  ${tableData[0].details?.fvc}`,
                         color: `${tableData[0].details?.spirometerFlagColor}`,
                       },
                       {
-                        label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
+                        label: `FEV1 (%): ${tableData[0].details?.fev1}`,
                         color: `${tableData[0].details?.spirometerFlagColor}`,
                       },
                       {
-                        label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
+                        label: `PEF (%):  ${tableData[0].details?.pef}`,
                         color: `${tableData[0].details?.spirometerFlagColor}`,
                       },
                       {
@@ -782,7 +782,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
     fetchSingleCardData(cardSelectedData);
   }, [fetchSingleCardData]);
 
-  console.log('filtered',filtered)
+  
 
   return (
     <>

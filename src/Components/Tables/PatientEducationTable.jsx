@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { Assets } from "../../assets/Assets";
 import { format, parse } from "date-fns";
-import { getSerialNumber } from "../../Utils/commonUtils";
+import { getSerialNumber,isWithin24Hours } from "../../Utils/commonUtils";
 
 
 // Helper function to format date to dd-MM-yyyy HH:mm:ss
@@ -72,22 +72,43 @@ const PatientEducationTable = ({ columns, rowData, getselectedData, from, itemsP
                   <span className="fs-16 fw-500">{dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}</span>
                 </CTableDataCell>
                 {from !== "Consult" && (
-                  <CTableDataCell>
-                    <div className="d-flex align-items-center justify-content-center gap-2">
-                      <img
-                        alt="edit"
-                        src={Assets?.TableEdit}
-                        className="cursor"
-                        onClick={() => selectedData(dt, dt?.id, "edit")}
-                      />
-                      <img
-                        alt="delete"
-                        src={Assets?.TableDelete}
-                        className="cursor"
-                        onClick={() => selectedData(dt, dt?.id, "delete")}
-                      />
-                    </div>
-                  </CTableDataCell>
+                <CTableDataCell style={{ height: "10px" }}>
+                <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                  {dt?.freeze ? (
+                    <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          width: "50%",
+                        }}
+                      >
+                        <img
+                          alt="edit"
+                          src={Assets?.EditPencil}
+                          className={`cursor ${isWithin24Hours(`${dt?.addition_info?.date} ${dt?.addition_info?.time}`) ? "" : "greyed-out"}`}
+                          onClick={() => selectedData(dt, dt?.id, "edit")}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          width: "50%",
+                          display: "flex",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <img
+                          alt="delete"
+                          src={Assets?.Delete}
+                          className={`cursor ${isWithin24Hours(`${dt?.addition_info?.date} ${dt?.addition_info?.time}`) ? "" : "greyed-out"}`}
+                          onClick={() => selectedData(dt, dt?.id, "delete")}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                </div>
+              </CTableDataCell>
                 )}
               </CTableRow>
             ))

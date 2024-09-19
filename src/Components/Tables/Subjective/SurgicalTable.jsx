@@ -8,7 +8,7 @@ import {
 } from "@coreui/react";
 import React from "react";
 import { Assets } from "../../../assets/Assets";
-import { getSerialNumber } from "../../../Utils/commonUtils";
+import { getSerialNumber,isWithin24Hours } from "../../../Utils/commonUtils";
 
 const SurgicalTable = ({
   columns,
@@ -86,36 +86,43 @@ const SurgicalTable = ({
                 </CTableDataCell>
 
                 {from !== "Consult" && (
-                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                      <div
-                        style={{
-                          width: "50%",
-                        }}
-                      >
-                        <img
-                          alt="edit"
-                          src={Assets?.EditPencil}
-                          className="cursor"
-                          onClick={() => selectedData(dt, "edit")}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          width: "50%",
-                          display: "flex",
-                          justifyContent: "flex-start",
-                        }}
-                      >
-                        <img
-                          alt="delete"
-                          src={Assets?.Delete}
-                          className="cursor"
-                          onClick={() => selectedData(dt, "delete")}
-                        />
-                      </div>
-                    </div>
-                  </CTableDataCell>
+                 <CTableDataCell style={{ height: "10px" }}>
+                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                   {dt?.freeze ? (
+                     <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
+                   ) : (
+                     <>
+                       <div
+                         style={{
+                           width: "50%",
+                         }}
+                       >
+                         <img
+                           alt="edit"
+                           src={Assets?.EditPencil}
+                           className={`cursor ${isWithin24Hours(`${dt?.values?.surgery_date}`) ? "" : "greyed-out"}`}
+                           onClick={() => selectedData(dt,"edit")}
+                         />
+                       </div>
+                       <div
+                         style={{
+                           width: "50%",
+                           display: "flex",
+                           justifyContent: "flex-start",
+                         }}
+                       >
+                         <img
+                           alt="delete"
+                           src={Assets?.Delete}
+                           className={`cursor ${isWithin24Hours(`${dt?.values?.surgery_date}`) ? "" : "greyed-out"}`}
+                           onClick={() => selectedData(dt,"delete")}
+                         />
+                       </div>
+                     </>
+                   )}
+
+                 </div>
+               </CTableDataCell>
                 )}
               </CTableRow>
             ))

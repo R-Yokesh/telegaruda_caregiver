@@ -361,7 +361,44 @@ const DynamicTable = ({
     }
   }
 
+  // function renderActionButton(data, row) {
+  //   console.log('Datttttaa',data)
+  //   console.log('Rowww',row)
+
+  //   switch (data.type) {
+  //     case "warning":
+  //       return <img src={Assets.Warning} alt="warn" className="cursor" />;
+  //     case "edit":
+  //       return (
+  //         <img
+  //           src={Assets.EditPencil}
+  //           alt="edit"
+  //           className="cursor"
+  //           onClick={() => editData(row)}
+  //         />
+  //       );
+  //     case "delete":
+  //       return (
+  //         <img
+  //           src={Assets.Delete}
+  //           alt="delete"
+  //           className="cursor"
+  //           onClick={() => deleteData(row)}
+  //         />
+  //       );
+  //     default:
+  //       return null;
+  //   }
+  // }
+
   function renderActionButton(data, row) {
+    const currentTime = new Date();
+    const updatedTime = new Date(row?.date); // Assuming row has 'updatedAt' field
+    const timeDifference = currentTime - updatedTime; // Difference in milliseconds
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  
+    const isEditable = timeDifference <= twentyFourHours;
+  
     switch (data.type) {
       case "warning":
         return <img src={Assets.Warning} alt="warn" className="cursor" />;
@@ -370,8 +407,8 @@ const DynamicTable = ({
           <img
             src={Assets.EditPencil}
             alt="edit"
-            className="cursor"
-            onClick={() => editData(row)}
+            className={`cursor ${isEditable ? "" : "greyed-out"}`}
+            onClick={isEditable ? () => editData(row) : null}
           />
         );
       case "delete":
@@ -379,7 +416,7 @@ const DynamicTable = ({
           <img
             src={Assets.Delete}
             alt="delete"
-            className="cursor"
+            className={`cursor ${isEditable ? "" : "greyed-out"}`}
             onClick={() => deleteData(row)}
           />
         );
@@ -387,6 +424,7 @@ const DynamicTable = ({
         return null;
     }
   }
+  
 
   function getColumnKey(columnLabel) {
     // Convert label to a key format used in your data object

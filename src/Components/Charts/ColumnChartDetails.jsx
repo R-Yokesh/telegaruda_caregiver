@@ -23,12 +23,12 @@ const ColumnChartDetails = ({ datas }) => {
         item?.["hemoglobinValue"] ||
         item?.["bmi_(kg/m²)"] ||
         item?.["blood_sugar_value"] ||
-        item?.["pulse_(in_bpm)"] ||
+        item?.["pulse_(bpm)"] ||
         item?.["hr_(bpm)"] ||
         item?.["respiration_rate_(bpm)"] ||
         removePercent(item?.["spo2"]) ||
         item?.["hct_%"] ||
-        item?.["fvc_(l)"] ||
+        item?.["fvc_(%)"] ||
         item?.["totalOnly"] ||
         item?.["specific_gravity"] ||
         item?.["temperature"] ||
@@ -36,16 +36,16 @@ const ColumnChartDetails = ({ datas }) => {
         item?.["urea_value"] ||
         item?.["creatinine_value"] ||
         item?.["gfr_value"] ||
-        item?.["ldl(mg/dl)"]
+        item?.["ldl_(mg/dl)"]
     ),
 
     data2: parseInt(
       item?.["systolic"]
         ? item?.["systolic"]
-        : item?.["fev1_(l)"]
-        ? item?.["fev1_(l)"]
-        : item?.["hdl(mg/dl)"]
-        ? item?.["hdl(mg/dl)"]
+        : item?.["fev1_(%)"]
+        ? item?.["fev1_(%)"]
+        : item?.["hdl_(mg/dl)"]
+        ? item?.["hdl_(mg/dl)"]
         : item?.["ph"]
         ? item?.["ph"]
         : item?.["temperature_fahrenheit"]
@@ -58,33 +58,33 @@ const ColumnChartDetails = ({ datas }) => {
         ? item?.["diastolic"]
         : item?.["fev1/fvc_(%)"]
         ? item?.["fev1/fvc_(%)"]
-        : item?.["vldl(mg/dl)"]
-        ? item?.["vldl(mg/dl)"]
+        : item?.["vldl_(mg/dl)"]
+        ? item?.["vldl_(mg/dl)"]
         : item?.["urobilinogen"]
         ? item?.["urobilinogen"]
         : ""
     ),
 
     data4: parseInt(
-      item?.["pef_(l/s)"]
-        ? item?.["pef_(l/s)"]
-        : item?.["ldl/hdl(mg/dl)"]
-        ? item?.["ldl/hdl(mg/dl)"]
+      item?.["pef_(%)"]
+        ? item?.["pef_(%)"]
+        : item?.["ldl/hdl_(mg/dl)"]
+        ? item?.["ldl/hdl_(mg/dl)"]
         : item?.["red_blood_cells"]
         ? item?.["red_blood_cells"]
         : ""
     ),
 
     data5: parseInt(
-      item?.["triglycerides(mg/dl)"]
-        ? item?.["triglycerides(mg/dl)"]
+      item?.["triglycerides_(mg/dl)"]
+        ? item?.["triglycerides_(mg/dl)"]
         : item?.["white_blood_cells"]
         ? item?.["white_blood_cells"]
         : ""
     ),
     data6: parseInt(
-      item?.["total_cholesterol(mg/dl)"]
-        ? item?.["total_cholesterol(mg/dl)"]
+      item?.["total_cholesterol_(mg/dl)"]
+        ? item?.["total_cholesterol_(mg/dl)"]
         : ""
     ),
     // For temperature C / F

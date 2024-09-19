@@ -27,6 +27,10 @@ code {
 .cursor {
   cursor: pointer;
 }
+.greyed-out {
+  opacity: 0.5; /* Make the button look faded */
+  pointer-events: none; /* Disable any interactions like clicks */
+}
 
 .cursor-default {
   cursor: default !important;

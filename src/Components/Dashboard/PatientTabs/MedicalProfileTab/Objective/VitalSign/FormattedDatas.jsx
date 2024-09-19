@@ -424,9 +424,9 @@ export const transformLFTData = (originalData, pagination) => {
       columnsData: [
         { id: 1, label: "NO." },
         { id: 2, label: "RESULT" },
-        { id: 3, label: "FVC (l)" },
-        { id: 4, label: "FEV1 (l)" },
-        { id: 5, label: "PEF (l/s)" },
+        { id: 3, label: "FVC (%)" },
+        { id: 4, label: "FEV1 (%)" },
+        { id: 5, label: "PEF (%)" },
         { id: 6, label: "FEV1/FVC (%)" },
         { id: 7, label: "DATE" },
         { id: 8, label: "ACTION" },
@@ -446,10 +446,10 @@ export const transformLFTData = (originalData, pagination) => {
       status: item?.details?.spirometerFlagColor,
       name: item?.details?.spirometerFlag || "Unknown",
     },
-    "fvc_(l)": item?.details?.fvc || "N/A",
-    "fev1_(l)": item?.details?.fev1 || "N/A",
+    "fvc_(%)": item?.details?.fvc || "N/A",
+    "fev1_(%)": item?.details?.fev1 || "N/A",
     "fev1/fvc_(%)": item?.details?.fev1_fvc || "N/A",
-    "pef_(l/s)": item?.details?.pef || "N/A",
+    "pef_(%)": item?.details?.pef || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item.freeze === 1
@@ -476,16 +476,16 @@ export const transformLFTData = (originalData, pagination) => {
   // Create badge and other static information
   const badge = [
     {
-      label: `FVC (%): ${tableData[0]?.["fvc_(l)"] || "N/A"}`,
+      label: `FVC (%): ${tableData[0]?.["fvc_(%)"] || "N/A"}`,
       color: tableData[0].result.status,
     },
     {
-      label: `FEV1 (%): ${tableData[0]?.["fev1_(l)"] || "N/A"}`,
+      label: `FEV1 (%): ${tableData[0]?.["fev1_(%)"] || "N/A"}`,
       color: tableData[0].result.status,
     },
 
     {
-      label: `PEF (%): ${tableData[0]?.["pef_(l/s)"] || "N/A"}`,
+      label: `PEF (%): ${tableData[0]?.["pef_(%)"] || "N/A"}`,
       color: tableData[0].result.status,
     },
     {
@@ -508,9 +508,9 @@ export const transformLFTData = (originalData, pagination) => {
     columnsData: [
       { id: 1, label: "NO." },
       { id: 2, label: "RESULT" },
-      { id: 3, label: "FVC (l)" },
-      { id: 4, label: "FEV1 (l)" },
-      { id: 5, label: "PEF (l/s)" },
+      { id: 3, label: "FVC (%)" },
+      { id: 4, label: "FEV1 (%)" },
+      { id: 5, label: "PEF (%)" },
       { id: 6, label: "FEV1/FVC (%)" },
       { id: 7, label: "DATE" },
       { id: 8, label: "ACTION" },
@@ -730,15 +730,15 @@ export const transformLipidProfileData = (originalData, pagination) => {
       status: item?.details?.total_message_flag || "unknown",
       name: item?.details?.total_message || "Unknown",
     },
-    "ldl(mg/dl)": item?.details?.ldl || "",
-    "hdl(mg/dl)": item?.details?.hdl || "",
-    "vldl(mg/dl)": item?.details?.vldl || "",
-    "ldl/hdl(mg/dl)": item?.details?.hdl_ldl || "",
-    "triglycerides(mg/dl)": item?.details?.triglycerides || "",
+    "ldl_(mg/dl)": item?.details?.ldl || "",
+    "hdl_(mg/dl)": item?.details?.hdl || "",
+    "vldl_(mg/dl)": item?.details?.vldl || "",
+    "ldl/hdl_(mg/dl)": item?.details?.hdl_ldl || "",
+    "triglycerides_(mg/dl)": item?.details?.triglycerides || "",
     ldl_message_flag: item?.details?.ldl_message_flag,
     triglycerides_message_flag: item?.details?.triglycerides_message_flag,
     hdl_message_flag: item?.details?.hdl_message_flag,
-    "total_cholesterol(mg/dl)": item?.details?.total || "",
+    "total_cholesterol_(mg/dl)": item?.details?.total || "",
     date: `${item.details?.date || ""} ${item.details?.time || ""}`,
     action:
       item.freeze === 1
@@ -754,7 +754,7 @@ export const transformLipidProfileData = (originalData, pagination) => {
   const badge = [
     {
       label: `Total Cholesterol: ${
-        tableData[0]?.["total_cholesterol(mg/dl)"] || "N/A"
+        tableData[0]?.["total_cholesterol_(mg/dl)"] || "N/A"
       } mg/dl`,
       color: `${tableData[0]?.result.status}`,
     },

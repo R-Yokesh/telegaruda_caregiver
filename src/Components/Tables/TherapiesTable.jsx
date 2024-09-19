@@ -9,7 +9,7 @@ import {
 import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
-import { getSerialNumber } from "../../Utils/commonUtils";
+import { getSerialNumber,isWithin24Hours } from "../../Utils/commonUtils";
 
 
 
@@ -31,9 +31,9 @@ const formatDate = (dateString) => {
 };
 
 
-const TherapiesTable = ({ columns, rowData, getselectedData, from ,itemsPerPage,currentPage }) => {
-  const selectedData = (data,id,type) => {
-    getselectedData(data,id, type);
+const TherapiesTable = ({ columns, rowData, getselectedData, from, itemsPerPage, currentPage }) => {
+  const selectedData = (data, id, type) => {
+    getselectedData(data, id, type);
   };
 
   return (
@@ -49,54 +49,54 @@ const TherapiesTable = ({ columns, rowData, getselectedData, from ,itemsPerPage,
           </CTableRow>
         </CTableHead>
         <CTableBody>
-        {rowData?.length <= 0 ? (
+          {rowData?.length <= 0 ? (
             <tr>
               <td colSpan={columns.length} className="no-data-message">
                 No data available
               </td>
             </tr>
           ) : (
-          rowData?.map((dt, i) => (
-            <CTableRow key={i}>
-              <CTableHeaderCell>
-              {getSerialNumber(itemsPerPage, currentPage, i)}
-              </CTableHeaderCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{formatDate(dt?.date)}</span>
-              </CTableDataCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.type ? dt?.type : "-"}</span>
-              </CTableDataCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.therapy_name ? dt?.therapy_name : "-"}</span>
-              </CTableDataCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.therapist_name ? dt?.therapist_name : "-"}</span>
-              </CTableDataCell>
-              <CTableDataCell>
-                <span className="fs-16 fw-500">{dt?.duration ? dt?.duration : "-"}</span>
-              </CTableDataCell>
-              {from !== "Consult" && (
+            rowData?.map((dt, i) => (
+              <CTableRow key={i}>
+                <CTableHeaderCell>
+                  {getSerialNumber(itemsPerPage, currentPage, i)}
+                </CTableHeaderCell>
                 <CTableDataCell>
-                  <div className="d-flex align-items-center justify-content-center gap-2">
-                    <img
-                      alt="edit"
-                      src={Assets?.TableEdit}
-                      className="cursor"
-                      onClick={() => selectedData(dt,dt?.id ,"edit")}
-                    />
-                    <img
-                      alt="delete"
-                      src={Assets?.TableDelete}
-                      className="cursor"
-                      onClick={() => selectedData(dt,dt?.id, "delete")}
-                    />
-                  </div>
+                  <span className="fs-16 fw-500">{formatDate(dt?.date)}</span>
                 </CTableDataCell>
-              )}
-            </CTableRow>
-          ))
-        )}
+                <CTableDataCell>
+                  <span className="fs-16 fw-500">{dt?.type ? dt?.type : "-"}</span>
+                </CTableDataCell>
+                <CTableDataCell>
+                  <span className="fs-16 fw-500">{dt?.therapy_name ? dt?.therapy_name : "-"}</span>
+                </CTableDataCell>
+                <CTableDataCell>
+                  <span className="fs-16 fw-500">{dt?.therapist_name ? dt?.therapist_name : "-"}</span>
+                </CTableDataCell>
+                <CTableDataCell>
+                  <span className="fs-16 fw-500">{dt?.duration ? dt?.duration : "-"}</span>
+                </CTableDataCell>
+                {from !== "Consult" && (
+                  <CTableDataCell>
+                    <div className="d-flex align-items-center justify-content-center gap-2">
+                      <img
+                        alt="edit"
+                        src={Assets?.TableEdit}
+                        className={`cursor ${isWithin24Hours(`${dt?.date}`) ? "" : "greyed-out"}`}
+                        onClick={() => selectedData(dt, dt?.id, "edit")}
+                      />
+                      <img
+                        alt="delete"
+                        src={Assets?.TableDelete}
+                        className={`cursor ${isWithin24Hours(`${dt?.date}`) ? "" : "greyed-out"}`}
+                        onClick={() => selectedData(dt, dt?.id, "delete")}
+                      />
+                    </div>
+                  </CTableDataCell>
+                )}
+              </CTableRow>
+            ))
+          )}
         </CTableBody>
       </CTable>
     </>

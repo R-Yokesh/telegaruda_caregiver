@@ -129,7 +129,7 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
 
   const addChiefComplaints = async () => {
     const formattedDate = format(selectedDate, "dd-MM-yyyy");
-    const formattedTime = moment(selectedTime).format("hh:mm");
+    const formattedTime = format(selectedTime, "HH:mm");
     try {
       const body = {
         addition_info: {
@@ -160,7 +160,7 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
 
   const editChiefComplaints = async () => {
     const formattedDate = format(selectedDate, "dd-MM-yyyy");
-    const formattedTime = moment(selectedTime).format("hh:mm");
+    const formattedTime = format(selectedTime, "HH:mm");
     try {
       const body = {
         addition_info: {

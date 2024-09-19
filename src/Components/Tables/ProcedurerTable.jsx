@@ -9,7 +9,7 @@ import {
 import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
-import { getSerialNumber } from "../../Utils/commonUtils";
+import { getSerialNumber,isWithin24Hours } from "../../Utils/commonUtils";
 
 
 
@@ -79,22 +79,43 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from,itemsPerPage,
                 </div>
               </CTableDataCell> */}
               {from !== "Consult" && (
-                <CTableDataCell>
-                  <div className="d-flex align-items-center justify-content-center gap-2">
-                    <img
-                      alt="edit"
-                      src={Assets?.TableEdit}
-                      className="cursor"
-                      onClick={() => selectedData(dt,dt?.id, "edit")}
-                    />
-                    <img
-                      alt="delete"
-                      src={Assets?.TableDelete}
-                      className="cursor"
-                      onClick={() => selectedData(dt,dt?.id, "delete")}
-                    />
-                  </div>
-                </CTableDataCell>
+               <CTableDataCell style={{ height: "10px" }}>
+               <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                 {dt?.freeze ? (
+                   <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
+                 ) : (
+                   <>
+                     <div
+                       style={{
+                         width: "50%",
+                       }}
+                     >
+                       <img
+                         alt="edit"
+                         src={Assets?.EditPencil}
+                         className={`cursor ${isWithin24Hours(`${dt?.values?.date}`) ? "" : "greyed-out"}`}
+                         onClick={() => selectedData(dt, dt?.id, "edit")}
+                       />
+                     </div>
+                     <div
+                       style={{
+                         width: "50%",
+                         display: "flex",
+                         justifyContent: "flex-start",
+                       }}
+                     >
+                       <img
+                         alt="delete"
+                         src={Assets?.Delete}
+                         className={`cursor ${isWithin24Hours(`${dt?.values?.date}`) ? "" : "greyed-out"}`}
+                         onClick={() => selectedData(dt, dt?.id, "delete")}
+                       />
+                     </div>
+                   </>
+                 )}
+
+               </div>
+             </CTableDataCell>
               )}
             </CTableRow>
           ))

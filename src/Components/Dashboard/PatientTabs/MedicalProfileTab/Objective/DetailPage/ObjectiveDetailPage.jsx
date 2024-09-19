@@ -100,7 +100,7 @@ const ObjectiveDetailPage = ({
     getFilterValues(startDate, endDate, searchValue);
   };
 
-  console.log('data1111111111', data)
+  
   // console.log('topDatatopDatatopDatatopData', topData)
   return (
     <>
@@ -138,7 +138,10 @@ const ObjectiveDetailPage = ({
                         ))}
                       </div>
                       <span className="fs-14 fw-500">
-                        {topData[0]?.tableData?.[0]?.date}
+                        {/* {topData[0]?.tableData?.[0]?.date} */}
+                        {topData[0]?.tableData?.[0]?.date
+                        ? formatDateTime(topData[0]?.tableData?.[0]?.date) // Format date to DD-MM-YYYY HH:MM
+                        : ""}
                          
                       </span>
                     </>

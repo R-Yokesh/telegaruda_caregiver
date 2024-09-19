@@ -19,7 +19,7 @@ const CardChart = ({ datas }) => {
           item?.["hemoglobinValue"] ||
           item?.["bmi_(kg/m²)"] ||
           item?.["blood_sugar_value"] ||
-          item?.["pulse_(in_bpm)"] ||
+          item?.["pulse_(bpm)"] ||
           item?.["hr_(bpm)"] ||
           item?.["respiration_rate_(bpm)"] ||
           item?.["spo2"] ||
@@ -29,10 +29,11 @@ const CardChart = ({ datas }) => {
           item?.["chartValue"] ||
           item?.["temperature"] ||
           item?.["blood_uric_acid_value"] ||
+          item?.["specific_gravity"] ||
           item?.["urea_value"] ||
           item?.["creatinine_value"] ||
           item?.["gfr_value"] ||
-          item?.["ldl(mg/dl)"]
+          item?.["ldl_(mg/dl)"]
       ),
       // For temperature C / F
       unit: item?.unit,

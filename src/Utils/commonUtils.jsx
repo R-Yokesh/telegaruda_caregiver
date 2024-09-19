@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 export const findItemIndex = (options, value) => {
   // Use findIndex to get the index of the item with the specified id
   const index = options.findIndex((item) => item === value);
@@ -36,4 +37,30 @@ export const getSerialNumber = (itemPerPage, pageNumber, index) => {
 export const capitalizeFirstLetter = (text) => {
   if (!text) return text;
   return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+};
+
+
+export const isWithin24Hours = (date) => {
+  console.log('Original Date:', date);
+
+  let recDate = new Date(date);
+
+  if (isNaN(recDate)) {
+    const [day, month, year] = date.split('-');
+    recDate = new Date(`${year}-${month}-${day}`); 
+  }
+
+  // If still invalid, throw an error
+  if (isNaN(recDate)) {
+    throw new Error('Invalid date format');
+  }
+
+  console.log('Parsed Date:', recDate);
+
+  const now = new Date();
+  const difference = now.getTime() - recDate.getTime(); 
+
+  console.log('Time Difference in ms:', difference);
+
+  return difference <= 24 * 60 * 60 * 1000 && difference >= 0; 
 };
