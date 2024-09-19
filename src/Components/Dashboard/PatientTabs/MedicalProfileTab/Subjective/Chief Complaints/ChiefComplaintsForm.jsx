@@ -23,11 +23,11 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
   const [errors, setErrors] = useState({});
 
 
-  const defaultDateTime = defaultValues?.date || "";
+  const defaultDateTime = defaultValues?.addition_info?.date || "";
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  const defaultTime = defaultValues?.addition_info?.time || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -68,6 +68,7 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
       setSelectedTime(time);
     }
   };
+
  
 
 
@@ -114,7 +115,7 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
   };
 
   const addChiefComplaints = async () => {
-    const formattedDate = format(selectedDate, "dd-MM-yyyy");
+    const formattedDate = format(selectedDate, "yyyy-MM-dd");
     const formattedTime = format(selectedTime, "HH:mm");
     try {
       const body = {
@@ -145,7 +146,7 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
   };
 
   const editChiefComplaints = async () => {
-    const formattedDate = format(selectedDate, "dd-MM-yyyy");
+    const formattedDate = format(selectedDate, "yyyy-MM-dd");
     const formattedTime = format(selectedTime, "HH:mm");
     try {
       const body = {

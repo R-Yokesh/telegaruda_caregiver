@@ -223,6 +223,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   };
 
   const getselectedData = (data,id, type) => {
+    console.log(type, "first", data);
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();

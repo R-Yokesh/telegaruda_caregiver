@@ -45,7 +45,10 @@ const AllergiesTable = ({ columns, rowData, getselectedData,itemsPerPage,current
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100 flex-column">
-                  <span className="fs-16 fw-500">{dt?.values?.date ? dt?.values?.date : "-"}</span>
+                  <span className="fs-16 fw-500">{dt?.values?.date ?.split(" ")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")} </span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
