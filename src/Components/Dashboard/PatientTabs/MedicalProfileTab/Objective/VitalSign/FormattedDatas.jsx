@@ -39,9 +39,9 @@ export const transformBPData = (originalData, pagination) => {
     "pulse_(bpm)": item.details.pulse || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+      item?.consult_id === null
+        ? [{ type: "edit", disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Blood Pressure",
     id: item.id,
     user_id: item.user_id,
@@ -52,15 +52,15 @@ export const transformBPData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0].systolic}/${tableData[0].diastolic} mm Hg`,
-            color: tableData[0].result.status,
-          },
-          {
-            label: `${tableData[0]["pulse_(bpm)"]} Pulse (bpm)`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0].systolic}/${tableData[0].diastolic} mm Hg`,
+          color: tableData[0].result.status,
+        },
+        {
+          label: `${tableData[0]["pulse_(bpm)"]} Pulse (bpm)`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
@@ -129,9 +129,9 @@ export const transformBMIData = (originalData, pagination) => {
     "weight_(kg)": item?.details?.weight || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+      item?.consult_id === null
+        ? [{ type: "edit", disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "BMI",
     id: item.id,
     user_id: item.user_id,
@@ -144,11 +144,11 @@ export const transformBMIData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["bmi_(kg/m²)"]} kg/m²`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["bmi_(kg/m²)"]} kg/m²`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
@@ -211,9 +211,9 @@ export const transformRespirationRateData = (originalData, pagination) => {
     "respiration_rate_(bpm)": item.details.respiration || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Respiration Rate",
     id: item.id,
     user_id: item.user_id,
@@ -224,11 +224,11 @@ export const transformRespirationRateData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["respiration_rate_(bpm)"]} bpm`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["respiration_rate_(bpm)"]} bpm`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
@@ -287,9 +287,9 @@ export const transformSpO2Data = (originalData, pagination) => {
     spo2: item?.details?.spo2 + "" + item?.details?.unit || "N/A",
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+    item?.consult_id === null
+      ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+      : [{ type: "warning" }],
     name: "SpO2",
     id: item?.id,
     user_id: item?.user_id,
@@ -301,11 +301,11 @@ export const transformSpO2Data = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]?.spo2}`,
-            color: tableData[0]?.result?.status,
-          },
-        ]
+        {
+          label: `${tableData[0]?.spo2}`,
+          color: tableData[0]?.result?.status,
+        },
+      ]
       : [];
 
   return {
@@ -362,15 +362,14 @@ export const transformTemperatureData = (originalData, pagination) => {
       status: item?.details?.temperatureFlagColor,
       name: item?.details?.temperatureFlag,
     },
-    temperature: `${item?.details?.temperature}${
-      item?.details?.unit === "Fahrenheit" ? "°F" : "°C" || "N/A"
-    }`,
+    temperature: `${item?.details?.temperature}${item?.details?.unit === "Fahrenheit" ? "°F" : "°C" || "N/A"
+      }`,
     method: item?.details?.type,
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Temperature",
     id: item?.id,
     unit: item?.details?.unit,
@@ -381,20 +380,19 @@ export const transformTemperatureData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]?.temperature}`,
-            color: tableData[0]?.result?.status,
-          },
-        ]
+        {
+          label: `${tableData[0]?.temperature}`,
+          color: tableData[0]?.result?.status,
+        },
+      ]
       : [];
 
   return {
     id: 11,
     icon: Assets.Temp,
     name: "Temperature",
-    date: `Recently Added ${
-      tableData[0]?.date.split(" ")[0]?.split("-")?.reverse()?.join("-") || "-"
-    }`,
+    date: `Recently Added ${tableData[0]?.date.split(" ")[0]?.split("-")?.reverse()?.join("-") || "-"
+      }`,
     category: "Primary Vitals",
     badge,
     columnsData: [
@@ -452,9 +450,9 @@ export const transformLFTData = (originalData, pagination) => {
     "pef_(%)": item?.details?.pef || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Lung Function Test (LFT)",
     id: item.id,
     user_id: item.user_id,
@@ -560,9 +558,9 @@ export const transformHeartRateData = (originalData, pagination) => {
     "hr_(bpm)": item?.details?.heart || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Heart",
     type: item?.details?.type || "Unknown",
     interpretation: item?.details?.interpretation || "-",
@@ -576,20 +574,19 @@ export const transformHeartRateData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]?.["hr_(bpm)"] || "N/A"} bpm`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]?.["hr_(bpm)"] || "N/A"} bpm`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
     id: 5,
     icon: Assets.VitalHBeat,
     name: "Heart",
-    date: `Recently Added ${
-      tableData[0]?.date?.split(" ")[0]?.split("-")?.reverse()?.join("-") || "-"
-    }`,
+    date: `Recently Added ${tableData[0]?.date?.split(" ")[0]?.split("-")?.reverse()?.join("-") || "-"
+      }`,
     category: "Primary Vitals",
     badge,
     columnsData: [
@@ -644,9 +641,9 @@ export const transformBloodSugarData = (originalData, pagination) => {
     type: item?.details?.type || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Blood Sugar",
     id: item.id,
     user_id: item.user_id,
@@ -657,11 +654,11 @@ export const transformBloodSugarData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["blood_sugar_(mg/dl)"]} mg/dL`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["blood_sugar_(mg/dl)"]} mg/dL`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
@@ -740,10 +737,10 @@ export const transformLipidProfileData = (originalData, pagination) => {
     hdl_message_flag: item?.details?.hdl_message_flag,
     "total_cholesterol_(mg/dl)": item?.details?.total || "",
     date: `${item.details?.date || ""} ${item.details?.time || ""}`,
-    action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+     action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Lipid Profile",
     id: item.id,
     user_id: item.user_id,
@@ -753,9 +750,8 @@ export const transformLipidProfileData = (originalData, pagination) => {
   // Create badges
   const badge = [
     {
-      label: `Total Cholesterol: ${
-        tableData[0]?.["total_cholesterol_(mg/dl)"] || "N/A"
-      } mg/dl`,
+      label: `Total Cholesterol: ${tableData[0]?.["total_cholesterol_(mg/dl)"] || "N/A"
+        } mg/dl`,
       color: `${tableData[0]?.result.status}`,
     },
     // {
@@ -778,9 +774,8 @@ export const transformLipidProfileData = (originalData, pagination) => {
     id: 8,
     icon: Assets.VitalLipid,
     name: "Lipid Profile",
-    date: `Recently Added ${
-      tableData[0]?.date.split(" ")[0].split("-").reverse().join("-") || "-"
-    }`,
+    date: `Recently Added ${tableData[0]?.date.split(" ")[0].split("-").reverse().join("-") || "-"
+      }`,
     category: "Metabolic And Biochemical Profile",
     badge,
     columnsData: [
@@ -837,10 +832,10 @@ export const transformHematocritData = (originalData, pagination) => {
     },
     "hct_%": item?.details?.hct || 0,
     date: `${item.details.date} ${item.details.time || ""}`,
-    action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+     action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Hematocrit (HCT)",
     id: item.id,
     user_id: item.user_id,
@@ -851,11 +846,11 @@ export const transformHematocritData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["hct_%"]} %`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["hct_%"]} %`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
@@ -914,10 +909,10 @@ export const transformHemoglobinData = (originalData, pagination) => {
     "hemoglobin_(g/dl)": item?.details?.hemoglobin || "N/A",
     hemoglobinValue: item?.details?.hemoglobin || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
-    action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+     action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Hemoglobin",
     id: item.id,
     user_id: item.user_id,
@@ -928,11 +923,11 @@ export const transformHemoglobinData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["hemoglobin_(g/dl)"]} g/dL`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["hemoglobin_(g/dl)"]} g/dL`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
@@ -990,10 +985,10 @@ export const transformBloodKetoneData = (originalData, pagination) => {
     "blood_ketone_(mmol/l)": item?.details?.keytone || "N/A",
     blood_ketone_value: item?.details?.keytone || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
-    action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+     action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Blood Ketone",
     id: item.id,
     user_id: item.user_id,
@@ -1004,11 +999,11 @@ export const transformBloodKetoneData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["blood_ketone_(mmol/l)"]} mmol/L`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["blood_ketone_(mmol/l)"]} mmol/L`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
@@ -1067,10 +1062,10 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
     "blood_uric_acid_(mg/dl)": item?.details?.uric_acid || "N/A",
     blood_uric_acid_value: item?.details?.uric_acid || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
-    action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+     action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Blood Uric Acid",
     id: item.id,
     user_id: item.user_id,
@@ -1081,12 +1076,12 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["blood_uric_acid_(mg/dl)"]} mg/dL`,
-            // color: tableData[0].result.status,
-            color: "success",
-          },
-        ]
+        {
+          label: `${tableData[0]["blood_uric_acid_(mg/dl)"]} mg/dL`,
+          // color: tableData[0].result.status,
+          color: "success",
+        },
+      ]
       : [];
 
   return {
@@ -1145,10 +1140,10 @@ export const transformUreaData = (originalData, pagination) => {
     "urea_(mg/dl)": item.details?.urea || "N/A",
     urea_value: item?.details?.urea || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
-    action:
-      item.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+     action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Urea",
     id: item.id,
     user_id: item.user_id,
@@ -1159,22 +1154,21 @@ export const transformUreaData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["urea_(mg/dl)"]} mg/dL`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["urea_(mg/dl)"]} mg/dL`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
     id: 15,
     icon: Assets.Urea,
     name: "Urea",
-    date: `Recently Added ${
-      tableData.length > 0
-        ? tableData[0].date.split(" ")[0].split("-").reverse().join("-")
-        : "-"
-    }`,
+    date: `Recently Added ${tableData.length > 0
+      ? tableData[0].date.split(" ")[0].split("-").reverse().join("-")
+      : "-"
+      }`,
     category: "Renal And Metabolic Markers",
     badge,
     columnsData: [
@@ -1222,10 +1216,10 @@ export const transformCreatinineData = (originalData, pagination) => {
     "creatinine_(mg/dl)": item?.details?.creatinine || "N/A",
     creatinine_value: item?.details?.creatinine || "N/A",
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
-    action:
-      item?.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+   action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Creatinine",
     id: item?.id,
     user_id: item?.user_id,
@@ -1236,11 +1230,11 @@ export const transformCreatinineData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["creatinine_(mg/dl)"]} mg/dL`,
-            color: tableData[0]?.result?.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["creatinine_(mg/dl)"]} mg/dL`,
+          color: tableData[0]?.result?.status,
+        },
+      ]
       : [];
 
   return {
@@ -1299,10 +1293,10 @@ export const transformGFRData = (originalData, pagination) => {
     "gfr_(ml/min/1.73m²)": item?.details?.gfr || "N/A",
     gfr_value: item?.details?.gfr || "N/A",
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
-    action:
-      item?.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+   action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "GFR",
     id: item.id,
     user_id: item.user_id,
@@ -1313,11 +1307,11 @@ export const transformGFRData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          {
-            label: `${tableData[0]["gfr_(ml/min/1.73m²)"]} mL/min/1.73m²`,
-            color: tableData[0].result.status,
-          },
-        ]
+        {
+          label: `${tableData[0]["gfr_(ml/min/1.73m²)"]} mL/min/1.73m²`,
+          color: tableData[0].result.status,
+        },
+      ]
       : [];
 
   return {
@@ -1390,10 +1384,10 @@ export const transformUrinalysisData = (originalData, pagination) => {
     red_blood_cells: item?.details?.red_blood_cells || "N/A",
     white_blood_cells: item?.details?.white_blood_cells || "N/A",
     date: `${item.details.date} ${item.details.time || ""}`,
-    action:
-      item?.freeze === 1
-        ? [{ type: "warning" }]
-        : [{ type: "edit" }, { type: "delete" }],
+   action:
+      item?.consult_id === null
+        ? [{ type: "edit",disabled: item?.freeze === 1 }, { type: "delete" }]
+        : [{ type: "warning" }],
     name: "Urinalysis",
   }));
 
@@ -1401,16 +1395,16 @@ export const transformUrinalysisData = (originalData, pagination) => {
   const badge =
     tableData.length > 0
       ? [
-          { label: `Color: ${tableData[0].color}`, color: "success" },
-          { label: `Clarity: ${tableData[0].clarity}`, color: "success" },
-          { label: `Glucose: ${tableData[0].glucose}`, color: "success" },
-          {
-            label: `Specific Gravity: ${tableData[0].specific_gravity}`,
-            color: "success",
-          },
-          { label: `PH: ${tableData[0].ph}`, color: "success" },
-          { label: `Protein: ${tableData[0].protein}`, color: "success" },
-        ]
+        { label: `Color: ${tableData[0].color}`, color: "success" },
+        { label: `Clarity: ${tableData[0].clarity}`, color: "success" },
+        { label: `Glucose: ${tableData[0].glucose}`, color: "success" },
+        {
+          label: `Specific Gravity: ${tableData[0].specific_gravity}`,
+          color: "success",
+        },
+        { label: `PH: ${tableData[0].ph}`, color: "success" },
+        { label: `Protein: ${tableData[0].protein}`, color: "success" },
+      ]
       : [];
 
   return {
@@ -1444,3 +1438,4 @@ export const transformUrinalysisData = (originalData, pagination) => {
     total: pagination?.total,
   };
 };
+

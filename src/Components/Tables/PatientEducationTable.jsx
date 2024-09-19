@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { Assets } from "../../assets/Assets";
 import { format, parse } from "date-fns";
-import { getSerialNumber,isWithin24Hours } from "../../Utils/commonUtils";
+import { getSerialNumber } from "../../Utils/commonUtils";
 
 
 // Helper function to format date to dd-MM-yyyy HH:mm:ss
@@ -74,7 +74,7 @@ const PatientEducationTable = ({ columns, rowData, getselectedData, from, itemsP
                 {from !== "Consult" && (
                 <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                  {dt?.freeze ? (
+                {dt?.consult_id === !null ? (
                     <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
                   ) : (
                     <>
@@ -86,7 +86,7 @@ const PatientEducationTable = ({ columns, rowData, getselectedData, from, itemsP
                         <img
                           alt="edit"
                           src={Assets?.EditPencil}
-                          className={`cursor ${isWithin24Hours(`${dt?.addition_info?.date} ${dt?.addition_info?.time}`) ? "" : "greyed-out"}`}
+                          className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
                           onClick={() => selectedData(dt, dt?.id, "edit")}
                         />
                       </div>
@@ -100,7 +100,7 @@ const PatientEducationTable = ({ columns, rowData, getselectedData, from, itemsP
                         <img
                           alt="delete"
                           src={Assets?.Delete}
-                          className={`cursor ${isWithin24Hours(`${dt?.addition_info?.date} ${dt?.addition_info?.time}`) ? "" : "greyed-out"}`}
+                          className='cursor'
                           onClick={() => selectedData(dt, dt?.id, "delete")}
                         />
                       </div>

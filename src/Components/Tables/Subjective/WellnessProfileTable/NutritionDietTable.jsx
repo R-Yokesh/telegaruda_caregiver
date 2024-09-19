@@ -9,7 +9,7 @@ import {
 import React from "react";
 import Badge from "../../../Badge/Badge";
 import { Assets } from "../../../../assets/Assets";
-import { getSerialNumber,isWithin24Hours } from "../../../../Utils/commonUtils";
+import { getSerialNumber } from "../../../../Utils/commonUtils";
 
 const NutritionDietTable = ({ columns, rowData, getselectedData, from }) => {
   const selectedData = (data,id, type) => {
@@ -55,7 +55,7 @@ const NutritionDietTable = ({ columns, rowData, getselectedData, from }) => {
               {from !== "Consult" && (
                  <CTableDataCell style={{ height: "10px" }}>
                  <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                   {dt?.freeze ? (
+                 {dt?.consult_id === !null ? (
                      <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
                    ) : (
                      <>
@@ -67,7 +67,7 @@ const NutritionDietTable = ({ columns, rowData, getselectedData, from }) => {
                          <img
                            alt="edit"
                            src={Assets?.EditPencil}
-                           className={`cursor ${isWithin24Hours(`${dt?.act_date}`) ? "" : "greyed-out"}`}
+                           className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
                            onClick={() => selectedData(dt, dt?.id, "edit")}
                          />
                        </div>
@@ -81,7 +81,7 @@ const NutritionDietTable = ({ columns, rowData, getselectedData, from }) => {
                          <img
                            alt="delete"
                            src={Assets?.Delete}
-                           className={`cursor ${isWithin24Hours(`${dt?.act_date}`) ? "" : "greyed-out"}`}
+                           className='cursor'
                            onClick={() => selectedData(dt, dt?.id, "delete")}
                          />
                        </div>
