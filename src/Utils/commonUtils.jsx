@@ -44,11 +44,21 @@ export const isWithin24Hours = (date) => {
   let recDate = new Date(date);
   // If the date is invalid, throw an error
   if (isNaN(recDate)) {
-    throw new Error('Invalid date format');
+    throw new Error("Invalid date format");
   }
-  console.log('Parsed Date:', recDate);
+  console.log("Parsed Date:", recDate);
   const now = new Date();
-  const difference = now.getTime() - recDate.getTime(); 
-  console.log('Time Difference in ms:', difference);
-  return difference <= 24 * 60 * 60 * 1000 && difference >= 0; 
+  const difference = now.getTime() - recDate.getTime();
+  console.log("Time Difference in ms:", difference);
+  return difference <= 24 * 60 * 60 * 1000 && difference >= 0;
+};
+
+// Function to convert Celsius to Fahrenheit
+export const celsiusToFahrenheit = (celsius) => {
+  return ((9 / 5) * celsius + 32).toFixed(2);
+};
+
+// Function to convert Fahrenheit to Celsius
+export const fahrenheitToCelsius = (fahrenheit) => {
+  return ((fahrenheit - 32) * (5 / 9)).toFixed(2);
 };

@@ -27,7 +27,7 @@ const CardChart = ({ datas }) => {
           item?.["fev1/fvc_(%)"] ||
           item?.["totalOnly"] ||
           item?.["chartValue"] ||
-          item?.["temperature"] ||
+          item?.["temperatureValueF"] ||
           item?.["blood_uric_acid_value"] ||
           item?.["specific_gravity"] ||
           item?.["urea_value"] ||
@@ -64,14 +64,15 @@ const CardChart = ({ datas }) => {
     if (active && payload && payload.length) {
       // Determine the temperature unit and format the tooltip content accordingly
       let tooltipContent = "";
-      if (datas.slug === "temperature" && payload[0]?.dataKey === "data1") {
-        const unit = payload[0].payload?.unit || "N/A";
-        const temperature = payload[0].value || "N/A";
-        tooltipContent =
-          unit === "Celsius"
-            ? `Temperature: ${temperature}°C`
-            : `Temperature: ${temperature}°F`;
-      } else if (
+      // if (datas.slug === "temperature" && payload[0]?.dataKey === "data1") {
+      //   const unit = payload[0].payload?.unit || "N/A";
+      //   const temperature = payload[0].value || "N/A";
+      //   tooltipContent =
+      //     unit === "Celsius"
+      //       ? `Temperature: ${temperature}°C`
+      //       : `Temperature: ${temperature}°F`;
+      // } else 
+      if (
         datas.slug === "spirometer" &&
         payload[0]?.dataKey === "data1"
       ) {

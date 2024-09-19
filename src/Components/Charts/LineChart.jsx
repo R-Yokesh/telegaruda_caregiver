@@ -32,7 +32,7 @@ const LineChartDetails = ({ datas }) => {
         item?.["fvc_(%)"] ||
         item?.["totalOnly"] ||
         item?.["specific_gravity"] ||
-        item?.["temperature"] ||
+        item?.["temperatureValueF"] ||
         item?.["blood_uric_acid_value"] ||
         item?.["urea_value"] ||
         item?.["creatinine_value"] ||
@@ -100,13 +100,13 @@ const LineChartDetails = ({ datas }) => {
   // Custom tooltip formatter function
   const tooltipFormatter = (value, name, props) => {
     const item = formattedData.find((d) => d.name === props.payload.name);
-    if (datas.slug === "temperature" && name === "data1") {
-      const unit = item?.unit || "N/A";
-      const temperature = item?.data1 || "N/A";
-      return unit === "Celsius"
-        ? [`Temperature: ${temperature}°C`]
-        : [`Temperature: ${temperature}°F`];
-    }
+    // if (datas.slug === "temperature" && name === "data1") {
+    //   const unit = item?.unit || "N/A";
+    //   const temperature = item?.data1 || "N/A";
+    //   return unit === "Celsius"
+    //     ? [`Temperature: ${temperature}°C`]
+    //     : [`Temperature: ${temperature}°F`];
+    // }
 
     if (name === "data1") {
       return [value, datas?.chartLabel1];
