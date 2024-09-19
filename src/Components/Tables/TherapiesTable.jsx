@@ -78,19 +78,39 @@ const TherapiesTable = ({ columns, rowData, getselectedData, from, itemsPerPage,
                 </CTableDataCell>
                 {from !== "Consult" && (
                   <CTableDataCell>
-                    <div className="d-flex align-items-center justify-content-center gap-2">
-                      <img
-                        alt="edit"
-                        src={Assets?.TableEdit}
-                        className={`cursor ${isWithin24Hours(`${dt?.date}`) ? "" : "greyed-out"}`}
-                        onClick={() => selectedData(dt, dt?.id, "edit")}
-                      />
-                      <img
-                        alt="delete"
-                        src={Assets?.TableDelete}
-                        className={`cursor ${isWithin24Hours(`${dt?.date}`) ? "" : "greyed-out"}`}
-                        onClick={() => selectedData(dt, dt?.id, "delete")}
-                      />
+                     <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                      {dt?.consult_id === !null ? (
+                        <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
+                      ) : (
+                        <>
+                          <div
+                            style={{
+                              width: "50%",
+                            }}
+                          >
+                            <img
+                              alt="edit"
+                              src={Assets?.EditPencil}
+                              className={`cursor ${isWithin24Hours(`${dt?.created_at}`) ? "" : "greyed-out"}`}
+                              onClick={() => selectedData(dt, dt?.id, "edit")}
+                            />
+                          </div>
+                          <div
+                            style={{
+                              width: "50%",
+                              display: "flex",
+                              justifyContent: "flex-start",
+                            }}
+                          >
+                            <img
+                              alt="delete"
+                              src={Assets?.Delete}
+                              className='cursor'
+                              onClick={() => selectedData(dt, dt?.id, "delete")}
+                            />
+                          </div>
+                        </>
+                      )}
                     </div>
                   </CTableDataCell>
                 )}
