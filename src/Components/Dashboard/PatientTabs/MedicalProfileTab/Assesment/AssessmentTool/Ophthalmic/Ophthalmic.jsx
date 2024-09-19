@@ -234,6 +234,11 @@ const Ophthalmic = ({ from }) => {
               defaultValues={selectedData}
               questions={selectedData.questions || []}
               formTitle={formTitle}
+              onAdd={onAdd}
+              latest_form_submission={
+                edit ? selectedData?.latest_form_submisson : null
+              }
+              isEditMode={edit}
             />
           </CCardBody>
         </CCard>

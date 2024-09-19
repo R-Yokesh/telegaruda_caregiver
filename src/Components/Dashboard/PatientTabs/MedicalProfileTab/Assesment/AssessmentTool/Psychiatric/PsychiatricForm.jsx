@@ -26,6 +26,23 @@ const PsychiatricForm = ({
       setFormData(initializedData);
     }
   }, [latest_form_submission]);
+
+  const handleChange2 = (event) => {
+    const { name, value } = event.target;
+    const questionId = parseInt(name, 10);
+
+    // Find the selected option object
+    const selectedOption = defaultValues?.questions
+      .find((item) => item.question.id === questionId)
+      ?.answers.find((answer) => answer?.answer?.name === value);
+
+    // Update formData with the selected option object
+    setFormData((prevData) => ({
+      ...prevData,
+      [questionId]: selectedOption || null,
+    }));
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     const questionId = parseInt(name, 10);
@@ -58,19 +75,54 @@ const PsychiatricForm = ({
           </div>
         </div>
         <hr />
-        {!defaultValues ||
-        !defaultValues.questions[0].question.sub_questions ? (
+        {!defaultValues.questions[0].question.sub_questions &&
+        defaultValues.questions ? (
+          <>
+            {defaultValues?.questions?.map((question, index) => (
+              <CRow key={index} className="mb-3">
+                <CCol>
+                  <h5>
+                    {index + 1}. {question?.question?.name}
+                  </h5>
+                  {question?.answers?.map((option, cIndex) => (
+                    <CFormCheck
+                      key={cIndex}
+                      type="radio"
+                      name={question?.question?.id} // Use question ID as the name
+                      id={`question${question?.question?.id}_choice${option?.question_id}`}
+                      // name={`question${index + 1}`}
+                      // id={`question${index + 1}_choice${cIndex + 1}`}
+                      value={option?.answer?.name}
+                      label={option?.answer?.name}
+                      onChange={handleChange2}
+                      checked={
+                        formData[question?.question?.id]?.answer?.name ===
+                        option?.answer?.name
+                      }
+                      disabled={isEditMode}
+                    />
+                  ))}
+                </CCol>
+              </CRow>
+            ))}
+          </>
+        ) : !defaultValues ||
+          !defaultValues.questions[0].question.sub_questions ? (
           <>
             <p>No questions available</p>
           </>
         ) : (
           <>
-            <h4 className="mb-3">{defaultValues?.questions[0]?.question?.name}</h4>
+            <h4 className="mb-3">
+              {defaultValues?.questions[0]?.question?.name}
+            </h4>
             {defaultValues?.questions[0]?.question.sub_questions?.map(
               (question, index) => (
                 <CRow key={index} className="mb-3">
                   <CCol>
-                    <h5>{index + 1}. {question?.name}</h5>
+                    <h5>
+                      {index + 1}. {question?.name}
+                    </h5>
                     {defaultValues?.questions[0]?.answers?.map(
                       (option, cIndex) => (
                         <CFormCheck

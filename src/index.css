@@ -27,9 +27,12 @@ code {
 .cursor {
   cursor: pointer;
 }
+
 .greyed-out {
-  opacity: 0.5; /* Make the button look faded */
-  pointer-events: none; /* Disable any interactions like clicks */
+  opacity: 0.5;
+  /* Make the button look faded */
+  pointer-events: none;
+  /* Disable any interactions like clicks */
 }
 
 .cursor-default {
@@ -183,6 +186,10 @@ body {
 
 .badge-primary {
   background-color: var(--theme-blue) !important;
+}
+
+.badge-secondary {
+  background-color: #6e6e6dc1 !important;
 }
 
 .badge-yellow {

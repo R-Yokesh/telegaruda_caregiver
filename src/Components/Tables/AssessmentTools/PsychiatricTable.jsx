@@ -9,7 +9,10 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
-import { capitalizeFirstLetter, getSerialNumber } from "../../../Utils/commonUtils";
+import {
+  capitalizeFirstLetter,
+  getSerialNumber,
+} from "../../../Utils/commonUtils";
 import { format } from "date-fns";
 import { formatFetchDate } from "../../../Utils/dateUtils";
 
@@ -25,7 +28,8 @@ const PsychiatricTable = ({
     getselectedData(data, type);
   };
 
-  const formatText = (text, score) => {
+  const formatText = (text) => {
+    // Clean the text by removing markers
     let cleanedText = text?.replace(/@\w+\s*/g, "");
 
     // Extract status between ! markers
@@ -35,19 +39,40 @@ const PsychiatricTable = ({
     // Remove the status part from the cleaned text
     cleanedText = cleanedText?.replace(/!.*!/, "")?.trim();
 
+    // Extract the score
+    const scoreMatch =
+      text?.match(/@f\s*([\d.]+)/) || text?.match(/Pro Rated is.*?([\d.]+)/);
+    const score = scoreMatch ? scoreMatch[1] : "";
+
     // Extract title and sub-title
     const titleMatch = cleanedText?.match(/^([^,]*?)(?:,|$)/);
     const subTitMatch = cleanedText?.match(/, (.+)$/);
 
-    // Prepare the final object
-    console.log({
-      title: titleMatch ? titleMatch[1]?.trim() : "",
-      subTit: subTitMatch ? subTitMatch[1]?.trim() : "",
-      status: status?.trim(),
-    });
+    // Extract additional information (e.g., "Minimal")
+    const additionalMatch = text?.match(/@f \s*(.*?)\s*@c /);
+    const additional = additionalMatch ? additionalMatch[1].trim() : "";
+
+
     return (
-      <div className="d-flex flex-column align-items-center">
-        <Badge label={score} color={status} />
+      <div className="d-flex justify-content-center align-items-center gap-2">
+        {score?.trim() ? (titleMatch ? titleMatch[1]?.trim() : "") : null}{" "}
+        {subTitMatch ? subTitMatch[1]?.trim() : ""}{" "}
+        <Badge
+          label={
+            <>
+              <span>
+                {score?.trim()
+                  ? score?.trim() + " Score"
+                  : titleMatch
+                  ? titleMatch[1]?.trim()
+                  : ""}{" "}
+              </span>
+              <br />
+              <span>{additional}</span>
+            </>
+          }
+          color={status?.trim()}
+        />
       </div>
     );
   };
@@ -73,7 +98,9 @@ const PsychiatricTable = ({
                 </span>
               </CTableHeaderCell>
               <CTableDataCell>
-                <span className="fs-16 fw-500">{capitalizeFirstLetter(dt?.name)}</span>
+                <span className="fs-16 fw-500">
+                  {capitalizeFirstLetter(dt?.name)}
+                </span>
               </CTableDataCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">
@@ -85,12 +112,16 @@ const PsychiatricTable = ({
               <span className="fs-16 fw-500">{dt?.result}</span>
               </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+                {/* <div className="d-flex flex-column align-items-center">
                   <Badge
                     label={dt?.latest_form_submisson?.score}
                     color={"error"}
                   />
-                </div>
+                </div> */}
+                {formatText(
+                  dt?.latest_form_submisson?.message,
+                  dt?.latest_form_submisson?.score
+                )}
               </CTableDataCell>
 
               {from !== "Consult" && (
