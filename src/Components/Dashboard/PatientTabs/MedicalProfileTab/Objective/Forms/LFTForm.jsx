@@ -13,7 +13,6 @@ import { useLocation } from "react-router-dom";
 import "./LFTForm.css"
 
 const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
-  console.log('first defaultData',defaultData)
 
   const location = useLocation();
   const data = location.state?.PatientDetail;

@@ -223,10 +223,12 @@ body {
 .responsive-table th {
   background-color: #000000;
   color: #ffffff;
-  padding: 12px 10px;
+  padding: 12px 6px;
   text-align: left;
   font-size: 16px;
   font-weight: 500;
+  width: 100px;
+  word-break: break-all;
   /* text-transform: uppercase */
 }
 

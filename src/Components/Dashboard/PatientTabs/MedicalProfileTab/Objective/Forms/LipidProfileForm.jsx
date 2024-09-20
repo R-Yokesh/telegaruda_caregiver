@@ -12,20 +12,22 @@ import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
 const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
+  console.log('first defaultData',defaultData)
+
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [ldl, setLdl] = useState(defaultData?.["ldl(mg/dl)"] || "");
-  const [hdl, setHdl] = useState(defaultData?.["hdl(mg/dl)"] || "");
-  const [vldl, setVldl] = useState(defaultData?.["vldl(mg/dl)"] || "");
-  const [ldlHdl, setLdlHdl] = useState(defaultData?.["ldl/hdl(mg/dl)"] || "");
+  const [ldl, setLdl] = useState(defaultData?.["ldl_(mg/dl)"] || "");
+  const [hdl, setHdl] = useState(defaultData?.["hdl_(mg/dl)"] || "");
+  const [vldl, setVldl] = useState(defaultData?.["vldl_(mg/dl)"] || "");
+  const [ldlHdl, setLdlHdl] = useState(defaultData?.["ldl/hdl_(mg/dl)"] || "");
   const [triglycerides, setTriglycerides] = useState(
-    defaultData?.["triglycerides(mg/dl)"] || ""
+    defaultData?.["triglycerides_(mg/dl)"] || ""
   );
   const [totalCholesterol, setTotalCholesterol] = useState(
-    defaultData?.["total_cholesterol(mg/dl)"] || ""
+    defaultData?.["total_cholesterol_(mg/dl)"] || ""
   );
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
