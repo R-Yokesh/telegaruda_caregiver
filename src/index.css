@@ -181,7 +181,7 @@ body {
 }
 
 .badge-warning {
-  background-color: #5ad4ec !important;
+  background-color: #ffc107 !important;
 }
 
 .badge-primary {
@@ -189,11 +189,11 @@ body {
 }
 
 .badge-secondary {
-  background-color: #6e6e6dc1 !important;
+  background-color: #6c757d !important;
 }
 
 .badge-yellow {
-  background-color: #E5A000 !important;
+  background-color: #ffc107 !important;
 }
 
 .light-label {
