@@ -294,8 +294,29 @@ const DynamicTable = ({
   function renderCell(row, column) {
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
-
-    if (columnKey === "result_file") {
+    if (columnKey === "lipid_profile") {
+      return value?.map((dt, i) => (
+        <div key={i} className="mt-2">
+          <span>
+            <Badge label={dt?.flagName ?? "-"} color={dt?.flagColor ?? "-"} />
+            {"  "}
+            <span style={{ fontWeight: "800" }}>{dt?.label}: </span>
+            <span style={{ fontWeight: "400" }}>{dt?.percent}</span>
+          </span>
+        </div>
+      ));
+    } else if (columnKey === "lung_function_test_(lft)") {
+      return value?.map((dt, i) => (
+        <div key={i} className="mt-2">
+          <span>
+            <Badge label={dt?.flagName ?? "-"} color={dt?.flagColor ?? "-"} />
+            {"  "}
+            <span style={{ fontWeight: "800" }}>{dt?.label}: </span>
+            <span style={{ fontWeight: "400" }}>{dt?.percent}</span>
+          </span>
+        </div>
+      ));
+    } else if (columnKey === "result_file") {
       // Function to render PDF content
       const renderPdf = (contentUrl) => {
         window.open(contentUrl, "_blank");

@@ -491,6 +491,32 @@ export const transformLFTData = (originalData, pagination) => {
     fef2575Percent: item?.details?.fef2575Percent,
     notes: item?.details?.notes,
     flags: item?.details?.flags,
+    "lung_function_test_(lft)": [
+      {
+        label: "FVC (%)",
+        flagName: item?.details?.flags?.fvcFlag,
+        flagColor: item?.details?.flags?.fvcFlagColor,
+        percent: item?.details?.fvc,
+      },
+      {
+        label: "FEV1 (%)",
+        flagName: item?.details?.flags?.fev1Flag,
+        flagColor: item?.details?.flags?.fev1FlagColor,
+        percent: item?.details?.fev1,
+      },
+      {
+        label: "PEF (%)",
+        flagName: item?.details?.flags?.pefFlag,
+        flagColor: item?.details?.flags?.pefFlagColor,
+        percent: item?.details?.pef,
+      },
+      {
+        label: "FEV1/FVC (%)",
+        flagName: item?.details?.flags?.fev1FvcFlag,
+        flagColor: item?.details?.flags?.fev1FvcFlagColor,
+        percent: item?.details?.fev1_fvc,
+      },
+    ],
   }));
 
   // Create badge and other static information
@@ -527,11 +553,11 @@ export const transformLFTData = (originalData, pagination) => {
     badge,
     columnsData: [
       { id: 1, label: "NO." },
-      { id: 2, label: "RESULT" },
-      { id: 3, label: "FVC (%)" },
-      { id: 4, label: "FEV1 (%)" },
-      { id: 5, label: "PEF (%)" },
-      { id: 6, label: "FEV1/FVC (%)" },
+      { id: 2, label: "LUNG FUNCTION TEST (LFT)" },
+      // { id: 3, label: "FVC (%)" },
+      // { id: 4, label: "FEV1 (%)" },
+      // { id: 5, label: "PEF (%)" },
+      // { id: 6, label: "FEV1/FVC (%)" },
       { id: 7, label: "DATE" },
       { id: 8, label: "ACTION" },
     ],
@@ -767,6 +793,38 @@ export const transformLipidProfileData = (originalData, pagination) => {
     id: item.id,
     user_id: item.user_id,
     slug: "lipid-profile",
+    lipid_profile: [
+      {
+        label: "LDL (mg/dL)",
+        flagName: item?.details?.ldl_message,
+        flagColor: item?.details?.ldl_message_flag,
+        percent: item?.details?.ldl,
+      },
+      {
+        label: "HDL (mg/dL)",
+        flagName: item?.details?.hdl_message,
+        flagColor: item?.details?.hdl_message_flag,
+        percent: item?.details?.hdl,
+      },
+      {
+        label: "VLDL (mg/dL)",
+        flagName: item?.details?.vldl_message,
+        flagColor: item?.details?.vldl_message_flag,
+        percent: item?.details?.vldl,
+      },
+      {
+        label: "HDL/LDL (mg/dL)",
+        flagName: item?.details?.hdl_ldl_message,
+        flagColor: item?.details?.hdl_ldl_message_flag,
+        percent: item?.details?.hdl_ldl,
+      },
+      {
+        label: "Triglycerides (mg/dL)",
+        flagName: item?.details?.triglycerides_message,
+        flagColor: item?.details?.triglycerides_message_flag,
+        percent: item?.details?.triglycerides,
+      },
+    ],
   }));
 
   // Create badges
@@ -804,12 +862,12 @@ export const transformLipidProfileData = (originalData, pagination) => {
     badge,
     columnsData: [
       { id: 1, label: "NO." },
-      { id: 2, label: "RESULT" },
-      { id: 3, label: "LDL (mg/dL)" },
-      { id: 4, label: "HDL (mg/dL)" },
-      { id: 5, label: "VLDL (mg/dL)" },
-      { id: 6, label: "LDL/HDL (mg/dL)" },
-      { id: 7, label: "TRIGLYCERIDES (mg/dL)" },
+      { id: 2, label: "LIPID PROFILE" },
+      // { id: 3, label: "LDL (mg/dL)" },
+      // { id: 4, label: "HDL (mg/dL)" },
+      // { id: 5, label: "VLDL (mg/dL)" },
+      // { id: 6, label: "LDL/HDL (mg/dL)" },
+      // { id: 7, label: "TRIGLYCERIDES (mg/dL)" },
       { id: 8, label: "TOTAL CHOLESTEROL (mg/dL)" },
       { id: 9, label: "DATE" },
       { id: 10, label: "ACTION" },
