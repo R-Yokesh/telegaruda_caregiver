@@ -366,19 +366,20 @@ export const transformTemperatureData = (originalData, pagination) => {
       status: item?.details?.temperatureFlagColor,
       name: item?.details?.temperatureFlag,
     },
-    temperature: `${item?.details?.temperature}${
+    temperature_value_units: `${item?.details?.temperature}${
       item?.details?.unit === "Fahrenheit" ? "°F" : "°C" || "N/A"
     }`,
-    // temperature:
-    //   item?.details?.unit === "Fahrenheit"
-    //     ? item?.details?.temperature +
-    //       " °F," +
-    //       fahrenheitToCelsius(item?.details?.temperature) +
-    //       " °C"
-    //     : celsiusToFahrenheit(item?.details?.temperature) +
-    //       " °F," +
-    //       item?.details?.temperature +
-    //       " °C",
+
+    temperature:
+      item?.details?.unit === "Fahrenheit"
+        ? item?.details?.temperature +
+          " °F," +
+          fahrenheitToCelsius(item?.details?.temperature) +
+          " °C"
+        : celsiusToFahrenheit(item?.details?.temperature) +
+          " °F," +
+          item?.details?.temperature +
+          " °C",
     temperatureValueF:
       item?.details?.unit === "Fahrenheit"
         ? item?.details?.temperature
@@ -489,26 +490,27 @@ export const transformLFTData = (originalData, pagination) => {
     fef2575: item?.details?.fef2575,
     fef2575Percent: item?.details?.fef2575Percent,
     notes: item?.details?.notes,
+    flags: item?.details?.flags,
   }));
 
   // Create badge and other static information
   const badge = [
     {
       label: `FVC (%): ${tableData[0]?.["fvc_(%)"] || "N/A"}`,
-      color: tableData[0].result.status,
+      color: tableData[0].flags?.fvcFlagColor,
     },
     {
       label: `FEV1 (%): ${tableData[0]?.["fev1_(%)"] || "N/A"}`,
-      color: tableData[0].result.status,
+      color: tableData[0].flags?.fev1FlagColor,
     },
 
     {
       label: `PEF (%): ${tableData[0]?.["pef_(%)"] || "N/A"}`,
-      color: tableData[0].result.status,
+      color: tableData[0].flags?.pefFlagColor,
     },
     {
       label: `FEV1/FVC Ratio (%): ${tableData[0]?.["fev1/fvc_(%)"] || "N/A"}`,
-      color: findColorCodefev1_fvc(tableData[0]?.["fev1/fvc_(%)"]),
+      color: tableData[0]?.flags?.fev1FvcFlagColor,
     },
   ];
 
@@ -737,7 +739,6 @@ export const transformLipidProfileData = (originalData, pagination) => {
       chartLabel4: "LDL/HDL",
       chartLabel5: "Triglycerides (mg/dL)",
       chartLabel6: "Total Cholesterol (mg/dL)",
-      total: pagination?.total,
     };
   }
 
@@ -776,20 +777,20 @@ export const transformLipidProfileData = (originalData, pagination) => {
       } mg/dl`,
       color: `${tableData[0]?.result.status}`,
     },
-    // {
-    //   label: `LDL: ${tableData[0]?.["ldl(mg/dl)"] || "N/A"} mg/dl`,
-    //   color: `${tableData[0]?.ldl_message_flag}`,
-    // },
-    // {
-    //   label: `HDL: ${tableData[0]?.["hdl(mg/dl)"] || "N/A"} mg/dl`,
-    //   color: `${tableData[0]?.hdl_message_flag}`,
-    // },
-    // {
-    //   label: `Triglycerides: ${
-    //     tableData[0]?.["triglycerides(mg/dl)"] || "N/A"
-    //   } mg/dl`,
-    //   color: `${tableData[0]?.triglycerides_message_flag}`,
-    // },
+    {
+      label: `LDL: ${tableData[0]?.["ldl_(mg/dl)"] || "N/A"} mg/dl`,
+      color: `${tableData[0]?.ldl_message_flag}`,
+    },
+    {
+      label: `HDL: ${tableData[0]?.["hdl_(mg/dl)"] || "N/A"} mg/dl`,
+      color: `${tableData[0]?.hdl_message_flag}`,
+    },
+    {
+      label: `Triglycerides: ${
+        tableData[0]?.["triglycerides_(mg/dl)"] || "N/A"
+      } mg/dl`,
+      color: `${tableData[0]?.triglycerides_message_flag}`,
+    },
   ];
 
   return {

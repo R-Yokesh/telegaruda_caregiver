@@ -388,7 +388,6 @@ const DynamicTable = ({
     }
   }
 
-
   function getColumnKey(columnLabel) {
     // Convert label to a key format used in your data object
     // Example: "Heart Rate (BPM)" -> "heart_rate_(bpm)"

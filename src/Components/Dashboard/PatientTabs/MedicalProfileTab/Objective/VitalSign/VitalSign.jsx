@@ -32,18 +32,20 @@ import {
 import { useLocation } from "react-router-dom";
 import Loader from "../../../../../Loader/Loader";
 import { findColorCodefev1_fvc } from "../../../../../../Utils/colorUtils";
-
-
+import {
+  celsiusToFahrenheit,
+  fahrenheitToCelsius,
+} from "../../../../../../Utils/commonUtils";
 
 const formatDateTime = (dateString) => {
   const dateObj = new Date(dateString);
-  
-  const day = String(dateObj.getDate()).padStart(2, '0'); // Get day and ensure 2 digits
-  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Get month (0-indexed) and ensure 2 digits
+
+  const day = String(dateObj.getDate()).padStart(2, "0"); // Get day and ensure 2 digits
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Get month (0-indexed) and ensure 2 digits
   const year = dateObj.getFullYear(); // Get full year
 
-  const hours = String(dateObj.getHours()).padStart(2, '0'); // Get hours and ensure 2 digits
-  const minutes = String(dateObj.getMinutes()).padStart(2, '0'); // Get minutes and ensure 2 digits
+  const hours = String(dateObj.getHours()).padStart(2, "0"); // Get hours and ensure 2 digits
+  const minutes = String(dateObj.getMinutes()).padStart(2, "0"); // Get minutes and ensure 2 digits
 
   // Format the string as DD-MM-YYYY HH:MM
   return `${day}-${month}-${year} ${hours}:${minutes}`;
@@ -188,10 +190,20 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   : card?.slug === "temperature"
                   ? [
                       {
-                        label: `${tableData[0]?.details?.temperature} ${
-                          tableData[0].details?.unit === "Fahrenheit"
-                            ? "°F"
-                            : "°C"
+                        label: `${
+                          tableData[0]?.details?.unit === "Fahrenheit"
+                            ? tableData[0]?.details?.temperature +
+                              " °F," +
+                              fahrenheitToCelsius(
+                                tableData[0]?.details?.temperature
+                              ) +
+                              " °C"
+                            : celsiusToFahrenheit(
+                                tableData[0]?.details?.temperature
+                              ) +
+                              " °F," +
+                              tableData[0]?.details?.temperature +
+                              " °C"
                         }`,
                         color: tableData[0].details?.temperatureFlagColor,
                       },
@@ -200,21 +212,19 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ? [
                       {
                         label: `FVC (%):  ${tableData[0].details?.fvc}`,
-                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                        color: `${tableData[0].details?.flags?.fvcFlagColor}`,
                       },
                       {
                         label: `FEV1 (%): ${tableData[0].details?.fev1}`,
-                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                        color: `${tableData[0].details?.flags?.fev1FlagColor}`,
                       },
                       {
                         label: `PEF (%):  ${tableData[0].details?.pef}`,
-                        color: `${tableData[0].details?.spirometerFlagColor}`,
+                        color: `${tableData[0].details?.flags?.pefFlagColor}`,
                       },
                       {
                         label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
-                        color: `${findColorCodefev1_fvc(
-                          tableData[0].details?.fev1_fvc
-                        )}`,
+                        color: `${tableData[0].details?.flags?.fev1FvcFlagColor}`,
                       },
                     ]
                   : card?.slug === "heart-rate"
@@ -241,24 +251,24 @@ const VitalSign = ({ setVitalView, onClose }) => {
                         } mg/dL`,
                         color: tableData[0].details?.total_message_flag,
                       },
-                      // {
-                      //   label: `LDL:${
-                      //     tableData[0]?.details?.ldl || "N/A"
-                      //   } mg/dL`,
-                      //   color: tableData[0].details?.ldl_message_flag,
-                      // },
-                      // {
-                      //   label: `HDL:${
-                      //     tableData[0]?.details?.hdl || "N/A"
-                      //   } mg/dL`,
-                      //   color: tableData[0].details?.hdl_message_flag,
-                      // },
-                      // {
-                      //   label: `Triglycerides:${
-                      //     tableData[0]?.details?.triglycerides || "N/A"
-                      //   } mg/dL`,
-                      //   color: tableData[0].details?.triglycerides_message_flag,
-                      // },
+                      {
+                        label: `LDL:${
+                          tableData[0]?.details?.ldl || "N/A"
+                        } mg/dL`,
+                        color: tableData[0].details?.ldl_message_flag,
+                      },
+                      {
+                        label: `HDL:${
+                          tableData[0]?.details?.hdl || "N/A"
+                        } mg/dL`,
+                        color: tableData[0].details?.hdl_message_flag,
+                      },
+                      {
+                        label: `Triglycerides:${
+                          tableData[0]?.details?.triglycerides || "N/A"
+                        } mg/dL`,
+                        color: tableData[0].details?.triglycerides_message_flag,
+                      },
                     ]
                   : card?.slug === "hct"
                   ? [
@@ -484,8 +494,20 @@ const VitalSign = ({ setVitalView, onClose }) => {
               : card?.slug === "temperature"
               ? [
                   {
-                    label: `${tableData[0]?.details?.temperature} ${
-                      tableData[0]?.details?.unit === "Fahrenheit" ? "°F" : "°C"
+                    label: `${
+                      tableData[0]?.details?.unit === "Fahrenheit"
+                        ? tableData[0]?.details?.temperature +
+                          " °F," +
+                          fahrenheitToCelsius(
+                            tableData[0]?.details?.temperature
+                          ) +
+                          " °C"
+                        : celsiusToFahrenheit(
+                            tableData[0]?.details?.temperature
+                          ) +
+                          " °F," +
+                          tableData[0]?.details?.temperature +
+                          " °C"
                     }`,
                     color: tableData[0]?.details?.temperatureFlagColor,
                   },
@@ -493,22 +515,20 @@ const VitalSign = ({ setVitalView, onClose }) => {
               : card?.slug === "spirometer"
               ? [
                   {
-                    label: `FVC (%):  ${tableData[0].details?.fvc}L`,
-                    color: `${tableData[0].details?.spirometerFlagColor}`,
+                    label: `FVC (%):  ${tableData[0].details?.fvc}`,
+                    color: `${tableData[0].details?.flags?.fvcFlagColor}`,
                   },
                   {
-                    label: `FEV1 (%): ${tableData[0].details?.fev1}L`,
-                    color: `${tableData[0].details?.spirometerFlagColor}`,
+                    label: `FEV1 (%): ${tableData[0].details?.fev1}`,
+                    color: `${tableData[0].details?.flags?.fev1FlagColor}`,
                   },
                   {
-                    label: `PEF (%):  ${tableData[0].details?.pef}L/min`,
-                    color: `${tableData[0].details?.spirometerFlagColor}`,
+                    label: `PEF (%):  ${tableData[0].details?.pef}`,
+                    color: `${tableData[0].details?.flags?.pefFlagColor}`,
                   },
                   {
                     label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
-                    color: `${findColorCodefev1_fvc(
-                      tableData[0].details?.fev1_fvc
-                    )}`,
+                    color: `${tableData[0].details?.flags?.fev1FvcFlagColor}`,
                   },
                 ]
               : card?.slug === "heart-rate"
@@ -535,20 +555,20 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     } mg/dL`,
                     color: tableData[0].details?.total_message_flag,
                   },
-                  // {
-                  //   label: `LDL:${tableData[0]?.details?.ldl || "N/A"} mg/dL`,
-                  //   color: tableData[0].details?.ldl_message_flag,
-                  // },
-                  // {
-                  //   label: `HDL:${tableData[0]?.details?.hdl || "N/A"} mg/dL`,
-                  //   color: tableData[0].details?.hdl_message_flag,
-                  // },
-                  // {
-                  //   label: `Triglycerides:${
-                  //     tableData[0]?.details?.triglycerides || "N/A"
-                  //   } mg/dL`,
-                  //   color: tableData[0].details?.triglycerides_message_flag,
-                  // },
+                  {
+                    label: `LDL:${tableData[0]?.details?.ldl || "N/A"} mg/dL`,
+                    color: tableData[0].details?.ldl_message_flag,
+                  },
+                  {
+                    label: `HDL:${tableData[0]?.details?.hdl || "N/A"} mg/dL`,
+                    color: tableData[0].details?.hdl_message_flag,
+                  },
+                  {
+                    label: `Triglycerides:${
+                      tableData[0]?.details?.triglycerides || "N/A"
+                    } mg/dL`,
+                    color: tableData[0].details?.triglycerides_message_flag,
+                  },
                 ]
               : card?.slug === "hct"
               ? [
@@ -782,8 +802,6 @@ const VitalSign = ({ setVitalView, onClose }) => {
     fetchSingleCardData(cardSelectedData);
   }, [fetchSingleCardData]);
 
-  
-
   return (
     <>
       <CRow>
@@ -851,11 +869,10 @@ const VitalSign = ({ setVitalView, onClose }) => {
                           .reverse()
                           .join("-")}
                       </span> */}
-                        <span className="fs-14 fw-500">
+                      <span className="fs-14 fw-500">
                         {item?.tableData?.[0]?.date
-                        ? formatDateTime(item?.tableData[0].date) // Format date to DD-MM-YYYY HH:MM
-                        : ""}
-                         
+                          ? formatDateTime(item?.tableData[0].date) // Format date to DD-MM-YYYY HH:MM
+                          : ""}
                       </span>
                     </div>
                   </div>

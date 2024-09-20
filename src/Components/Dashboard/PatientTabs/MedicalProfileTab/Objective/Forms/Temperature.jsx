@@ -24,7 +24,7 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
   );
   const [selectedUnit, setSelectedUnit] = useState(defaultData?.unit || null);
   const [temperature, setTemperature] = useState(
-    extractNum(defaultData?.temperature) || ""
+    extractNum(defaultData?.temperature_value_units) || ""
   );
 
   const [errors, setErrors] = useState({
