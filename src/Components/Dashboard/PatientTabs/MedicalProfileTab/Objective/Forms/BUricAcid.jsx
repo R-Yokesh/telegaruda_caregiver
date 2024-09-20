@@ -12,12 +12,13 @@ import { DATE_FORMAT } from "../../../../../../Config/config";
 import { useLocation } from "react-router-dom";
 
 const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
+  console.log('first',defaultData)
   const { post, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [uricAcid, setUricAcid] = useState(defaultData?.blood_uric_acid || "");
+  const [uricAcid, setUricAcid] = useState(defaultData?.blood_uric_acid_value || "");
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
 
