@@ -17,7 +17,7 @@ const Creatinine = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [creatinine, setCreatinine] = useState(defaultData?.creatinine || "");
+  const [creatinine, setCreatinine] = useState(defaultData?.creatinine_value || "");
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
 

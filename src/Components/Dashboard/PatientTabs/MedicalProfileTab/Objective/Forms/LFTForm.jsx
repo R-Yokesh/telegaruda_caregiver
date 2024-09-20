@@ -13,18 +13,20 @@ import { useLocation } from "react-router-dom";
 import "./LFTForm.css"
 
 const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
+  console.log('first defaultData',defaultData)
+
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [fvcL, setFvcL] = useState(defaultData?.["fvc_(l)"] || "");
+  const [fvcL, setFvcL] = useState(defaultData?.["fvc_(%)"] || "");
   const [fvcPercent, setFvcPercent] = useState(defaultData?.fvcPercent || "");
-  const [fev1L, setFev1L] = useState(defaultData?.["fev1_(l)"] || "");
+  const [fev1L, setFev1L] = useState(defaultData?.["fev1_(%)"] || "");
   const [fev1Percent, setFev1Percent] = useState(
     defaultData?.fev1Percent || ""
   );
-  const [pefL, setPefL] = useState(defaultData?.["pef_(l/s)"] || "");
+  const [pefL, setPefL] = useState(defaultData?.["pef_(%)"] || "");
   const [pefPercent, setPefPercent] = useState(defaultData?.pefPercent || "");
   const [fev1FvcPercent, setFev1FvcPercent] = useState(
     defaultData?.["fev1/fvc_(%)"] || ""

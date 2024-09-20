@@ -17,7 +17,7 @@ const GFR = ({ addBack, defaultData, getTableDatas }) => {
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [gfr, setGfr] = useState(defaultData?.gfr || "");
+  const [gfr, setGfr] = useState(defaultData?.gfr_value || "");
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
 

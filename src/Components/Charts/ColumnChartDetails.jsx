@@ -89,7 +89,7 @@ const ColumnChartDetails = ({ datas }) => {
     ),
     // For temperature C / F
     unit: item.unit,
-  }));
+  }))?.reverse();
 
   const minValue = Math?.min(...formattedData?.map((item) => item.data1));
   const maxValue = Math?.max(

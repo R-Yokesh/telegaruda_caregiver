@@ -18,7 +18,7 @@ const Subjective = () => {
     { id: 2, name: "History of Present Illness (HPI)", image: Assets.PhyExam },
     { id: 3, name: "History", image: Assets.History },
     { id: 4, name: "Wellness Profile", image: Assets.WellnessProfile },
-    { id: 5, name: "Review of Systems (ROS)", image: Assets.ReviewSytm },
+    // { id: 5, name: "Review of Systems (ROS)", image: Assets.ReviewSytm },
   ];
   const navigate = useNavigate();
   const PatientSubMenu2 = localStorage.getItem("PatientSubMenu-2");

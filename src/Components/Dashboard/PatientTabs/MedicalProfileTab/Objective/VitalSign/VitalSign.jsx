@@ -291,7 +291,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                         label: `${
                           tableData[0]?.details?.uric_acid || "N/A"
                         } mg/dL`,
-                        color: "success",
+                        color: tableData[0].details?.uricFlagColor,
                       },
                     ]
                   : card?.slug === "urea"
@@ -575,7 +575,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
               ? [
                   {
                     label: `${tableData[0]?.details?.uric_acid || "N/A"} mg/dL`,
-                    color: "success",
+                    color: tableData[0].details?.uricFlagColor,
                   },
                 ]
               : card?.slug === "urea"

@@ -113,7 +113,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
     "Very Severe",
     "Worst",
   ];
-  const options1 = ["Headache", "Fracture", "Fever"];
+  const options1 = ["None", "Insignificant", "Moderate","Extreme"];
 
   // Function to update symptoms
   const getSelectedValue = (data) => {
@@ -200,6 +200,22 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
   useEffect(() => {
     getLocation();
   }, [getLocation]);
+
+  const getSymptoms = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters/all?slug=hpi_location&order_by=name&dir=1&searchkey=${locationKey}`
+      );
+      const listData = response?.data?.masters; //
+      setLocationDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, locationKey]);
+
+  useEffect(() => {
+    getSymptoms();
+  }, [getSymptoms]);
 
   const getSelectedlocation = (data) => {
     setLocationName(data);

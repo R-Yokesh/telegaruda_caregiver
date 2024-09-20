@@ -168,16 +168,16 @@ body {
 }
 
 .badge-danger {
-  background-color: #EC5A5A !important;
+  background-color: #ff0000 !important;
 
 }
 
 .badge-success {
-  background-color: #48B875 !important;
+  background-color: #008000 !important;
 }
 
 .badge-error {
-  background-color: #EC5A5A !important;
+  background-color: #ff0000 !important;
 }
 
 .badge-warning {
@@ -185,7 +185,7 @@ body {
 }
 
 .badge-primary {
-  background-color: var(--theme-blue) !important;
+  background-color: #0000ff !important;
 }
 
 .badge-secondary {

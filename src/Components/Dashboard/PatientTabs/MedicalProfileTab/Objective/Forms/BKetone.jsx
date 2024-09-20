@@ -12,13 +12,14 @@ import { DATE_FORMAT } from "../../../../../../Config/config";
 import { useLocation } from "react-router-dom";
 
 const BKetone = ({ addBack, defaultData, getTableDatas }) => {
+
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [keytone, setKeytone] = useState(defaultData?.blood_ketone || "");
+  const [keytone, setKeytone] = useState(defaultData?.blood_ketone_value || "");
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
 

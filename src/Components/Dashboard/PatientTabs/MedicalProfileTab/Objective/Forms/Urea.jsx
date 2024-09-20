@@ -17,7 +17,7 @@ const Urea = ({ addBack, defaultData, getTableDatas }) => {
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [urea, setUrea] = useState(defaultData?.urea || "");
+  const [urea, setUrea] = useState(defaultData?.urea_value || "");
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
 

@@ -38,7 +38,7 @@ const CardChart = ({ datas }) => {
       // For temperature C / F
       unit: item?.unit,
     };
-  });
+  })?.reverse();
 
   // const CustomTooltip = ({ active, payload, label }) => {
   //   if (active && payload && payload.length) {

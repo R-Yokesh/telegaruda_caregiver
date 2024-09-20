@@ -25,7 +25,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
     (defaultData?.diastolic || "").toString()
   );
   const [pulse, setPulse] = useState(
-    (defaultData?.["pulse_(in_bpm)"] || "").toString()
+    (defaultData?.["pulse_(bpm)"] || "").toString()
   );
   const [errors, setErrors] = useState({});
 

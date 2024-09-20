@@ -1079,8 +1079,8 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
   const tableData = originalData.map((item, index) => ({
     "no.": index + 1,
     result: {
-      status: item?.details?.uricAcidFlagColor,
-      name: item?.details?.uricAcidFlag || "Unknown",
+      status: item?.details?.uricFlagColor,
+      name: item?.details?.uricFlag || "Unknown",
     },
     "blood_uric_acid_(mg/dl)": item?.details?.uric_acid || "N/A",
     blood_uric_acid_value: item?.details?.uric_acid || "N/A",
@@ -1101,8 +1101,8 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
       ? [
           {
             label: `${tableData[0]["blood_uric_acid_(mg/dl)"]} mg/dL`,
-            // color: tableData[0].result.status,
-            color: "success",
+            color: tableData[0].result.status,
+            // color: "success",
           },
         ]
       : [];

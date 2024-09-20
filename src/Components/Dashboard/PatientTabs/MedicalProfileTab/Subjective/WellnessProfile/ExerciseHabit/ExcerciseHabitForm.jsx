@@ -7,43 +7,47 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 import useApi from "../../../../../../../ApiServices/useApi";
 import moment from "moment";
-import Form from 'react-bootstrap/Form'; // Import Bootstrap Form component
+import Form from "react-bootstrap/Form";
+import { Assets } from "../../../../../../../assets/Assets";
+import ActiveButton from "../../../../../../Buttons/ActiveButton/ActiveButton";
+import { useLocation } from "react-router-dom";
+import { format } from "date-fns";
 
-const ExerciseHabitForm = ({ back, defaultValues, setAddFormView, fetchExciseHabit }) => {
+const ExerciseHabitForm = ({
+  back,
+  defaultValues,
+  setAddFormView,
+  fetchExciseHabit,
+  addHabits,
+}) => {
   const { loading, error, post, patch, clearCache, get } = useApi();
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Set default to current date
-  const [selectedTime, setSelectedTime] = useState(new Date());
-  const [type, setType] = useState(defaultValues?.details?.act_type || "");
-  const [patientId, setPatientId] = useState(defaultValues?.details?.patient_id || "");
-  const [category, setCategory] = useState(defaultValues?.details?.act_catagory || "activity");
-  const [duration, setDuration] = useState(defaultValues?.details?.act_duration || "");
-  const [intensity, setIntensity] = useState(defaultValues?.details?.act_intensity || "");
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  const [formEntries, setFormEntries] = useState([
+    {
+      selectedDate: new Date(),
+      selectedTime: new Date(),
+      type: defaultValues?.details?.act_type || "",
+      category: defaultValues?.details?.act_catagory || "activity",
+      duration: defaultValues?.details?.act_duration || "",
+      intensity: defaultValues?.details?.act_intensity || "",
+    },
+  ]);
   const [errors, setErrors] = useState({});
   const [dropdownOptions, setDropdownOptions] = useState([]);
 
   useEffect(() => {
-    if (defaultValues?.details) {
-      setSelectedDate(parseDate(defaultValues?.details?.act_date) || new Date()); // Set to default today if not provided
-      setSelectedTime(parseTime(defaultValues?.details?.act_time) || new Date());
-      setType(defaultValues?.details?.act_type || "");
-      setCategory(defaultValues.details?.act_catagory || "activity");
-      setDuration(defaultValues.details?.act_duration || "");
-      setIntensity(defaultValues.details?.act_intensity || "");
-    }
-  }, [defaultValues]);
-
-  useEffect(() => {
     const fetchDropdownOptions = async () => {
       try {
-        const response = await get('resource/masters/all?slug=activity&order_by=id&dir=1');
-        console.log("Dropdown props:", { response });
-
+        const response = await get(
+          "resource/masters/all?slug=activity&order_by=id&dir=1"
+        );
         if (response.code === 200) {
           const options = response.data.masters
-            .filter(item => item.is_active) // Filter out inactive items
-            .map(item => ({
+            .filter((item) => item.is_active)
+            .map((item) => ({
               value: item.slug,
-              label: item.name
+              label: item.name,
             }));
           setDropdownOptions(options);
         } else {
@@ -57,122 +61,93 @@ const ExerciseHabitForm = ({ back, defaultValues, setAddFormView, fetchExciseHab
     fetchDropdownOptions();
   }, [get]);
 
-  const getSelectedValue = (data) => {
-    setIntensity(data); // Set the selected intensity
+  const addFormEntry = () => {
+    setFormEntries([
+      ...formEntries,
+      {
+        selectedDate: new Date(),
+        selectedTime: new Date(),
+        type: "",
+        category: "activity",
+        duration: "",
+        intensity: "",
+      },
+    ]);
   };
 
-  const options = ["High", "Moderate", "Low"];
-  const findIndex = defaultValues?.act_intensity
-    ? options.indexOf(defaultValues?.act_intensity)
-    : 0;
-
-  const parseDate = (dateString) => {
-    if (!dateString) return null;
-    return new Date(dateString);
+  const handleChangeEntry = (index, field, value) => {
+    const updatedEntries = [...formEntries];
+    updatedEntries[index][field] = value;
+    setFormEntries(updatedEntries);
   };
 
-  const parseTime = (timeString) => {
-    if (!timeString) return null;
-    const [hours, minutes] = timeString.split(":").map(Number);
-    const date = new Date();
-    date.setHours(hours, minutes, 0, 0);
-    return date;
+  const deleteFormEntry = (index) => {
+    const updatedEntries = formEntries.filter((_, i) => i !== index);
+    setFormEntries(updatedEntries);
   };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date || new Date()); // Default to current date if cleared
-  };
-
-  const handleTimeChange = (time) => {
-    setSelectedTime(time || new Date());
-  };
-
-  const handleChange = (value) => {
-    setType(value);
-  };
-
-  const addHabits = async () => {
-    try {
-      const body = {
-        details: [{
-          patient_id: "10",
-          act_catagory: category,
-          act_date: selectedDate.toISOString(),
-          act_time: moment(selectedTime).format("HH:mm"),
-          act_type: type,
-          act_duration: Number(duration),
-          act_intensity: intensity,
-          act_intake: "",
-          unit: "",
-        }],
-      };
-
-      const response = await post('resource/activity_wellness', body);
-
-      if (response.code === 201) {
-        clearCache();
-        await fetchExciseHabit();
-        setAddFormView(false);
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const editDiet = async () => {
-    // Formatting the date and time to match the required format
-    const formattedDate = selectedDate.toISOString();
-    const formattedTime = moment(selectedTime).format("HH:mm");
-  
-    try {
-      const body = {
-        act_date: formattedDate,
-        act_time: formattedTime,
-        act_type: type || defaultValues.details?.act_type,
-        act_catagory: category || defaultValues.details?.act_catagory,
-        act_duration: Number(duration) || defaultValues.details?.act_duration,
-        act_intensity: intensity || defaultValues.details?.act_intensity,
-        // Add any additional fields needed here
-      };
-  
-      // Making the PATCH request to update the details
-      const response = await patch(`resource/activity_wellness/${defaultValues.id}`, body);
-  
-      if (response.code === 200) {
-        clearCache(); // Clear cache to refresh data
-        await fetchExciseHabit(); // Fetch updated data after edit
-        setAddFormView(false); // Hide the form after successful edit
-      } else {
-        console.error("Failed to update data:", response.message); // Error handling
-      }
-    } catch (error) {
-      console.error("Error updating data:", error); // Error handling for request
-    }
-  };
-  
 
   const validate = () => {
     let validationErrors = {};
-
-    if (!selectedDate) validationErrors.date = "Date is required.";
-    if (!selectedTime) validationErrors.time = "Time is required.";
-    if (!type) validationErrors.type = "Type is required.";
-    if (!duration) validationErrors.duration = "Duration is required.";
-    if (!intensity) validationErrors.intensity = "Intensity is required.";
-
+    formEntries.forEach((entry, index) => {
+      if (!entry.selectedDate)
+        validationErrors[`date_${index}`] = "Date is required.";
+      if (!entry.selectedTime)
+        validationErrors[`time_${index}`] = "Time is required.";
+      if (!entry.type) validationErrors[`type_${index}`] = "Type is required.";
+      if (!entry.duration)
+        validationErrors[`duration_${index}`] = "Duration is required.";
+      if (!entry.intensity)
+        validationErrors[`intensity_${index}`] = "Intensity is required.";
+    });
     setErrors(validationErrors);
     return Object.keys(validationErrors).length === 0;
   };
 
+  // const addHabits = async () => {
+  //   try {
+  //     const body = {
+  //       details: formEntries.map((entry) => ({
+  //         patient_id: data?.user_id,
+  //         act_catagory: entry.category,
+  //         act_date: entry.selectedDate.toISOString(),
+  //         act_time: moment(entry.selectedTime).format("HH:mm"),
+  //         act_type: entry.type,
+  //         act_duration: Number(entry.duration),
+  //         act_intensity: entry.intensity,
+  //         act_intake: "",
+  //         unit: "",
+  //       })),
+  //     };
+  //     console.log(body);
+  //     const response = await post("resource/activity_wellness",body);
+  //     if (response.code === 201) {
+  //       clearCache();
+  //       await fetchExciseHabit();
+  //       setAddFormView(false);
+  //     } else {
+  //       console.error("Failed to fetch data:", response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
   const onSubmit = () => {
     if (validate()) {
-      if (defaultValues?.id) {
-        editDiet();
-      } else {
-        addHabits();
-      }
+      const body = {
+        details: formEntries.map((entry) => ({
+          patient_id: data?.user_id,
+          act_catagory: entry.category,
+          act_date:  moment(entry.selectedDate).format("yyyy-MM-DD"),
+          act_time: moment(entry.selectedTime).format("HH:mm"),
+          act_type: entry.type,
+          act_duration: Number(entry.duration),
+          act_intensity: entry.intensity,
+          act_intake: "",
+          unit: "",
+        })),
+      };
+      addHabits(body);
     }
   };
 
@@ -184,106 +159,119 @@ const ExerciseHabitForm = ({ back, defaultValues, setAddFormView, fetchExciseHab
             <div className="vertical-line"></div>
           </CCol>
         </CRow>
-        <CRow className="mb-3">
-          <CCol lg={4}>
-            <div style={{ width: "100%" }}>
+
+        {formEntries.map((entry, index) => (
+          <CRow className="mb-3" key={index}>
+            <CCol lg={4}>
+              <div style={{ width: "100%" }}>
+                <div className="position-relative">
+                  <label htmlFor={`date_${index}`} className="form-label">
+                    Date *
+                  </label>
+                  <div className="date-size">
+                    <DatePicker
+                      showIcon
+                      selected={entry.selectedDate}
+                      onChange={(date) =>
+                        handleChangeEntry(index, "selectedDate", date)
+                      }
+                      isClearable
+                      closeOnScroll={true}
+                      wrapperClassName="date-picker-wrapper"
+                      dateFormat={DATE_FORMAT}
+                    />
+                  </div>
+                  {errors[`date_${index}`] && (
+                    <p className="text-danger">{errors[`date_${index}`]}</p>
+                  )}
+                </div>
+              </div>
+            </CCol>
+            <CCol lg={4}>
               <div className="position-relative">
-                <label htmlFor="validationTooltip01" className="form-label">
-                  Date *
+                <label htmlFor={`time_${index}`} className="form-label">
+                  Time *
                 </label>
                 <div className="date-size">
                   <DatePicker
                     showIcon
-                    selected={selectedDate}
-                    onChange={handleDateChange}
+                    selected={entry.selectedTime}
+                    onChange={(time) =>
+                      handleChangeEntry(index, "selectedTime", time)
+                    }
+                    showTimeSelect
+                    showTimeSelectOnly
                     isClearable
                     closeOnScroll={true}
-                    wrapperClassName="date-picker-wrapper"
-                    dateFormat={DATE_FORMAT}
+                    timeIntervals={5}
+                    dateFormat="h:mm aa"
                   />
                 </div>
-                {errors.date && <p className="text-danger">{errors.date}</p>}
+                {errors[`time_${index}`] && (
+                  <p className="text-danger">{errors[`time_${index}`]}</p>
+                )}
               </div>
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div className="position-relative">
-              <label htmlFor="validationTooltip01" className="form-label">
-                Time *
-              </label>
-              <div className="date-size">
-                <DatePicker
-                  showIcon
-                  selected={selectedTime}
-                  onChange={handleTimeChange}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  isClearable
-                  closeOnScroll={true}
-                  timeIntervals={5}
-                  dateFormat="h:mm aa"
-                />
-              </div>
-              {errors.time && <p className="text-danger">{errors.time}</p>}
-            </div>
-          </CCol>
-          <CCol lg={4}>
-            <div style={{ width: "100%" }}>
-              <div className="position-relative">
-                <label htmlFor="validationTooltip01" className="form-label">
-                  Type *
-                </label>
-                <div
-                  className="w-100"
-                  style={{
-                    border: "1px solid #17171D33",
-                    borderRadius: "5px",
-                  }}
-                >
-                  {/* Updated Type Dropdown using Form.Select from Bootstrap */}
-                  <Form.Select
-                    aria-label="Select Type"
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                  >
-                    <option value="">Select Type</option>
-                    {dropdownOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </div>
-                {errors.type && <p className="text-danger">{errors.type}</p>}
-              </div>
-            </div>
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-         
-        <CCol lg={3}>
-            <div className="mb-3">
-              <div className="d-flex flex-column">
-                <label htmlFor="validationTooltip01" className="form-label">
-                  Duration *
-                </label>
-                <input
-                  type="text"
-                  className="form-control pad-10"
-                  id="validationTooltip01"
-                  placeholder="Enter duration"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                />
-                {errors.duration && <p className="text-danger">{errors.duration}</p>}
-              </div>
-            </div>
-          </CCol>
-
-          <CCol lg={6}>
+            </CCol>
+            <CCol lg={4}>
               <div style={{ width: "100%" }}>
                 <div className="position-relative">
-                  <label htmlFor="validationTooltip01" className="form-label">
+                  <label htmlFor={`type_${index}`} className="form-label">
+                    Type *
+                  </label>
+                  <div
+                    className="w-100"
+                    style={{
+                      border: "1px solid #17171D33",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <Form.Select
+                      aria-label="Select Type"
+                      value={entry.type}
+                      onChange={(e) =>
+                        handleChangeEntry(index, "type", e.target.value)
+                      }
+                    >
+                      <option value="">Select Type</option>
+                      {dropdownOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </div>
+                  {errors[`type_${index}`] && (
+                    <p className="text-danger">{errors[`type_${index}`]}</p>
+                  )}
+                </div>
+              </div>
+            </CCol>
+            <CCol lg={4}>
+              <div className="mb-3">
+                <div className="d-flex flex-column">
+                  <label htmlFor={`duration_${index}`} className="form-label">
+                    Duration *
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control pad-10"
+                    id={`duration_${index}`}
+                    placeholder="Enter duration"
+                    value={entry.duration}
+                    onChange={(e) =>
+                      handleChangeEntry(index, "duration", e.target.value)
+                    }
+                  />
+                  {errors[`duration_${index}`] && (
+                    <p className="text-danger">{errors[`duration_${index}`]}</p>
+                  )}
+                </div>
+              </div>
+            </CCol>
+            <CCol lg={4}>
+              <div style={{ width: "100%" }}>
+                <div className="position-relative">
+                  <label htmlFor={`intensity_${index}`} className="form-label">
                     Intensity *
                   </label>
                   <div
@@ -294,25 +282,55 @@ const ExerciseHabitForm = ({ back, defaultValues, setAddFormView, fetchExciseHab
                     }}
                   >
                     <Dropdown
-                    //  options={options.map((option) => ({ value: option, label: option }))}
-                     value={intensity}
-                    //  getSelectedValue={getSelectedIntensity}
-                      options={options}
-                      defaultValue={defaultValues?.act_intensity ? options[findIndex] : null}
-                      getSelectedValue={getSelectedValue}
+                      value={entry.intensity}
+                      options={["High", "Moderate", "Low"]}
+                      getSelectedValue={(data) =>
+                        handleChangeEntry(index, "intensity", data)
+                      }
                     />
                   </div>
-                  {errors.intensity && <p className="text-danger">{errors.intensity}</p>}
+                  {errors[`intensity_${index}`] && (
+                    <p className="text-danger">
+                      {errors[`intensity_${index}`]}
+                    </p>
+                  )}
                 </div>
               </div>
-            
-          </CCol>
-        </CRow>
+            </CCol>
+            {index !== 0 && (
+              <CCol
+                xs={1}
+                className="d-flex align-items-center justify-content-start"
+              >
+                <div style={{ width: "40px" }}>
+                  <ActiveButton onClick={() => deleteFormEntry(index)}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets.whiteDel} alt="add" />
+                    </div>
+                  </ActiveButton>
+                </div>
+              </CCol>
+            )}
+            <CCol
+              xs={2}
+              className="d-flex align-items-center justify-content-start"
+            >
+              <div style={{ width: "40px" }}>
+                <ActiveButton onClick={addFormEntry}>
+                  <div className="d-flex align-items-center gap-2">
+                    <img src={Assets.whiteAdd} alt="add" />
+                  </div>
+                </ActiveButton>
+              </div>
+            </CCol>
+          </CRow>
+        ))}
+
         <CRow className="mb-3">
-          <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+          <CCol xs={3}>
+            <PrimaryButton onClick={onSubmit}>SAVE</PrimaryButton>
           </CCol>
-          <CCol xs={3} md={2}>
+          <CCol xs={3}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
           </CCol>
         </CRow>

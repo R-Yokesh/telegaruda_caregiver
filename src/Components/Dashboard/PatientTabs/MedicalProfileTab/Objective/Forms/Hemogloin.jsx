@@ -17,7 +17,7 @@ const Hemogloin = ({ addBack, defaultData, getTableDatas }) => {
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [hemoglobin, setHemoglobin] = useState(defaultData?.hemoglobin || "");
+  const [hemoglobin, setHemoglobin] = useState(defaultData?.hemoglobinValue || "");
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultData?.date || "";
 

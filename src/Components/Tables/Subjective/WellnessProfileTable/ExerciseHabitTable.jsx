@@ -10,6 +10,7 @@ import React from "react";
 import Badge from "../../../Badge/Badge";
 import { Assets } from "../../../../assets/Assets";
 import { getSerialNumber } from "../../../../Utils/commonUtils";
+import moment from "moment";
 
 function ExerciseHabitTable({ columns, habitData, getselectedData, from }) {
   const selectedData = (data,id, type) => {
@@ -38,7 +39,7 @@ function ExerciseHabitTable({ columns, habitData, getselectedData, from }) {
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.act_date}</span>
+                  <span className="fs-16 fw-500">{moment(dt?.act_date).format('DD-MM-yyyy')}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
@@ -65,7 +66,7 @@ function ExerciseHabitTable({ columns, habitData, getselectedData, from }) {
                     <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
                   ) : (
                     <>
-                      <div
+                      {/* <div
                         style={{
                           width: "50%",
                         }}
@@ -76,12 +77,12 @@ function ExerciseHabitTable({ columns, habitData, getselectedData, from }) {
                           className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
                           onClick={() => selectedData(dt, dt?.id, "edit")}
                         />
-                      </div>
+                      </div> */}
                       <div
                         style={{
-                          width: "50%",
+                          width: "100%",
                           display: "flex",
-                          justifyContent: "flex-start",
+                          justifyContent: "center",
                         }}
                       >
                         <img

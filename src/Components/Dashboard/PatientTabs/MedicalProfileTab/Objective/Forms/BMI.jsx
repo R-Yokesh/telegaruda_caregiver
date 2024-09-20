@@ -9,6 +9,7 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { useLocation } from "react-router-dom";
+import { DATE_FORMAT } from "../../../../../../Config/config";
 
 const BMI = ({ addBack, defaultData, getTableDatas }) => {
   const location = useLocation();
@@ -214,6 +215,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
                 isClearable
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
+                dateFormat={DATE_FORMAT}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

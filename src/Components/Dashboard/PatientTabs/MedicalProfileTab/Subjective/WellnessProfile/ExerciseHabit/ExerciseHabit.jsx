@@ -47,7 +47,7 @@ const ExerciseHabit = ({ from }) => {
   const [filters, setFilters] = useState(true);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const { loading, error, get, del, clearCache } = useApi();
+  const { loading, post, get, del, clearCache } = useApi();
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -90,10 +90,10 @@ const ExerciseHabit = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate]);
+  }, [get, currentPage, startDate, endDate, data?.user_id, addFormView]);
   useEffect(() => {
     fetchExciseHabit();
-  }, [fetchExciseHabit]);
+  }, [fetchExciseHabit, addFormView]);
 
   const getselectedData = (data, id, type) => {
     console.log(type, "first", data);
@@ -129,6 +129,21 @@ const ExerciseHabit = ({ from }) => {
       }
     } catch (error) {
       console.error("Error deleting data:", error);
+    }
+  };
+
+  const addHabits = async (body) => {
+    try {
+      const response = await post("resource/activity_wellness", body);
+      if (response.code === 201) {
+        clearCache();
+        await fetchExciseHabit();
+        setAddFormView(false);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
   return (
@@ -202,6 +217,7 @@ const ExerciseHabit = ({ from }) => {
                   setAddFormView={setAddFormView}
                   fetchExciseHabit={fetchExciseHabit}
                   defaultValues={selectedData}
+                  addHabits={addHabits}
                 />
               </CCardBody>
             </CCard>

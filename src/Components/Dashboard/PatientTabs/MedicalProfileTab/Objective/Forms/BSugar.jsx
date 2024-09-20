@@ -14,6 +14,7 @@ import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { useLocation } from "react-router-dom";
 
 const BSugar = ({ addBack, defaultData, getTableDatas }) => {
+
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -21,7 +22,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [type, setType] = useState(defaultData?.type || "");
-  const [bloodSugar, setBloodSugar] = useState(defaultData?.blood_sugar || "");
+  const [bloodSugar, setBloodSugar] = useState(defaultData?.blood_sugar_value || "");
 
   const [errors, setErrors] = useState({
     date: "",
