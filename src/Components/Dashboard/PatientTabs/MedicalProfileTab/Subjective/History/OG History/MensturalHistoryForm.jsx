@@ -16,6 +16,7 @@ const MensturalHistoryForm = ({
   mensuAdd,
 }) => {
   const [date, setDate] = useState(defaultValues?.values?.lmp || new Date());
+  const maxDate = new Date(); // Restrict future dates 
 
   // useEffect(() => {
   //   // This should match your expected format
@@ -466,6 +467,7 @@ const MensturalHistoryForm = ({
                 selected={date}
                 onChange={(date) => setDate(date)}
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
             </div>
           </div>

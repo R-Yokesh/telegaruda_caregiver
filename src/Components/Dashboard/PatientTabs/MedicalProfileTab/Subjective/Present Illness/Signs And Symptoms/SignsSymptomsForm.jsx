@@ -1,5 +1,5 @@
 import { CCol, CFormTextarea, CRow } from "@coreui/react";
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
@@ -19,11 +19,9 @@ import {
 import SearchInput from "../../../../../../Input/SearchInput";
 import { useLocation } from "react-router-dom";
 
-const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymptoms }) => {
+const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => {
 
-  const { loading,error, get, post, clearCache, patch } = useApi();
-   const location = useLocation();
-  const data = location.state?.PatientDetail;
+  const { loading, error, get, post, clearCache, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
@@ -39,26 +37,14 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
 
   });
   const [locationDetails, setLocationDetails] = useState([]);
-  const [locationKey, setLocationKey] = useState(defaultValues?.values?.location || "" );
+  const [locationKey, setLocationKey] = useState(defaultValues?.values?.location || "");
   const [locationName, setLocationName] = useState(defaultValues?.values?.location || {});
-  const getFormattedDate = (date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  };
-
-  const currentDate = new Date();
-  const formattedDate = getFormattedDate(currentDate);
-
-  // console.log(formattedDate); // e.g., 25-08-2024
-
-  const defaultDateTime = defaultValues?.date || "";
-
+ 
+  const defaultDateTime = defaultValues?.values?.date || "";
+  const maxDate = new Date(); // Restrict future dates 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  const defaultTime = defaultValues?.values?.time || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -99,6 +85,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
       setSelectedTime(time);
     }
   };
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -167,22 +154,34 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
 
 
   const onSubmit = () => {
-    console.log('clicked checking')
+    const values = {
+      date: format(selectedDate, "dd-MM-yyyy"),
+      time: format(selectedTime, "HH:mm"),
+      location: locationName?.name,
+      duration: formData.duration_days,
+      symptoms: formData.symptoms,
+      aggravating_factors: formData.aggravating_factors,
+      releiving_factors: formData.releiving_factors,
+      temporal_factors: formData.temporal_factors,
+      severity: formData.severity,
+      notes: formData.notes,
+      quality: ""
+    }
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editSymptoms()
+        editSymptoms(values,defaultValues?.id)
 
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
-        addSymptoms();
+        addSymptoms(values);
 
       }
     }
   };
 
-  
+
 
   //api integration of medical conditions list
   const getLocation = useCallback(async () => {
@@ -205,85 +204,6 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
     setLocationName(data);
   };
 
-  console.log('Locationnnn',location,locationKey)
-  const addSymptoms = async () => {
-
-    try {
-      const body = {
-
-        slug: "hpi",
-        patient_id: data?.user_id,
-        consult_id: null,
-        values: {
-          date: format(selectedDate, "dd-MM-yyyy"),
-          time: format(selectedTime, "HH:mm"),
-          location: locationName?.name,
-          duration: formData.duration_days,
-          symptoms: formData.symptoms,
-          aggravating_factors: formData.aggravating_factors,
-          releiving_factors: formData.releiving_factors,
-          temporal_factors: formData.temporal_factors,
-          severity: formData.severity,
-          notes: formData.notes,
-          quality: ""
-        }
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/patientHealth`, body);
-
-      if (response.code === 201) {
-        clearCache();
-        await fetchSignsSymptoms();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const editSymptoms = async () => {
-    try {
-      const body = {
-
-        slug: "hpi",
-        patient_id: data?.user_id,
-        consult_id: null,
-        values: {
-          date: format(selectedDate, "dd-MM-yyyy"),
-          time: format(selectedTime, "HH:mm"),
-          location: locationName?.name,
-          duration: Number(formData.duration_days),
-          symptoms: formData.symptoms,
-          aggravating_factors: formData.aggravating_factors,
-          releiving_factors: formData.releiving_factors,
-          temporal_factors: formData.temporal_factors,
-          severity: formData.severity,
-          notes: formData.notes,
-          quality: ""
-        }
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
-
-      if (response.code === 200) {
-        clearCache();
-        await fetchSignsSymptoms();
-        setAddFormView(false);
-        toast.success("Updated successfully");
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-
-  };
 
 
   return (
@@ -301,6 +221,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
                 onChange={handleDateChange}
                 dateFormat={DATE_FORMAT}
                 disabled
+              
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
@@ -326,11 +247,11 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
             </div>
           </div>
         </CCol>
-        <CCol lg={3}> 
+        <CCol lg={3}>
           <div style={{ width: "100%" }}>
             <div class="position-relative dropdown-container">
               <label for="validationTooltip01" class="form-label">
-              Location *
+                Location *
               </label>
               <SearchInput
                 data={locationDetails}
@@ -338,7 +259,7 @@ const SignsSymptomsForm = ({ back, defaultValues, setAddFormView, fetchSignsSymp
                 getSelectedData={getSelectedlocation}
                 defaultkey={locationKey}
               />
-             
+
               {errors.locationName && <div className="error-text">{errors.locationName}</div>}
 
             </div>

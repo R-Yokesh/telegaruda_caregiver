@@ -7,6 +7,7 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import { toast } from "react-toastify";
 import useApi from "../../../../../../ApiServices/useApi";
 import { format, isValid, parse } from "date-fns";
+import { DATE_FORMAT } from "../../../../../../Config/config";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { useLocation } from "react-router-dom";
 
@@ -16,7 +17,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-
+  const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -214,6 +215,8 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
                 isClearable
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
+                dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

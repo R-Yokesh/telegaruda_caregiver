@@ -22,6 +22,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const [errors, setErrors] = useState("");
+  const maxDate = new Date(); // Restrict future dates 
 
   // Fetch the latest record
   const fetchSexualStatus = useCallback(async () => {
@@ -247,6 +248,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                     selected={selectedDate}
                     onChange={(date) => setSelectedDate(date)}
                     dateFormat={DATE_FORMAT}
+                    maxDate={maxDate}
                   />
                 </div>
                 {errors.selectedDate && (

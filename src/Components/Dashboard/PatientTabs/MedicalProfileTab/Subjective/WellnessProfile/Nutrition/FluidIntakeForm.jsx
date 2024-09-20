@@ -18,6 +18,7 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
   const [water, setWater] = useState("");
   const [intake, setIntake] = useState(defaultValues?.act_intake || "");
   const [errors, setErrors] = useState({});
+  const maxDate = new Date(); // Restrict future dates 
 
   useEffect(() => {
     // Initialize the state with default values if available
@@ -164,6 +165,7 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
               {errors.date && <div className="text-danger">{errors.date}</div>}
             </div>

@@ -52,7 +52,7 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
   
   const [searchTerm, setSearchTerm] = useState("");
 
-
+  const minDate = new Date(); // Restrict past dates
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
@@ -589,6 +589,7 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 selected={selectedEndDate}
                 onChange={handleEndDateChange}
                 dateFormat="MM-dd-yyyy"
+                minDate={minDate}
               />
                {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

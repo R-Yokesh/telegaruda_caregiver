@@ -20,6 +20,7 @@ const ExerciseHabitForm = ({ back, defaultValues, setAddFormView, fetchExciseHab
   const [intensity, setIntensity] = useState(defaultValues?.details?.act_intensity || "");
   const [errors, setErrors] = useState({});
   const [dropdownOptions, setDropdownOptions] = useState([]);
+  const maxDate = new Date(); // Restrict future dates 
 
   useEffect(() => {
     if (defaultValues?.details) {
@@ -200,6 +201,7 @@ const ExerciseHabitForm = ({ back, defaultValues, setAddFormView, fetchExciseHab
                     closeOnScroll={true}
                     wrapperClassName="date-picker-wrapper"
                     dateFormat={DATE_FORMAT}
+                    maxDate={maxDate}
                   />
                 </div>
                 {errors.date && <p className="text-danger">{errors.date}</p>}

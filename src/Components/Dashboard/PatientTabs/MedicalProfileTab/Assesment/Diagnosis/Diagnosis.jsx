@@ -34,80 +34,8 @@ const Diagnosis = ({ onClose, from }) => {
     { id: 5, label: "ACTIONS" },
   ];
 
-  // const rowData = [
-  //   {
-  //     id: 1,
-  //     date: "06-07-2024",
-  //     condition: "E11.9",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 2,
-  //     date: "02-04-2024",
-  //     condition: "E11.8",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 3,
-  //     date: "07-06-2024",
-  //     condition: "E12.1",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 4,
-  //     date: "08-07-2024",
-  //     condition: "E12.0",
-  //     treatment: "Type 4 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 5,
-  //     date: "06-07-2024",
-  //     condition: "E11.9",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 6,
-  //     date: "06-07-2024",
-  //     condition: "E11.9",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 7,
-  //     date: "06-07-2024",
-  //     condition: "E11.9",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 8,
-  //     date: "06-07-2024",
-  //     condition: "E11.9",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 9,
-  //     date: "06-09-2024",
-  //     condition: "E11.9",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  //   {
-  //     id: 10,
-  //     date: "06-07-2024",
-  //     condition: "E11.9",
-  //     treatment: "Type 2 diabetes mellitus without complications",
-  //     remark: "Lorem Ipsum",
-  //   },
-  // ];
 
-  const { loading, error, get, del, clearCache } = useApi();
+  const { loading, error, get,post,patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -178,16 +106,23 @@ const Diagnosis = ({ onClose, from }) => {
     fetchDiagnosis();
   }, [fetchDiagnosis, addFormView]);
 
-  // Delte Allergies
-  const deleteDiagnosis = async () => {
+  // Add API 
+  const addDiagnosis = async (values) => {
+
     try {
-      const response = await del(`resource/docs/${id}`);
+      const body = {
+        user_id: data?.user_id,
+        document_source: "icd",
+        addition_info: values,
+      };
 
-      if (response.code === 200) {
-        setDetailView(false);
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/docs`, body);
+      if (response.code === 201) {
         clearCache();
-
-        fetchDiagnosis();
+        await fetchDiagnosis();
+        setAddFormView(false);
+        toast.success("Added successfully");
 
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -196,11 +131,49 @@ const Diagnosis = ({ onClose, from }) => {
       console.error("Error fetching data:", error);
     }
   };
+  // Edit API
+  const editDiagnosis = async (values) => {
+    try {
+      const body = {
+        user_id: data?.user_id,
+        document_source: "icd",
+        addition_info: values,
+      };
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/docs/${id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchDiagnosis();
+        setAddFormView(false);
+        toast.success("Updated successfully");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+
+  };
 
 
+  // Delte Allergies
+  const deleteDiagnosis = async () => {
+    try {
+      const response = await del(`resource/docs/${id}`);
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        fetchDiagnosis();
+        toast.success("Deleted successfully");
 
-
-
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <>
@@ -300,9 +273,9 @@ const Diagnosis = ({ onClose, from }) => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
-              fetchDiagnosis={fetchDiagnosis}
-              setAddFormView={setAddFormView}
               defaultValues={selectedData}
+              addDiagnosis={addDiagnosis}
+              editDiagnosis={editDiagnosis}
             />
           </CCardBody>
         </CCard>

@@ -35,7 +35,7 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
   const [providerKey, setProviderKey] = useState(`${defaultValues?.provider?.first_name || ''} ${defaultValues?.provider?.last_name || ''}`);
   const [provider, setProvider] = useState(defaultValues?.provider || {});
  
-
+  const minDate = new Date(); // Restrict past dates
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
@@ -248,6 +248,7 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
                 selected={selectedDate}
                 onChange={handleDateChange}
                 dateFormat="MM-dd-yyyy"
+                minDate={minDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

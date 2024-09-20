@@ -30,7 +30,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
   const [errors, setErrors] = useState({});
 
 
-
+  const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -226,6 +226,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

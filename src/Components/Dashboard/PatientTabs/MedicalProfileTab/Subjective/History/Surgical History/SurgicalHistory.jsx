@@ -155,7 +155,6 @@ const SurgicalHistory = ({ from }) => {
   };
 
   const getselectedData = (data, type) => {
-    console.log(type, "first", data);
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();

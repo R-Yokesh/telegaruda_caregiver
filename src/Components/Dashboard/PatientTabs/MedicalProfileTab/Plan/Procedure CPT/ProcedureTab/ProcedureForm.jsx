@@ -31,7 +31,7 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
   const [Description, setDescription] = useState([defaultValues?.values?.name || null])
  
 
-
+  const maxDate = new Date(); // Restrict future dates 
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
@@ -225,6 +225,7 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
                   closeOnScroll={true}
                   wrapperClassName="date-picker-wrapper"
                   dateFormat={DATE_FORMAT}
+                  maxDate={maxDate}
                 />
                 {errors.date && <div className="error-text">{errors.date}</div>}
               </div>

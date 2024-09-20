@@ -1,91 +1,3 @@
-// import React from "react";
-// import Table from "../../../../../Tables/Table";
-// import { Assets } from "../../../../../../assets/Assets";
-// import { CCol, CRow } from "@coreui/react";
-// import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
-// import ChiefComplaintTable from "../../../../../Tables/Subjective/ChiefComplaintTable";
-
-// const ChiefComplaints = ({ OnClose }) => {
-//   const columns = [
-//     { label: "No." },
-//     { label: "Complaints" },
-//     { label: "Notes" },
-//     { label: "Actions" },
-//   ];
-
-//   const data = {
-//     columnsData: columns,
-//     tableData: [
-//       {
-//         no_: 1,
-//         complaints:
-//           "Abdominal pain, radiating to right shoulder and shoulder blades",
-//         notes: "Taking dole",
-//         action: [{ type: "edit" }, { type: "delete" }],
-//       },
-//     ],
-//   };
-//   return (
-//     <>
-//       <CRow>
-//         <CCol md={6} className="mb-2">
-//           <div className="d-flex gap-2">
-//             <img
-//               alt="BackBtn"
-//               src={Assets.BackBtn}
-//               style={{ width: "35px" }}
-//               onClick={OnClose}
-//               className="cursor"
-//             />
-//             <span className="Obj-name d-flex align-items-center">
-//               Chief Complaints
-//             </span>
-//           </div>
-//         </CCol>
-//         <CCol md={6} className="mb-2 d-flex justify-content-end">
-//           <div className="d-flex mt-2">
-//             <Breadcrumb
-//               paths={[
-//                 { label: "Home", to: "/patients" },
-//                 { label: "Patient List", to: "/patients" },
-//                 { label: "Medical Profile", to: "/patients/history" },
-//                 { label: "Chief Complaints", to: "/patients/history" },
-//               ]}
-//             />
-//           </div>
-//         </CCol>
-//       </CRow>
-//       <CRow>
-//         <CCol md={6} xl={6} className="mb-3 chief-complaints">
-//           <div className="search-bar">
-//             <input type="text" placeholder="Search" />
-//             <button type="submit">
-//               <i className="fas fa-search"></i>
-//             </button>
-//           </div>
-//         </CCol>
-//         <CCol
-//           md={6}
-//           xl={6}
-//           className="mb-3 d-flex justify-content-end align-items-center gap-15"
-//         >
-//           <div className="patient-adding">
-//             <button>+ ADD</button>
-//           </div>
-//           <div className="patient-adding">
-//             <button>
-//               <img src={Assets.ThreeDots} alt="settings" />
-//             </button>
-//           </div>
-//         </CCol>
-//       </CRow>
-//       <Table columns={columns} data={data} />
-//       <ChiefComplaintTable/>
-//     </>
-//   );
-// };
-
-// export default ChiefComplaints;
 
 import {
   CCard,
@@ -110,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import useApi from "../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ChiefComplaints = ({ OnClose, from }) => {
   const columnData = [
@@ -119,66 +32,8 @@ const ChiefComplaints = ({ OnClose, from }) => {
     { label: "Notes" },
     { label: "Actions" },
   ];
-  // const rowData = [
-  //   {
-  //     id: 1,
-  //     complaints:
-  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
-  //     notes: "Taking dole",
-  //     date: "2024-07-05 17:52",
-  //   },
-  //   {
-  //     id: 2,
-  //     complaints:
-  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
-  //     notes: "Taking dole",
-  //     date: "2024-07-05 18:15",
-  //   },
-  //   {
-  //     id: 3,
-  //     complaints:
-  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
-  //     notes: "Taking dole",
-  //     date: "2024-08-05 03:15",
-  //   },
-  //   {
-  //     id: 4,
-  //     complaints:
-  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
-  //     notes: "Taking dole",
-  //     date: "2024-08-05 18:15",
-  //   },
-  //   {
-  //     id: 5,
-  //     complaints:
-  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
-  //     notes: "Taking dole",
-  //     date: "2024-08-05 18:15",
-  //   },
-  //   {
-  //     id: 6,
-  //     complaints:
-  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
-  //     notes: "Taking dole",
-  //     date: "2024-08-05 18:15",
-  //   },
-  //   {
-  //     id: 7,
-  //     complaints:
-  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
-  //     notes: "Taking dole",
-  //     date: "2024-08-05 18:15",
-  //   },
-  //   {
-  //     id: 8,
-  //     complaints:
-  //       "Abdominal pain, radiating to right shoulder and shoulder blades",
-  //     notes: "Taking dole",
-  //     date: "2024-08-05 18:15",
-  //   },
-  // ];
 
-  const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get, post, patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -187,7 +42,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -199,7 +54,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-   
+
   };
 
   // Function to handle page change
@@ -222,8 +77,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data,id, type) => {
-    console.log(type, "first", data);
+  const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
@@ -231,7 +85,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
     if (type === "delete") {
       setId(id);
       detailPage();
-      
+
     }
   };
 
@@ -242,7 +96,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
       );
       if (response.code === 200) {
         console.log(response.data.docs);
-        
+
         setRowData(response.data.docs);
         setPagination(response.data.pagination);
       } else {
@@ -251,21 +105,71 @@ const ChiefComplaints = ({ OnClose, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,addFormView,startDate,endDate,searchValue]);
+  }, [get, currentPage, addFormView, startDate, endDate, searchValue]);
 
   useEffect(() => {
     getChiefComplaints();
   }, [getChiefComplaints]);
 
-  
+  const addChiefComplaints = async (values) => {
+    try {
+      const body = {
+        addition_info: values,
+        user_id: data?.user_id,
+        document_source: "chief-complaints",
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/docs`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await getChiefComplaints();
+        setAddFormView(false);
+        toast.success("Added successfully");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const editChiefComplaints = async (values, id) => {
+    try {
+      const body = {
+        addition_info: values,
+        user_id: data?.user_id,
+        document_source: "chief-complaints",
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/docs/${id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await getChiefComplaints();
+        setAddFormView(false);
+        toast.success("Updated successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
   const deleteChiefComplaints = async () => {
     try {
       const response = await del(`resource/docs/${id}`);
-  
+
       if (response.code === 200) {
         setDetailView(false);
         clearCache();
         getChiefComplaints();
+        toast.success("Deleted successfully");
 
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -374,9 +278,9 @@ const ChiefComplaints = ({ OnClose, from }) => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
-              setAddFormView={setAddFormView}
-              getChiefComplaints={getChiefComplaints}
               defaultValues={selectedData}
+              addChiefComplaints={addChiefComplaints}
+              editChiefComplaints={editChiefComplaints}
             />
           </CCardBody>
         </CCard>
