@@ -18,6 +18,7 @@ import PatientEducationForm from "./PatientEducationForm";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 
@@ -30,46 +31,8 @@ const PatientEducationTab = ({ from }) => {
     { id: 5, label: "ACTIONS" },
   ];
 
-  // const rowData = [
-  //   {
-  //     id: 1,
-  //     date: "2024-08-16",
-  //     time: "12:30",
-  //     title: "Lorem ipsum",
-  //     notes: "Lorem ipsum Lorem ipsum",
-  //   },
-  //   {
-  //     id: 2,
-  //     date: "2024-08-16",
-  //     time: "12:20",
-  //     title: "Lorem ipsum",
-  //     notes: "Lorem ipsum Lorem ipsum",
-  //   },
-  //   {
-  //     id: 3,
-  //     date: "2024-08-16",
-  //     time: "15:30",
-  //     title: "Lorem ipsum",
-  //     notes: "Lorem ipsum Lorem ipsum",
-  //   },
-  //   {
-  //     id: 4,
-  //     date: "2024-08-16",
-  //     time: "12:30",
-  //     title: "Lorem ipsum",
-  //     notes: "Lorem ipsum Lorem ipsum",
-  //   },
-  //   {
-  //     id: 5,
-  //     date: "2024-08-16",
-  //     time: "12:30",
-  //     title: "Lorem ipsum",
-  //     notes: "Lorem ipsum Lorem ipsum",
-  //   },
-  // ];
-
-
-  const { loading, error, get,del,clearCache } = useApi();
+  
+  const { loading, error, get,post,patch,del,clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -140,6 +103,55 @@ const PatientEducationTab = ({ from }) => {
     fetchPatientEducation();
   }, [fetchPatientEducation]);
 
+   // Add PatientEducation
+   const addPatientEducation = async (values) => {
+    try {
+      const body = {
+        user_id: data?.user_id,
+        document_source: "patient-education",
+        addition_info: values,
+      };
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/docs`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchPatientEducation();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Edit PatientEducation
+  const editPatientEducation = async (values,id) => {
+    try {
+      const body = {
+        user_id: data?.user_id,
+        document_source: "patient-education",
+        addition_info: values,
+      };
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/docs/${id}`, body);
+      if (response.code === 200) {
+        clearCache();
+        await fetchPatientEducation();
+        setAddFormView(false);
+        toast.success("Updated successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   // Delte Patient Education
   const deletePatientEducation = async () => {
     try {
@@ -149,6 +161,7 @@ const PatientEducationTab = ({ from }) => {
         setDetailView(false);
         clearCache();
         fetchPatientEducation();
+        toast.success("Deleted successfully");
 
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -226,9 +239,9 @@ const PatientEducationTab = ({ from }) => {
                     setAddFormView(false);
                     setSelectedData({});
                   }}
-                  fetchPatientEducation={fetchPatientEducation}
-                  setAddFormView={setAddFormView}
                   defaultValues={selectedData}
+                  addPatientEducation={addPatientEducation}
+                  editPatientEducation={editPatientEducation}
                 />
               </CCardBody>
             </CCard>

@@ -20,7 +20,7 @@ import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
 import { useLocation } from "react-router-dom";
 
-const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextAppointment }) => {
+const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNextAppointment }) => {
 
 
   const { loading, error, get, post, clearCache, patch } = useApi();
@@ -34,7 +34,7 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
   const [providerDetails, setproviderDetails] = useState([]);
   const [providerKey, setProviderKey] = useState(`${defaultValues?.provider?.first_name || ''} ${defaultValues?.provider?.last_name || ''}`);
   const [provider, setProvider] = useState(defaultValues?.provider || {});
- 
+
   const minDate = new Date(); // Restrict past dates
   const getFormattedDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -124,16 +124,19 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
 
 
   const onSubmit = () => {
-    console.log('clicked checking')
+    const values = {
+      date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
+      reason: reason,
+      provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
+    }
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editNextAppointment()
-
+        editNextAppointment(values,defaultValues?.id)
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
-        addNextAppointment();
+        addNextAppointment(values);
 
       }
     }
@@ -163,72 +166,60 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
 
 
 
-  // Add NextAppointment
-  const addNextAppointment = async () => {
+  // // Add NextAppointment
+  // const addNextAppointment = async () => {
+  //   try {
+  //     const body = {
+  //       patient_id: data?.user_id,
+  //       provider_id: "9",
+  //       date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
+  //       reason: reason,
+  //       provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
+  //     }
+  //     // Use the provided `post` function to send the request
+  //     const response = await post(`resource/next-appointment`, body);
+  //     if (response.code === 201) {
+  //       clearCache();
+  //       await fetchNextAppointment();
+  //       setAddFormView(false);
+  //       toast.success("Added successfully");
+  //     } else {
+  //       console.error("Failed to fetch data:", response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
-    try {
-      const body = {
-        patient_id: data?.user_id,
-        provider_id: "9",
-        date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
-        // date: format(selectedDate, "dd-MM-yyyy"),
-        // time: format(selectedTime,"HH:mm"),
-        reason: reason,
-         provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
-        // provider:{
-        //   first_name:provider?.user?.first_name,
-        //   last_name:provider?.user?.last_name
-        // }
-      }
+  // // Edit NextAppointment
+  // const editNextAppointment = async () => {
+  //   try {
+  //     const body = {
+  //       patient_id: data?.user_id,
+  //       provider_id: "9",
+  //       date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
+  //       // date: format(selectedDate, "dd-MM-yyyy"),
+  //       // time: format(selectedTime,"HH:mm"),
+  //       reason: reason,
+  //       provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
+  //     }
 
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/next-appointment`, body);
+  //     // Use the provided `post` function to send the request
+  //     const response = await patch(`resource/next-appointment/${defaultValues.id}`, body);
 
-      if (response.code === 201) {
-        clearCache();
-        await fetchNextAppointment();
-        setAddFormView(false);
-        toast.success("Added successfully");
+  //     if (response.code === 200) {
+  //       clearCache();
+  //       await fetchNextAppointment();
+  //       setAddFormView(false);
+  //       toast.success("Added successfully");
 
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  // Edit NextAppointment
-
-  const editNextAppointment = async () => {
-
-    try {
-      const body = {
-        patient_id: data?.user_id,
-        provider_id: "9",
-        date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
-        // date: format(selectedDate, "dd-MM-yyyy"),
-        // time: format(selectedTime,"HH:mm"),
-        reason: reason,
-        provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
-      }
-
-      // Use the provided `post` function to send the request
-      const response = await patch(`resource/next-appointment/${defaultValues.id}`, body);
-
-      if (response.code === 200) {
-        clearCache();
-        await fetchNextAppointment();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  //     } else {
+  //       console.error("Failed to fetch data:", response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
 
 
@@ -247,7 +238,7 @@ const NextAppointmentForm = ({ back, defaultValues, setAddFormView, fetchNextApp
                 showIcon
                 selected={selectedDate}
                 onChange={handleDateChange}
-                dateFormat="MM-dd-yyyy"
+                dateFormat="dd-MM-yyyy"
                 minDate={minDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}

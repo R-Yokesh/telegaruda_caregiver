@@ -17,7 +17,7 @@ import {
 } from "../../../../../../../Utils/commonUtils";
 import { useLocation } from "react-router-dom";
 
-const PatientEducationForm = ({ back, defaultValues, fetchPatientEducation, setAddFormView }) => {
+const PatientEducationForm = ({ back, defaultValues, addPatientEducation, editPatientEducation }) => {
 
 
   const { loading, error, get, post, clearCache, patch } = useApi();
@@ -31,29 +31,12 @@ const PatientEducationForm = ({ back, defaultValues, fetchPatientEducation, setA
    notes: defaultValues?.addition_info?.notes || null,
   });
  
-
-
-
-
   const maxDate = new Date(); // Restrict future dates 
-  const getFormattedDate = (date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  };
-
-  const currentDate = new Date();
-  const formattedDate = getFormattedDate(currentDate);
-
-  // console.log(formattedDate); // e.g., 25-08-2024
-
-  const defaultDateTime = defaultValues?.date || "";
-
+  
+  const defaultDateTime = defaultValues?.addition_info?.date || "";
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  const defaultTime = defaultValues?.addition_info?.time || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -118,15 +101,19 @@ const PatientEducationForm = ({ back, defaultValues, fetchPatientEducation, setA
 
 
   const onSubmit = () => {
+   const values = {
+      date: format(selectedDate, "yyyy-MM-dd"),
+      time: format(selectedTime,  "HH:mm"),
+      title: formData?.title,
+      notes: formData?.notes,
+    }
     if (validate()) {
       if (defaultValues.id !== undefined) {
-        console.log("Edit clicked");
-        editPatientEducation()
+        editPatientEducation(values,defaultValues?.id)
 
       }
       if (defaultValues.id === undefined) {
-        console.log("Add clicked");
-        addPatientEducation();
+        addPatientEducation(values);
 
       }
     }
@@ -135,68 +122,6 @@ const PatientEducationForm = ({ back, defaultValues, fetchPatientEducation, setA
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-  // Add PatientEducation
-  const addPatientEducation = async () => {
-
-    try {
-      const body = {
-        user_id: data?.user_id,
-        document_source: "patient-education",
-        addition_info: {
-          date: format(selectedDate, "yyyy-MM-dd"),
-          time: format(selectedTime,  "HH:mm"),
-          title: formData?.title,
-          notes: formData?.notes,
-        }
-      };
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/docs`, body);
-
-      if (response.code === 201) {
-        clearCache();
-        await fetchPatientEducation();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  // Edit PatientEducation
-  const editPatientEducation = async () => {
-
-    try {
-      const body = {
-        user_id: data?.user_id,
-        document_source: "patient-education",
-        addition_info: {
-          date: format(selectedDate, "yyyy-MM-dd"),
-          time: format(selectedTime,  "HH:mm"),
-          title: formData?.title,
-          notes: formData?.notes,
-        }
-      };
-      // Use the provided `post` function to send the request
-      const response = await patch(`resource/docs/${defaultValues.id}`, body);
-
-      if (response.code === 200) {
-        clearCache();
-        await fetchPatientEducation();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
 
 
   return (
