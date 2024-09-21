@@ -10,7 +10,6 @@ import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { useLocation } from "react-router-dom";
-import { DATE_FORMAT } from "../../../../../../Config/config";
 
 const BMI = ({ addBack, defaultData, getTableDatas }) => {
   const location = useLocation();
