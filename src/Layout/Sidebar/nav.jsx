@@ -11,18 +11,18 @@ export const Sidebar_Menus = [
     iconClass: Assets.teleconcult,
     iconType: "solid", // Optional, defaults to 'regular'
   },
-  {
-    name: "Appointments",
-    subName: "Update Availability Detail and More",
-    to: "/patient",
-    iconClass: Assets.avilability,
-    iconType: "solid", // Optional, defaults to 'regular'
-  },
-  {
-    name: "Doctors",
-    subName: "Profile User Detail and More",
-    to: "/account",
-    iconClass: Assets.account,
-    iconType: "solid", // Optional, defaults to 'regular'
-  },
+  // {
+  //   name: "Appointments",
+  //   subName: "Update Availability Detail and More",
+  //   to: "/patient",
+  //   iconClass: Assets.avilability,
+  //   iconType: "solid", 
+  // },
+  // {
+  //   name: "Doctors",
+  //   subName: "Profile User Detail and More",
+  //   to: "/account",
+  //   iconClass: Assets.account,
+  //   iconType: "solid", 
+  // },
 ];

@@ -58,11 +58,18 @@ const Header = () => {
       setLoading(false);
     }
   };
-  console.log("Viewwww", view);
   // Handle patient selection
   const handlePatientSelect = (patient) => {
     navigate("/patients/history", { state: { PatientDetail: patient } });
     setView(false);
+    localStorage.removeItem("PatientConsultTab");
+    localStorage.removeItem("patiendDetailTab");
+    localStorage.removeItem("PatientMenu");
+    localStorage.removeItem("PatientSubMenu-1");
+    localStorage.removeItem("PatientSubMenu-2");
+    localStorage.removeItem("PatientSubMenu-3");
+    localStorage.removeItem("PatientSubMenu-4");
+    localStorage.removeItem("PatientSubMenu-5");
   };
 
   // Handle button click to fetch patients
