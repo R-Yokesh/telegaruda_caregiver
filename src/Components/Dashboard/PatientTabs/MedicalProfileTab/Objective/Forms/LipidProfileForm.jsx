@@ -8,6 +8,7 @@ import { extractNum } from "../../../../../../Utils/commonUtils";
 import useApi from "../../../../../../ApiServices/useApi";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { format, isValid, parse } from "date-fns";
+import { DATE_FORMAT } from "../../../../../../Config/config";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
@@ -30,6 +31,7 @@ const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
     defaultData?.["total_cholesterol_(mg/dl)"] || ""
   );
   const [errors, setErrors] = useState({});
+  const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -220,6 +222,8 @@ const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
                 isClearable
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
+                dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

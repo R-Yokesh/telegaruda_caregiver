@@ -18,6 +18,8 @@ import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 const ProcedureTab = ({ onClose, from }) => {
   const columnData = [
@@ -28,109 +30,8 @@ const ProcedureTab = ({ onClose, from }) => {
     { id: 5, label: "ACTIONS" },
   ];
 
-  // const rowData = [
-  //   {
-  //     no: 1,
-  //     date: "06-07-2024",
-  //     id: "93000",
-  //     time: "12:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 2,
-  //     date: "06-07-2024",
-  //     id: "93000",
-  //     time: "18:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 3,
-  //     date: "06-07-2024",
-  //     id: "93008",
-  //     time: "19:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 4,
-  //     date: "06-07-2024",
-  //     id: "93006",
-  //     time: "18:43",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 5,
-  //     date: "06-07-2024",
-  //     id: "93005",
-  //     time: "18:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 6,
-  //     date: "06-07-2024",
-  //     id: "93002",
-  //     time: "18:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 7,
-  //     date: "06-07-2024",
-  //     id: "93000",
-  //     time: "18:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 8,
-  //     date: "06-07-2024",
-  //     id: "93000",
-  //     time: "18:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 9,
-  //     date: "06-07-2024",
-  //     id: "93000",
-  //     time: "18:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   {
-  //     no: 10,
-  //     date: "06-07-2024",
-  //     id: "93000",
-  //     time: "18:30",
-  //     description:
-  //       "Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report.",
-  //   },
-  //   // {
-  //   //   no: 11,
-  //   //   date: "06-07-2024",
-  //   //   id: "12321",
-  //   //   description: "Lorem Ipsum",
-  //   // },
-  //   // {
-  //   //   no: 12,
-  //   //   date: "06-07-2024",
-  //   //   id: "12322",
-  //   //   description: "Lorem Ipsum",
-  //   // },
-  //   // {
-  //   //   no: 13,
-  //   //   date: "06-07-2024",
-  //   //   id: "12323",
-  //   //   description: "Lorem Ipsum",
-  //   // },
-  // ];
-  
 
-  const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get,post,patch,del,clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -200,6 +101,56 @@ const ProcedureTab = ({ onClose, from }) => {
     fetchCpt();
   }, [fetchCpt]);
 
+    // Add Procedure
+    const addCpt = async (values) => {
+      try {
+        const body = {
+          patient_id: data?.user_id,
+          slug: "procedure",
+          values: values,
+        };
+        // Use the provided `post` function to send the request
+        const response = await post(`resource/patientHealth`, body);
+  
+        if (response.code === 201) {
+          clearCache();
+          await fetchCpt();
+          setAddFormView(false);
+          toast.success("Added successfully");
+  
+        } else {
+          console.error("Failed to fetch data:", response.message);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    // Edit Procedure
+    const editCpt = async (values) => {
+      try {
+        const body = {
+          patient_id: data?.user_id,
+          slug: "procedure",
+          values: values,
+        };
+        // Use the provided `post` function to send the request
+        const response = await patch(`resource/patientHealth/${id}`, body);
+        if (response.code === 200) {
+          clearCache();
+          await fetchCpt();
+          setAddFormView(false);
+          toast.success("Updated successfully");
+  
+        } else {
+          console.error("Failed to fetch data:", response.message);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+
   // Delte Allergies
   const deleteCpt = async () => {
     try {
@@ -209,6 +160,7 @@ const ProcedureTab = ({ onClose, from }) => {
         setDetailView(false);
         clearCache();
         fetchCpt();
+        toast.success("Deleted successfully");
 
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -286,9 +238,9 @@ const ProcedureTab = ({ onClose, from }) => {
                     setAddFormView(false);
                     setSelectedData({});
                   }}
-                  fetchCpt={fetchCpt}
-                  setAddFormView={setAddFormView}
                   defaultValues={selectedData}
+                  addCpt={addCpt}
+                  editCpt={editCpt}
                 />
               </CCardBody>
             </CCard>

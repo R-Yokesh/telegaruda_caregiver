@@ -30,6 +30,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
     type: "",
     bloodSugar: "",
   });
+  const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
   console.log("time", getCurrentTime());
   // Split date and time
@@ -188,6 +189,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

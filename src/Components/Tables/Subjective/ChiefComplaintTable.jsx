@@ -45,9 +45,11 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData, from, itemsPer
                   {getSerialNumber(itemsPerPage, currentPage, i)}
                 </CTableHeaderCell>
                 <CTableHeaderCell>
-                  <span className="fs-16 fw-500">
-                    {dt?.addition_info?.date ? dt?.addition_info?.date : "-"}
-                    {" "}
+                  <span className="fs-16 fw-500" style={{ marginRight: "6px" }}>
+                    {dt?.addition_info?.date ?.split(" ")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")} 
                   </span>
                   <span className="fs-16 fw-500">
                     {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}

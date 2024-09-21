@@ -20,6 +20,7 @@ const HCT = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [hct, setHct] = useState(defaultData?.["hct_%"] || "");
   const [errors, setErrors] = useState({});
+  const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -167,6 +168,7 @@ const HCT = ({ addBack, defaultData, getTableDatas }) => {
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

@@ -11,23 +11,20 @@ import { format } from "date-fns";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
 
-const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, defaultValues }) => {
+const ChiefComplaintsForm = ({ back,addChiefComplaints,editChiefComplaints, defaultValues }) => {
 
-  const { loading, error, get, post, clearCache, patch } = useApi();
-  const location = useLocation();
-  const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [complaints, setComplaints] = useState(defaultValues?.addition_info?.title || "");
   const [notes, setNotes] = useState(defaultValues?.addition_info?.notes || "");
   const [errors, setErrors] = useState({});
 
+  const maxDate = new Date(); // Restrict future dates 
 
-  const defaultDateTime = defaultValues?.date || "";
-
+  const defaultDateTime = defaultValues?.addition_info?.date || "";
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  const defaultTime = defaultValues?.addition_info?.time || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -68,8 +65,6 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
       setSelectedTime(time);
     }
   };
- 
-
 
   // Validate the form
   const validate = () => {
@@ -99,87 +94,28 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
   };
 
   const onSubmit = () => {
+    
+    const values = {
+        date: format(selectedDate, "yyyy-MM-dd"),
+        time: format(selectedTime, "HH:mm"),
+        title: complaints,
+        notes: notes,
+      }
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editChiefComplaints();
+        editChiefComplaints(values,defaultValues?.id);
 
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
-        addChiefComplaints();
+        addChiefComplaints(values);
 
       }
     }
   };
 
-  const addChiefComplaints = async () => {
-    const formattedDate = format(selectedDate, "dd-MM-yyyy");
-    const formattedTime = format(selectedTime, "HH:mm");
-    try {
-      const body = {
-        addition_info: {
-          date: formattedDate,
-          time: formattedTime,
-          title: complaints,
-          notes: notes,
-        },
-        user_id: data?.user_id,
-        document_source: "chief-complaints",
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/docs`, body);
-
-      if (response.code === 201) {
-        clearCache();
-        await getChiefComplaints();
-        setAddFormView(false);
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const editChiefComplaints = async () => {
-    const formattedDate = format(selectedDate, "dd-MM-yyyy");
-    const formattedTime = format(selectedTime, "HH:mm");
-    try {
-      const body = {
-        addition_info: {
-          date: formattedDate,
-          time: formattedTime,
-          title: complaints,
-          notes: notes,
-        },
-        user_id: data?.user_id,
-        document_source: "chief-complaints",
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await patch(`resource/docs/${defaultValues.id}`, body);
-
-      if (response.code === 200) {
-        clearCache();
-        await getChiefComplaints();
-        setAddFormView(false);
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-
-
-
-
-
+ 
   return (
     <>
       <CRow className="mb-3">
@@ -193,6 +129,7 @@ const ChiefComplaintsForm = ({ back, setAddFormView, getChiefComplaints, default
               selected={selectedDate}
               onChange={handleDateChange}
               dateFormat={DATE_FORMAT}
+              maxDate={maxDate}
             />
             {errors.date && <div className="error-text">{errors.date}</div>}
           </div>

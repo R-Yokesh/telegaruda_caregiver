@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Breadcrumb from "../../../../../../Breadcrumb/Breadcrumb";
 import {
   CCard,
@@ -20,6 +20,7 @@ import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const TherapiesTab = ({ from }) => {
   const columnData = [
@@ -32,26 +33,8 @@ const TherapiesTab = ({ from }) => {
     { id: 7, label: "ACTIONS" },
   ];
 
-  // const rowData = [
-  //   {
-  //     id: 1,
-  //     date_time: "06-07-2024 12:15",
-  //     type: "Physical",
-  //     therapy_name: "Lorem ipsum",
-  //     therapist_name: "Lorem ipsum",
-  //     duration: "5",
-  //   },
-  //   {
-  //     id: 2,
-  //     date_time: "06-07-2024 12:15",
-  //     type: "Occupational",
-  //     therapy_name: "Lorem ipsum",
-  //     therapist_name: "Lorem ipsum",
-  //     duration: "5",
-  //   },
-  // ];
 
-  const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get, post, patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -60,7 +43,7 @@ const TherapiesTab = ({ from }) => {
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,13 +55,13 @@ const TherapiesTab = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-   
+
   };
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };  
+  };
 
 
   const addFormPage = () => {
@@ -89,7 +72,7 @@ const TherapiesTab = ({ from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data,id, type) => {
+  const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
@@ -100,7 +83,7 @@ const TherapiesTab = ({ from }) => {
     }
   };
 
-  
+
   const fetchTherapies = useCallback(async () => {
     try {
       const response = await get(
@@ -115,21 +98,32 @@ const TherapiesTab = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,startDate,endDate,searchValue]);
+  }, [get, currentPage, startDate, endDate, searchValue]);
 
   useEffect(() => {
     fetchTherapies();
   }, [fetchTherapies]);
 
-  // Delte Allergies
-  const deleteTherapies = async () => {
+  // Add Therapies
+  const addTherapies = async (values) => {
     try {
-      const response = await del(`resource/therapy/${id}`);
-  
-      if (response.code === 200) {
-        setDetailView(false);
+      const body = {
+        patient_id: data?.user_id,
+        date: values?.date,
+        type: values?.type,
+        therapy_name: values?.therapy_name,
+        therapist_name: values?.therapist_name,
+        duration: values?.duration,
+        notes: values?.notes,
+      };
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/therapy`, body);
+
+      if (response.code === 201) {
         clearCache();
-        fetchTherapies();
+        await fetchTherapies();
+        setAddFormView(false);
+        toast.success("Added successfully");
 
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -139,7 +133,53 @@ const TherapiesTab = ({ from }) => {
     }
   };
 
-    
+  // Edit Therapies
+  const editTherapies = async (values, id) => {
+    try {
+      const body = {
+        patient_id: data?.user_id,
+        date: values?.date,
+        type: values?.type,
+        therapy_name: values?.therapy_name,
+        therapist_name: values?.therapist_name,
+        duration: values?.duration,
+        notes: values?.notes,
+      };
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/therapy/${id}`, body);
+      if (response.code === 200) {
+        clearCache();
+        await fetchTherapies();
+        setAddFormView(false);
+        toast.success("Updated successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
+  // Delte Allergies
+  const deleteTherapies = async () => {
+    try {
+      const response = await del(`resource/therapy/${id}`);
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        fetchTherapies();
+        toast.success("Deleted successfully");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
 
   return (
     <>
@@ -161,7 +201,7 @@ const TherapiesTab = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                <DateRangePicker getFilterValues={getFilterValues} />
+                  <DateRangePicker getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
@@ -180,21 +220,21 @@ const TherapiesTab = ({ from }) => {
               <div className="mb-2">
                 <CRow>
                   <TherapiesTable
-                   rowData={rowData}
-                   columns={columnData}
-                   getselectedData={getselectedData}
-                   currentPage={currentPage || 1}
-                   itemsPerPage={itemsPerPage || 5}
-                 
+                    rowData={rowData}
+                    columns={columnData}
+                    getselectedData={getselectedData}
+                    currentPage={currentPage || 1}
+                    itemsPerPage={itemsPerPage || 5}
+
                   />
                 </CRow>
                 <CRow className="mb-3">
                   <CCol lg={12} className="d-flex justify-content-center">
                     <Pagination
-                     currentPage={currentPage}
-                     onPageChange={onPageChange}
-                     totalItems={pagination?.total}
-                     itemsPerPage={itemsPerPage}
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={pagination?.total}
+                      itemsPerPage={itemsPerPage}
                     />
                   </CCol>
                 </CRow>
@@ -209,9 +249,9 @@ const TherapiesTab = ({ from }) => {
                     setAddFormView(false);
                     setSelectedData({});
                   }}
-                  fetchTherapies={fetchTherapies}
-                  setAddFormView={setAddFormView}
                   defaultValues={selectedData}
+                  addTherapies={addTherapies}
+                  editTherapies={editTherapies}
                 />
               </CCardBody>
             </CCard>

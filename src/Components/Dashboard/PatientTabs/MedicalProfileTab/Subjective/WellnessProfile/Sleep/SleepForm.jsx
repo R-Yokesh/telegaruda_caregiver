@@ -19,6 +19,7 @@ const SleepForm = ({ back, defaultValues, fetchSleepData, setAddFormView }) => {
   const [duration, setDuration] = useState(defaultValues?.act_duration || "");
   const [category, setCategory] = useState(defaultValues?.act_catagory || "sleep");
   const [errors, setErrors] = useState({});
+  const maxDate = new Date(); // Restrict future dates 
 
   useEffect(() => {
     if (defaultValues) {
@@ -185,6 +186,7 @@ const SleepForm = ({ back, defaultValues, fetchSleepData, setAddFormView }) => {
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
             </div>
           </div>

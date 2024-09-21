@@ -21,6 +21,7 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [keytone, setKeytone] = useState(defaultData?.blood_ketone_value || "");
   const [errors, setErrors] = useState({});
+  const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -168,6 +169,7 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>

@@ -27,6 +27,8 @@ const MedHistoryForm = ({
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
+  const maxDate = new Date(); // Restrict future dates 
+
   useEffect(() => {
     if (defaultValues?.values) {
       // Set initial state for editing
@@ -268,6 +270,7 @@ const MedHistoryForm = ({
                   closeOnScroll={true}
                   wrapperClassName="date-picker-wrapper"
                   dateFormat={DATE_FORMAT}
+                  maxDate={maxDate}
                 />
                 {errors.onset_date && (
                   <div className="error-text">{errors.onset_date}</div>

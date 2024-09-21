@@ -20,6 +20,7 @@ const MoodForm = ({ back, defaultValues, fetchMood, setAddFormView }) => {
     const [patientId, setPatientId] = useState(defaultValues?.details?.patient_id || "");
     const [category, setCategory] = useState(defaultValues?.details?.act_catagory || "mood");
     const [errors, setErrors] = useState({});
+    const maxDate = new Date(); // Restrict future dates 
 
     useEffect(() => {
         if (defaultValues) {
@@ -165,6 +166,7 @@ const MoodForm = ({ back, defaultValues, fetchMood, setAddFormView }) => {
                                 closeOnScroll={true}
                                 wrapperClassName="date-picker-wrapper"
                                 dateFormat={DATE_FORMAT}
+                                maxDate={maxDate}
                             />
                             {errors.date && <div className="text-danger">{errors.date}</div>}
                         </div>

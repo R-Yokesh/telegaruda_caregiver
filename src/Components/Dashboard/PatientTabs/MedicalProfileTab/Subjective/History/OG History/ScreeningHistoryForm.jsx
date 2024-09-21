@@ -41,6 +41,7 @@ const ScreeningHistoryForm = ({
   const [breastDesc, setBreastDesc] = useState(
     defaultValues?.values?.breast_exam_desc || ""
   );
+  const maxDate = new Date(); // Restrict future dates 
 
   const handleAbnormalStatus = (event) => {
     setAbnormalStatus(event.target.value);
@@ -97,6 +98,7 @@ const ScreeningHistoryForm = ({
                 onChange={(date) => setDate(date)}
                 dateFormat={DATE_FORMAT}
                 disabled={from === "Consult-Screen" ? true : false}
+                maxDate={maxDate}
               />
             </div>
           </div>
@@ -171,6 +173,7 @@ const ScreeningHistoryForm = ({
                 onChange={(date) => setDate2(date)}
                 disabled={from === "Consult-Screen" ? true : false}
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
             </div>
           </div>
@@ -245,6 +248,7 @@ const ScreeningHistoryForm = ({
                 onChange={(date) => setDate3(date)}
                 disabled={from === "Consult-Screen" ? true : false}
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
             </div>
           </div>

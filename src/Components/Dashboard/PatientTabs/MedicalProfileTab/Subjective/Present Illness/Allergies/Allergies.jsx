@@ -1,62 +1,42 @@
 import {
-    CCard,
-    CCardBody,
-    CCol,
-    CFormCheck,
-    CModal,
-    CModalBody,
-    CRow,
-  } from "@coreui/react";
-  import React, { useState,useEffect,useCallback } from "react";
-  import Pagination from "../../../../../../Pagination/Pagination";
-  import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
-  import { Assets } from "../../../../../../../assets/Assets";
-  import DateSelector from "../../../../../../DateRangePicker/DateSelector";
-  import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
-  import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
-  import MedicationForm from "../Medication/MedicationForm";
-  import AllergiesTable from "../../../../../../Tables/Subjective/AllergiesTable";
+  CCard,
+  CCardBody,
+  CCol,
+  CFormCheck,
+  CModal,
+  CModalBody,
+  CRow,
+} from "@coreui/react";
+import React, { useState, useEffect, useCallback } from "react";
+import Pagination from "../../../../../../Pagination/Pagination";
+import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
+import { Assets } from "../../../../../../../assets/Assets";
+import DateSelector from "../../../../../../DateRangePicker/DateSelector";
+import BlurBackground from "../../../../../../BlurBackground/BlurBackground";
+import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
+import MedicationForm from "../Medication/MedicationForm";
+import AllergiesTable from "../../../../../../Tables/Subjective/AllergiesTable";
 import AllergiesForm from "./AllergiesForm";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Allergies = () => {
 
-    const columnData = [
-        { id: 1, label: "No." },
-        { id: 2, label: "Onset Date" },
-        { id: 6, label: "Allergy" },
-        { id: 7, label: "Reaction" },
-        { id: 8, label: "Severity" },
-        { id: 9, label: " Status" },
-        { id: 11, label: "ACTIONS" },
-      ];
-
-      // const rowData = [
-      //   {
-      //     id: 1,
-      //     onset_date: "06-07-2024",
-      //     allergy: "Knee (category 1)",
-      //     reaction: "-",
-      //     severity: "-",
-      //     status: "-",
-      //   },
-      //   {
-      //     id: 2,
-      //     onset_date: "06-07-2024",
-      //     allergy: "Knee (category 1)",
-      //     reaction: "-",
-      //     severity: "-",
-      //     status: "-",
-        
-      //   },
-       
-      // ];
+  const columnData = [
+    { id: 1, label: "No." },
+    { id: 2, label: "Onset Date" },
+    { id: 6, label: "Allergy" },
+    { id: 7, label: "Reaction" },
+    { id: 8, label: "Severity" },
+    { id: 9, label: " Status" },
+    { id: 11, label: "ACTIONS" },
+  ];
 
 
-  const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get,post,patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -65,7 +45,7 @@ const Allergies = () => {
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,13 +57,13 @@ const Allergies = () => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-   
+
   };
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };  
+  };
 
 
   const addFormPage = () => {
@@ -94,7 +74,7 @@ const Allergies = () => {
     setDetailView(true);
   };
 
-  const getselectedData = (data,id, type) => {
+  const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
@@ -105,7 +85,7 @@ const Allergies = () => {
     }
   };
 
-  
+
   const fetchAllergies = useCallback(async () => {
     try {
       const response = await get(
@@ -120,21 +100,59 @@ const Allergies = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,startDate,endDate,searchValue]);
+  }, [get, currentPage, startDate, endDate, searchValue]);
 
   useEffect(() => {
     fetchAllergies();
   }, [fetchAllergies]);
 
-  // Delte Allergies
-  const deleteAllergies = async () => {
+
+
+  // Add Allergy
+  const addAllergy = async (values) => {
+
     try {
-      const response = await del(`resource/patientHealth/${id}`);
-  
-      if (response.code === 200) {
-        setDetailView(false);
+
+      const body = {
+        patient_id: data?.user_id,
+        slug: "allergy",
+        values: values,
+      };
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/patientHealth`, body);
+
+      if (response.code === 201) {
         clearCache();
-        fetchAllergies();
+        await fetchAllergies();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Edit Allery
+  const editAllergy = async (values, id) => {
+
+    try {
+      const body = {
+        patient_id: data?.user_id,
+        slug: "allergy",
+        values: values,
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/patientHealth/${id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchAllergies();
+        setAddFormView(false);
+        toast.success("Updated successfully");
 
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -145,17 +163,33 @@ const Allergies = () => {
   };
 
 
+  // Delte Allergies
+  const deleteAllergies = async () => {
+    try {
+      const response = await del(`resource/patientHealth/${id}`);
+
+      if (response.code === 200) {
+        setDetailView(false);
+        clearCache();
+        fetchAllergies();
+        toast.success("Deleted successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
 
-    
-     
   return (
-      <>
+    <>
       {!addFormView && (
         <>
           <CRow className="mb-2">
             <CCol lg={8} className="">
-            <DateSearch getFilterValues={getFilterValues} />
+              <DateSearch getFilterValues={getFilterValues} />
             </CCol>
             <CCol
               lg={4}
@@ -207,9 +241,9 @@ const Allergies = () => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
-              setAddFormView={setAddFormView}
-              fetchAllergies={fetchAllergies}
               defaultValues={selectedData}
+              addAllergy={addAllergy}
+              editAllergy={editAllergy}
             />
           </CCardBody>
         </CCard>
@@ -228,7 +262,7 @@ const Allergies = () => {
                 <h5>Are you sure want to delete ?</h5>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
-                    <PrimaryButton  onClick={() => deleteAllergies()}>
+                    <PrimaryButton onClick={() => deleteAllergies()}>
                       Yes
                     </PrimaryButton>
                   </div>

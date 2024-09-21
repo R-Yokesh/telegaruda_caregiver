@@ -17,6 +17,7 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
   const [dietType, setDietType] = useState(defaultValues?.act_type || ""); // Initialize diet type
   const [notes, setNotes] = useState(defaultValues?.detail?.notes || "");
   const [errors, setErrors] = useState({});
+  const maxDate = new Date(); // Restrict future dates 
 
   useEffect(() => {
     // Initialize the state with default values if available
@@ -184,6 +185,7 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
             </div>
             {errors.date && <p className="text-danger">{errors.date}</p>}

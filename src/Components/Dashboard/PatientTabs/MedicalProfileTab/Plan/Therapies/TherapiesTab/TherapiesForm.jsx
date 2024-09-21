@@ -19,7 +19,7 @@ import { duration } from "moment";
 import { useLocation } from "react-router-dom";
 
 
-const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) => {
+const TherapiesForm = ({ back, addTherapies, editTherapies, defaultValues }) => {
 
 
     const { loading, error, get, post, clearCache, patch } = useApi();
@@ -39,7 +39,7 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
 
 
 
-
+    const maxDate = new Date(); // Restrict future dates 
     const getFormattedDate = (date) => {
         const day = String(date.getDate()).padStart(2, "0");
         const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
@@ -114,8 +114,8 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
     // Function to update Type
     const getSelectedValue = (data) => {
         setFormData((prevState) => ({
-          ...prevState,
-          type: data,
+            ...prevState,
+            type: data,
         }));
 
     };
@@ -147,81 +147,87 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
 
 
     const onSubmit = () => {
+        const values = {
+            date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
+            type: formData?.type,
+            therapy_name: formData?.therapy_name,
+            therapist_name: formData?.therapist_name,
+            duration: formData?.duration,
+            notes: formData?.notes,
+        }
         if (validate()) {
             if (defaultValues.id !== undefined) {
                 console.log("Edit clicked");
-                editTherapies()
+                editTherapies(values,defaultValues?.id)
 
             }
             if (defaultValues.id === undefined) {
                 console.log("Add clicked");
-                addTherapies();
+                addTherapies(values);
 
             }
         }
     };
 
-    // Add Therapies
-    const addTherapies = async () => {
+    // // Add Therapies
+    // const addTherapies = async () => {
+    //     try {
+    //         const body = {
+    //             patient_id: data?.user_id,
+    //             date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
+    //             type: formData?.type,
+    //             therapy_name: formData?.therapy_name,
+    //             therapist_name: formData?.therapist_name,
+    //             duration: formData?.duration,
+    //             notes: formData?.notes,
+    //         };
+    //         // Use the provided `post` function to send the request
+    //         const response = await post(`resource/therapy`, body);
 
-        try {
-            const body = {
-                patient_id: data?.user_id, 
-                date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
-                type: formData?.type,
-                therapy_name: formData?.therapy_name,
-                therapist_name: formData?.therapist_name,
-                duration: formData?.duration,
-                notes: formData?.notes,
-            };
-            // Use the provided `post` function to send the request
-            const response = await post(`resource/therapy`, body);
+    //         if (response.code === 201) {
+    //             clearCache();
+    //             await fetchTherapies();
+    //             setAddFormView(false);
+    //             toast.success("Added successfully");
 
-            if (response.code === 201) {
-                clearCache();
-                await fetchTherapies();
-                setAddFormView(false);
-                toast.success("Added successfully");
+    //         } else {
+    //             console.error("Failed to fetch data:", response.message);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching data:", error);
+    //     }
+    // };
 
-            } else {
-                console.error("Failed to fetch data:", response.message);
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+    // // Edit Therapies
 
-    // Edit Therapies
+    // const editTherapies = async () => {
+    //     try {
+    //         const body = {
+    //             patient_id: data?.user_id,
+    //             date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
+    //             type: formData?.type,
+    //             therapy_name: formData?.therapy_name,
+    //             therapist_name: formData?.therapist_name,
+    //             duration: formData?.duration,
+    //             notes: formData?.notes,
+    //         };
 
-    const editTherapies = async () => {
+    //         // Use the provided `post` function to send the request
+    //         const response = await patch(`resource/therapy/${defaultValues.id}`, body);
 
-        try {
-            const body = {
-                patient_id: data?.user_id, 
-                date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
-                type: formData?.type,
-                therapy_name: formData?.therapy_name,
-                therapist_name: formData?.therapist_name,
-                duration: formData?.duration,
-                notes: formData?.notes,
-            };
+    //         if (response.code === 200) {
+    //             clearCache();
+    //             await fetchTherapies();
+    //             setAddFormView(false);
+    //             toast.success("Added successfully");
 
-            // Use the provided `post` function to send the request
-            const response = await patch(`resource/therapy/${defaultValues.id}`, body);
-
-            if (response.code === 200) {
-                clearCache();
-                await fetchTherapies();
-                setAddFormView(false);
-                toast.success("Added successfully");
-
-            } else {
-                console.error("Failed to fetch data:", response.message);
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+    //         } else {
+    //             console.error("Failed to fetch data:", response.message);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching data:", error);
+    //     }
+    // };
 
 
 
@@ -242,6 +248,7 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
                                 closeOnScroll={true}
                                 wrapperClassName="date-picker-wrapper"
                                 dateFormat={DATE_FORMAT}
+                                maxDate={maxDate}
                             />
                             {errors.date && <div className="error-text">{errors.date}</div>}
                         </div>
@@ -281,13 +288,13 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
                                 }}
                             >
                                 <Dropdown
-                                  options={options}
-                                  defaultValue={
-                                    defaultValues?.type
-                                      ? options[findItemIndex(options, defaultValues?.type)]
-                                      : null
-                                  }
-                                  getSelectedValue={getSelectedValue}
+                                    options={options}
+                                    defaultValue={
+                                        defaultValues?.type
+                                            ? options[findItemIndex(options, defaultValues?.type)]
+                                            : null
+                                    }
+                                    getSelectedValue={getSelectedValue}
                                 />
                             </div>
                             {errors.type && <div className="error-text">{errors.type}</div>}
@@ -352,7 +359,7 @@ const TherapiesForm = ({ back, fetchTherapies, setAddFormView, defaultValues }) 
                                 onChange={handleChange}
                                 maxLength={2}
                                 onInput={(e) => {
-                                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                                    e.target.value = e.target.value.replace(/[^0-9]/g, "");
                                 }}
                             />
                         </div>

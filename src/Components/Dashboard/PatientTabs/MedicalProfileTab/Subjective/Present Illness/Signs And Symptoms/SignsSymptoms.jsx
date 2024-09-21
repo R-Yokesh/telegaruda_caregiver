@@ -25,6 +25,7 @@ import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const SignsSymptoms = ({ from }) => {
@@ -191,7 +192,7 @@ const SignsSymptoms = ({ from }) => {
   //   },
   // ];
 
-  const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get,post,patch,del,clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -264,6 +265,58 @@ const SignsSymptoms = ({ from }) => {
     fetchSignsSymptoms();
   }, [fetchSignsSymptoms]);
 
+  
+  const addSymptoms = async (values) => {
+    try {
+      const body = {
+        slug: "hpi",
+        patient_id: data?.user_id,
+        consult_id: null,
+        values: values,
+      };
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/patientHealth`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchSignsSymptoms();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const editSymptoms = async (values,id) => {
+    try {
+      const body = {
+        slug: "hpi",
+        patient_id: data?.user_id,
+        consult_id: null,
+        values: values,
+      };
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/patientHealth/${id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchSignsSymptoms();
+        setAddFormView(false);
+        toast.success("Updated successfully");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+
+  };
+
+
   // Delte Signs Symptoms
   const deleteSignsSymptoms = async () => {
     try {
@@ -273,6 +326,7 @@ const SignsSymptoms = ({ from }) => {
         setDetailView(false);
         clearCache();
         fetchSignsSymptoms();
+        toast.success("Deleted successfully");
 
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -351,9 +405,9 @@ const SignsSymptoms = ({ from }) => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
-              setAddFormView={setAddFormView}
-              fetchSignsSymptoms={fetchSignsSymptoms}
               defaultValues={selectedData}
+              addSymptoms={addSymptoms}
+              editSymptoms={editSymptoms}
             />
           </CCardBody>
         </CCard>

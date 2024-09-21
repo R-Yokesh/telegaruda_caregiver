@@ -54,6 +54,7 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
   );
   const [errors, setErrors] = useState({});
   const defaultDateTime = defaultValues?.values?.surgery_date || "";
+  const maxDate = new Date(); // Restrict future dates 
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
@@ -198,7 +199,7 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
       }
     }
   };
-  console.log('iiicccdd111',icd)
+ 
   return (
     <>
       <CRow className="mb-3">
@@ -213,6 +214,7 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
                 selected={selectedDate}
                 onChange={handleDateChange}
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
             </div>
             {errors.date && <div className="text-danger">{errors.date}</div>}

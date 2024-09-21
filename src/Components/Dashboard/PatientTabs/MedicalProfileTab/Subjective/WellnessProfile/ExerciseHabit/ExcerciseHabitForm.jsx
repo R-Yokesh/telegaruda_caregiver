@@ -138,7 +138,7 @@ const ExerciseHabitForm = ({
         details: formEntries.map((entry) => ({
           patient_id: data?.user_id,
           act_catagory: entry.category,
-          act_date:  moment(entry.selectedDate).format("yyyy-MM-DD"),
+          act_date: moment(entry.selectedDate).format("yyyy-MM-DD"),
           act_time: moment(entry.selectedTime).format("HH:mm"),
           act_type: entry.type,
           act_duration: Number(entry.duration),
@@ -150,7 +150,7 @@ const ExerciseHabitForm = ({
       addHabits(body);
     }
   };
-
+  const maxDate = new Date();
   return (
     <>
       <div>
@@ -179,6 +179,7 @@ const ExerciseHabitForm = ({
                       closeOnScroll={true}
                       wrapperClassName="date-picker-wrapper"
                       dateFormat={DATE_FORMAT}
+                      maxDate={maxDate}
                     />
                   </div>
                   {errors[`date_${index}`] && (

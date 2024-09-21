@@ -19,6 +19,7 @@ import NextAppointmentForm from "./NextAppointmentForm";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const NextAppointmentTab = ({ from }) => {
   const columnData = [
@@ -63,7 +64,7 @@ const NextAppointmentTab = ({ from }) => {
   //   },
   // ];
 
-  const { loading, error, get,del,clearCache } = useApi();
+  const { loading, error, get,post,patch,del,clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -133,6 +134,59 @@ const NextAppointmentTab = ({ from }) => {
     fetchNextAppointment();
   }, [fetchNextAppointment]);
 
+   // Add NextAppointment
+  const addNextAppointment = async (values) => {
+    try {
+      const body = {
+        patient_id: data?.user_id,
+        provider_id: "9",
+        date: values?.date,
+        reason: values?.reason,
+         provider: values?.provider,
+      }
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/next-appointment`, body);
+      if (response.code === 201) {
+        clearCache();
+        await fetchNextAppointment();
+        setAddFormView(false);
+        toast.success("Added successfully");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Edit NextAppointment
+  const editNextAppointment = async (values,id) => {
+    try {
+      const body = {
+        patient_id: data?.user_id,
+        provider_id: "9",
+        date: values?.date,
+        reason: values?.reason,
+         provider: values?.provider,
+      }
+      // Use the provided `post` function to send the request
+      const response = await patch(`resource/next-appointment/${id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchNextAppointment();
+        setAddFormView(false);
+        toast.success("Updated successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
   // Delte Patient Education
   const deleteNextAppointment = async () => {
     try {
@@ -142,7 +196,7 @@ const NextAppointmentTab = ({ from }) => {
         setDetailView(false);
         clearCache();
         fetchNextAppointment();
-
+        toast.success("Deleted successfully");
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -220,9 +274,9 @@ const NextAppointmentTab = ({ from }) => {
                     setAddFormView(false);
                     setSelectedData({});
                   }}
-                  fetchNextAppointment={fetchNextAppointment}
-                  setAddFormView={setAddFormView}
                   defaultValues={selectedData}
+                  addNextAppointment={addNextAppointment}
+                  editNextAppointment={editNextAppointment}
                 />
               </CCardBody>
             </CCard>

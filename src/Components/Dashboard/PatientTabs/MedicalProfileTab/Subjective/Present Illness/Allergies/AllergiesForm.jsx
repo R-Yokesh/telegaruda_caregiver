@@ -20,9 +20,8 @@ import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
 import { useLocation } from "react-router-dom";
 
 
-const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) => {
+const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
 
-  console.log('defaulttttt',defaultValues)
 
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
@@ -50,25 +49,11 @@ const AllergiesForm = ({ back, defaultValues, setAddFormView, fetchAllergies }) 
   const [providerKey, setProviderKey] = useState(defaultValues?.values?.provider || "");
   const [provider, setProvider] = useState(defaultValues?.values?.provider || {});
 
-console.log('allergyname',allergyName)
-  const getFormattedDate = (date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const year = date.getFullYear();
 
-    return `${day}-${month}-${year}`;
-  };
-
-  const currentDate = new Date();
-  const formattedDate = getFormattedDate(currentDate);
-
-  // console.log(formattedDate); // e.g., 25-08-2024
-
-  const defaultDateTime = defaultValues?.date || "";
-
+  const defaultDateTime = defaultValues?.values?.date || "";
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  const defaultTime = defaultValues?.addition_info?.time || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -110,6 +95,8 @@ console.log('allergyname',allergyName)
     }
   };
 
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -139,9 +126,6 @@ console.log('allergyname',allergyName)
   };
 
 
-
-
-
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -154,7 +138,7 @@ console.log('allergyname',allergyName)
       newErrors.allergyName = "Allergy Name is required.";
       isValid = false;
     }
-     
+
     if (!formData.category) {
       newErrors.category = "Category is required.";
       isValid = false;
@@ -186,35 +170,59 @@ console.log('allergyname',allergyName)
 
 
   const onSubmit = () => {
-    console.log('clicked checking')
+    const values = {
+      name: {
+        id: allergyName?.id,
+        attributes: {
+          allergy_type: allergyName?.attributes?.allergy_type,
+          allergy_category: allergyName?.attributes?.allergy_category,
+        },
+        master_type_slug: allergyName?.master_type_slug,
+        name: allergyName?.name,
+        slug: allergyName?.slug,
+        is_active: allergyName?.is_active
+      },
+      // type: "Drug",
+      category: formData.category,
+      reaction: {
+        id: reaction?.id,
+        attributes: reaction?.attributes,
+        master_type_slug: reaction?.master_type_slug,
+        name: reaction?.name,
+        slug: reaction?.slug,
+        is_active: reaction?.is_active
+      },
+      other_reaction: formData?.other_reaction,
+      date: format(selectedDate, "dd-MM-yyyy"),
+      severity: formData?.severity,
+      provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
+      notes: formData?.notes,
+      status: formData?.status,
+      // treated_by: "d",
+      // is_active: 1,
+    }
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editAllergy()
+        editAllergy(values,defaultValues?.id)
 
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
-        addAllergy();
+        addAllergy(values);
 
       }
     }
   };
 
-  // const handleAllergyChange = (selectedOption) => {
-  //   setSelectedAllergy(selectedOption);
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     category: selectedOption.label,
-  //   }));
-  // };
+
   const getSelectedAllergy = (data) => {
-   
+
     setAllergyName(data);
     setFormData((prevState) => ({
-          ...prevState,
-           category: data?.name,
-      }));
+      ...prevState,
+      category: data?.name,
+    }));
   };
 
   const getSelectedReaction = (selectedOption) => {
@@ -289,131 +297,6 @@ console.log('allergyname',allergyName)
   }, [getProvider]);
 
 
-
-
-
-
-  // Add Allergy
-  const addAllergy = async () => {
-
-    try {
-      const body = {
-
-        patient_id: data?.user_id,
-        slug: "allergy",
-        values: {
-          name: {
-            id: allergyName?.id,
-            attributes: {
-              allergy_type: allergyName?.attributes?.allergy_type,
-              allergy_category: allergyName?.attributes?.allergy_category,
-            },
-            master_type_slug: allergyName?.master_type_slug,
-            name: allergyName?.name,
-            slug: allergyName?.slug,
-            is_active: allergyName?.is_active
-          },
-          // type: "Drug",
-          category: formData.category,
-          reaction: {
-            id: reaction?.id,
-            attributes: reaction?.attributes,
-            master_type_slug: reaction?.master_type_slug,
-            name: reaction?.name,
-            slug: reaction?.slug,
-            is_active: reaction?.is_active
-          },
-          other_reaction: formData?.other_reaction,
-          date: format(selectedDate, "dd-MM-yyyy"),
-          severity: formData?.severity,
-          provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
-          notes: formData?.notes,
-          status: formData?.status,
-          // treated_by: "d",
-          // is_active: 1,
-        }
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/patientHealth`, body);
-
-      if (response.code === 201) {
-        clearCache();
-        await fetchAllergies();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  // Edit Allery
-
-  const editAllergy = async () => {
-
-    try {
-      const body = {
-
-        patient_id: data?.user_id,
-        slug: "allergy",
-        values: {
-          name: {
-            id: allergyName?.id,
-            attributes: {
-              allergy_type: allergyName?.attributes?.allergy_type,
-              allergy_category: allergyName?.attributes?.allergy_category,
-            },
-            master_type_slug: allergyName?.master_type_slug,
-            name: allergyName?.name,
-            slug: allergyName?.slug,
-            is_active: allergyName?.is_active
-          },
-          // type: "Drug",
-          category: formData.category,
-          reaction: {
-            id: reaction?.id,
-            attributes: reaction?.attributes,
-            master_type_slug: reaction?.master_type_slug,
-            name: reaction?.name,
-            slug: reaction?.slug,
-            is_active: reaction?.is_active
-          },
-          other_reaction: formData?.other_reaction,
-          date: format(selectedDate, "dd-MM-yyyy"),
-          severity: formData?.severity,
-          provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
-          notes: formData?.notes,
-          status: formData?.status,
-          // treated_by: "d",
-          // is_active: 1,
-        }
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
-
-      if (response.code === 200) {
-        clearCache();
-        await fetchAllergies();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-
-
-
-console.log('proviiiderrr',provider)
   return (
     <>
       <CRow className="mb-3">
@@ -427,8 +310,9 @@ console.log('proviiiderrr',provider)
                 showIcon
                 selected={selectedDate}
                 onChange={handleDateChange}
-                dateFormat="MM-dd-yyyy"
+                dateFormat="dd-MM-yyyy"
                 disabled
+               
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
@@ -571,7 +455,7 @@ console.log('proviiiderrr',provider)
                   borderRadius: "5px",
                 }}
               >
-               <ProviderDrop
+                <ProviderDrop
                   getSelectedValue={getSelectedProvider}
                   options={providerDetails}
                   defaultValue={providerKey}

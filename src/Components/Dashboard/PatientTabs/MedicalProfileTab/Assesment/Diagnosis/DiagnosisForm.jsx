@@ -1,5 +1,5 @@
 import { CCol, CRow } from "@coreui/react";
-import React, { useEffect, useState ,useCallback} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PrimaryButton from "../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryButton";
 import DatePicker from "react-datepicker";
@@ -12,7 +12,7 @@ import useApi from "../../../../../../ApiServices/useApi";
 import ICDCodeDrop from "../../../../../Dropdown/ICDCodeDrop";
 import { useLocation } from "react-router-dom";
 
-const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) => {
+const DiagnosisForm = ({ back, defaultValues, addDiagnosis, editDiagnosis }) => {
 
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
@@ -25,24 +25,11 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
   const [icd, setIcd] = useState(defaultValues?.addition_info?.title || "");
   const [Description, setDescription] = useState([defaultValues?.addition_info?.notes || null])
 
-  const getFormattedDate = (date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  };
-
-  const currentDate = new Date();
-  const formattedDate = getFormattedDate(currentDate);
-
-  // console.log(formattedDate); // e.g., 25-08-2024
-
-  const defaultDateTime = defaultValues?.date || "";
-
+  const maxDate = new Date(); // Restrict past dates (today or future)
+  const defaultDateTime = defaultValues?.addition_info?.date || "";
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  const defaultTime = defaultValues?.addition_info?.time || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -72,7 +59,17 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
     }
   };
 
+  const handleTimeChange = (time) => {
+    if (time) {
+      const updatedDateTime = new Date(selectedDate || time);
+      updatedDateTime.setHours(time.getHours());
+      updatedDateTime.setMinutes(time.getMinutes());
+      updatedDateTime.setSeconds(0); // Reset seconds
 
+      setSelectedDate(updatedDateTime); // Optionally update date as well
+      setSelectedTime(time);
+    }
+  };
 
   const validate = () => {
     let isValid = true;
@@ -82,7 +79,7 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
       newErrors.date = "Date is required.";
       isValid = false;
     }
-    if (!icd ) {
+    if (!icd) {
       newErrors.icd = "Code is required.";
       isValid = false;
     }
@@ -93,21 +90,25 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
 
 
   const onSubmit = () => {
-
+    const values = {
+      date: format(selectedDate, "yyyy-MM-dd"),
+      title: icd,
+      notes: Description,
+    }
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editDiagnosis()
+        editDiagnosis(values, defaultValues?.id)
 
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
-        addDiagnosis();
+        addDiagnosis(values);
 
       }
     }
   };
-  
+
   const getSelectedIcd = (data) => {
     setIcd(data?.slug);
     setDescription(data?.name);
@@ -130,71 +131,6 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
     getICDCode();
   }, [getICDCode]);
 
-
-
-
-  // Add API 
-  const addDiagnosis = async () => {
-
-    try {
-      const body = {
-        user_id: data?.user_id,
-        document_source: "icd",
-        addition_info: {
-          date: format(selectedDate, "dd-MM-yyyy"),
-          title: icd,
-          notes: Description,
-        },
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/docs`, body);
-
-      if (response.code === 201) {
-        clearCache();
-        await fetchDiagnosis();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  // Edit API
-  const editDiagnosis = async () => {
-    try {
-      const body = {
-        user_id: data?.user_id,
-        document_source: "icd",
-        addition_info: {
-          date: format(selectedDate, "dd-MM-yyyy"),
-          title: icd,
-          notes: Description,
-        },
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await patch(`resource/docs/${defaultValues.id}`, body);
-
-      if (response.code === 200) {
-        clearCache();
-        await fetchDiagnosis();
-        setAddFormView(false);
-        toast.success("Updated successfully");
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-
-  };
-
-
-
   return (
     <>
       <CRow className="mb-3">
@@ -216,9 +152,10 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
                   showIcon
                   selected={selectedDate}
                   onChange={handleDateChange}
-                  dateFormat="MM-dd-yyyy"
+                  dateFormat="dd-MM-yyyy"
+                  maxDate={maxDate}
                 />
-              {errors.date && <div className="error-text">{errors.date}</div>}
+                {errors.date && <div className="error-text">{errors.date}</div>}
               </div>
             </div>
           </div>
@@ -230,11 +167,11 @@ const DiagnosisForm = ({ back, defaultValues, setAddFormView, fetchDiagnosis }) 
                 Code *
               </label>
               <ICDCodeDrop
-                  getSelectedValue={getSelectedIcd}
-                  options={icd10}
-                  defaultValue={icdkey}
-                  icdKey={setIcdKey}
-                />
+                getSelectedValue={getSelectedIcd}
+                options={icd10}
+                defaultValue={icdkey}
+                icdKey={setIcdKey}
+              />
               {errors.icd && <div className="error-text">{errors.icd}</div>}
 
             </div>

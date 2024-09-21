@@ -17,7 +17,7 @@ import {
 import { useLocation } from "react-router-dom";
 import ICDCodeDrop from "../../../../../../Dropdown/ICDCodeDrop";
 
-const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
+const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
 
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
@@ -31,25 +31,11 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
   const [Description, setDescription] = useState([defaultValues?.values?.name || null])
  
 
-
-  const getFormattedDate = (date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  };
-
-  const currentDate = new Date();
-  const formattedDate = getFormattedDate(currentDate);
-
-  // console.log(formattedDate); // e.g., 25-08-2024
-
-  const defaultDateTime = defaultValues?.date || "";
-
+  const maxDate = new Date(); // Restrict future dates 
+  const defaultDateTime = defaultValues?.values?.date || "";
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  const defaultTime = defaultValues?.values?.time || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -91,6 +77,7 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
     }
   };
 
+
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -111,15 +98,21 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
 
 
   const onSubmit = () => {
+    const  values = {
+      date: format(selectedDate, "yyyy-MM-dd"),
+      time: format(selectedTime, "HH:mm"),
+      code: icd,
+      name: Description,
+    }
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editCpt()
+        editCpt(values,defaultValues?.id)
 
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
-        addCpt();
+        addCpt(values);
 
       }
     }
@@ -148,65 +141,64 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
     getICDCode();
   }, [getICDCode]);
 
-  // Add Therapies
-  const addCpt = async () => {
+  // // Add Procedure
+  // const addCpt = async () => {
+  //   try {
+  //     const body = {
+  //       patient_id: data?.user_id,
+  //       slug: "procedure",
+  //       values: {
+  //         date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
+  //         code: icd,
+  //         name: Description,
+  //       }
+  //     };
+  //     // Use the provided `post` function to send the request
+  //     const response = await post(`resource/patientHealth`, body);
 
-    try {
-      const body = {
-        patient_id: data?.user_id,
-        slug: "procedure",
-        values: {
-          date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
-          code: icd,
-          name: Description,
-        }
-      };
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/patientHealth`, body);
+  //     if (response.code === 201) {
+  //       clearCache();
+  //       await fetchCpt();
+  //       setAddFormView(false);
+  //       toast.success("Added successfully");
 
-      if (response.code === 201) {
-        clearCache();
-        await fetchCpt();
-        setAddFormView(false);
-        toast.success("Added successfully");
+  //     } else {
+  //       console.error("Failed to fetch data:", response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // // Edit Procedure
+  // const editCpt = async () => {
 
-  // Edit Therapies
-  const editCpt = async () => {
+  //   try {
+  //     const body = {
+  //       patient_id: data?.user_id,
+  //       slug: "procedure",
+  //       values: {
+  //         date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
+  //         code: icd,
+  //         name: Description,
+  //       }
+  //     };
+  //     // Use the provided `post` function to send the request
+  //     const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
 
-    try {
-      const body = {
-        patient_id: data?.user_id,
-        slug: "procedure",
-        values: {
-          date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
-          code: icd,
-          name: Description,
-        }
-      };
-      // Use the provided `post` function to send the request
-      const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
+  //     if (response.code === 200) {
+  //       clearCache();
+  //       await fetchCpt();
+  //       setAddFormView(false);
+  //       toast.success("Added successfully");
 
-      if (response.code === 200) {
-        clearCache();
-        await fetchCpt();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  //     } else {
+  //       console.error("Failed to fetch data:", response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
   return (
     <>
@@ -225,6 +217,7 @@ const ProcedureForm = ({ back, defaultValues, fetchCpt, setAddFormView }) => {
                   closeOnScroll={true}
                   wrapperClassName="date-picker-wrapper"
                   dateFormat={DATE_FORMAT}
+                  maxDate={maxDate}
                 />
                 {errors.date && <div className="error-text">{errors.date}</div>}
               </div>

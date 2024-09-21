@@ -22,6 +22,7 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [spO2, setSpO2] = useState(removePercent(defaultData?.spo2) || "");
   const [errors, setErrors] = useState({});
+  const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -167,6 +168,7 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
                 closeOnScroll={true}
                 wrapperClassName="date-picker-wrapper"
                 dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
