@@ -612,7 +612,7 @@ export const transformHeartRateData = (originalData, pagination) => {
     name: "Heart",
     type: item?.details?.type || "Unknown",
     interpretation: item?.details?.interpretation || "-",
-    result_file: item?.details?.result_file || "-",
+    result_file: item?.document || "-",
     id: item.id,
     user_id: item.user_id,
     slug: "heart-rate",

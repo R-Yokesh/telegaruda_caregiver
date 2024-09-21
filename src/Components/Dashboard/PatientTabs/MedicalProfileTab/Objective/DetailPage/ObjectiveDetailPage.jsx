@@ -333,7 +333,7 @@ const ObjectiveDetailPage = ({
                   <GFR addBack={addBack} getTableDatas={getTableDatas} />
                 )}
                 {data?.name === "Urinalysis" && (
-                  <Urinalysis addBack={addBack} />
+                  <Urinalysis addBack={addBack} getTableDatas={getTableDatas}/>
                 )}
               </CModalBody>
             </CModal>

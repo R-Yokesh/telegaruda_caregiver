@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import useApi from "../../../../../../ApiServices/useApi";
 import { getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { useLocation } from "react-router-dom";
+import { heartRateFileUpload } from "../../../../../../Utils/imageUpload";
 
 const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
@@ -29,13 +30,16 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
       ? ""
       : defaultData?.interpretation || null
   );
-  const [ecgFile, setEcgFile] = useState({
+  const [ecgFile, setEcgFile] = useState();
+
+  const [preFile, setPreFile] = useState({
     name: "",
     link: "",
     contentType: "",
   });
+
   const [hr, setHr] = useState(defaultData?.["hr_(bpm)"] || null);
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -103,16 +107,20 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
   const handleUpload = async (file) => {
     if (file) {
       // const fileType = getFileTypeFromMime(file.type);
-      setEcgFile({ name: file.name, link: "", contentType: file.type });
+      setEcgFile(file);
+      setPreFile({ name: file.name, link: "", contentType: file.type });
+
       const reader = new FileReader();
 
       reader.onloadend = () => {
         // Convert file to base64 string
         const base64 = reader.result.split(",")[1]; // Remove the data URL part
-        setEcgFile((prevState) => ({
+        setPreFile((prevState) => ({
           ...prevState,
           link: base64,
+          name: file.name,
         }));
+        const binaryData = reader.result;
       };
 
       // Read the file as a data URL
@@ -153,7 +161,7 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
     return isValid;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (validateInputs()) {
       if (defaultData) {
         console.log("Edit clicked");
@@ -161,12 +169,18 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
       }
       if (!defaultData) {
         console.log("Add clicked");
-        onAdd();
+
+        const uploadedImage = await heartRateFileUpload(ecgFile);
+        if (uploadedImage) {
+          onAdd(uploadedImage, 1);
+        } else {
+          onAdd(0);
+        }
       }
     }
   };
 
-  const onAdd = async () => {
+  const onAdd = async (imageFiles, created_doc) => {
     try {
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
@@ -175,12 +189,13 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           unit: "Bpm",
           heart: Number(hr),
-          type: type,
+          device_type: type,
           interpretation: interpretation,
-          // result_file: ecgFile,
         },
+        create_doc: created_doc,
         user_id: data?.user_id,
         slug: "heart-rate",
+        properties: imageFiles,
       };
       await post(url, body);
       await getTableDatas(defaultData);
@@ -321,9 +336,9 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
               <label htmlFor="file">Choose file</label>
 
               <div class="d-flex flex-column gap-1 justify-content-center h-100">
-                {ecgFile?.link !== "" ? (
+                {preFile?.link !== "" ? (
                   <span className="cursor" onClick={() => openInNewTab()}>
-                    ECG.{getFileTypeFromMime(ecgFile?.contentType)}
+                    ECG.{getFileTypeFromMime(preFile?.contentType)}
                   </span>
                 ) : (
                   <span className="">No File Chosen</span>

@@ -25,6 +25,7 @@ import BPForm from "../Dashboard/PatientTabs/MedicalProfileTab/Objective/Forms/B
 import useApi from "../../ApiServices/useApi";
 import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
+import { getImageUrl } from "../../Utils/imageUpload";
 
 const DynamicTable = ({
   columnsData,
@@ -272,6 +273,7 @@ const DynamicTable = ({
                 <Urinalysis
                   addBack={() => setEditModal(false)}
                   defaultData={selectedData}
+                  getTableDatas={() => getTableDatas(selectedData)}
                 />
               )}
             </CModalBody>
@@ -318,12 +320,18 @@ const DynamicTable = ({
       ));
     } else if (columnKey === "result_file") {
       // Function to render PDF content
-      const renderPdf = (contentUrl) => {
-        window.open(contentUrl, "_blank");
+      const renderPdf = async (contentUrl) => {
+        const showImage = await getImageUrl(contentUrl);
+        window.open(showImage, "_blank");
+        // alert(showImage);
       };
       return (
-        <div style={{ width: "80px" }} onClick={() => renderPdf(value.link)}>
-          <span className="hyperlink">{value?.name}</span>
+        <div
+          style={{ width: "80px" }}
+          onClick={() => renderPdf(value?.properties?.file_path)}
+        >
+          {/* value?.name */}
+          <span className="hyperlink">{"png"}</span>
         </div>
       );
     } else if (columnKey === "result") {
