@@ -18,6 +18,7 @@ import Pagination from "../../Components/Pagination/Pagination";
 import Loader from "../../Components/Loader/Loader";
 import PhoneNumberInput from "../../Components/PhoneNumberInput/PhoneNumberInput";
 import { toast } from "react-toastify";
+import ProfileUpdate from "./ProfileUpdate";
 
 function ExistingPatientView() {
   const navigate = useNavigate();
@@ -268,7 +269,7 @@ function ExistingPatientView() {
             </div>
             <CRow className="mb-2">
               <CCol lg={4} className="mb-2">
-                <label className="profile-pic">
+                {/* <label className="profile-pic">
                   <input
                     type="file"
                     accept="image/*"
@@ -291,7 +292,8 @@ function ExistingPatientView() {
                       />
                     </>
                   )}
-                </label>
+                </label> */}
+                <ProfileUpdate />
               </CCol>
               <CCol lg={8} className="mb-2">
                 <CRow className="g-3">

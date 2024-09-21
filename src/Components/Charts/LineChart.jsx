@@ -157,11 +157,11 @@ const LineChartDetails = ({ datas }) => {
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
-            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
-            { value: datas?.chartLabel4, type: "line", color: "#1858c7" },
-            { value: datas?.chartLabel5, type: "line", color: "#1858c7" },
-            { value: datas?.chartLabel6, type: "line", color: "#1858c7" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
+            { value: datas?.chartLabel3, type: "line", color: "#8AC185" },
+            { value: datas?.chartLabel4, type: "line", color: "#B37655" },
+            { value: datas?.chartLabel5, type: "line", color: "#5157F3" },
+            { value: datas?.chartLabel6, type: "line", color: "#E5A000" },
           ]}
         />
       ) : formattedData[0]?.data5 &&
@@ -172,10 +172,10 @@ const LineChartDetails = ({ datas }) => {
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
-            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
-            { value: datas?.chartLabel4, type: "line", color: "#1858c7" },
-            { value: datas?.chartLabel5, type: "line", color: "#1858c7" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
+            { value: datas?.chartLabel3, type: "line", color: "#8AC185" },
+            { value: datas?.chartLabel4, type: "line", color: "#B37655" },
+            { value: datas?.chartLabel5, type: "line", color: "#5157F3" },
           ]}
         />
       ) : formattedData[0]?.data4 &&
@@ -185,9 +185,9 @@ const LineChartDetails = ({ datas }) => {
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
-            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
-            { value: datas?.chartLabel4, type: "line", color: "#1858c7" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
+            { value: datas?.chartLabel3, type: "line", color: "#8AC185" },
+            { value: datas?.chartLabel4, type: "line", color: "#B37655" },
           ]}
         />
       ) : formattedData[0]?.data3 &&
@@ -196,15 +196,15 @@ const LineChartDetails = ({ datas }) => {
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
-            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
+            { value: datas?.chartLabel3, type: "line", color: "#8AC185" },
           ]}
         />
       ) : formattedData[0]?.data2 && formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
           ]}
         />
       ) : formattedData[0]?.data1 ? (
@@ -218,19 +218,19 @@ const LineChartDetails = ({ datas }) => {
       <CartesianGrid horizontal={true} vertical={false} strokeWidth={1} />
       <Line type="linear" dataKey="data1" stroke="#0084CF" />
       {formattedData[0]?.data2 && (
-        <Line type="linear" dataKey="data2" stroke="#166da9" />
+        <Line type="linear" dataKey="data2" stroke="#EC5A5A" />
       )}
       {formattedData[0]?.data3 && (
-        <Line type="linear" dataKey="data3" stroke="#1858c6" />
+        <Line type="linear" dataKey="data3" stroke="#8AC185" />
       )}
       {formattedData[0]?.data4 && (
-        <Line type="linear" dataKey="data4" stroke="#1858c7" />
+        <Line type="linear" dataKey="data4" stroke="#B37655" />
       )}
       {formattedData[0]?.data5 && (
-        <Line type="linear" dataKey="data5" stroke="#1858c7" />
+        <Line type="linear" dataKey="data5" stroke="#5157F3" />
       )}
       {formattedData[0]?.data6 && (
-        <Line type="linear" dataKey="data6" stroke="#1858c7" />
+        <Line type="linear" dataKey="data6" stroke="#E5A000" />
       )}
     </LineChart>
   );

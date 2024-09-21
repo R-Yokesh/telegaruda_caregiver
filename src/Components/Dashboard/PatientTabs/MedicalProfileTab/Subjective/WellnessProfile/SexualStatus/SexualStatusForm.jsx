@@ -11,7 +11,7 @@ import { format, parse } from "date-fns";
 
 const SexualStatusForm = ({ back, defaultValues, from }) => {
   const [date, setDate] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [historySti, setHistorySti] = useState("no");
   const [historySexual, setHistorySexual] = useState("no");
   const [currentSti, setCurrentSti] = useState();

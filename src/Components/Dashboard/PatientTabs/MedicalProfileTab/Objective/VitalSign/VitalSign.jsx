@@ -134,12 +134,6 @@ const VitalSign = ({ setVitalView, onClose }) => {
   };
 
   const [change, setChange] = useState(false);
-
-  useEffect(() => {
-    fetchCardData();
-  }, [change]);
-  // entities, cardSelectedData
-
   const fetchCardData = async () => {
     setChange(false);
     setVitalsLoading(true);
@@ -447,6 +441,10 @@ const VitalSign = ({ setVitalView, onClose }) => {
       console.error("Error fetching card data:", error);
     }
   };
+  useEffect(() => {
+    fetchCardData();
+  }, [change, data?.user_id]);
+  // entities, cardSelectedData
 
   const fetchSingleCardData = useCallback(
     async (card) => {
@@ -746,9 +744,13 @@ const VitalSign = ({ setVitalView, onClose }) => {
   );
 
   const openModal = (data) => {
+    setCurrentPage(1);
     setSelectedCardData(data);
     // TableDatas(data);
     setIsModalOpen(true);
+    setStartDate(null);
+    setEndDate(null);
+    setSearchValue("");
   };
 
   useEffect(() => {
@@ -800,7 +802,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
 
   useEffect(() => {
     fetchSingleCardData(cardSelectedData);
-  }, [fetchSingleCardData]);
+  }, [fetchSingleCardData, data?.user_id]);
 
   return (
     <>

@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 
 const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
-  console.log('first defaultData',defaultData)
+  console.log("first defaultData", defaultData);
 
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -22,7 +22,7 @@ const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
   const [ldl, setLdl] = useState(defaultData?.["ldl_(mg/dl)"] || "");
   const [hdl, setHdl] = useState(defaultData?.["hdl_(mg/dl)"] || "");
   const [vldl, setVldl] = useState(defaultData?.["vldl_(mg/dl)"] || "");
-  const [ldlHdl, setLdlHdl] = useState(defaultData?.["ldl/hdl_(mg/dl)"] || "");
+  const [ldlHdl, setLdlHdl] = useState(defaultData?.["ldl/hdl_(mg/dl)"] || 0);
   const [triglycerides, setTriglycerides] = useState(
     defaultData?.["triglycerides_(mg/dl)"] || ""
   );
@@ -197,6 +197,13 @@ const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
     }
   };
 
+  // Calculate total whenever any score changes
+  useEffect(() => {
+    if (ldl && hdl) {
+      const sum = Number(ldl) / Number(hdl);
+      setLdlHdl(sum.toFixed(2));
+    }
+  }, [ldl, hdl]);
   return (
     <>
       <CContainer>
@@ -314,6 +321,7 @@ const LipidProfileForm = ({ addBack, defaultData, getTableDatas }) => {
                 onChange={(e) => {
                   setLdlHdl(e.target?.value?.replace(/[^0-9]/g, ""));
                 }}
+                disabled
               />
               {errors.ldlHdl && (
                 <div className="error-text">{errors.ldlHdl}</div>

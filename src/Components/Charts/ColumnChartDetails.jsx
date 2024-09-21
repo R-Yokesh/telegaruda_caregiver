@@ -154,11 +154,11 @@ const ColumnChartDetails = ({ datas }) => {
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
-            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
-            { value: datas?.chartLabel4, type: "line", color: "#1858c7" },
-            { value: datas?.chartLabel5, type: "line", color: "#1858c7" },
-            { value: datas?.chartLabel6, type: "line", color: "#1858c7" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
+            { value: datas?.chartLabel3, type: "line", color: "#8AC185" },
+            { value: datas?.chartLabel4, type: "line", color: "#B37655" },
+            { value: datas?.chartLabel5, type: "line", color: "#5157F3" },
+            { value: datas?.chartLabel6, type: "line", color: "#E5A000" },
           ]}
         />
       ) : formattedData[0]?.data5 &&
@@ -169,10 +169,10 @@ const ColumnChartDetails = ({ datas }) => {
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
-            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
-            { value: datas?.chartLabel4, type: "line", color: "#1858c7" },
-            { value: datas?.chartLabel5, type: "line", color: "#1858c7" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
+            { value: datas?.chartLabel3, type: "line", color: "#8AC185" },
+            { value: datas?.chartLabel4, type: "line", color: "#B37655" },
+            { value: datas?.chartLabel5, type: "line", color: "#5157F3" },
           ]}
         />
       ) : formattedData[0]?.data4 &&
@@ -182,9 +182,9 @@ const ColumnChartDetails = ({ datas }) => {
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
-            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
-            { value: datas?.chartLabel4, type: "line", color: "#1858c7" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
+            { value: datas?.chartLabel3, type: "line", color: "#8AC185" },
+            { value: datas?.chartLabel4, type: "line", color: "#B37655" },
           ]}
         />
       ) : formattedData[0]?.data3 &&
@@ -193,15 +193,15 @@ const ColumnChartDetails = ({ datas }) => {
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
-            { value: datas?.chartLabel3, type: "line", color: "#1858c6" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
+            { value: datas?.chartLabel3, type: "line", color: "#8AC185" },
           ]}
         />
       ) : formattedData[0]?.data2 && formattedData[0]?.data1 ? (
         <Legend
           payload={[
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
-            { value: datas?.chartLabel2, type: "line", color: "#166da9" },
+            { value: datas?.chartLabel2, type: "line", color: "#EC5A5A" },
           ]}
         />
       ) : formattedData[0]?.data1 ? (
@@ -212,11 +212,11 @@ const ColumnChartDetails = ({ datas }) => {
         />
       ) : null}
       <Bar dataKey="data1" fill="#0084CF" />
-      {formattedData[0]?.data2 && <Bar dataKey="data2" fill="#166da9" />}
-      {formattedData[0]?.data3 && <Bar dataKey="data3" fill="#1858c6" />}
-      {formattedData[0]?.data4 && <Bar dataKey="data4" fill="#1858c7" />}
-      {formattedData[0]?.data5 && <Bar dataKey="data5" fill="#1858c7" />}
-      {formattedData[0]?.data6 && <Bar dataKey="data6" fill="#1858c7" />}
+      {formattedData[0]?.data2 && <Bar dataKey="data2" fill="#EC5A5A" />}
+      {formattedData[0]?.data3 && <Bar dataKey="data3" fill="#8AC185" />}
+      {formattedData[0]?.data4 && <Bar dataKey="data4" fill="#B37655" />}
+      {formattedData[0]?.data5 && <Bar dataKey="data5" fill="#5157F3" />}
+      {formattedData[0]?.data6 && <Bar dataKey="data6" fill="#E5A000" />}
     </BarChart>
   );
 };
