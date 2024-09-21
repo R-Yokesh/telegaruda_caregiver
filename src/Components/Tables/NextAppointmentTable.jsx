@@ -58,7 +58,7 @@ const NextAppointmentTable = ({ columns, rowData, getselectedData, from,itemsPer
               {getSerialNumber(itemsPerPage, currentPage, i)}
               </CTableHeaderCell>
               <CTableDataCell>
-              <span className="fs-16 fw-500">{formatDate(dt?.values?.date)}</span>
+              <span className="fs-16 fw-500">{formatDate(dt?.date)}</span>
               </CTableDataCell>
               <CTableDataCell>
                 <span className="fs-16 fw-500">{`${dt?.provider?.first_name || ''} ${dt?.provider?.last_name || ''}`}</span>

@@ -128,6 +128,8 @@ const Mood = ({ from }) => {
           columns={columnData}
           getselectedData={getselectedData}
           from={from}
+          currentPage={currentPage || 1}
+          itemsPerPage={itemsPerPage || 5}
         />
       )}
       {from !== "Consult" && (
@@ -164,6 +166,8 @@ const Mood = ({ from }) => {
                   moodData={moodData}
                   columns={columnData}
                   getselectedData={getselectedData}
+                  currentPage={currentPage || 1}
+                  itemsPerPage={itemsPerPage || 5}
                 />
 
                 <CRow className="mb-3">

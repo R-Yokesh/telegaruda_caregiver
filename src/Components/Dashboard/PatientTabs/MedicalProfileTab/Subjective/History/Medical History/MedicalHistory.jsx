@@ -131,8 +131,17 @@ const MedicalHistory = ({ from }) => {
   const [id, setId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
 
   const itemsPerPage = 10; // Number of items to display per page
+  const getFilterValues = (startDate, endDate, searchValue) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setSearchValue(searchValue);
+
+  };
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
@@ -170,7 +179,7 @@ const MedicalHistory = ({ from }) => {
   const getMedicalLists = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHistories?user_id=${data?.user_id}&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values->onset_date&dir=2&from=&to=&searchkey=fever`
+        `resource/patientHistories?user_id=${data?.user_id}&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values->onset_date&dir=2&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
       );
       if (response.code === 200) {
         // console.log("data", response.data.patient_histories);
@@ -214,7 +223,7 @@ const MedicalHistory = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSearch />
+                <DateSearch  getFilterValues={getFilterValues}/>
               </CCol>
               <CCol
                 lg={4}
@@ -244,6 +253,8 @@ const MedicalHistory = ({ from }) => {
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
+              currentPage={currentPage || 1}
+              itemsPerPage={itemsPerPage || 5}
             />
             {from !== "Consult" && (
               <CRow className="mb-3">

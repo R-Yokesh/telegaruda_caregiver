@@ -67,6 +67,7 @@ const NextAppointmentTab = ({ from }) => {
   const { loading, error, get,post,patch,del,clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
+  console.log('daattttta',data)
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -117,7 +118,7 @@ const NextAppointmentTab = ({ from }) => {
   const fetchNextAppointment = useCallback(async () => {
     try {
       const response = await get(
-        `resource/next-appointment?patient_id=${data?.user_id}&provider_id=9&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=date&dir=2`
+        `resource/next-appointment?patient_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=date&dir=2`
       );
       if (response.code === 200) {
         setRowData(response.data.next_appointments);
@@ -139,7 +140,7 @@ const NextAppointmentTab = ({ from }) => {
     try {
       const body = {
         patient_id: data?.user_id,
-        provider_id: "9",
+        provider_id: values?.provider_id,
         date: values?.date,
         reason: values?.reason,
          provider: values?.provider,
@@ -164,7 +165,7 @@ const NextAppointmentTab = ({ from }) => {
     try {
       const body = {
         patient_id: data?.user_id,
-        provider_id: "9",
+        provider_id: values?.provider_id,
         date: values?.date,
         reason: values?.reason,
          provider: values?.provider,
