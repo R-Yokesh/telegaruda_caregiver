@@ -228,6 +228,8 @@ const Nutrition = ({ from }) => {
             columns={columnData}
             getselectedData={getselectedData}
             from={from}
+            currentPage={currentPage || 1}
+            itemsPerPage={itemsPerPage || 5}
           />
         </CRow>
       )}
@@ -238,6 +240,8 @@ const Nutrition = ({ from }) => {
             columns={FluidIntakecolumnData}
             getselectedData={getselectedData}
             from={from}
+            currentPage={currentPage || 1}
+            itemsPerPage={itemsPerPage || 5}
           />
         </CRow>
       )}
@@ -293,6 +297,8 @@ const Nutrition = ({ from }) => {
                           columns={columnData}
                           getselectedData={getselectedData}
                           from={from}
+                          currentPage={currentPage || 1}
+                          itemsPerPage={itemsPerPage || 5}
                         />
                       </CRow>
                       <CRow className="mb-3">
@@ -315,6 +321,8 @@ const Nutrition = ({ from }) => {
                           columns={FluidIntakecolumnData}
                           getselectedData={getselectedData}
                           from={from}
+                          currentPage={currentPage || 1}
+                          itemsPerPage={itemsPerPage || 5}
                         />
                       </CRow>
                       <CRow className="mb-3">

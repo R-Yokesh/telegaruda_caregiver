@@ -126,6 +126,7 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
   const onSubmit = () => {
     const values = {
       date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
+      provider_id: provider?.user_id,
       reason: reason,
       provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
     }

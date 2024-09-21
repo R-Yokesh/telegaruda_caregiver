@@ -131,6 +131,8 @@ const Sleep = ({ from }) => {
           columns={columnData}
           getselectedData={getselectedData}
           from={from}
+          currentPage={currentPage || 1}
+          itemsPerPage={itemsPerPage || 5}
         />
       )}
       {from !== "Consult" && (
@@ -167,6 +169,8 @@ const Sleep = ({ from }) => {
                   rowData={rowData}
                   columns={columnData}
                   getselectedData={getselectedData}
+                  currentPage={currentPage || 1}
+                  itemsPerPage={itemsPerPage || 5}
                 />
 
                 <CRow className="mb-3">

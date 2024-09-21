@@ -12,7 +12,7 @@ import { Assets } from "../../../../assets/Assets";
 import { getSerialNumber } from "../../../../Utils/commonUtils";
 import moment from "moment";
 
-function ExerciseHabitTable({ columns, habitData, getselectedData, from }) {
+function ExerciseHabitTable({ columns, habitData, getselectedData, from,itemsPerPage, currentPage  }) {
   const selectedData = (data,id, type) => {
     getselectedData(data,id, type);
   };
@@ -30,11 +30,18 @@ function ExerciseHabitTable({ columns, habitData, getselectedData, from }) {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {habitData?.map((dt, i) => (
+        {habitData?.length <= 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="no-data-message">
+                No data available
+              </td>
+            </tr>
+          ) : (
+          habitData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.id}</span>
+                {getSerialNumber(itemsPerPage, currentPage, i)}
                 </div>
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
@@ -99,7 +106,8 @@ function ExerciseHabitTable({ columns, habitData, getselectedData, from }) {
               </CTableDataCell>
               )}
             </CTableRow>
-          ))}
+          ))
+        )}
         </CTableBody>
       </CTable>
     </>

@@ -30,7 +30,14 @@ const MedicationTable = ({ columns, rowData, getselectedData, from,itemsPerPage,
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {rowData?.map((dt, i) => (
+        {rowData?.length <= 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="no-data-message">
+                No data available
+              </td>
+            </tr>
+          ) : (
+          rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
@@ -114,7 +121,8 @@ const MedicationTable = ({ columns, rowData, getselectedData, from,itemsPerPage,
                </CTableDataCell>
               )}
             </CTableRow>
-          ))}
+          ))
+        )}
         </CTableBody>
       </CTable>
     </>
