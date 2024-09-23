@@ -341,6 +341,16 @@ body {
   display: flex;
 }
 
+.time-picker-style {
+  border: 1px solid #d1d1d2 !important;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.date-picker-wrapper {
+  width: 100%;
+}
+
 .bread-crumbs a {
   color: var(--text-light);
   font-weight: 600;

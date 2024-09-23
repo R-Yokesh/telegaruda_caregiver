@@ -167,9 +167,9 @@ const SurgicalHistory = ({ from }) => {
   const getHistoryLists = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHistories?limit=10&page=1&from=${startDate ?? ""}&to=${
-          endDate ?? ""
-        }&order_by=values-%3Esurgery_date&dir=2&user_id=${
+        `resource/patientHistories?limit=5&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&order_by=values-%3Esurgery_date&dir=2&user_id=${
           data?.user_id
         }&slug=surgical-history&searchkey=${searchValue ?? ""}`
       );
@@ -179,7 +179,8 @@ const SurgicalHistory = ({ from }) => {
     } catch (error) {
       console.error("Error fetching card data:", error);
     }
-  }, [get]);
+  }, [currentPage, data?.user_id, endDate, get, searchValue, startDate]);
+
   const surgicalEdit = async (answerDatas, selectedId) => {
     try {
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
@@ -234,8 +235,7 @@ const SurgicalHistory = ({ from }) => {
   };
   useEffect(() => {
     getHistoryLists();
-  }, [getHistoryLists]);
-
+  }, [getHistoryLists, currentPage]);
   return (
     <>
       {!addFormView && (

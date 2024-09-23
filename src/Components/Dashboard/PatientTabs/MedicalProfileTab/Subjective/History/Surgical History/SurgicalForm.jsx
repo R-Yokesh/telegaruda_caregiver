@@ -53,9 +53,8 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
     defaultValues?.values?.surgery_done_by || ""
   );
   const [errors, setErrors] = useState({});
-  const defaultDateTime = defaultValues?.values?.surgery_date || "";
   const maxDate = new Date(); // Restrict future dates 
-
+  const defaultDateTime = defaultValues?.values?.surgery_date || "";
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
   const defaultTime = defaultValues?.values?.surgery_time || getCurrentTime();
@@ -101,7 +100,6 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
   };
 
   const getSelectedGravida = (data) => {
-    console.log('dddddddaaat',data)
     setIcd(data);
   };
  

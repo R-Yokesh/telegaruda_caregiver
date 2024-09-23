@@ -18,9 +18,14 @@ import {
 } from "../../../../../../../Utils/commonUtils";
 import SearchInput from "../../../../../../Input/SearchInput";
 import { useLocation } from "react-router-dom";
+import ChiefInput from "../../../../../../Input/ChiefInput";
 
-const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => {
-
+const SignsSymptomsForm = ({
+  back,
+  defaultValues,
+  addSymptoms,
+  editSymptoms,
+}) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -34,14 +39,17 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
     temporal_factors: defaultValues?.values?.temporal_factors || "",
     severity: defaultValues?.values?.severity || "",
     notes: defaultValues?.values?.notes || "",
-
   });
   const [locationDetails, setLocationDetails] = useState([]);
-  const [locationKey, setLocationKey] = useState(defaultValues?.values?.location || "");
-  const [locationName, setLocationName] = useState(defaultValues?.values?.location || {});
- 
+  const [locationKey, setLocationKey] = useState(
+    defaultValues?.values?.location || ""
+  );
+  const [locationName, setLocationName] = useState(
+    defaultValues?.values?.location || {}
+  );
+
   const defaultDateTime = defaultValues?.values?.date || "";
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
   const defaultTime = defaultValues?.values?.time || getCurrentTime();
@@ -85,7 +93,6 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
       setSelectedTime(time);
     }
   };
- 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,7 +107,7 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
     "Very Severe",
     "Worst",
   ];
-  const options1 = ["None", "Insignificant", "Moderate","Extreme"];
+  const options1 = ["None", "Insignificant", "Moderate", "Extreme"];
 
   // Function to update symptoms
   const getSelectedValue = (data) => {
@@ -117,7 +124,6 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
       severity: data,
     }));
   };
-
 
   const validate = () => {
     let isValid = true;
@@ -139,7 +145,7 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
       newErrors.duration_days = "Duration is required.";
       isValid = false;
     }
-    if (!formData.symptoms) {
+    if (!reasonName?.name) {
       newErrors.symptoms = "Symptoms is required.";
       isValid = false;
     }
@@ -152,36 +158,31 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
     return isValid;
   };
 
-
   const onSubmit = () => {
     const values = {
       date: format(selectedDate, "dd-MM-yyyy"),
       time: format(selectedTime, "HH:mm"),
       location: locationName?.name,
       duration: formData.duration_days,
-      symptoms: formData.symptoms,
+      symptoms: reasonName?.name,
       aggravating_factors: formData.aggravating_factors,
       releiving_factors: formData.releiving_factors,
       temporal_factors: formData.temporal_factors,
       severity: formData.severity,
       notes: formData.notes,
-      quality: ""
-    }
+      quality: "",
+    };
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editSymptoms(values,defaultValues?.id)
-
+        editSymptoms(values, defaultValues?.id);
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
         addSymptoms(values);
-
       }
     }
   };
-
-
 
   //api integration of medical conditions list
   const getLocation = useCallback(async () => {
@@ -220,7 +221,30 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
     setLocationName(data);
   };
 
-
+  const [reasonDetails, setReasonDetails] = useState([]);
+  const [reasonkey, setReasonKey] = useState(
+    defaultValues?.values?.symptoms || ""
+  );
+  const [reasonName, setReasonName] = useState(
+    defaultValues?.values?.symptoms || {}
+  );
+  const getSurgeryReasons = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/masters?slug=symptom&searchkey=${reasonkey}&limit=50&country=undefined`
+      );
+      const listData = response?.data?.masters; //
+      setReasonDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, reasonkey]);
+  const getSelectedReasonData = (data) => {
+    setReasonName(data);
+  };
+  useEffect(() => {
+    getSurgeryReasons();
+  }, [getSurgeryReasons]);
 
   return (
     <>
@@ -237,7 +261,6 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
                 onChange={handleDateChange}
                 dateFormat={DATE_FORMAT}
                 disabled
-              
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
@@ -276,8 +299,9 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
                 defaultkey={locationKey}
               />
 
-              {errors.locationName && <div className="error-text">{errors.locationName}</div>}
-
+              {errors.locationName && (
+                <div className="error-text">{errors.locationName}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -299,9 +323,10 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
-
               />
-              {errors.duration_days && <div className="error-text">{errors.duration_days}</div>}
+              {errors.duration_days && (
+                <div className="error-text">{errors.duration_days}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -320,7 +345,7 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
                 placeholder="Enter"
                 defaultValue={defaultValues?.characteristics}
               /> */}
-              <div
+              {/* <div
                 className="w-100"
                 style={{
                   border: "1px solid #17171D33",
@@ -336,8 +361,16 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
                   }
                   getSelectedValue={getSelectedValue}
                 />
-              </div>
-              {errors.symptoms && <div className="error-text">{errors.symptoms}</div>}
+              </div> */}
+              <ChiefInput
+                data={reasonDetails}
+                setSurgeryKey={setReasonKey}
+                getSelectedData={getSelectedReasonData}
+                defaultkey={reasonkey}
+              />
+              {errors.symptoms && (
+                <div className="error-text">{errors.symptoms}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -414,13 +447,20 @@ const SignsSymptomsForm = ({ back, defaultValues,addSymptoms,editSymptoms }) => 
                   options={options1}
                   defaultValue={
                     defaultValues?.values?.severity
-                      ? options1[findItemIndex(options1, defaultValues?.values?.severity)]
+                      ? options1[
+                          findItemIndex(
+                            options1,
+                            defaultValues?.values?.severity
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getSelectedValue1}
                 />
               </div>
-              {errors.severity && <div className="error-text">{errors.severity}</div>}
+              {errors.severity && (
+                <div className="error-text">{errors.severity}</div>
+              )}
             </div>
           </div>
         </CCol>

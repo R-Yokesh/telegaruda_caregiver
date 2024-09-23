@@ -123,7 +123,7 @@ const MedicalHistory = ({ from }) => {
   // ];
   const location = useLocation();
   const data = location.state?.PatientDetail;
-  const { loading, error, get, del, clearCache } = useApi();
+  const { loading, patch, get, del, clearCache, post } = useApi();
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
@@ -140,7 +140,6 @@ const MedicalHistory = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-
   };
 
   // Function to handle page change
@@ -179,7 +178,11 @@ const MedicalHistory = ({ from }) => {
   const getMedicalLists = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHistories?user_id=${data?.user_id}&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values->onset_date&dir=2&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
+        `resource/patientHistories?user_id=${
+          data?.user_id
+        }&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values->onset_date&dir=2&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
       );
       if (response.code === 200) {
         // console.log("data", response.data.patient_histories);
@@ -215,7 +218,41 @@ const MedicalHistory = ({ from }) => {
       console.error("Error fetching data:", error);
     }
   };
+  // api integration of medical history form submit
+  const medicalHistoryForm = async (body) => {
+    try {
+      const response = await post(`resource/patientHistories`, body);
 
+      if (response.code === 201) {
+        clearCache();
+        await getMedicalLists();
+        setAddFormView(false);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  // api integration of edit form
+  const editMedicalHistory = async (body, defaultId) => {
+    try {
+      const response = await patch(
+        `resource/patientHistories/${defaultId}`,
+        body
+      );
+
+      if (response.code === 200) {
+        clearCache();
+        await getMedicalLists();
+        setAddFormView(false);
+      } else {
+        console.error("Failed to edit data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error editing data:", error);
+    }
+  };
   return (
     <>
       {!addFormView && (
@@ -223,7 +260,7 @@ const MedicalHistory = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-                <DateSearch  getFilterValues={getFilterValues}/>
+                <DateSearch getFilterValues={getFilterValues} />
               </CCol>
               <CCol
                 lg={4}
@@ -282,6 +319,8 @@ const MedicalHistory = ({ from }) => {
               setAddFormView={setAddFormView}
               getMedicalLists={getMedicalLists}
               defaultValues={selectedData}
+              medicalHistoryForm={medicalHistoryForm}
+              editMedicalHistory={editMedicalHistory}
             />
           </CCardBody>
         </CCard>

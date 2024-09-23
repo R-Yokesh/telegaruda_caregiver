@@ -8,8 +8,9 @@ import useApi from "../../../../../../ApiServices/useApi";
 import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
-import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { CustomInput, getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { useLocation } from "react-router-dom";
+import { Assets } from "../../../../../../assets/Assets";
 
 const BPForm = ({ addBack, defaultData, getTableDatas }) => {
   const location = useLocation();
@@ -19,18 +20,26 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [systolic, setSystolic] = useState(
-    (defaultData?.systolic || "").toString()
+    (defaultData?.systolic !== undefined
+      ? defaultData.systolic
+      : " " || ""
+    ).toString()
   );
   const [diastolic, setDiastolic] = useState(
-    (defaultData?.diastolic || "").toString()
+    (defaultData?.diastolic !== undefined
+      ? defaultData.diastolic
+      : " " || ""
+    ).toString()
   );
   const [pulse, setPulse] = useState(
-    (defaultData?.["pulse_(bpm)"] || "").toString()
+    (defaultData?.["pulse_(bpm)"] !== undefined
+      ? defaultData?.["pulse_(bpm)"]
+      : " " || ""
+    ).toString()
   );
   const [errors, setErrors] = useState({});
 
-
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -209,6 +218,14 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
       console.error("Failed to delete:", error);
     }
   };
+
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
   return (
     <>
       <CContainer>
@@ -218,16 +235,35 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
               <label for="validationTooltip01" class="form-label">
                 Date *
               </label>
-              <DatePicker
-                showIcon
-                selected={selectedDate}
-                onChange={handleDateChange}
-                isClearable
-                closeOnScroll={true}
-                wrapperClassName="date-picker-wrapper"
-                dateFormat={DATE_FORMAT}
-                maxDate={maxDate}
-              />
+              <div className="w-100 d-flex align-items-center gap-2">
+                <div style={{ width: "80%" }}>
+                  <DatePicker
+                    showIcon
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                    // isClearable
+                    closeOnScroll={true}
+                    wrapperClassName="date-picker-wrapper"
+                    dateFormat={DATE_FORMAT}
+                    maxDate={maxDate}
+                  />
+                </div>
+                <div style={{ width: "20%" }}>
+                  {selectedDate && (
+                    <img
+                      src={Assets.Close}
+                      onClick={handleDateClear}
+                      alt="close"
+                      style={{
+                        borderRadius: "15px",
+                        height: "18px",
+                      }}
+                      className="cursor"
+                    />
+                  )}
+                </div>
+              </div>
+
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </CCol>
@@ -236,17 +272,37 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
               <label for="validationTooltip01" class="form-label">
                 Time *
               </label>
-              <DatePicker
-                showIcon
-                selected={selectedTime}
-                onChange={handleTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                isClearable
-                closeOnScroll={true}
-                timeIntervals={5}
-                dateFormat="h:mm aa"
-              />
+              <div className="w-100 d-flex align-items-center gap-2">
+                <div style={{ width: "80%" }}>
+                  <DatePicker
+                    selected={selectedTime}
+                    onChange={handleTimeChange}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    closeOnScroll={true}
+                    timeIntervals={5}
+                    dateFormat="HH:mm"
+                    timeFormat="HH:mm"
+                    customInput={<CustomInput />}
+                    showIcon={false}
+                    wrapperClassName="time-picker-style"
+                  />
+                </div>
+                <div style={{ width: "20%" }}>
+                  {selectedTime && (
+                    <img
+                      src={Assets.Close}
+                      onClick={handleClear}
+                      alt="close"
+                      style={{
+                        borderRadius: "15px",
+                        height: "18px",
+                      }}
+                      className="cursor"
+                    />
+                  )}
+                </div>
+              </div>
               {errors.time && <div className="error-text">{errors.time}</div>}
             </div>
           </CCol>

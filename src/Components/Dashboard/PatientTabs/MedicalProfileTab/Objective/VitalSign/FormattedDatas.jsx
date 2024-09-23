@@ -38,9 +38,9 @@ export const transformBPData = (originalData, pagination) => {
       status: item.details.bpFlagColor === "success" ? "success" : "error",
       name: item.details.bpFlag || "Unknown",
     },
-    systolic: item.details.systolic || "N/A",
-    diastolic: item.details.diastolic || "N/A",
-    "pulse_(bpm)": item.details.pulse || "N/A",
+    systolic: Number(item.details.systolic) ,
+    diastolic: item.details.diastolic ,
+    "pulse_(bpm)": item.details.pulse ,
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -373,11 +373,11 @@ export const transformTemperatureData = (originalData, pagination) => {
     temperature:
       item?.details?.unit === "Fahrenheit"
         ? item?.details?.temperature +
-          " °F," +
+          " °F, " +
           fahrenheitToCelsius(item?.details?.temperature) +
           " °C"
         : celsiusToFahrenheit(item?.details?.temperature) +
-          " °F," +
+          " °F, " +
           item?.details?.temperature +
           " °C",
     temperatureValueF:

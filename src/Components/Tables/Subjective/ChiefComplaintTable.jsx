@@ -10,12 +10,17 @@ import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
 import { tableDateTime } from "../../../Utils/dateUtils";
-import { getSerialNumber,isWithin24Hours } from "../../../Utils/commonUtils";
+import { getSerialNumber, isWithin24Hours } from "../../../Utils/commonUtils";
 
-
-const ChiefComplaintTable = ({ columns, rowData, getselectedData, from, itemsPerPage, currentPage }) => {
+const ChiefComplaintTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  itemsPerPage,
+  currentPage,
+}) => {
   const selectedData = (data, id, type) => {
-
     getselectedData(data, id, type);
   };
 
@@ -46,37 +51,52 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData, from, itemsPer
                 </CTableHeaderCell>
                 <CTableHeaderCell>
                   <span className="fs-16 fw-500" style={{ marginRight: "6px" }}>
-                    {dt?.addition_info?.date ?.split(" ")[0]
-                        .split("-")
-                        .reverse()
-                        .join("-")} 
+                    {dt?.addition_info?.date
+                      ?.split(" ")[0]
+                      .split("-")
+                      .reverse()
+                      .join("-")}
                   </span>
                   <span className="fs-16 fw-500">
                     {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}
                   </span>
                 </CTableHeaderCell>
                 <CTableDataCell>
-                  <span className="fs-16 fw-500">{dt?.addition_info?.title ? dt?.addition_info?.title : '-'}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.addition_info?.title ? dt?.addition_info?.title : "-"}
+                  </span>
                 </CTableDataCell>
                 <CTableDataCell>
-                  <span className="fs-16 fw-500">{dt?.addition_info?.notes ? dt?.addition_info?.notes : '-'}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}
+                  </span>
                 </CTableDataCell>
                 {from !== "Consult" && (
                   <CTableDataCell style={{ height: "10px" }}>
                     <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                       {dt?.consult_id === !null ? (
-                        <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
+                        <div>
+                          <img
+                            src={Assets.Warning}
+                            alt="warn"
+                            className="cursor"
+                          />
+                        </div>
                       ) : (
                         <>
                           <div
                             style={{
                               width: "50%",
+                              display: "flex",
+                              justifyContent: "flex-end",
                             }}
                           >
                             <img
                               alt="edit"
                               src={Assets?.EditPencil}
-                              className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
+                              className={`cursor ${
+                                dt?.freeze === 1 ? "greyed-out" : ""
+                              }`}
                               onClick={() => selectedData(dt, dt?.id, "edit")}
                             />
                           </div>
@@ -90,13 +110,12 @@ const ChiefComplaintTable = ({ columns, rowData, getselectedData, from, itemsPer
                             <img
                               alt="delete"
                               src={Assets?.Delete}
-                              className='cursor'
+                              className="cursor"
                               onClick={() => selectedData(dt, dt?.id, "delete")}
                             />
                           </div>
                         </>
                       )}
-
                     </div>
                   </CTableDataCell>
                 )}

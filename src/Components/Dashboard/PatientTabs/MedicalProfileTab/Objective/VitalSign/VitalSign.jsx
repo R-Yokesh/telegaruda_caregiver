@@ -187,7 +187,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                         label: `${
                           tableData[0]?.details?.unit === "Fahrenheit"
                             ? tableData[0]?.details?.temperature +
-                              " °F," +
+                              " °F, " +
                               fahrenheitToCelsius(
                                 tableData[0]?.details?.temperature
                               ) +
@@ -195,7 +195,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                             : celsiusToFahrenheit(
                                 tableData[0]?.details?.temperature
                               ) +
-                              " °F," +
+                              " °F, " +
                               tableData[0]?.details?.temperature +
                               " °C"
                         }`,
@@ -495,7 +495,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     label: `${
                       tableData[0]?.details?.unit === "Fahrenheit"
                         ? tableData[0]?.details?.temperature +
-                          " °F," +
+                          " °F, " +
                           fahrenheitToCelsius(
                             tableData[0]?.details?.temperature
                           ) +
@@ -503,7 +503,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                         : celsiusToFahrenheit(
                             tableData[0]?.details?.temperature
                           ) +
-                          " °F," +
+                          " °F, " +
                           tableData[0]?.details?.temperature +
                           " °C"
                     }`,

@@ -11,7 +11,14 @@ import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
 import { getSerialNumber } from "../../../Utils/commonUtils";
 
-const MedicalHistoryTable = ({ columns, rowData, getselectedData, from,itemsPerPage, currentPage  }) => {
+const MedicalHistoryTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  itemsPerPage,
+  currentPage,
+}) => {
   const selectedData = (data, id, type) => {
     getselectedData(data, id, type);
   };
@@ -39,19 +46,13 @@ const MedicalHistoryTable = ({ columns, rowData, getselectedData, from,itemsPerP
               <CTableRow key={i}>
                 <CTableHeaderCell style={{ height: "10px" }}>
                   <div className="d-flex align-items-center justify-content-center h-100">
-                  {getSerialNumber(itemsPerPage, currentPage, i)}
+                    {getSerialNumber(itemsPerPage, currentPage, i)}
                   </div>
                 </CTableHeaderCell>
                 <CTableDataCell style={{ height: "10px" }}>
                   <div className="d-flex align-items-center justify-content-center h-100">
                     <span className="fs-16 fw-500">
-                      {dt?.values?.onset_date
-                        ? dt?.values?.onset_date
-                            .split("T")[0]
-                            .split("-")
-                            .reverse()
-                            .join("-")
-                        : ""}
+                      {dt?.values?.onset_date ? dt?.values?.onset_date : ""}
                     </span>
                   </div>
                 </CTableDataCell>
@@ -65,17 +66,17 @@ const MedicalHistoryTable = ({ columns, rowData, getselectedData, from,itemsPerP
 
                 <CTableDataCell style={{ height: "10px" }}>
                   <div className="d-flex flex-column align-items-center">
-                    <span>{dt?.icd10}</span>
+                    <span>{dt?.values?.condition?.icd?.slug ?? "-"}</span>
                   </div>
                 </CTableDataCell>
                 <CTableDataCell style={{ height: "10px" }}>
                   <div className="d-flex flex-column align-items-center">
-                    <span>{dt?.chronic}</span>
+                    <span>{dt?.values?.condition?.chronic_illness}</span>
                   </div>
                 </CTableDataCell>
                 <CTableDataCell style={{ height: "10px" }}>
                   <div className="d-flex flex-column align-items-center">
-                    <span>{dt?.prev_illness}</span>
+                    <span>{dt?.values?.condition?.previous_illness}</span>
                   </div>
                 </CTableDataCell>
 
@@ -87,42 +88,49 @@ const MedicalHistoryTable = ({ columns, rowData, getselectedData, from,itemsPerP
 
                 {from !== "Consult" && (
                   <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                  {dt?.consult_id === !null ? (
-                      <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
-                    ) : (
-                      <>
-                        <div
-                          style={{
-                            width: "50%",
-                          }}
-                        >
+                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                      {dt?.consult_id === !null ? (
+                        <div>
                           <img
-                            alt="edit"
-                            src={Assets?.EditPencil}
-                            className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
-                            onClick={() => selectedData(dt, dt?.id, "edit")}
+                            src={Assets.Warning}
+                            alt="warn"
+                            className="cursor"
                           />
                         </div>
-                        <div
-                          style={{
-                            width: "50%",
-                            display: "flex",
-                            justifyContent: "flex-start",
-                          }}
-                        >
-                          <img
-                            alt="delete"
-                            src={Assets?.Delete}
-                             className='cursor'
-                            onClick={() => selectedData(dt, dt?.id, "delete")}
-                          />
-                        </div>
-                      </>
-                    )}
-
-                  </div>
-                </CTableDataCell>
+                      ) : (
+                        <>
+                          <div
+                            style={{
+                              width: "50%",
+                            }}
+                          >
+                            <img
+                              alt="edit"
+                              src={Assets?.EditPencil}
+                              className={`cursor ${
+                                dt?.freeze === 1 ? "greyed-out" : ""
+                              }`}
+                              onClick={() => selectedData(dt, dt?.id, "edit")}
+                            />
+                          </div>
+                          <div
+                            style={{
+                              width: "50%",
+                              display: "flex",
+                              justifyContent: "flex-start",
+                            }}
+                          >
+                            <img
+                              alt="delete"
+                              src={Assets?.Delete}
+                              className="cursor"
+                              onClick={() => selectedData(dt, dt?.id, "delete")}
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </CTableDataCell>
                 )}
               </CTableRow>
             ))

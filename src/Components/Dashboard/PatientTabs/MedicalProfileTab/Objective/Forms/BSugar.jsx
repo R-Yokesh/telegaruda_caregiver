@@ -10,8 +10,9 @@ import { toast } from "react-toastify";
 import useApi from "../../../../../../ApiServices/useApi";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { findItemIndex } from "../../../../../../Utils/commonUtils";
-import { getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { CustomInput, getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { useLocation } from "react-router-dom";
+import { Assets } from "../../../../../../assets/Assets";
 
 const BSugar = ({ addBack, defaultData, getTableDatas }) => {
 
@@ -172,25 +173,52 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
       console.error("Failed to delete:", error);
     }
   };
+
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
   return (
     <>
       <CContainer>
         <CRow className="mb-3">
-          <CCol lg={4}>
+        <CCol lg={4}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
                 Date *
               </label>
-              <DatePicker
-                showIcon
-                selected={selectedDate}
-                onChange={handleDateChange}
-                isClearable
-                closeOnScroll={true}
-                wrapperClassName="date-picker-wrapper"
-                dateFormat={DATE_FORMAT}
-                maxDate={maxDate}
-              />
+              <div className="w-100 d-flex align-items-center gap-2">
+                <div style={{ width: "80%" }}>
+                  <DatePicker
+                    showIcon
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                    // isClearable
+                    closeOnScroll={true}
+                    wrapperClassName="date-picker-wrapper"
+                    dateFormat={DATE_FORMAT}
+                    maxDate={maxDate}
+                  />
+                </div>
+                <div style={{ width: "20%" }}>
+                  {selectedDate && (
+                    <img
+                      src={Assets.Close}
+                      onClick={handleDateClear}
+                      alt="close"
+                      style={{
+                        borderRadius: "15px",
+                        height: "18px",
+                      }}
+                      className="cursor"
+                    />
+                  )}
+                </div>
+              </div>
+
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </CCol>
@@ -199,17 +227,37 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
               <label for="validationTooltip01" class="form-label">
                 Time *
               </label>
-              <DatePicker
-                showIcon
-                selected={selectedTime}
-                onChange={handleTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                isClearable
-                closeOnScroll={true}
-                timeIntervals={5}
-                dateFormat="h:mm aa"
-              />
+              <div className="w-100 d-flex align-items-center gap-2">
+                <div style={{ width: "80%" }}>
+                  <DatePicker
+                    selected={selectedTime}
+                    onChange={handleTimeChange}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    closeOnScroll={true}
+                    timeIntervals={5}
+                    dateFormat="HH:mm"
+                    timeFormat="HH:mm"
+                    customInput={<CustomInput />}
+                    showIcon={false}
+                    wrapperClassName="time-picker-style"
+                  />
+                </div>
+                <div style={{ width: "20%" }}>
+                  {selectedTime && (
+                    <img
+                      src={Assets.Close}
+                      onClick={handleClear}
+                      alt="close"
+                      style={{
+                        borderRadius: "15px",
+                        height: "18px",
+                      }}
+                      className="cursor"
+                    />
+                  )}
+                </div>
+              </div>
               {errors.time && <div className="error-text">{errors.time}</div>}
             </div>
           </CCol>

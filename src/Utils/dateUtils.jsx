@@ -1,4 +1,5 @@
 import { format, isValid, parse, parseISO } from "date-fns";
+import React from "react";
 
 // Function to format date as DD-MM-YYYY HH:mm AM/PM
 export function formatDateTime(originalDateStr) {
@@ -63,13 +64,38 @@ export function getCurrentTime() {
 }
 
 export const formatFetchDate = (dateString) => {
-  if (!dateString) return ''; // Handle cases where dateString might be null or undefined
+  if (!dateString) return ""; // Handle cases where dateString might be null or undefined
 
   try {
     const parsedDate = parseISO(dateString); // Convert the ISO string to a Date object
-    return format(parsedDate, 'dd-MM-yyyy'); // Format the Date object
+    return format(parsedDate, "dd-MM-yyyy"); // Format the Date object
   } catch (error) {
     console.error("Error formatting date:", error);
-    return ''; // Return an empty string or handle the error as needed
+    return ""; // Return an empty string or handle the error as needed
   }
 };
+
+export const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+  <div
+    // className="custom-datepicker-input"
+    onClick={onClick}
+    ref={ref}
+    style={{
+      display: "flex",
+      alignItems: "center",
+      padding: "7px", // Optional: padding for better spacing
+      cursor: "pointer",
+      background: "transparent",
+      border: "none",
+    }}
+  >
+    <img
+      src={
+        "https://i.pinimg.com/736x/63/e0/3a/63e03aec93a5d17485bdc5a0d970a709.jpg"
+      }
+      alt="Clock"
+      style={{ width: "20px", marginRight: "5px" }}
+    />
+    {value}
+  </div>
+));

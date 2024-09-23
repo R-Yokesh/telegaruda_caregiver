@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./input.css"; // Import the CSS file
 
-const SearchInput = ({ data, setSurgeryKey, getSelectedData, defaultkey }) => {
+const ChiefInput = ({ data, setSurgeryKey, getSelectedData, defaultkey }) => {
   const [searchTerm, setSearchTerm] = useState(defaultkey || "");
   const [filteredData, setFilteredData] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -96,4 +96,4 @@ const SearchInput = ({ data, setSurgeryKey, getSelectedData, defaultkey }) => {
   );
 };
 
-export default SearchInput;
+export default ChiefInput;
