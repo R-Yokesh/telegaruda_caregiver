@@ -1,4 +1,3 @@
-
 import {
   CCard,
   CCardBody,
@@ -23,6 +22,7 @@ import useApi from "../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import DateSearch from "../../../../../DateRangePicker/DateSearch";
 
 const ChiefComplaints = ({ OnClose, from }) => {
   const columnData = [
@@ -54,7 +54,6 @@ const ChiefComplaints = ({ OnClose, from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-
   };
 
   // Function to handle page change
@@ -85,14 +84,19 @@ const ChiefComplaints = ({ OnClose, from }) => {
     if (type === "delete") {
       setId(id);
       detailPage();
-
     }
   };
 
   const getChiefComplaints = useCallback(async () => {
     try {
       const response = await get(
-        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=created_at&dir=2&slug=chief-complaints&user_id=${data?.user_id}&scanOrdersOnly=&scanstatus=`
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${
+          searchValue ?? ""
+        }&order_by=created_at&dir=2&slug=chief-complaints&user_id=${
+          data?.user_id
+        }&scanOrdersOnly=&scanstatus=`
       );
       if (response.code === 200) {
         console.log(response.data.docs);
@@ -151,7 +155,6 @@ const ChiefComplaints = ({ OnClose, from }) => {
         await getChiefComplaints();
         setAddFormView(false);
         toast.success("Updated successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -159,7 +162,6 @@ const ChiefComplaints = ({ OnClose, from }) => {
       console.error("Error fetching data:", error);
     }
   };
-
 
   const deleteChiefComplaints = async () => {
     try {
@@ -170,7 +172,6 @@ const ChiefComplaints = ({ OnClose, from }) => {
         clearCache();
         getChiefComplaints();
         toast.success("Deleted successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -178,9 +179,6 @@ const ChiefComplaints = ({ OnClose, from }) => {
       console.error("Error fetching data:", error);
     }
   };
-
-
-
 
   return (
     <>
@@ -227,7 +225,8 @@ const ChiefComplaints = ({ OnClose, from }) => {
                   <i className="fas fa-search"></i>
                 </button>
               </div> */}
-                <DateRangePicker getFilterValues={getFilterValues} />
+                {/* <DateRangePicker getFilterValues={getFilterValues} /> */}
+                <DateSearch getFilterValues={getFilterValues} />
               </CCol>
               <CCol
                 lg={4}

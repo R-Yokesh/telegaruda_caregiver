@@ -260,7 +260,7 @@ const SignsSymptomsForm = ({
                 selected={selectedDate}
                 onChange={handleDateChange}
                 dateFormat={DATE_FORMAT}
-                disabled
+                maxDate={new Date()}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
