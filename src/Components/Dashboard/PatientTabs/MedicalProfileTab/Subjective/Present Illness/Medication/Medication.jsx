@@ -24,6 +24,7 @@ import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Medication = ({ from }) => {
 
@@ -215,7 +216,7 @@ const Medication = ({ from }) => {
   // ];
 
 
-  const { loading, error, get, del, clearCache } = useApi();
+  const { loading, error, get,post,patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -255,8 +256,7 @@ const Medication = ({ from }) => {
 
   const getselectedData = (data, id, type) => {
     setSelectedData(data);
-    if (type === "edit") {
-      console.log("Add Clicked")
+    if (type === "view") {
       addFormPage();
     }
     if (type === "delete") {
@@ -286,6 +286,33 @@ const Medication = ({ from }) => {
     fetchMedication();
   }, [fetchMedication]);
 
+   // Add Medication
+   const addMedication = async (values) => {
+    try {
+      const body = {
+
+        slug: "medicine",
+        patient_id: data?.user_id,
+        values: values,
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/patientHealth`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchMedication();
+        setAddFormView(false);
+        toast.success("Added successfully");
+
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   // Delte Signs Symptoms
   const deleteMedication = async () => {
     try {
@@ -295,6 +322,7 @@ const Medication = ({ from }) => {
         setDetailView(false);
         clearCache();
         fetchMedication();
+        toast.success("Deleted successfully");
 
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -371,9 +399,8 @@ const Medication = ({ from }) => {
                 setAddFormView(false);
                 setSelectedData({});
               }}
-              setAddFormView={setAddFormView}
-              fetchMedication={fetchMedication}
               defaultValues={selectedData}
+              addMedication={addMedication}
             />
           </CCardBody>
         </CCard>

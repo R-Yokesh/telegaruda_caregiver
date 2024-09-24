@@ -49,29 +49,90 @@
 }
 .search-suggestions-sec{
   position: absolute;
-  top: 13%;
-  background-color: #ffff;
+  top: 14%;
+  /* right: 10%; */
+  /* background-color: #ffff; */
   border-radius: 10px;
   width: 25%;
-  box-shadow: 2px 2px 60px 24px #00000017;
+  /* box-shadow: 2px 2px 60px 24px #00000017; */
   z-index: 9;
+  /* padding: 20px; */
+  
 }
 .search-suggestions{
   list-style: none;
-  max-height: 200px; 
-  overflow-y: auto; 
+  max-height: 550px; 
+  overflow-y: scroll; 
   /* border: 1px solid #ddd;  */
+  list-style-type: none;
+  padding: 0;
+  background-color: #ffff;
  
 }
+
+/* width */
+.search-suggestions::-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
+}
+
+/* Track */
+.search-suggestions::-webkit-scrollbar-track {
+  border-radius: 10px;
+  height: 10px;
+}
+ 
+/* Handle */
+.search-suggestions::-webkit-scrollbar-thumb {
+  background: rgba(7, 7, 7, 0.7); 
+  border-radius: 10px;
+  height: 30px; /* Set a specific height for the scrollbar thumb */
+}
+
+/* Handle on hover */
+.search-suggestions::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.7); 
+}
+
+
 .suggestion-item{
   cursor: pointer;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
 }
-.no-data {
-  color: #888;
-  font-size: 14px; 
-  padding: 10px; 
+.patient-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffff;
+  padding-top: 5px;
+  padding-left: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.patient-info p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+.patient-pad{
+  padding-right: 10px;
+}
+
+.patient-info strong {
+  font-size: 16px;
+ 
+}
+
+.no-data, .loading, .error {
   text-align: center;
+  padding: 20px;
+  background-color: #ffff;
+  width: 96%;
+  /* color: black; */
+  font-size: 16px;
+  border-radius: 10px;
 }
+
 
 
 

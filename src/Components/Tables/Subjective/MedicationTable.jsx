@@ -46,9 +46,9 @@ const MedicationTable = ({ columns, rowData, getselectedData, from,itemsPerPage,
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100 flex-column">
-                  <span className="fs-16 fw-500">{dt?.values?.name?.name ? dt?.values?.name?.name : "-" }</span>
+                  <span className="fs-16 fw-500">{dt?.values[0]?.medicine_name ? dt?.values[0]?.medicine_name : "-" }</span>
                   <small>
-                    {dt?.values?.strength ? dt?.values?.strength : "-"} {dt?.values?.strength_measurement ? dt?.values?.strength_measurement : "-"} {dt?.values?.dosage ? dt?.values?.dosage : "-"}
+                    {dt?.values[0]?.strength ? dt?.values[0]?.strength : "-"} {dt?.values[0]?.strength_measurement ? dt?.values[0]?.strength_measurement : "-"} {dt?.values[0]?.dosage ? dt?.values[0]?.dosage : "-"}
                   </small>
                 </div>
               </CTableDataCell>
@@ -56,28 +56,30 @@ const MedicationTable = ({ columns, rowData, getselectedData, from,itemsPerPage,
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
                   <span className="fs-16 fw-500">
-                    {dt?.values?.m ? dt?.values?.m : "-"} | {dt?.values?.a}  | {dt?.values?.e} | {dt?.values?.n}
+                    {dt?.values[0]?.medicine_taken?.m } |
+                     {dt?.values[0]?.medicine_taken?.a}  | {dt?.values[0]?.medicine_taken?.e} |
+                      {dt?.values[0]?.medicine_taken?.n }
                   </span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.values?.food_times ? dt?.values?.food_times : "-"}</span>
+                  <span className="fs-16 fw-500">{dt?.values[0]?.medicine_takenat ? dt?.values[0]?.medicine_takenat : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.values?.quantity ? dt?.values?.quantity : "-"}</span>
+                  <span className="fs-16 fw-500">{dt?.values[0]?.total_qty ? dt?.values[0]?.total_qty : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.values?.start_date ? dt?.values?.start_date : "-"}</span>
+                  <span className="fs-16 fw-500">{dt?.values[0]?.start_date ? dt?.values[0]?.start_date : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500"> {dt?.values?.status ? dt?.values?.status : "-"} </span>
+                  <span className="fs-16 fw-500"> {dt?.values[0]?.status ? dt?.values[0]?.status : "-"} </span>
                 </div>
               </CTableDataCell>
 
@@ -95,9 +97,9 @@ const MedicationTable = ({ columns, rowData, getselectedData, from,itemsPerPage,
                        >
                          <img
                            alt="edit"
-                           src={Assets?.EditPencil}
+                           src={Assets?.visibleEye}
                            className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
-                           onClick={() => selectedData(dt, dt?.id, "edit")}
+                           onClick={() => selectedData(dt, dt?.id, "view")}
                          />
                        </div>
                        <div
