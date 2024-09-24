@@ -62,6 +62,7 @@ const Header = () => {
   const handlePatientSelect = (patient) => {
     navigate("/patients/history", { state: { PatientDetail: patient } });
     setView(false);
+    setSearchValue('')
     localStorage.removeItem("PatientConsultTab");
     localStorage.removeItem("patiendDetailTab");
     localStorage.removeItem("PatientMenu");
@@ -105,7 +106,7 @@ const Header = () => {
               <i className="fas fa-search"></i>
             </button>
           </div>
-          <div className="search-suggestions-sec">
+          {/* <div className="search-suggestions-sec">
             {searchValue && view && (
               <>
                 {loading ? (
@@ -131,7 +132,43 @@ const Header = () => {
                 ) : null}
               </>
             )}
+          </div> */}
+          <div className="search-suggestions-sec">
+            {searchValue && view && (
+              <>
+                {loading ? (
+                  <div className="loading">Loading...</div>
+                ) : error ? (
+                  <div className="error">{error}</div>
+                ) : patientDetail.length > 0 ? (
+                  <ul className="search-suggestions">
+                    {patientDetail.map((patient) => (
+                      <li
+                        key={patient?.id}
+                        onClick={() => handlePatientSelect(patient)}
+                        className="suggestion-item"
+                      >
+                        <div className="patient-card">
+                          <div className="patient-info">
+
+                            <span className="patient-pad"><strong>{patient?.user?.first_name} {patient?.user?.last_name}</strong></span>
+                            <span>{patient?.additional_info?.age ? patient?.additional_info?.age : "-"}</span> <span>{patient?.user?.gender ? patient?.user?.gender :"-"}</span>
+                          
+                            <p>MRN: {patient?.additional_info?.mrn_number ? patient?.additional_info?.mrn_number : "-"}</p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : !searchValue && noData ? (
+                  <div className="no-data">No data</div>
+                ) : patientDetail?.length === 0 && searchValue ? (
+                  <div className="no-data">No data</div>
+                ) : null}
+              </>
+            )}
           </div>
+
           <div className="profile-info">
             <img src={user?.profileImage || Assets.user} alt="Profile" />
             <div className="profile-text">

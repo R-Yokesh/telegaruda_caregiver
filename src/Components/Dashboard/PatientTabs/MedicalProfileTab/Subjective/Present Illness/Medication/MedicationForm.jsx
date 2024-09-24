@@ -16,9 +16,10 @@ import {
   openFile,
 } from "../../../../../../../Utils/commonUtils";
 import { useLocation } from "react-router-dom";
+import SearchInput from "../../../../../../Input/SearchInput";
 
 
-const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }) => {
+const MedicationForm = ({ back, addMedication, defaultValues }) => {
 
 
 
@@ -30,27 +31,32 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
   const [selectedTime, setSelectedTime] = useState(null);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    medicine_type: defaultValues?.values?.medicine_type || "",
-    medicine_name: defaultValues?.values?.medicine_name || "",
-    dosage: defaultValues?.values?.dosage || "",
-    strength : defaultValues?.values?.strength  || "",
-    strength_measurement: defaultValues?.values?.strength_measurement || "",
-    total_qty: defaultValues?.values?.total_qty || "",
-    route_administration: defaultValues?.values?.route_administration || "",
-    no_of_days: defaultValues?.values?.no_of_days || "",
-    m: defaultValues?.values?.m || "",
-    a: defaultValues?.values?.a || "",
-    e: defaultValues?.values?.e || "",
-    n: defaultValues?.values?.n || "",
-    medicine_taken: defaultValues?.values?.medicine_taken || "",
-    notes: defaultValues?.values?.notes || "",
-    status: defaultValues?.values?.status || "",
+    medicine_type: defaultValues?.values[0]?.medicine_type || "",
+    // medicine_name: defaultValues?.values[0]?.medicine_name || "",
+    dosage: defaultValues?.values[0]?.dosage || "",
+    strength: defaultValues?.values[0]?.strength || "",
+    strength_measurement: defaultValues?.values[0]?.strength_measurement || "",
+    total_qty: defaultValues?.values[0]?.total_qty || "",
+    route_administration: defaultValues?.values[0]?.route_administration || "",
+    no_of_days: defaultValues?.values[0]?.no_of_days || "",
+    m: defaultValues?.values[0]?.medicine_taken?.m || "",
+    a: defaultValues?.values[0]?.medicine_taken?.a || "",
+    e: defaultValues?.values[0]?.medicine_taken?.e || "",
+    n: defaultValues?.values[0]?.medicine_taken?.n || "",
+    medicine_taken: defaultValues?.values[0]?.medicine_takenat || "",
+    notes: defaultValues?.values[0]?.notes || "",
+    status: defaultValues?.values[0]?.status || "",
 
 
 
   });
-  
-  const [searchTerm, setSearchTerm] = useState("");
+
+  const [medicationDetails, setMedicationDetails] = useState([]);
+  const [medicationKey, setMedicationKey] = useState(defaultValues?.values[0]?.medicine_name || "");
+  const [medicationName, setMedicationName] = useState(defaultValues?.values[0]?.medicine_name || {});
+
+
+
 
   const minDate = new Date(); // Restrict past dates
   const getFormattedDate = (date) => {
@@ -119,23 +125,26 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
     }
   };
 
-  
 
-  const options = ["Taking", "Not Taking", "Discontinued", "Status Unknown"];
-  const getSelectedValue = (data) => {
-    console.log(data);
-  };
 
-  const options1 = ["Brand", "Generic"];
-   // Function to update symptoms
-   const getSelectedValue1 = (data) => {
+  const statusOptions = ["Taking", "Not Taking", "Discontinued", "Status Unknown"];
+  const getSelectedStatus = (data) => {
     setFormData((prevState) => ({
       ...prevState,
-      symptoms: data,
+      status: data,
     }));
   };
 
-  const options2 = [
+  const medicineTypeOptions = ["Brand", "Generic"];
+  // Function to update symptoms
+  const getSelectedMedicineType = (data) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      medicine_type: data,
+    }));
+  };
+
+  const dosageOptions = [
     "Tablet",
     "Chewable tablet",
     "Sublingual tablet",
@@ -170,8 +179,11 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
     "Intradermal (ID) injection",
     "Implant",
   ];
-  const getSelectedValue2 = (data) => {
-    console.log(data);
+  const getSelectedDosage = (data) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      dosage: data,
+    }));
   };
 
 
@@ -191,8 +203,8 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
       newErrors.medicine_type = "Medication Type is required.";
       isValid = false;
     }
-    if (!formData.medicine_name) {
-      newErrors.medicine_name = "Medication Name is required.";
+    if (!medicationName) {
+      newErrors.medicationName = "Medication Name is required.";
       isValid = false;
     }
     if (!formData.dosage) {
@@ -231,16 +243,44 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
 
 
   const onSubmit = () => {
-    console.log('clicked checking')
+   const values = [
+    {
+      start_date: format(selectedStartDate, "yyyy-MM-dd"),
+      end_date: format(selectedEndDate, "yyyy-MM-dd"),
+      medicine_type: formData?.medicine_type,
+      medicine_name: medicationName?.slug,
+      dosage: formData?.dosage,
+      strength: formData?.strength,
+      strength_measurement: formData?.strength_measurement,
+      total_qty: formData?.total_qty,
+      route_administration: formData?.route_administration,
+      no_of_days: formData?.no_of_days,
+      medicine_takenat: formData.medicine_taken,
+      notes: formData.notes,
+      status: formData.status,
+      medicine_taken: {
+        m: formData.m,
+        a: formData.a,
+        e: formData.e,
+        n: formData.n,
+      },
+      medicine_input: {
+        m: "",
+        a: "",
+        e: "",
+        n: "",
+      },
+    }
+  ] 
     if (validate()) {
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-         editMedication()
+        // editMedication()
 
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
-         addMedication();
+        addMedication(values);
 
       }
     }
@@ -252,92 +292,123 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
     setFormData({ ...formData, [name]: value });
   };
 
-  const addMedication = async () => {
-
+  //medication name list
+  const getmedication = useCallback(async () => {
     try {
-      const body = {
-
-        slug: "prescription",
-        patient_id: data?.user_id,
-       
-        values: {
-          start_date: format(selectedStartDate, "dd-MM-yyyy"),
-          end_date: format(selectedEndDate, "dd-MM-yyyy"),
-          dosage: formData.dosage,
-          strength: formData.strength,
-          strength_measurement: formData.strength_measurement,
-          total_qty: formData.total_qty,
-          route_administration: formData.route_administration,
-          no_of_days: formData.no_of_days,
-          m: formData.m,
-          a: formData.a,
-          e: formData.e,
-          n: formData.n,
-          medicine_taken: formData.medicine_taken,
-          notes: formData.notes,
-          status: formData.status
-        }
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/patientHealth`, body);
-
-      if (response.code === 201) {
-        clearCache();
-        await fetchMedication();
-        setAddFormView(false);
-        toast.success("Added successfully");
-
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
+      const response = await get(
+        `resource/masters/all?slug=medicineType&order_by=name&dir=1&searchkey=${medicationKey}`
+      );
+      const listData = response?.data?.masters; //
+      setMedicationDetails(listData);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching card data:", error);
     }
+  }, [get, medicationKey]);
+
+  useEffect(() => {
+    getmedication();
+  }, [getmedication]);
+
+  const getSelectedmedication = (data) => {
+    setMedicationName(data);
   };
 
-  const editMedication = async () => {
-    try {
-     
-      const body = {
+  // // Add Medication
+  // const addMedication = async () => {
+  //   try {
+  //     const body = {
 
-        slug: "prescription",
-        patient_id: data?.user_id,
-       
-        values: {
-          start_date: format(selectedStartDate, "dd-MM-yyyy"),
-          end_date: format(selectedEndDate, "dd-MM-yyyy"),
-          dosage: formData.dosage,
-          strength: formData.strength,
-          strength_measurement: formData.strength_measurement,
-          total_qty: formData.total_qty,
-          route_administration: formData.route_administration,
-          no_of_days: formData.no_of_days,
-          m: formData.m,
-          a: formData.a,
-          e: formData.e,
-          n: formData.n,
-          medicine_taken: formData.medicine_taken,
-          notes: formData.notes,
-          status: formData.status
-        }
-      };
-      // Use the provided `post` function to send the request
-      const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
+  //       slug: "medicine",
+  //       patient_id: data?.user_id,
+  //       values: [
+  //         {
+  //           start_date: format(selectedStartDate, "dd-MM-yyyy"),
+  //           end_date: format(selectedEndDate, "dd-MM-yyyy"),
+  //           medicine_type: formData?.medicine_type,
+  //           medicine_name: medicationName?.slug,
+  //           dosage: formData?.dosage,
+  //           strength: formData?.strength,
+  //           strength_measurement: formData?.strength_measurement,
+  //           total_qty: formData?.total_qty,
+  //           route_administration: formData?.route_administration,
+  //           no_of_days: formData?.no_of_days,
+  //           medicine_takenat: formData.medicine_taken,
+  //           notes: formData.notes,
+  //           status: formData.status,
+  //           medicine_taken: {
+  //             m: formData.m,
+  //             a: formData.a,
+  //             e: formData.e,
+  //             n: formData.n,
+  //           },
+  //           medicine_input: {
+  //             m: "",
+  //             a: "",
+  //             e: "",
+  //             n: "",
+  //           },
+  //         }
+  //       ] 
+  //     };
 
-      if (response.code === 200) {
-        clearCache();
-        await fetchMedication();
-        setAddFormView(false);
-        toast.success("Updated successfully");
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  //     // Use the provided `post` function to send the request
+  //     const response = await post(`resource/patientHealth`, body);
 
-  };
+  //     if (response.code === 201) {
+  //       clearCache();
+  //       await fetchMedication();
+  //       setAddFormView(false);
+  //       toast.success("Added successfully");
+
+  //     } else {
+  //       console.error("Failed to fetch data:", response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
+  // const editMedication = async () => {
+  //   try {
+  //     const body = {
+
+  //       slug: "medicine",
+  //       patient_id: data?.user_id,
+
+  //       values: {
+  //         start_date: format(selectedStartDate, "dd-MM-yyyy"),
+  //         end_date: format(selectedEndDate, "dd-MM-yyyy"),
+  //         dosage: formData.dosage,
+  //         strength: formData.strength,
+  //         strength_measurement: formData.strength_measurement,
+  //         total_qty: formData.total_qty,
+  //         route_administration: formData.route_administration,
+  //         no_of_days: formData.no_of_days,
+  //         m: formData.m,
+  //         a: formData.a,
+  //         e: formData.e,
+  //         n: formData.n,
+  //         medicine_taken: formData.medicine_taken,
+  //         notes: formData.notes,
+  //         status: formData.status
+  //       }
+  //     };
+  //     // Use the provided `post` function to send the request
+  //     const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
+
+  //     if (response.code === 200) {
+  //       clearCache();
+  //       await fetchMedication();
+  //       setAddFormView(false);
+  //       toast.success("Updated successfully");
+  //     } else {
+  //       console.error("Failed to fetch data:", response.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+
+  // };
 
 
 
@@ -361,13 +432,13 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 }}
               >
                 <Dropdown
-                  options={options1}
+                  options={medicineTypeOptions}
                   defaultValue={
-                    defaultValues?.values?.type
-                      ? options1[findItemIndex(options1, defaultValues?.values?.type)]
+                    defaultValues?.values[0]?.medicine_type
+                      ? medicineTypeOptions[findItemIndex(medicineTypeOptions, defaultValues?.values[0]?.medicine_type)]
                       : null
                   }
-                  getSelectedValue={getSelectedValue1}
+                  getSelectedValue={getSelectedMedicineType}
                 />
               </div>
               {errors.medicine_type && <div className="error-text">{errors.medicine_type}</div>}
@@ -380,14 +451,13 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
               <label for="validationTooltip01" class="form-label">
                 Medication Name *
               </label>
-              <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.name}
+              <SearchInput
+                data={medicationDetails}
+                setSurgeryKey={setMedicationKey}
+                getSelectedData={getSelectedmedication}
+                defaultkey={medicationKey}
               />
-             {errors.medicine_name && <div className="error-text">{errors.medicine_name}</div>}
+              {errors.medicationName && <div className="error-text">{errors.medicationName}</div>}
             </div>
           </div>
         </CCol>
@@ -405,9 +475,13 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 }}
               >
                 <Dropdown
-                  options={options2}
-                  // defaultValue={options[1]}
-                  getSelectedValue={getSelectedValue2}
+                  options={dosageOptions}
+                  defaultValue={
+                    defaultValues?.values[0]?.dosage
+                      ? dosageOptions[findItemIndex(dosageOptions, defaultValues?.values[0]?.dosage)]
+                      : null
+                  }
+                  getSelectedValue={getSelectedDosage}
                 />
               </div>
               {errors.dosage && <div className="error-text">{errors.dosage}</div>}
@@ -420,19 +494,19 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
               <label for="validationTooltip01" class="form-label">
                 Strength *
               </label>
-                <input
+              <input
                 type="text"
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="0000"
-                // value={formData?.duration_days}
-                name="duration_days"
+                value={formData?.strength}
+                name="strength"
                 onChange={handleChange}
                 maxLength={4}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
-               
+
               />
               {errors.strength && <div className="error-text">{errors.strength}</div>}
             </div>
@@ -448,8 +522,10 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 size="lg"
                 className="mb-3"
                 aria-label="Large select example"
-                name="strength"
+                name="strength_measurement"
                 defaultValue={'mg'}
+                value={formData.strength_measurement}
+                onChange={handleChange}
               >
                 <option>Select</option>
                 <option value="cfu/ml">
@@ -488,13 +564,13 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 id="validationTooltip01"
                 placeholder="0000"
                 name="total_qty"
-                value={formData.total_qty}
+                value={formData?.total_qty}
                 onChange={handleChange}
                 maxLength={4}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
-              
+
               />
               {errors.total_qty && <div className="error-text">{errors.total_qty}</div>}
             </div>
@@ -510,7 +586,9 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 size="lg"
                 className="mb-3"
                 aria-label="Large select example"
-                name="strengthMeasurement"
+                name="route_administration"
+                value={formData.route_administration}
+                onChange={handleChange}
               >
                 <option>Select</option>
                 <option value="Oral">Oral</option>{" "}
@@ -547,10 +625,10 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 showIcon
                 selected={selectedStartDate}
                 onChange={handleStartDateChange}
-                dateFormat="MM-dd-yyyy"
+                dateFormat="dd-MM-yyyy"
                 disabled
               />
-               {errors.date && <div className="error-text">{errors.date}</div>}
+              {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </div>
         </CCol>
@@ -565,14 +643,14 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="000"
-                name="days"
-                // value={timeTaken}
+                name="no_of_days"
+                value={formData?.no_of_days}
                 onChange={handleChange}
                 maxLength={3}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
-                
+
               />
               {errors.no_of_days && <div className="error-text">{errors.no_of_days}</div>}
             </div>
@@ -588,10 +666,10 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 showIcon
                 selected={selectedEndDate}
                 onChange={handleEndDateChange}
-                dateFormat="MM-dd-yyyy"
+                dateFormat="dd-MM-yyyy"
                 minDate={minDate}
               />
-               {errors.date && <div className="error-text">{errors.date}</div>}
+              {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
           </div>
         </CCol>
@@ -607,6 +685,8 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 id="validationTooltip01"
                 placeholder="0"
                 name="m"
+                value={formData?.m}
+                onChange={handleChange}
               />
               {errors.m && <div className="error-text">{errors.m}</div>}
             </div>
@@ -620,6 +700,8 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 id="validationTooltip01"
                 placeholder="0"
                 name="a"
+                value={formData?.a}
+                onChange={handleChange}
               />
               {errors.a && <div className="error-text">{errors.a}</div>}
             </div>
@@ -633,6 +715,8 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 id="validationTooltip01"
                 placeholder="0"
                 name="e"
+                value={formData?.e}
+                onChange={handleChange}
               />
               {errors.e && <div className="error-text">{errors.e}</div>}
             </div>
@@ -646,6 +730,8 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 id="validationTooltip01"
                 placeholder="0"
                 name="n"
+                value={formData?.n}
+                onChange={handleChange}
               />
               {errors.n && <div className="error-text">{errors.n}</div>}
             </div>
@@ -665,8 +751,11 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 className="mb-0"
                 inline
                 type="radio"
-                id="inlineCheckbox1"
+                id="food_bf"
+                name="bf"
                 value="bf"
+                checked={formData?.medicine_taken === "bf"}
+                onChange={(e) => setFormData({ ...formData, medicine_taken: e.target.value })}
                 disabled={
                   defaultValues?.lab_status === "Prescribed"
                     ? false
@@ -679,20 +768,23 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                     BF
                   </label>
                 }
-                name="food"
               />
               <CFormCheck
                 className="mb-0"
                 inline
                 type="radio"
-                id="inlineCheckbox2"
+                id="food_af"
+                name="af"
                 value="af"
+                checked={formData?.medicine_taken === "af"}
+                onChange={(e) => setFormData({ ...formData, medicine_taken: e.target.value })}
+               
                 label={
                   <label for="validationTooltip01" class="form-label mb-0">
                     AF
                   </label>
                 }
-                name="food"
+
               />
             </div>
           </div>
@@ -705,27 +797,14 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
               </label>
               <CFormTextarea
                 id="exampleFormControlTextarea1"
+                 name="notes"
+                value={formData?.notes}
+                onChange={handleChange}
                 rows={3} >
               </CFormTextarea>
             </div>
           </div>
         </CCol>
-        {/* <CCol lg={7} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Reason for medication
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                name="reason"
-              />
-            </div>
-          </div>
-        </CCol> */}
         <CCol lg={5} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
@@ -740,9 +819,13 @@ const MedicationForm = ({ back, setAddFormView, fetchMedication, defaultValues }
                 }}
               >
                 <Dropdown
-                  options={options}
-                  defaultValue={options[1]}
-                  getSelectedValue={getSelectedValue}
+                  options={statusOptions}
+                  defaultValue={
+                    defaultValues?.values[0]?.status
+                      ? statusOptions[findItemIndex(statusOptions, defaultValues?.values[0]?.status)]
+                      : null
+                  }
+                  getSelectedValue={getSelectedStatus}
                 />
               </div>
               {errors.status && <div className="error-text">{errors.status}</div>}
