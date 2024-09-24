@@ -12,7 +12,6 @@ const MedHistoryForm = ({
   socialAdd,
   socialEdit,
 }) => {
-  console.log("first", defaultValues);
   const [smokingStatus, setSmokingStatus] = useState(
     defaultValues?.values?.smoking || "no"
   );
@@ -151,7 +150,7 @@ const MedHistoryForm = ({
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
-                  rows={3}
+                  rows={1}
                   defaultValue={smokingDesc}
                   onChange={(e) => setSmokingDesc(e.target.value)}
                   // text="Must be 8-20 words long."
@@ -212,7 +211,7 @@ const MedHistoryForm = ({
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
-                  rows={3}
+                  rows={1}
                   defaultValue={alcoholDesc}
                   onChange={(e) => setAlcoholDesc(e.target.value)}
                   // text="Must be 8-20 words long."
@@ -273,7 +272,7 @@ const MedHistoryForm = ({
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
                   // label="Example textarea"
-                  rows={3}
+                  rows={1}
                   defaultValue={drugDesc}
                   onChange={(e) => setDrugDesc(e.target.value)}
                   // text="Must be 4-20 words long."

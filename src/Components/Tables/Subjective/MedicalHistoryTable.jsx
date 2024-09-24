@@ -71,12 +71,14 @@ const MedicalHistoryTable = ({
                 </CTableDataCell>
                 <CTableDataCell style={{ height: "10px" }}>
                   <div className="d-flex flex-column align-items-center">
-                    <span>{dt?.values?.condition?.chronic_illness}</span>
+                    <span style={{ textTransform: "capitalize" }}>{dt?.values?.condition?.chronic_illness}</span>
                   </div>
                 </CTableDataCell>
                 <CTableDataCell style={{ height: "10px" }}>
                   <div className="d-flex flex-column align-items-center">
-                    <span>{dt?.values?.condition?.previous_illness}</span>
+                    <span style={{ textTransform: "capitalize" }}>
+                      {dt?.values?.condition?.previous_illness}
+                    </span>
                   </div>
                 </CTableDataCell>
 

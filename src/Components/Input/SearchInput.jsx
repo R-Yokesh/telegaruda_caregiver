@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./input.css"; // Import the CSS file
 
-const SearchInput = ({ data, setSurgeryKey, getSelectedData, defaultkey }) => {
+const SearchInput = ({
+  data,
+  setSurgeryKey,
+  getSelectedData,
+  defaultkey,
+  view,
+}) => {
   const [searchTerm, setSearchTerm] = useState(defaultkey || "");
   const [filteredData, setFilteredData] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -71,7 +77,7 @@ const SearchInput = ({ data, setSurgeryKey, getSelectedData, defaultkey }) => {
     }
   }, [searchTerm, data, selectedItem]);
   return (
-    <div className="search-container" ref={inputRef}>
+    <div className={`search-container ${view === true ? "disabled" : ""}`} ref={inputRef}>
       <input
         type="text"
         placeholder="Enter..."

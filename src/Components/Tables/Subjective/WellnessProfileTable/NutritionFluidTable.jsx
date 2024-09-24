@@ -45,7 +45,7 @@ const NutritionFluidTable = ({ columns, rowData, getselectedData, from,itemsPerP
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.act_date}</span>
+                  <span className="fs-16 fw-500">{dt?.act_date?.split(" ")[0]?.split("-")?.reverse()?.join("-")}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>

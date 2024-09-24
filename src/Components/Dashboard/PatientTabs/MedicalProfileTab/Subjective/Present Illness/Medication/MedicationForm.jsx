@@ -1,4 +1,10 @@
-import { CCol, CFormCheck, CFormSelect, CFormTextarea, CRow } from "@coreui/react";
+import {
+  CCol,
+  CFormCheck,
+  CFormSelect,
+  CFormTextarea,
+  CRow,
+} from "@coreui/react";
 import React, { useEffect, useState, useCallback } from "react";
 import DatePicker from "react-datepicker";
 import { Assets } from "../../../../../../../assets/Assets";
@@ -18,11 +24,7 @@ import {
 import { useLocation } from "react-router-dom";
 import SearchInput from "../../../../../../Input/SearchInput";
 
-
-const MedicationForm = ({ back, addMedication, defaultValues }) => {
-
-
-
+const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -31,32 +33,76 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    medicine_type: defaultValues?.values[0]?.medicine_type || "",
+    medicine_type:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.medicine_type
+        : "",
     // medicine_name: defaultValues?.values[0]?.medicine_name || "",
-    dosage: defaultValues?.values[0]?.dosage || "",
-    strength: defaultValues?.values[0]?.strength || "",
-    strength_measurement: defaultValues?.values[0]?.strength_measurement || "",
-    total_qty: defaultValues?.values[0]?.total_qty || "",
-    route_administration: defaultValues?.values[0]?.route_administration || "",
-    no_of_days: defaultValues?.values[0]?.no_of_days || "",
-    m: defaultValues?.values[0]?.medicine_taken?.m || "",
-    a: defaultValues?.values[0]?.medicine_taken?.a || "",
-    e: defaultValues?.values[0]?.medicine_taken?.e || "",
-    n: defaultValues?.values[0]?.medicine_taken?.n || "",
-    medicine_taken: defaultValues?.values[0]?.medicine_takenat || "",
-    notes: defaultValues?.values[0]?.notes || "",
-    status: defaultValues?.values[0]?.status || "",
-
-
-
+    dosage:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.dosage
+        : "",
+    strength:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.strength
+        : "",
+    strength_measurement:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.strength_measurement
+        : "",
+    total_qty:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.total_qty
+        : "",
+    route_administration:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.route_administration
+        : "",
+    no_of_days:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.no_of_days
+        : "",
+    m:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.medicine_taken?.m
+        : "",
+    a:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.medicine_taken?.a
+        : "",
+    e:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.medicine_taken?.e
+        : "",
+    n:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.medicine_taken?.n
+        : "",
+    medicine_taken:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.medicine_takenat
+        : "",
+    notes:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.notes
+        : "",
+    status:
+      defaultValues?.values !== undefined
+        ? defaultValues?.values[0]?.status
+        : "",
   });
 
   const [medicationDetails, setMedicationDetails] = useState([]);
-  const [medicationKey, setMedicationKey] = useState(defaultValues?.values[0]?.medicine_name || "");
-  const [medicationName, setMedicationName] = useState(defaultValues?.values[0]?.medicine_name || {});
-
-
-
+  const [medicationKey, setMedicationKey] = useState(
+    defaultValues?.values !== undefined
+      ? defaultValues?.values[0]?.medicine_name
+      : ""
+  );
+  const [medicationName, setMedicationName] = useState(
+    defaultValues?.values !== undefined
+      ? defaultValues?.values[0]?.medicine_name
+      : {}
+  );
 
   const minDate = new Date(); // Restrict past dates
   const getFormattedDate = (date) => {
@@ -125,9 +171,12 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
     }
   };
 
-
-
-  const statusOptions = ["Taking", "Not Taking", "Discontinued", "Status Unknown"];
+  const statusOptions = [
+    "Taking",
+    "Not Taking",
+    "Discontinued",
+    "Status Unknown",
+  ];
   const getSelectedStatus = (data) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -186,7 +235,6 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
     }));
   };
 
-
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -203,7 +251,7 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
       newErrors.medicine_type = "Medication Type is required.";
       isValid = false;
     }
-    if (!medicationName) {
+    if (medicationName?.slug === undefined) {
       newErrors.medicationName = "Medication Name is required.";
       isValid = false;
     }
@@ -236,60 +284,70 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
       isValid = false;
     }
 
-
     setErrors(newErrors);
     return isValid;
   };
 
-
   const onSubmit = () => {
-   const values = [
-    {
-      start_date: format(selectedStartDate, "yyyy-MM-dd"),
-      end_date: format(selectedEndDate, "yyyy-MM-dd"),
-      medicine_type: formData?.medicine_type,
-      medicine_name: medicationName?.slug,
-      dosage: formData?.dosage,
-      strength: formData?.strength,
-      strength_measurement: formData?.strength_measurement,
-      total_qty: formData?.total_qty,
-      route_administration: formData?.route_administration,
-      no_of_days: formData?.no_of_days,
-      medicine_takenat: formData.medicine_taken,
-      notes: formData.notes,
-      status: formData.status,
-      medicine_taken: {
-        m: formData.m,
-        a: formData.a,
-        e: formData.e,
-        n: formData.n,
-      },
-      medicine_input: {
-        m: "",
-        a: "",
-        e: "",
-        n: "",
-      },
-    }
-  ] 
     if (validate()) {
+      const values = [
+        {
+          start_date: format(selectedStartDate, "yyyy-MM-dd"),
+          end_date: format(selectedEndDate, "yyyy-MM-dd"),
+          medicine_type: formData?.medicine_type,
+          medicine_name: medicationName?.slug,
+          dosage: formData?.dosage,
+          strength: formData?.strength,
+          strength_measurement: formData?.strength_measurement,
+          total_qty: formData?.total_qty,
+          route_administration: formData?.route_administration,
+          no_of_days: formData?.no_of_days,
+          medicine_takenat: formData.medicine_taken,
+          notes: formData.notes,
+          status: formData.status,
+          medicine_taken: {
+            m: formData.m,
+            a: formData.a,
+            e: formData.e,
+            n: formData.n,
+          },
+          medicine_input: {
+            m: "",
+            a: "",
+            e: "",
+            n: "",
+          },
+        },
+      ];
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
         // editMedication()
-
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
         addMedication(values);
-
       }
     }
   };
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    // Regex to match whole numbers or decimal numbers (e.g., 1, 1.5, 25.5)
+    const regex = /^\d?(?:\.\d?)?$/;
+
+    if (name === "m" || name === "a" || name === "e" || name === "n") {
+      const newValue = value.slice(0, Math.max(value.indexOf("."), 0) + 2); // Limit to 2 decimal places
+      if (regex.test(newValue)) {
+        setFormData({ ...formData, [name]: newValue });
+      }
+    } else if (name === "no_of_days") {
+      setFormData({ ...formData, [name]: value });
+      setSelectedEndDate();
+    } else {
+      // Allow all other inputs
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   //medication name list
@@ -348,7 +406,7 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
   //             n: "",
   //           },
   //         }
-  //       ] 
+  //       ]
   //     };
 
   //     // Use the provided `post` function to send the request
@@ -410,11 +468,21 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
 
   // };
 
+  const calculateEndDate = () => {
+    if (selectedStartDate && formData.no_of_days) {
+      const numDays = parseInt(formData.no_of_days, 10);
+      const newEndDate = new Date(selectedStartDate.getTime());
+      newEndDate.setDate(newEndDate.getDate() + numDays);
+      setSelectedEndDate(newEndDate);
+    } else {
+      setSelectedEndDate(null); // Clear end date if missing data
+    }
+  };
 
-
-
-
-
+  // Call calculateEndDate on relevant events (e.g., onBlur of no_of_days input)
+  useEffect(() => {
+    calculateEndDate();
+  }, [selectedStartDate, formData.no_of_days]);
   return (
     <>
       <CRow className="mb-3">
@@ -434,14 +502,22 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 <Dropdown
                   options={medicineTypeOptions}
                   defaultValue={
-                    defaultValues?.values[0]?.medicine_type
-                      ? medicineTypeOptions[findItemIndex(medicineTypeOptions, defaultValues?.values[0]?.medicine_type)]
+                    defaultValues?.values !== undefined
+                      ? medicineTypeOptions[
+                          findItemIndex(
+                            medicineTypeOptions,
+                            defaultValues?.values[0]?.medicine_type
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getSelectedMedicineType}
+                  view={view}
                 />
               </div>
-              {errors.medicine_type && <div className="error-text">{errors.medicine_type}</div>}
+              {errors.medicine_type && (
+                <div className="error-text">{errors.medicine_type}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -456,8 +532,11 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 setSurgeryKey={setMedicationKey}
                 getSelectedData={getSelectedmedication}
                 defaultkey={medicationKey}
+                view={view}
               />
-              {errors.medicationName && <div className="error-text">{errors.medicationName}</div>}
+              {errors.medicationName && (
+                <div className="error-text">{errors.medicationName}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -477,14 +556,22 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 <Dropdown
                   options={dosageOptions}
                   defaultValue={
-                    defaultValues?.values[0]?.dosage
-                      ? dosageOptions[findItemIndex(dosageOptions, defaultValues?.values[0]?.dosage)]
+                    defaultValues?.values !== undefined
+                      ? dosageOptions[
+                          findItemIndex(
+                            dosageOptions,
+                            defaultValues?.values[0]?.dosage
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getSelectedDosage}
+                  view={view}
                 />
               </div>
-              {errors.dosage && <div className="error-text">{errors.dosage}</div>}
+              {errors.dosage && (
+                <div className="error-text">{errors.dosage}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -506,9 +593,11 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
-
+                disabled={view}
               />
-              {errors.strength && <div className="error-text">{errors.strength}</div>}
+              {errors.strength && (
+                <div className="error-text">{errors.strength}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -523,9 +612,10 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 className="mb-3"
                 aria-label="Large select example"
                 name="strength_measurement"
-                defaultValue={'mg'}
-                value={formData.strength_measurement}
+                defaultValue={"mg"}
+                value={formData?.strength_measurement}
                 onChange={handleChange}
+                disabled={view}
               >
                 <option>Select</option>
                 <option value="cfu/ml">
@@ -547,7 +637,9 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 <option value="kg">Kilogram (kg) </option>
                 <option value="mcg">Microgram (mcg)</option>
               </CFormSelect>
-              {errors.strength_measurement && <div className="error-text">{errors.strength_measurement}</div>}
+              {errors.strength_measurement && (
+                <div className="error-text">{errors.strength_measurement}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -570,9 +662,11 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
-
+                disabled={view}
               />
-              {errors.total_qty && <div className="error-text">{errors.total_qty}</div>}
+              {errors.total_qty && (
+                <div className="error-text">{errors.total_qty}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -587,8 +681,9 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 className="mb-3"
                 aria-label="Large select example"
                 name="route_administration"
-                value={formData.route_administration}
+                value={formData?.route_administration}
                 onChange={handleChange}
+                disabled={view}
               >
                 <option>Select</option>
                 <option value="Oral">Oral</option>{" "}
@@ -610,7 +705,9 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 <option value="Intrathecal">Intrathecal</option>
                 <option value="Epidural">Epidural</option>
               </CFormSelect>
-              {errors.route_administration && <div className="error-text">{errors.route_administration}</div>}
+              {errors.route_administration && (
+                <div className="error-text">{errors.route_administration}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -626,7 +723,7 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 selected={selectedStartDate}
                 onChange={handleStartDateChange}
                 dateFormat="dd-MM-yyyy"
-                disabled
+                disabled={view}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
@@ -650,9 +747,11 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
-
+                disabled={view}
               />
-              {errors.no_of_days && <div className="error-text">{errors.no_of_days}</div>}
+              {errors.no_of_days && (
+                <div className="error-text">{errors.no_of_days}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -668,6 +767,7 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 onChange={handleEndDateChange}
                 dateFormat="dd-MM-yyyy"
                 minDate={minDate}
+                disabled
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
@@ -687,6 +787,7 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 name="m"
                 value={formData?.m}
                 onChange={handleChange}
+                disabled={view}
               />
               {errors.m && <div className="error-text">{errors.m}</div>}
             </div>
@@ -702,6 +803,7 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 name="a"
                 value={formData?.a}
                 onChange={handleChange}
+                disabled={view}
               />
               {errors.a && <div className="error-text">{errors.a}</div>}
             </div>
@@ -717,6 +819,7 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 name="e"
                 value={formData?.e}
                 onChange={handleChange}
+                disabled={view}
               />
               {errors.e && <div className="error-text">{errors.e}</div>}
             </div>
@@ -732,6 +835,7 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 name="n"
                 value={formData?.n}
                 onChange={handleChange}
+                disabled={view}
               />
               {errors.n && <div className="error-text">{errors.n}</div>}
             </div>
@@ -755,13 +859,17 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 name="bf"
                 value="bf"
                 checked={formData?.medicine_taken === "bf"}
-                onChange={(e) => setFormData({ ...formData, medicine_taken: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, medicine_taken: e.target.value })
+                }
                 disabled={
-                  defaultValues?.lab_status === "Prescribed"
+                  view === true
+                    ? view
+                    : defaultValues?.lab_status === "Prescribed"
                     ? false
                     : defaultValues?.medicines?.length >= 1
-                      ? true
-                      : false
+                    ? true
+                    : false
                 }
                 label={
                   <label for="validationTooltip01" class="form-label mb-0">
@@ -777,14 +885,14 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 name="af"
                 value="af"
                 checked={formData?.medicine_taken === "af"}
-                onChange={(e) => setFormData({ ...formData, medicine_taken: e.target.value })}
-               
+                onChange={(e) =>
+                  setFormData({ ...formData, medicine_taken: e.target.value })
+                }
                 label={
                   <label for="validationTooltip01" class="form-label mb-0">
                     AF
                   </label>
                 }
-
               />
             </div>
           </div>
@@ -797,11 +905,12 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
               </label>
               <CFormTextarea
                 id="exampleFormControlTextarea1"
-                 name="notes"
+                name="notes"
                 value={formData?.notes}
                 onChange={handleChange}
-                rows={3} >
-              </CFormTextarea>
+                rows={3}
+                disabled={view}
+              ></CFormTextarea>
             </div>
           </div>
         </CCol>
@@ -821,24 +930,36 @@ const MedicationForm = ({ back, addMedication, defaultValues }) => {
                 <Dropdown
                   options={statusOptions}
                   defaultValue={
-                    defaultValues?.values[0]?.status
-                      ? statusOptions[findItemIndex(statusOptions, defaultValues?.values[0]?.status)]
+                    defaultValues?.values !== undefined
+                      ? statusOptions[
+                          findItemIndex(
+                            statusOptions,
+                            defaultValues?.values[0]?.status
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getSelectedStatus}
+                  view={view}
                 />
               </div>
-              {errors.status && <div className="error-text">{errors.status}</div>}
+              {errors.status && (
+                <div className="error-text">{errors.status}</div>
+              )}
             </div>
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-1">
+        {!view && (
+          <div style={{ width: "128px" }}>
+            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+          </div>
+        )}
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
-        </div>
-        <div style={{ width: "128px" }}>
-          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+          <SecondaryButton onClick={back}>
+            {view ? "BACK" : "CANCEL"}
+          </SecondaryButton>
         </div>
       </CRow>
     </>

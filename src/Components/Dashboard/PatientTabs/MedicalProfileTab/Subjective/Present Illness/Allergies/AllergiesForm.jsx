@@ -1,4 +1,10 @@
-import { CCol, CFormCheck, CFormSelect, CRow, CFormTextarea } from "@coreui/react";
+import {
+  CCol,
+  CFormCheck,
+  CFormSelect,
+  CRow,
+  CFormTextarea,
+} from "@coreui/react";
 import React, { useEffect, useState, useCallback } from "react";
 import DatePicker from "react-datepicker";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
@@ -14,15 +20,12 @@ import {
   getFileTypeFromMime,
   openFile,
 } from "../../../../../../../Utils/commonUtils";
-import Select from 'react-select';
+import Select from "react-select";
 import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
 import { useLocation } from "react-router-dom";
 
-
 const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
-
-
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -36,19 +39,31 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
     provider: defaultValues?.values?.provider || "",
     notes: defaultValues?.values?.notes || "",
     status: defaultValues?.values?.status || "",
-
   });
 
   const [allergyDetails, setAlleryDetails] = useState([]);
-  const [allergyKey, setAllergyKey] = useState(defaultValues?.values?.name?.name || "");
-  const [allergyName, setAllergyName] = useState(defaultValues?.values?.name || {});
+  const [allergyKey, setAllergyKey] = useState(
+    defaultValues?.values?.name?.name || ""
+  );
+  const [allergyName, setAllergyName] = useState(
+    defaultValues?.values?.name || {}
+  );
   const [reactiondetails, setRactionDetails] = useState([]);
-  const [reactionKey, setRactionKey] = useState(defaultValues?.values?.reaction?.name || "");
-  const [reaction, setReaction] = useState(defaultValues?.values?.reaction?.name || {});
+  const [reactionKey, setRactionKey] = useState(
+    defaultValues?.values?.reaction?.name || ""
+  );
+  const [reaction, setReaction] = useState(
+    defaultValues?.values?.reaction || {}
+  );
   const [providerDetails, setproviderDetails] = useState([]);
-  const [providerKey, setProviderKey] = useState(defaultValues?.values?.provider || "");
-  const [provider, setProvider] = useState(defaultValues?.values?.provider || {});
-
+  const [providerKey, setProviderKey] = useState(
+    defaultValues?.values?.provider.user?.first_name +
+      " " +
+      defaultValues?.values?.provider.user?.last_name || ""
+  );
+  const [provider, setProvider] = useState(
+    defaultValues?.values?.provider || {}
+  );
 
   const defaultDateTime = defaultValues?.values?.date || "";
   // Split date and time
@@ -95,16 +110,19 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
     }
   };
 
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-
-
-  const severityOptions = ["Normal", "Mild", "Moderate", "Severe", "Very Severe", "Worst"];
+  const severityOptions = [
+    "Normal",
+    "Mild",
+    "Moderate",
+    "Severe",
+    "Very Severe",
+    "Worst",
+  ];
   const statusOptions = ["Active", "Inactive"];
 
   // Function to update Severity
@@ -113,7 +131,6 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
       ...prevState,
       severity: data,
     }));
-
   };
 
   // Function to update Status
@@ -122,10 +139,8 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
       ...prevState,
       status: data,
     }));
-
   };
-
-
+  console.log("validate", provider);
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -147,15 +162,15 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
       newErrors.reaction = "Reaction is required.";
       isValid = false;
     }
-    if (!formData.other_reaction) {
-      newErrors.other_reaction = "Other Reaction is required.";
-      isValid = false;
-    }
+    // if (!formData.other_reaction) {
+    //   newErrors.other_reaction = "Other Reaction is required.";
+    //   isValid = false;
+    // }
     if (!formData.severity) {
       newErrors.severity = "Severity is required.";
       isValid = false;
     }
-    if (!provider) {
+    if (provider?.user_id === undefined) {
       newErrors.provider = "provider is required.";
       isValid = false;
     }
@@ -168,56 +183,56 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
     return isValid;
   };
 
+  console.log(reaction, "first", defaultValues);
 
   const onSubmit = () => {
-    const values = {
-      name: {
-        id: allergyName?.id,
-        attributes: {
-          allergy_type: allergyName?.attributes?.allergy_type,
-          allergy_category: allergyName?.attributes?.allergy_category,
-        },
-        master_type_slug: allergyName?.master_type_slug,
-        name: allergyName?.name,
-        slug: allergyName?.slug,
-        is_active: allergyName?.is_active
-      },
-      // type: "Drug",
-      category: formData.category,
-      reaction: {
-        id: reaction?.id,
-        attributes: reaction?.attributes,
-        master_type_slug: reaction?.master_type_slug,
-        name: reaction?.name,
-        slug: reaction?.slug,
-        is_active: reaction?.is_active
-      },
-      other_reaction: formData?.other_reaction,
-      date: format(selectedDate, "dd-MM-yyyy"),
-      severity: formData?.severity,
-      provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
-      notes: formData?.notes,
-      status: formData?.status,
-      // treated_by: "d",
-      // is_active: 1,
-    }
     if (validate()) {
+      const values = {
+        name: allergyName,
+        // {
+        //   id: allergyName?.id,
+        //   attributes: {
+        //     allergy_type: allergyName?.attributes?.allergy_type,
+        //     allergy_category: allergyName?.attributes?.allergy_category,
+        //   },
+        //   master_type_slug: allergyName?.master_type_slug,
+        //   name: allergyName?.name,
+        //   slug: allergyName?.slug,
+        //   is_active: allergyName?.is_active,
+        // },
+        // type: "Drug",
+        category: formData.category,
+        reaction: reaction,
+        // {
+        //   id: reaction?.id,
+        //   attributes: reaction?.attributes,
+        //   master_type_slug: reaction?.master_type_slug,
+        //   name: reaction?.name,
+        //   slug: reaction?.slug,
+        //   is_active: reaction?.is_active,
+        // },
+        other_reaction: formData?.other_reaction,
+        date: format(selectedDate, "dd-MM-yyyy"),
+        severity: formData?.severity,
+        // provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
+        provider: provider,
+        notes: formData?.notes,
+        status: formData?.status,
+        // treated_by: "d",
+        // is_active: 1,
+      };
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editAllergy(values,defaultValues?.id)
-
+        editAllergy(values, defaultValues?.id);
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
         addAllergy(values);
-
       }
     }
   };
 
-
   const getSelectedAllergy = (data) => {
-
     setAllergyName(data);
     setFormData((prevState) => ({
       ...prevState,
@@ -227,16 +242,11 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
 
   const getSelectedReaction = (selectedOption) => {
     setReaction(selectedOption);
-
   };
 
   const handleProviderChange = (selectedOption) => {
     setProvider(selectedOption);
-
   };
-
-
-
 
   // API integration of allergies list
   const getAllergy = useCallback(async () => {
@@ -255,8 +265,6 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
     getAllergy();
   }, [getAllergy]);
 
-
-
   // API integration of allergies list
   const getReaction = useCallback(async () => {
     try {
@@ -268,13 +276,11 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
     } catch (error) {
       console.error("Error fetching card data:", error);
     }
-  }, [get, allergyKey]);
+  }, [get, reactionKey]);
 
   useEffect(() => {
     getReaction();
   }, [getReaction]);
-
-
 
   const getSelectedProvider = (data) => {
     setProvider(data);
@@ -296,7 +302,6 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
     getProvider();
   }, [getProvider]);
 
-
   return (
     <>
       <CRow className="mb-3">
@@ -311,8 +316,9 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
                 selected={selectedDate}
                 onChange={handleDateChange}
                 dateFormat="dd-MM-yyyy"
-                disabled
-               
+                maxDate={new Date()}
+                isClearable
+                // disabled
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
@@ -344,9 +350,10 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
                   defaultValue={allergyKey}
                   dropKey={setAllergyKey}
                 />
-
               </div>
-              {errors.allergyName && <div className="error-text">{errors.allergyName}</div>}
+              {errors.allergyName && (
+                <div className="error-text">{errors.allergyName}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -364,7 +371,9 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
                 disabled
                 value={formData.category}
               />
-              {errors.category && <div className="error-text">{errors.category}</div>}
+              {errors.category && (
+                <div className="error-text">{errors.category}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -391,7 +400,9 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
                   dropKey={setRactionKey}
                 />
               </div>
-              {errors.reaction && <div className="error-text">{errors.reaction}</div>}
+              {errors.reaction && (
+                <div className="error-text">{errors.reaction}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -410,7 +421,9 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
                 value={formData.other_reaction}
                 onChange={handleChange}
               />
-              {errors.other_reaction && <div className="error-text">{errors.other_reaction}</div>}
+              {errors.other_reaction && (
+                <div className="error-text">{errors.other_reaction}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -431,12 +444,20 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
                   options={severityOptions}
                   defaultValue={
                     defaultValues?.values?.severity
-                      ? severityOptions[findItemIndex(severityOptions, defaultValues?.values?.severity)]
+                      ? severityOptions[
+                          findItemIndex(
+                            severityOptions,
+                            defaultValues?.values?.severity
+                          )
+                        ]
                       : null
                   }
-                  getSelectedValue={getSeverityValue} />
+                  getSelectedValue={getSeverityValue}
+                />
               </div>
-              {errors.severity && <div className="error-text">{errors.severity}</div>}
+              {errors.severity && (
+                <div className="error-text">{errors.severity}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -462,7 +483,9 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
                   dropKey={setProviderKey}
                 />
               </div>
-              {errors.provider && <div className="error-text">{errors.provider}</div>}
+              {errors.provider && (
+                <div className="error-text">{errors.provider}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -502,13 +525,20 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
                   options={statusOptions}
                   defaultValue={
                     defaultValues?.values?.status
-                      ? statusOptions[findItemIndex(statusOptions, defaultValues?.values?.status)]
+                      ? statusOptions[
+                          findItemIndex(
+                            statusOptions,
+                            defaultValues?.values?.status
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getStatusValue}
                 />
               </div>
-              {errors.status && <div className="error-text">{errors.status}</div>}
+              {errors.status && (
+                <div className="error-text">{errors.status}</div>
+              )}
             </div>
           </div>
         </CCol>

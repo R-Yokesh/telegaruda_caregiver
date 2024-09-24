@@ -355,9 +355,9 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
               {allStatus?.id !== undefined ? "UPDATE" : "ADD"}
             </PrimaryButton>
           </div>
-          <div style={{ width: "128px" }}>
+          {/* <div style={{ width: "128px" }}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-          </div>
+          </div> */}
         </CRow>
       )}
     </>

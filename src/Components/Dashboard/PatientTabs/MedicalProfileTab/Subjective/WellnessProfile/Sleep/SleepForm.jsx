@@ -9,24 +9,37 @@ import { DATE_FORMAT } from "../../../../../../../Config/config";
 import useApi from "../../../../../../../ApiServices/useApi";
 import { format } from "date-fns";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
+import { CustomInput } from "../../../../../../../Utils/dateUtils";
 
-const SleepForm = ({ back, defaultValues, fetchSleepData, setAddFormView }) => {
+const SleepForm = ({
+  back,
+  defaultValues,
+  fetchSleepData,
+  setAddFormView,
+  addSleep,
+  editSleep,
+}) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const { loading, error, post, patch, clearCache } = useApi();
   const [date, setDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date()); // Set default to current date
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [sleepType, setSleepType] = useState(defaultValues?.act_type || "");
   const [duration, setDuration] = useState(defaultValues?.act_duration || "");
-  const [category, setCategory] = useState(defaultValues?.act_catagory || "sleep");
+  const [category, setCategory] = useState(
+    defaultValues?.act_catagory || "sleep"
+  );
   const [errors, setErrors] = useState({});
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
 
   useEffect(() => {
     if (defaultValues) {
       setSelectedDate(parseDate(defaultValues?.act_date) || new Date()); // Set to default today if not provided
       setSelectedTime(parseTime(defaultValues?.act_time) || new Date());
       setSleepType(defaultValues?.act_type || "");
-      setCategory(defaultValues.act_catagory || "activity");
+      // setCategory(defaultValues.act_catagory || "activity");
       setDuration(defaultValues.act_duration || "");
     }
   }, [defaultValues]);
@@ -70,12 +83,10 @@ const SleepForm = ({ back, defaultValues, fetchSleepData, setAddFormView }) => {
   };
 
   const options = ["Disturbed", "Undisturbed", "Excess Dreams"];
-  
+
   const getSelectedValue = (data) => {
     setSleepType(data); // Set the selected diet type
   };
-
- 
 
   const handleDateChange = (date) => {
     setSelectedDate(date || new Date());
@@ -84,68 +95,7 @@ const SleepForm = ({ back, defaultValues, fetchSleepData, setAddFormView }) => {
   const handleTimeChange = (time) => {
     setSelectedTime(time || new Date());
   };
-  const addSleep = async () => {
-    try {
-      // Ensure the date is in ISO format, including time and timezone.
-      const formattedDate = selectedDate.toISOString(); // Convert to ISO format
-      const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
 
-      // Construct the request body in the desired format
-      const body = {
-        patient_id: "10", // Use the appropriate patient ID
-        act_catagory: category,
-        act_date: formattedDate, // Use the ISO formatted date
-        act_time: formattedTime,
-        act_type: sleepType,
-        act_duration: duration,
-      };
-
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/activity_wellness`, body);
-
-      if (response.code === 201) {
-        clearCache();
-        await fetchSleepData(); // Refresh the list data here
-        setAddFormView(false); // Close the form view
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-
-  const editSleep = async () => {
-    const formattedDate = selectedDate.toISOString(); // Convert to ISO format
-    const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
-    try {
-      const body = {
-        patient_id: "10", // Use the appropriate patient ID
-        act_catagory: category,
-        act_date: formattedDate, // Use the ISO formatted date
-        act_time: formattedTime,
-        act_type: sleepType,
-        act_duration: duration,
-      };
-
-      // Use the PATCH function for editing
-      const response = await patch(
-        `resource/activity_wellness/${defaultValues.id}`, // Use the ID from default values
-        body
-      );
-
-      if (response.code === 200) {
-        clearCache();
-        await fetchSleepData(); // Refresh the list data here
-        setAddFormView(false); // Close the form view
-      } else {
-        console.error("Failed to update data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error updating data:", error);
-    }
-  };
   const validate = () => {
     // Add validation logic here if needed
     // Example: Check if all required fields are filled
@@ -159,56 +109,108 @@ const SleepForm = ({ back, defaultValues, fetchSleepData, setAddFormView }) => {
 
   const onSubmit = () => {
     if (validate()) {
+      const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
+      const body = {
+        patient_id: data?.user_id, // Use the appropriate patient ID
+        act_catagory: "sleep",
+        act_date: format(selectedDate, "yyyy-MM-dd"), // Use the ISO formatted date
+        act_time: formattedTime,
+        act_type: sleepType,
+        act_duration: duration,
+      };
       if (defaultValues?.id) {
         console.log("Edit clicked");
-        editSleep(); // Call edit function if id is present
+        editSleep(body, defaultValues?.id); // Call edit function if id is present
       } else {
         console.log("Add clicked");
-        addSleep(); // Call add function if id is not present
+        addSleep(body); // Call add function if id is not present
       }
     }
   };
-
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
   return (
     <>
       <CRow className="mb-3">
         <CCol lg={4}>
-          <div className="position-relative">
-            <label htmlFor="validationTooltip01" className="form-label">
+          <div class="position-relative d-flex flex-column gap-1">
+            <label for="validationTooltip01" class="form-label">
               Date *
             </label>
-            <div className="date-size">
-            <DatePicker
-                showIcon
-                selected={selectedDate}
-                onChange={handleDateChange}
-                isClearable
-                closeOnScroll={true}
-                wrapperClassName="date-picker-wrapper"
-                dateFormat={DATE_FORMAT}
-                maxDate={maxDate}
-              />
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  showIcon
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  // isClearable
+                  closeOnScroll={true}
+                  wrapperClassName="date-picker-wrapper"
+                  dateFormat={DATE_FORMAT}
+                  maxDate={maxDate}
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedDate && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleDateClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+
+            {errors.date && <div className="error-text">{errors.date}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
-          <div className="position-relative">
-            <label htmlFor="validationTooltip01" className="form-label">
+          <div class="position-relative d-flex flex-column gap-1">
+            <label for="validationTooltip01" class="form-label">
               Time *
             </label>
-            <div className="date-size">
-            <DatePicker
-                showIcon
-                selected={selectedTime}
-                onChange={handleTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                isClearable
-                closeOnScroll={true}
-                timeIntervals={5}
-                dateFormat="h:mm aa"
-              />
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  selected={selectedTime}
+                  onChange={handleTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  closeOnScroll={true}
+                  timeIntervals={5}
+                  dateFormat="HH:mm"
+                  timeFormat="HH:mm"
+                  customInput={<CustomInput />}
+                  showIcon={false}
+                  wrapperClassName="time-picker-style"
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedTime && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+            {errors.time && <div className="error-text">{errors.time}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
@@ -229,8 +231,10 @@ const SleepForm = ({ back, defaultValues, fetchSleepData, setAddFormView }) => {
                   defaultValue={defaultValues?.act_type || null}
                   getSelectedValue={getSelectedValue}
                 />
-                
               </div>
+              {errors.sleepType && (
+                <div className="error-text">{errors.sleepType}</div>
+              )}
             </div>
           </div>
         </CCol>

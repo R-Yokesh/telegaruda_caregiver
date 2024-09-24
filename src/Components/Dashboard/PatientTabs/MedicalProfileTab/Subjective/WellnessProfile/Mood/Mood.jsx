@@ -35,7 +35,7 @@ const Mood = ({ from }) => {
 
   const [pagination, setPagination] = useState({});
   const [id, setId] = useState(null);
-  const { loading, error, get, del, clearCache } = useApi();
+  const { post, patch, get, del, clearCache } = useApi();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
   const [moodData, setMoodData] = useState([]);
@@ -77,7 +77,7 @@ const Mood = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate]);
+  }, [get, currentPage, startDate, endDate, data?.user_id]);
 
   useEffect(() => {
     fetchMood();
@@ -119,6 +119,37 @@ const Mood = ({ from }) => {
       console.error("Error deleting data:", error);
     }
   };
+  const addMood = async (body) => {
+    try {
+      const response = await post(`resource/activity_wellness`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchMood();
+        setAddFormView(false);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const editMood = async (body, id) => {
+    try {
+      const response = await patch(`resource/activity_wellness/${id}`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchMood();
+        setAddFormView(false);
+      } else {
+        console.error("Failed to update data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+  };
   return (
     <>
       {from === "Consult" && (
@@ -152,13 +183,13 @@ const Mood = ({ from }) => {
                       </div>
                     </PrimaryButton>
                   </div>
-                  <div>
+                  {/* <div>
                     <PrimaryButton onClick={() => addFormPage()}>
                       <div className="d-flex align-items-center gap-2">
                         <img src={Assets.OptionsIcon} alt="add" />
                       </div>
                     </PrimaryButton>
-                  </div>
+                  </div> */}
                 </CCol>
               </CRow>
               <div className="mb-2">
@@ -194,6 +225,8 @@ const Mood = ({ from }) => {
                   setAddFormView={setAddFormView}
                   fetchMood={fetchMood}
                   defaultValues={selectedData}
+                  addMood={addMood}
+                  editMood={editMood}
                 />
               </CCardBody>
             </CCard>

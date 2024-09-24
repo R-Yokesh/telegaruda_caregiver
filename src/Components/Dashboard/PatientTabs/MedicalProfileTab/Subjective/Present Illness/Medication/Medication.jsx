@@ -27,7 +27,6 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Medication = ({ from }) => {
-
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "Medication Name" },
@@ -215,8 +214,7 @@ const Medication = ({ from }) => {
   //   },
   // ];
 
-
-  const { loading, error, get,post,patch, del, clearCache } = useApi();
+  const { loading, error, get, post, patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -237,9 +235,7 @@ const Medication = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-
   };
-
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
@@ -253,15 +249,16 @@ const Medication = ({ from }) => {
   const detailPage = () => {
     setDetailView(true);
   };
-
+  const [view, setView] = useState(false);
   const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "view") {
       addFormPage();
+      setView(true);
     }
     if (type === "delete") {
-      console.log("Delete Clicked")
-      setId(id)
+      console.log("Delete Clicked");
+      setId(id);
       detailPage();
     }
   };
@@ -269,7 +266,13 @@ const Medication = ({ from }) => {
   const fetchMedication = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=values-%3Estart_date&dir=2&user_id=${data?.user_id}&slug=medicine&slug_array=`
+        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${
+          searchValue ?? ""
+        }&order_by=values-%3Estart_date&dir=2&user_id=${
+          data?.user_id
+        }&slug=medicine&slug_array=`
       );
       if (response.code === 200) {
         setRowData(response?.data?.patient_healths);
@@ -280,17 +283,16 @@ const Medication = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate, searchValue]);
+  }, [get, currentPage, startDate, endDate, searchValue, data?.user_id]);
 
   useEffect(() => {
     fetchMedication();
   }, [fetchMedication]);
 
-   // Add Medication
-   const addMedication = async (values) => {
+  // Add Medication
+  const addMedication = async (values) => {
     try {
       const body = {
-
         slug: "medicine",
         patient_id: data?.user_id,
         values: values,
@@ -304,7 +306,6 @@ const Medication = ({ from }) => {
         await fetchMedication();
         setAddFormView(false);
         toast.success("Added successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -323,7 +324,6 @@ const Medication = ({ from }) => {
         clearCache();
         fetchMedication();
         toast.success("Deleted successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -331,8 +331,6 @@ const Medication = ({ from }) => {
       console.error("Error fetching data:", error);
     }
   };
-
-
 
   const options = ["Morning", "Afternoon", "Evening", "Night"];
 
@@ -350,7 +348,12 @@ const Medication = ({ from }) => {
                 className="d-flex justify-content-end align-items-center gap-2"
               >
                 <div>
-                  <PrimaryButton onClick={() => addFormPage()}>
+                  <PrimaryButton
+                    onClick={() => {
+                      addFormPage();
+                      setView(false);
+                    }}
+                  >
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.Add} alt="add" />
                       <span className="fs-16 fw-600">Add</span>
@@ -401,6 +404,7 @@ const Medication = ({ from }) => {
               }}
               defaultValues={selectedData}
               addMedication={addMedication}
+              view={view}
             />
           </CCardBody>
         </CCard>

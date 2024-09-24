@@ -31,7 +31,7 @@ const Sleep = ({ from }) => {
   const data = location.state?.PatientDetail;
   const [pagination, setPagination] = useState({});
   const [id, setId] = useState(null);
-  const { loading, error, get, del, clearCache } = useApi();
+  const { post, patch, get, del, clearCache } = useApi();
 
   const [rowData, setRowData] = useState([]);
   const [addFormView, setAddFormView] = useState(false);
@@ -83,7 +83,7 @@ const Sleep = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate]);
+  }, [get, currentPage, startDate, endDate, data?.user_id]);
 
   useEffect(() => {
     fetchSleepData();
@@ -103,7 +103,7 @@ const Sleep = ({ from }) => {
         if (response.code === 200) {
           setDetailView(false);
           clearCache();
-          deleteSleep();
+          await fetchSleepData();
         } else {
           console.error("Failed to delete data:", response.message);
         }
@@ -122,7 +122,42 @@ const Sleep = ({ from }) => {
       detailPage();
     }
   };
+  const addSleep = async (body) => {
+    try {
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/activity_wellness`, body);
 
+      if (response.code === 201) {
+        clearCache();
+        await fetchSleepData(); // Refresh the list data here
+        setAddFormView(false); // Close the form view
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const editSleep = async (body, id) => {
+    try {
+      // Use the PATCH function for editing
+      const response = await patch(
+        `resource/activity_wellness/${id}`, // Use the ID from default values
+        body
+      );
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchSleepData(); // Refresh the list data here
+        setAddFormView(false); // Close the form view
+      } else {
+        console.error("Failed to update data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+  };
   return (
     <>
       {from === "Consult" && (
@@ -155,13 +190,13 @@ const Sleep = ({ from }) => {
                       </div>
                     </PrimaryButton>
                   </div>
-                  <div>
+                  {/* <div>
                     <PrimaryButton onClick={() => addFormPage()}>
                       <div className="d-flex align-items-center gap-2">
                         <img src={Assets.OptionsIcon} alt="add" />
                       </div>
                     </PrimaryButton>
-                  </div>
+                  </div> */}
                 </CCol>
               </CRow>
               <div className="mb-2">
@@ -197,6 +232,8 @@ const Sleep = ({ from }) => {
                   setAddFormView={setAddFormView}
                   fetchSleepData={fetchSleepData}
                   defaultValues={selectedData}
+                  addSleep={addSleep}
+                  editSleep={editSleep}
                 />
               </CCardBody>
             </CCard>
