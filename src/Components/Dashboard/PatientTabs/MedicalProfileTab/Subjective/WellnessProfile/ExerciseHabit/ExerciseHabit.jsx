@@ -81,7 +81,6 @@ const ExerciseHabit = ({ from }) => {
         }`
       );
       if (response.code === 200) {
-        console.log(response?.data?.activity_wellnesses);
         setHabitData(response?.data?.activity_wellnesses);
         setPagination(response?.data?.pagination);
       } else {

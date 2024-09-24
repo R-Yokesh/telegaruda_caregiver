@@ -9,6 +9,8 @@ import Notify from "./Images/Notify.png";
 import TwoFA from "./Images/2FA.png";
 import ForgetPass from "./Images/Forget.png";
 
+import ResetSearch from "./Images/Reset-Img.png";
+
 import ExpandOpen from "./Images/ExpandOpen.png";
 import ExpandClose from "./Images/ExpandClose.png";
 
@@ -119,12 +121,11 @@ import UStatus from "./Images/update-status.png";
 import Approve from "./Images/Approve.png";
 import NoImg from "./Images/No-Img.png";
 import ProfileImg from "./Images/Profile-Image.svg";
- 
+
 import testSubIcon from "./Images/testSubIcon.svg";
 import testUnSubIcon from "./Images/testUnSubIcon.svg";
 import testViewIcon from "./Images/testViewIcon.svg";
 import videoCall_icon from "./Images/videoCall_icon.svg";
-
 
 export const Assets = {
   BackBtn,
@@ -229,4 +230,5 @@ export const Assets = {
   testUnSubIcon,
   testViewIcon,
   videoCall_icon,
+  ResetSearch,
 };

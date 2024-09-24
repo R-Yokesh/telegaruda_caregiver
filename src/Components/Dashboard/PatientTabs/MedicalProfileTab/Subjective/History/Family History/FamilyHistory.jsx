@@ -136,7 +136,6 @@ const FamilyHistory = ({ from }) => {
     }
   };
 
-
   const familyHistAdd = async () => {
     try {
       const url = `resource/familyHistories`; // Replace with your API endpoint
@@ -170,7 +169,7 @@ const FamilyHistory = ({ from }) => {
   useEffect(() => {
     getHistoryLists();
   }, [getHistoryLists]);
-
+  console.log(labelData, "first", selectedData);
   return (
     <>
       <>
@@ -246,10 +245,17 @@ const FamilyHistory = ({ from }) => {
           >
             <CModalBody className="p-3">
               <div className="w-100 mt-2 d-flex justify-content-center flex-column align-items-center">
-                <h5>
-                  Are you sure your {labelData?.relationship} has/had{" "}
-                  {selectedData?.name} ?
-                </h5>
+                {labelData?.status === false ? (
+                  <h5>
+                    Are you sure your {labelData?.relationship} has/had{" "}
+                    {selectedData?.name} ?
+                  </h5>
+                ) : (
+                  <h5>
+                    Are you sure want to remove ({labelData?.relationship} -{" "}
+                    {selectedData?.name})?
+                  </h5>
+                )}
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
                     <PrimaryButton onClick={() => familyHistAdd()}>

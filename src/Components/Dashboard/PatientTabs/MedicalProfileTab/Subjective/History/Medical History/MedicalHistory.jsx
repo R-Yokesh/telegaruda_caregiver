@@ -196,7 +196,7 @@ const MedicalHistory = ({ from }) => {
       console.error("Error fetching data:", error);
       setRowData([]);
     }
-  }, [get, currentPage, addFormView]);
+  }, [get, data?.user_id, currentPage, startDate, endDate, searchValue]);
 
   useEffect(() => {
     getMedicalLists();

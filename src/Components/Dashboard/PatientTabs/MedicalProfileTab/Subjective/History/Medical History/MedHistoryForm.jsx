@@ -30,31 +30,37 @@ const MedHistoryForm = ({
   const [selectPreviousIllness, setSelectPreviousIllness] = useState(
     defaultValues?.values?.condition?.previous_illness === "yes" ? true : false
   );
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(
+    defaultValues?.values?.onset_date
+      ? parse(defaultValues?.values?.onset_date, "dd-MM-yyyy", new Date())
+      : new Date()
+  );
   const [errors, setErrors] = useState({});
-  const [notes, setNotes] = useState(defaultValues?.values?.condition?.notes || "");
+  const [notes, setNotes] = useState(
+    defaultValues?.values?.condition?.notes || ""
+  );
   const location = useLocation();
   const data = location.state?.PatientDetail;
-  console.log("icked", defaultValues);
+  console.log(defaultValues?.values?.onset_date, "icked", defaultValues);
 
   const maxDate = new Date(); // Restrict future dates
-  const defaultDateTime = defaultValues?.values?.onset_date || "";
+  // const defaultDateTime = defaultValues?.values?.onset_date || "";
 
-  // Split date and time
-  const defaultDate = defaultDateTime.split(" ")[0] || "";
-  useEffect(() => {
-    // Combine default date and time into a single Date object
-    let date = new Date();
+  // // Split date and time
+  // const defaultDate = defaultDateTime.split(" ")[0] || "";
+  // useEffect(() => {
+  //   // Combine default date and time into a single Date object
+  //   let date = new Date();
 
-    if (defaultDate) {
-      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
-      if (isValid(parsedDate)) {
-        date = parsedDate;
-      }
-    }
+  //   if (defaultDate) {
+  //     const parsedDate = parse(defaultValues?.values?.onset_date, "yyyy-MM-dd", new Date());
+  //     if (isValid(parsedDate)) {
+  //       date = parsedDate;
+  //     }
+  //   }
 
-    setSelectedDate(date);
-  }, [defaultDate]);
+  //   setSelectedDate(date);
+  // }, [defaultDate, defaultValues?.values?.onset_date]);
   // useEffect(() => {
   //   if (defaultValues?.values) {
   //     // Set initial state for editing

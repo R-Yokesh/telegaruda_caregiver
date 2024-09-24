@@ -8,23 +8,36 @@ import { DATE_FORMAT } from "../../../../../../../Config/config";
 import useApi from "../../../../../../../ApiServices/useApi";
 import { format } from "date-fns";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
-const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) => {
+const FluidIntakeForm = ({
+  back,
+  defaultValues,
+  setAddFormView,
+  fetchFluid,
+  addFluid,
+  editFluid,
+}) => {
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+
   const [date, setDate] = useState(null);
   const { loading, error, post, patch, clearCache } = useApi();
-  const [selectedTime, setSelectedTime] = useState(new Date()); 
-  const [selectedDate, setSelectedDate] =  useState(new Date()); 
+  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [fluidType, setFluidType] = useState(defaultValues?.act_type || "");
   const [water, setWater] = useState("");
   const [intake, setIntake] = useState(defaultValues?.act_intake || "");
   const [errors, setErrors] = useState({});
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
 
   useEffect(() => {
     // Initialize the state with default values if available
     if (defaultValues) {
-      setSelectedDate(parseDate(defaultValues?.details?.act_date) || new Date());
-      setSelectedTime(parseTime(defaultValues.act_time)|| new Date());
+      setSelectedDate(
+        parseDate(defaultValues?.details?.act_date) || new Date()
+      );
+      setSelectedTime(parseTime(defaultValues.act_time) || new Date());
       setFluidType(defaultValues.act_type || "");
       setWater(defaultValues.act_intake?.water || ""); // Set water for add mode
       setIntake(defaultValues.act_intake || ""); // Set intake for edit mode
@@ -46,10 +59,22 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
   };
 
   const options = [
-    "Water", "Oral Rehydration Solutions", "Clear Broth", "Milk",
-    "Fruit Juices", "Herbal Teas", "Coffee", "Tea", "Sports Drinks",
-    "Soft Drinks", "Energy Drinks", "Coconut Water", "Infused Water",
-    "Soup", "Electrolyte Solutions", "Alcoholic Beverages",
+    "Water",
+    "Oral Rehydration Solutions",
+    "Clear Broth",
+    "Milk",
+    "Fruit Juices",
+    "Herbal Teas",
+    "Coffee",
+    "Tea",
+    "Sports Drinks",
+    "Soft Drinks",
+    "Energy Drinks",
+    "Coconut Water",
+    "Infused Water",
+    "Soup",
+    "Electrolyte Solutions",
+    "Alcoholic Beverages",
   ];
 
   const getSelectedValue = (data) => {
@@ -64,67 +89,7 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
     setSelectedTime(time || new Date());
   };
 
-  const addFluid = async () => {
-    const formattedDate = format(selectedDate, "yyyy-MM-dd"); // Format date to "YYYY-MM-DD"
-    const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
-    try {
-      const body = {
-        patient_id: "10", // Use the appropriate patient ID
-        act_catagory: "fluid",
-        act_date: formattedDate,
-        act_time: formattedTime,
-        actual_value: true, // New field for add
-        act_intake: {
-          [fluidType.toLowerCase()]: water, // Use fluid type as key
-        },
-        unit: "ml",
-      };
 
-      const response = await post(`resource/activity_wellness`, body);
-
-      if (response.code === 201) {
-        clearCache();
-        await fetchFluid(); // Refresh the list data here
-        setAddFormView(false); // Close the form view
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const editFluid = async () => {
-    const formattedDate = format(selectedDate, "yyyy-MM-dd"); // Format date to "YYYY-MM-DD"
-    const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
-    try {
-      const body = {
-        patient_id: "10",
-        act_catagory: "fluid",
-        act_date: formattedDate,
-        act_time: formattedTime,
-        act_type: fluidType.toLowerCase(), // Assuming `act_type` is required
-        act_intake: intake, // Use intake for editing
-        unit: "ml",
-      };
-
-      // Use the PATCH function for editing
-      const response = await patch(
-        `resource/activity_wellness/${defaultValues.id}`, // Use the ID from default values
-        body
-      );
-
-      if (response.code === 200) {
-        clearCache();
-        await fetchFluid(); // Refresh the list data here
-        setAddFormView(false); // Close the form view
-      } else {
-        console.error("Failed to update data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error updating data:", error);
-    }
-  };
 
   const validate = () => {
     const newErrors = {};
@@ -138,12 +103,34 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
 
   const onSubmit = () => {
     if (validate()) {
+      const formattedDate = format(selectedDate, "yyyy-MM-dd"); // Format date to "YYYY-MM-DD"
+      const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
+      const Addbody = {
+        patient_id: data?.user_id, // Use the appropriate patient ID
+        act_catagory: "fluid",
+        act_date: formattedDate,
+        act_time: formattedTime,
+        actual_value: true, // New field for add
+        act_intake: {
+          [fluidType.toLowerCase()]: water, // Use fluid type as key
+        },
+        unit: "ml",
+      };
+      const Editbody = {
+        patient_id: data?.user_id,
+        act_catagory: "fluid",
+        act_date: formattedDate,
+        act_time: formattedTime,
+        act_type: fluidType.toLowerCase(), // Assuming `act_type` is required
+        act_intake: intake, // Use intake for editing
+        unit: "ml",
+      };
       if (defaultValues?.id) {
         console.log("Edit clicked");
-        editFluid(); // Call edit function if id is present
+        editFluid(Editbody, defaultValues.id); // Call edit function if id is present
       } else {
         console.log("Add clicked");
-        addFluid(); // Call add function if id is not present
+        addFluid(Addbody); // Call add function if id is not present
       }
     }
   };
@@ -210,7 +197,9 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
                   defaultValue={defaultValues?.act_type || null}
                   getSelectedValue={getSelectedValue}
                 />
-                {errors.fluidType && <div className="text-danger">{errors.fluidType}</div>}
+                {errors.fluidType && (
+                  <div className="text-danger">{errors.fluidType}</div>
+                )}
               </div>
             </div>
           </div>
@@ -227,21 +216,25 @@ const FluidIntakeForm = ({ back, defaultValues, setAddFormView, fetchFluid }) =>
               className="form-control"
               value={defaultValues?.id ? intake : water} // Adjust based on mode
               onChange={(e) =>
-                defaultValues?.id ? setIntake(e.target.value) : setWater(e.target.value)
+                defaultValues?.id
+                  ? setIntake(e.target.value)
+                  : setWater(e.target.value)
               }
             />
-            {errors.intake && <div className="text-danger">{errors.intake}</div>}
+            {errors.intake && (
+              <div className="text-danger">{errors.intake}</div>
+            )}
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-3">
-          <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
-          </CCol>
-          <CCol xs={3} md={2}>
-            <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-          </CCol>
-        </CRow>
+        <CCol xs={3} md={2}>
+          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+        </CCol>
+        <CCol xs={3} md={2}>
+          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+        </CCol>
+      </CRow>
     </>
   );
 };

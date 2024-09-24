@@ -8,22 +8,47 @@ import { DATE_FORMAT } from "../../../../../../../Config/config";
 import useApi from "../../../../../../../ApiServices/useApi";
 import { format } from "date-fns";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
-const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
+const DietForm = ({
+  back,
+  defaultValues,
+  fetchDiet,
+  setAddFormView,
+  addDiet,
+  editDiet,
+}) => {
+  const parseDate = (dateString) => {
+    if (!dateString) return null;
+    const [year, month, day] = dateString.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  };
+
+  const parseTime = (timeString) => {
+    if (!timeString) return null;
+    const [hours, minutes] = timeString.split(":").map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+    return date;
+  };
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
   const [date, setDate] = useState(null);
   const { loading, error, post, patch, clearCache } = useApi();
-  const [selectedTime, setSelectedTime] = useState(new Date()); 
-  const [selectedDate, setSelectedDate] = useState(new Date()); 
+  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [dietType, setDietType] = useState(defaultValues?.act_type || ""); // Initialize diet type
   const [notes, setNotes] = useState(defaultValues?.detail?.notes || "");
   const [errors, setErrors] = useState({});
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
 
   useEffect(() => {
     // Initialize the state with default values if available
     if (defaultValues) {
-      setSelectedDate(parseDate(defaultValues?.details?.act_date) || new Date());
-      setSelectedTime(parseTime(defaultValues.act_time)|| new Date());
+      setSelectedDate(
+        parseDate(defaultValues?.act_date) || new Date()
+      );
+      setSelectedTime(parseTime(defaultValues.act_time) || new Date());
       setDietType(defaultValues.act_type || ""); // Set the diet type from default values
       setNotes(defaultValues.detail?.notes || ""); // Set the notes from the new format
     }
@@ -53,20 +78,6 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
     setDate(defaultDate);
   }, [defaultValues]);
 
-  const parseDate = (dateString) => {
-    if (!dateString) return null;
-    const [year, month, day] = dateString.split("-").map(Number);
-    return new Date(year, month - 1, day);
-  };
-
-  const parseTime = (timeString) => {
-    if (!timeString) return null;
-    const [hours, minutes] = timeString.split(":").map(Number);
-    const date = new Date();
-    date.setHours(hours, minutes, 0, 0);
-    return date;
-  };
-
   const options = ["Veg", "Non-Veg", "Others"];
   const findIndex = defaultValues?.act_type
     ? options?.indexOf(defaultValues?.act_type)
@@ -84,67 +95,6 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
     setSelectedTime(time || new Date());
   };
 
-  const addDiet = async () => {
-    const formattedDate = format(selectedDate, "yyyy-MM-dd"); // Format date to "YYYY-MM-DD"
-    const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
-    try {
-      // Construct the request body in the desired format
-      const body = {
-        patient_id: "10", // Use the appropriate patient ID
-        act_catagory: "diet",
-        act_date: formattedDate,
-        act_time: formattedTime,
-        act_type: dietType, // Assuming `dietType` is the selected diet type like "Veg", "Non-Veg", etc.
-        detail: {
-          notes: notes, // The notes from the form
-        },
-      };
-  
-      // Use the provided `post` function to send the request
-      const response = await post(`resource/activity_wellness`, body);
-  
-      if (response.code === 201) {
-        clearCache();
-        await fetchDiet(); // Refresh the list data here
-        setAddFormView(false); // Close the form view
-      } else {
-        console.error("Failed to fetch data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  
-  const editDiet = async () => {
-    const formattedDate = format(selectedDate, "yyyy-MM-dd"); // Format date to "YYYY-MM-DD"
-    const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
-    try {
-      // Construct the request body in the desired format
-      const body = {
-        act_date: formattedDate,
-        act_time: formattedTime,
-        act_type: dietType,
-        detail: {
-          notes: notes,
-        },
-      };
-  
-      // Use the provided `patch` function to send the request
-      const response = await patch(`resource/activity_wellness/${defaultValues.id}`, body);
-  
-      if (response.code === 200) {
-        clearCache();
-        await fetchDiet(); // Refresh the list data here
-        setAddFormView(false); // Close the form view
-      } else {
-        console.error("Failed to update data:", response.message);
-      }
-    } catch (error) {
-      console.error("Error updating data:", error);
-    }
-  };
-  
-
   const validate = () => {
     // Add validation logic here if needed
     // Example: Check if all required fields are filled
@@ -158,12 +108,24 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
 
   const onSubmit = () => {
     if (validate()) {
+      const formattedDate = format(selectedDate, "yyyy-MM-dd"); // Format date to "YYYY-MM-DD"
+      const formattedTime = moment(selectedTime).format("HH:mm"); // Format time to "HH:mm"
+      const body = {
+        patient_id: data?.user_id, // Use the appropriate patient ID
+        act_catagory: "diet",
+        act_date: formattedDate,
+        act_time: formattedTime,
+        act_type: dietType, // Assuming `dietType` is the selected diet type like "Veg", "Non-Veg", etc.
+        detail: {
+          notes: notes, // The notes from the form
+        },
+      };
       if (defaultValues?.id) {
         console.log("Edit clicked");
-        editDiet(); // Call edit function if id is present
+        editDiet(body, defaultValues?.id); // Call edit function if id is present
       } else {
         console.log("Add clicked");
-        addDiet(); // Call add function if id is not present
+        addDiet(body); // Call add function if id is not present
       }
     }
   };
@@ -227,11 +189,15 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
               >
                 <Dropdown
                   options={options}
-                  defaultValue={defaultValues?.act_type ? options[findIndex] : null}
+                  defaultValue={
+                    defaultValues?.act_type ? options[findIndex] : null
+                  }
                   getSelectedValue={getSelectedValue}
                 />
               </div>
-              {errors.dietType && <p className="text-danger">{errors.dietType}</p>}
+              {errors.dietType && (
+                <p className="text-danger">{errors.dietType}</p>
+              )}
             </div>
           </div>
         </CCol>
@@ -254,13 +220,13 @@ const DietForm = ({ back, defaultValues, fetchDiet, setAddFormView }) => {
         </CCol>
       </CRow>
       <CRow className="mb-3">
-          <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
-          </CCol>
-          <CCol xs={3} md={2}>
-            <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
-          </CCol>
-        </CRow>
+        <CCol xs={3} md={2}>
+          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+        </CCol>
+        <CCol xs={3} md={2}>
+          <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
+        </CCol>
+      </CRow>
     </>
   );
 };

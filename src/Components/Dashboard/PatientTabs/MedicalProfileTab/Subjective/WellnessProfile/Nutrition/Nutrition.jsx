@@ -29,19 +29,23 @@ const Nutrition = ({ from }) => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const [pagination, setPagination] = useState({});
+  const [paginationFluid, setPaginationFluid] = useState({});
+
   const [rowData, setRowData] = useState([]);
   const [rowFluidata, setRowFluiData] = useState([]);
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
 
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [filters, setFilters] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageFluid, setCurrentPageFluid] = useState(1);
+
   const [selectedData, setSelectedData] = useState({});
-  const { loading, error, get, del, clearCache } = useApi();
+  const { post, patch, get, del, clearCache } = useApi();
 
   const columnData = [
     { id: 1, label: "No." },
@@ -73,20 +77,24 @@ const Nutrition = ({ from }) => {
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const onPageChangeFluid = (pageNumber) => {
+    setCurrentPageFluid(pageNumber);
+  };
   const getFilterValues = (startDate, endDate, searchValue) => {
-    console.log(startDate,endDate,searchValue,"ghghhghg")
+    console.log(startDate, endDate, searchValue, "ghghhghg");
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-    
   };
 
   const fetchDiet = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?act_catagory=diet&user_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage ?? ""}&from=${startDate ?? ""}&to=${
-          endDate ?? ""
-        }&order_by=act_date&dir=1`
+        `resource/activity_wellness?act_catagory=diet&user_id=${
+          data?.user_id
+        }&limit=${itemsPerPage}&page=${currentPage ?? ""}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&order_by=act_date&dir=1`
       );
       if (response.code === 200) {
         console.log(response?.data?.activity_wellnesses);
@@ -98,7 +106,7 @@ const Nutrition = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate]);
+  }, [get, data?.user_id, currentPage, startDate, endDate, addFormView]);
 
   useEffect(() => {
     fetchDiet();
@@ -107,25 +115,25 @@ const Nutrition = ({ from }) => {
   const fetchFluid = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?&limit=${itemsPerPage}&page=${currentPage}&order_by=act_date&dir=2&act_catagory=fluid&user_id=${data?.user_id}`
+        `resource/activity_wellness?&limit=${itemsPerPage}&page=${currentPageFluid}&order_by=act_date&dir=2&act_catagory=fluid&user_id=${
+          data?.user_id
+        }&from=${startDate ?? ""}&to=${endDate ?? ""}`
       );
       // &from=${startDate}&to=${endDate}&
       if (response.code === 200) {
-        console.log(response?.data?.activity_wellnesses);
         setRowFluiData(response?.data?.activity_wellnesses);
-        setPagination(response?.data?.pagination);
+        setPaginationFluid(response?.data?.pagination);
       } else {
         console.error("Failed to fetch data:", response.message);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate]);
+  }, [get, currentPageFluid, data?.user_id, startDate, endDate]);
 
   useEffect(() => {
     fetchFluid();
   }, [fetchFluid]);
-
 
   const FluidIntakecolumnData = [
     { id: 1, label: "No." },
@@ -163,10 +171,7 @@ const Nutrition = ({ from }) => {
     setCurrentTab(data);
   };
 
-
-
   const itemsPerPage = 5; // Number of items to display per page
-
 
   // Function to get items for the current page
   const getCurrentPageItems = () => {
@@ -180,7 +185,7 @@ const Nutrition = ({ from }) => {
   //   const endIndex = startIndex + itemsPerPage;
   //   return FluidIntakerowData?.slice(startIndex, endIndex);
   // };
-  const getselectedData = (data,id, type) => {
+  const getselectedData = (data, id, type) => {
     console.log(type, "first", data);
     setSelectedData(data);
     if (type === "edit") {
@@ -206,7 +211,8 @@ const Nutrition = ({ from }) => {
         if (response.code === 200) {
           setDetailView(false);
           clearCache();
-          fetchDiet();
+          await fetchDiet();
+          await fetchFluid();
         } else {
           console.error("Failed to delete data:", response.message);
         }
@@ -215,10 +221,81 @@ const Nutrition = ({ from }) => {
       console.error("Error deleting data:", error);
     }
   };
+  const addDiet = async (body) => {
+    try {
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/activity_wellness`, body);
 
-  
+      if (response.code === 201) {
+        clearCache();
+        await fetchDiet(); // Refresh the list data here
+        setAddFormView(false); // Close the form view
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  const editDiet = async (body, defaultId) => {
+    try {
+      // Construct the request body in the desired format
 
+      // Use the provided `patch` function to send the request
+      const response = await patch(
+        `resource/activity_wellness/${defaultId}`,
+        body
+      );
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchDiet(); // Refresh the list data here
+        setAddFormView(false); // Close the form view
+      } else {
+        console.error("Failed to update data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+  };
+  const addFluid = async (body) => {
+    try {
+      const response = await post(`resource/activity_wellness`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        await fetchFluid(); // Refresh the list data here
+        setCurrentTab(2);
+        setAddFormView(false); // Close the form view
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const editFluid = async (body, defaultValuesId) => {
+    try {
+      // Use the PATCH function for editing
+      const response = await patch(
+        `resource/activity_wellness/${defaultValuesId}`, // Use the ID from default values
+        body
+      );
+
+      if (response.code === 200) {
+        clearCache();
+        await fetchFluid(); // Refresh the list data here
+        setCurrentTab(2);
+        setAddFormView(false); // Close the form view
+      } else {
+        console.error("Failed to update data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+  };
   return (
     <>
       {from === "Consult" && (
@@ -261,11 +338,7 @@ const Nutrition = ({ from }) => {
               <>
                 <CRow className="mb-2">
                   <CCol lg={8} className="">
-                   
-                    <DateSearch
-                    
-                     getFilterValues={getFilterValues}
-                    />
+                    <DateSearch getFilterValues={getFilterValues} />
                   </CCol>
                   <CCol
                     lg={4}
@@ -328,9 +401,9 @@ const Nutrition = ({ from }) => {
                       <CRow className="mb-3">
                         <CCol lg={12} className="d-flex justify-content-center">
                           <Pagination
-                            currentPage={currentPage}
-                            onPageChange={onPageChange}
-                            totalItems={pagination?.total}
+                            currentPage={currentPageFluid}
+                            onPageChange={onPageChangeFluid}
+                            totalItems={paginationFluid?.total}
                             itemsPerPage={itemsPerPage}
                           />
                         </CCol>
@@ -355,6 +428,8 @@ const Nutrition = ({ from }) => {
                       setAddFormView={setAddFormView}
                       fetchDiet={fetchDiet}
                       defaultValues={selectedData}
+                      addDiet={addDiet}
+                      editDiet={editDiet}
                     />
                   )}
                   {currentTab === 2 && (
@@ -366,6 +441,8 @@ const Nutrition = ({ from }) => {
                       setAddFormView={setAddFormView}
                       fetchFluid={fetchFluid}
                       defaultValues={selectedData}
+                      addFluid={addFluid}
+                      editFluid={editFluid}
                     />
                   )}
                 </CCardBody>
@@ -386,7 +463,7 @@ const Nutrition = ({ from }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                      <PrimaryButton onClick={deleteDiet}>Yes</PrimaryButton>
+                        <PrimaryButton onClick={deleteDiet}>Yes</PrimaryButton>
                       </div>
                       <div style={{ width: "80px" }}>
                         <SecondaryButton onClick={() => setDetailView(false)}>
@@ -406,4 +483,3 @@ const Nutrition = ({ from }) => {
 };
 
 export default Nutrition;
-

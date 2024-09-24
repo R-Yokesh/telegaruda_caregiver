@@ -45,7 +45,7 @@ const NutritionDietTable = ({ columns, rowData, getselectedData, from,itemsPerPa
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.act_date}</span>
+                  <span className="fs-16 fw-500">{dt?.act_date?.split(" ")[0]?.split("-")?.reverse()?.join("-")}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
@@ -69,6 +69,8 @@ const NutritionDietTable = ({ columns, rowData, getselectedData, from,itemsPerPa
                        <div
                          style={{
                            width: "50%",
+                           display: "flex",
+                           justifyContent: "flex-end",
                          }}
                        >
                          <img
