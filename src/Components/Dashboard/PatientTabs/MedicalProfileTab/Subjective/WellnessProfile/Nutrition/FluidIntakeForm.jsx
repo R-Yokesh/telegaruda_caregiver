@@ -141,6 +141,21 @@ const FluidIntakeForm = ({
     setSelectedDate(null); // Clear the selected time
     setSelectedTime(null);
   };
+  const handleChange = (e) => {
+    const inputValue = e.target.value;
+
+    // Regular expression to match the desired format
+    const regex = /^\d{0,4}(\.\d{0,2})?$/;
+
+    // Check if the input value matches the regex
+    if (regex.test(inputValue) || inputValue === "") {
+      if (defaultValues?.id) {
+        setIntake(inputValue);
+      } else {
+        setWater(inputValue);
+      }
+    }
+  };
   return (
     <>
       <CRow className="mb-3">
@@ -250,17 +265,19 @@ const FluidIntakeForm = ({
         <CCol lg={12}>
           <div className="position-relative">
             <label htmlFor="validationTooltip01" className="form-label">
-              Intake *
+              Intake(ml)*
             </label>
             <input
               type="text"
               className="form-control"
               value={defaultValues?.id ? intake : water} // Adjust based on mode
-              onChange={(e) =>
-                defaultValues?.id
-                  ? setIntake(e.target.value)
-                  : setWater(e.target.value)
-              }
+              // onChange={(e) =>
+              //   defaultValues?.id
+              //     ? setIntake(e.target.value)
+              //     : setWater(e.target.value)
+              // }
+              onChange={handleChange}
+              placeholder="0000"
             />
             {errors.intake && (
               <div className="text-danger">{errors.intake}</div>

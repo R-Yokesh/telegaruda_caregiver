@@ -127,7 +127,7 @@ const ProcedureTab = ({ onClose, from }) => {
   };
 
   // Edit Procedure
-  const editCpt = async (values) => {
+  const editCpt = async (values,id) => {
     try {
       const body = {
         patient_id: data?.user_id,
