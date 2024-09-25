@@ -296,6 +296,15 @@ const PhysicalExam = ({ onClose, from }) => {
     onSubmit(formattedOptions, option.attributes?.reference_slug);
   };
 
+  const handleNotesKeyPress = (slug, event) => {
+    if (event.key === 'Enter') {
+      onSubmit(
+        { ...selectedOptions, [slug]: true }, // Sending selected options along with notes
+        slug
+      );
+    }
+  };
+
   const handleNotesChange = (slug, value) => {
     setNotes((prevNotes) => ({
       ...prevNotes,
@@ -578,6 +587,7 @@ const PhysicalExam = ({ onClose, from }) => {
                                 onChange={(e) =>
                                   handleNotesChange(item?.slug, e.target.value)
                                 }
+                                onKeyDown={(e) => handleNotesKeyPress(item?.slug, e)} // Trigger API call on Enter
                                 disabled={editView}
                               />
                             </div>
