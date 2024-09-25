@@ -95,7 +95,7 @@ const ProcedureTab = ({ onClose, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,startDate,endDate,searchValue]);
+  }, [get, currentPage,startDate,endDate,searchValue,data?.user_id]);
 
   useEffect(() => {
     fetchCpt();
@@ -154,7 +154,7 @@ const ProcedureTab = ({ onClose, from }) => {
   // Delte Allergies
   const deleteCpt = async () => {
     try {
-      const response = await del(`resource/therapy/${id}`);
+      const response = await del(`resource/patientHealth/${id}`);
   
       if (response.code === 200) {
         setDetailView(false);

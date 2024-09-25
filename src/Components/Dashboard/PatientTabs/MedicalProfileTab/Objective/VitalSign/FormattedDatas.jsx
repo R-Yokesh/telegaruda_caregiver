@@ -38,9 +38,9 @@ export const transformBPData = (originalData, pagination) => {
       status: item.details.bpFlagColor === "success" ? "success" : "error",
       name: item.details.bpFlag || "Unknown",
     },
-    systolic: Number(item.details.systolic) ,
-    diastolic: item.details.diastolic ,
-    "pulse_(bpm)": item.details.pulse ,
+    systolic: Number(item.details.systolic),
+    diastolic: item.details.diastolic,
+    "pulse_(bpm)": item.details.pulse,
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -1472,6 +1472,8 @@ export const transformUrinalysisData = (originalData, pagination) => {
         ? [{ type: "edit", disabled: item?.freeze === 1 }, { type: "delete" }]
         : [{ type: "warning" }],
     name: "Urinalysis",
+    id: item.id,
+    user_id: item.user_id,
   }));
 
   // Create badges based on the first item in tableData if available

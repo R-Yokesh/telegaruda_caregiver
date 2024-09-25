@@ -112,7 +112,7 @@ const ObjectiveDetailPage = ({
                 <img src={data?.icon} alt="icon" style={{ width: "100px" }} />
                 <div className="d-flex flex-column gap-2">
                   <span className="fs-20 fw-600">{data?.name}</span>
-                  {topData.length === undefined ? (
+                  {topData?.length === undefined ? (
                     <>
                       <div className="d-flex flex-row gap-2 flex-wrap">
                         {data?.badge?.map((dt, i) => (

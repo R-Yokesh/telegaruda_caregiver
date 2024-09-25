@@ -40,6 +40,7 @@ const DynamicTable = ({
   const { loading, del, clearCache } = useApi();
 
   const deleteData = (data) => {
+    console.log('first',data)
     setSelectedData(data);
     if (data) {
       setDeleteModal(true);
