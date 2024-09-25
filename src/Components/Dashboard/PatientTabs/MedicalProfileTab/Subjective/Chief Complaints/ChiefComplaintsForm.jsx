@@ -25,6 +25,13 @@ const ChiefComplaintsForm = ({
     defaultValues?.addition_info?.title || ""
   );
   const [notes, setNotes] = useState(defaultValues?.addition_info?.notes || "");
+  const [reasonDetails, setReasonDetails] = useState([]);
+  const [reasonkey, setReasonKey] = useState(
+    defaultValues?.addition_info?.title || ""
+  );
+  const [reasonName, setReasonName] = useState(
+    defaultValues?.addition_info?.title || {}
+  );
   const [errors, setErrors] = useState({});
   const { get } = useApi();
 
@@ -92,9 +99,9 @@ const ChiefComplaintsForm = ({
       valid = false;
     }
 
-    if (!reasonName) {
-      console.log("Validate");
-      newErrors.complaints = "Chief Complaints is required";
+    if (!reasonName?.name) {
+      console.log("Validate Reason");
+      newErrors.reasonName = "Chief Complaints is required";
       valid = false;
     }
 
@@ -103,13 +110,14 @@ const ChiefComplaintsForm = ({
   };
 
   const onSubmit = () => {
-    const values = {
-      date: format(selectedDate, "yyyy-MM-dd"),
-      time: format(selectedTime, "HH:mm"),
-      title: reasonName?.name,
-      notes: notes,
-    };
+  
     if (validate()) {
+      const values = {
+        date: format(selectedDate, "yyyy-MM-dd"),
+        time: format(selectedTime, "HH:mm"),
+        title: reasonName?.name,
+        notes: notes,
+      };
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
         editChiefComplaints(values, defaultValues?.id);
@@ -128,13 +136,7 @@ const ChiefComplaintsForm = ({
     setSelectedDate(null); // Clear the selected time
     setSelectedTime(null);
   };
-  const [reasonDetails, setReasonDetails] = useState([]);
-  const [reasonkey, setReasonKey] = useState(
-    defaultValues?.addition_info?.title || ""
-  );
-  const [reasonName, setReasonName] = useState(
-    defaultValues?.addition_info?.title || {}
-  );
+ 
   const getSurgeryReasons = useCallback(async () => {
     try {
       const response = await get(
@@ -252,8 +254,8 @@ const ChiefComplaintsForm = ({
                 getSelectedData={getSelectedReasonData}
                 defaultkey={reasonkey}
               />
-              {errors.complaints && (
-                <div className="error-text">{errors.complaints}</div>
+              {errors.reasonName && (
+                <div className="error-text">{errors.reasonName}</div>
               )}
             </div>
           </div>

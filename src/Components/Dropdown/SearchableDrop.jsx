@@ -63,7 +63,7 @@ const SearchableDrop = ({ options, defaultValue, getSelectedValue, dropKey }) =>
       <div className="dropdown-header-1" onClick={toggleDropdown}>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search"
           value={searchTerm}
           onChange={handleSearchChange}
           className="dropdown-search-input"

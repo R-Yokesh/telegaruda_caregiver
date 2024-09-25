@@ -13,6 +13,7 @@ import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import { Assets } from "../../../../../../../assets/Assets";
 import { toast } from "react-toastify";
 import useApi from "../../../../../../../ApiServices/useApi";
 import {
@@ -113,6 +114,14 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
   };
 
   const severityOptions = [
@@ -306,7 +315,7 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
     <>
       <CRow className="mb-3">
         <CCol lg={4}>
-          <div className="position-relative">
+          {/* <div className="position-relative">
             <label htmlFor="validationTooltip01" className="form-label">
               Onset Date *
             </label>
@@ -322,8 +331,44 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
+          </div> */}
+          <div class="position-relative d-flex flex-column gap-1">
+            <label for="validationTooltip01" class="form-label">
+            Onset Date *
+            </label>
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  showIcon
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  // isClearable
+                  closeOnScroll={true}
+                  wrapperClassName="date-picker-wrapper"
+                  dateFormat={DATE_FORMAT}
+                  maxDate={new Date()}
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedDate && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleDateClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
+            </div>
+
+            {errors.date && <div className="error-text">{errors.date}</div>}
           </div>
         </CCol>
+        
         <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div className="position-relative">

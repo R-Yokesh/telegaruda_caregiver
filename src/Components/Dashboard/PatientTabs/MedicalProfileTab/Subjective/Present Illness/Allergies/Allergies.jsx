@@ -196,7 +196,7 @@ const Allergies = () => {
               className="d-flex justify-content-end align-items-center gap-2"
             >
               <div>
-                <PrimaryButton onClick={() => addFormPage()}>
+                <PrimaryButton onClick={() => {addFormPage(); setSelectedData({})}}>
                   <div className="d-flex align-items-center gap-2">
                     <img src={Assets.Add} alt="add" />
                     <span className="fs-16 fw-600">Add</span>
