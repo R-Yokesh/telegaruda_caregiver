@@ -81,7 +81,6 @@ const Nutrition = ({ from }) => {
     setCurrentPageFluid(pageNumber);
   };
   const getFilterValues = (startDate, endDate, searchValue) => {
-    console.log(startDate, endDate, searchValue, "ghghhghg");
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
@@ -94,7 +93,7 @@ const Nutrition = ({ from }) => {
           data?.user_id
         }&limit=${itemsPerPage}&page=${currentPage ?? ""}&from=${
           startDate ?? ""
-        }&to=${endDate ?? ""}&order_by=act_date&dir=1`
+        }&to=${endDate ?? ""}&order_by=act_date&dir=2`
       );
       if (response.code === 200) {
         console.log(response?.data?.activity_wellnesses);
@@ -169,6 +168,7 @@ const Nutrition = ({ from }) => {
   const [currentTab, setCurrentTab] = useState(ParsedPatientSubMenu);
   const getCurrentTab = (data) => {
     setCurrentTab(data);
+    setAddFormView(false);
   };
 
   const itemsPerPage = 5; // Number of items to display per page

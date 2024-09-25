@@ -19,15 +19,11 @@ import SexualStatusTable from "../../../../../../Tables/Subjective/WellnessProfi
 import SexualStatusForm from "./SexualStatusForm";
 
 const SexualStatus = ({ back, from }) => {
-  
-
-
-
   return (
     <>
       <CCard className="p-2 cursor-default mb-5">
         <CCardBody className="mb-3">
-          <SexualStatusForm  />
+          <SexualStatusForm back={back} />
         </CCardBody>
       </CCard>
     </>

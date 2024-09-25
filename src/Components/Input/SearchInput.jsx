@@ -80,7 +80,7 @@ const SearchInput = ({
     <div className={`search-container ${view === true ? "disabled" : ""}`} ref={inputRef}>
       <input
         type="text"
-        placeholder="Enter..."
+        placeholder="Enter"
         value={searchTerm}
         onChange={handleChange}
         className="form-control pad-10"

@@ -56,7 +56,7 @@ const ICDDrop = ({ options, defaultValue, getSelectedValue, icdKey }) => {
       <div className="dropdown-header-1" onClick={toggleDropdown}>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search"
           value={searchTerm} // Use searchTerm for the value of the input
           onChange={handleSearchChange}
           className="dropdown-search-input"

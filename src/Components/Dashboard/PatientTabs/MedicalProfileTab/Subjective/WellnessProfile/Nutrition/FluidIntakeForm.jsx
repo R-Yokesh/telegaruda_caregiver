@@ -9,6 +9,8 @@ import useApi from "../../../../../../../ApiServices/useApi";
 import { format } from "date-fns";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
+import { Assets } from "../../../../../../../assets/Assets";
+import { CustomInput } from "../../../../../../../Utils/dateUtils";
 
 const FluidIntakeForm = ({
   back,
@@ -89,8 +91,6 @@ const FluidIntakeForm = ({
     setSelectedTime(time || new Date());
   };
 
-
-
   const validate = () => {
     const newErrors = {};
     if (!selectedDate) newErrors.date = "Date is required";
@@ -134,49 +134,90 @@ const FluidIntakeForm = ({
       }
     }
   };
-
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
   return (
     <>
       <CRow className="mb-3">
         <CCol lg={4}>
-          <div className="position-relative">
-            <label htmlFor="validationTooltip01" className="form-label">
+          <div class="position-relative d-flex flex-column gap-1">
+            <label for="validationTooltip01" class="form-label">
               Date *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedDate}
-                onChange={handleDateChange}
-                isClearable
-                closeOnScroll={true}
-                wrapperClassName="date-picker-wrapper"
-                dateFormat={DATE_FORMAT}
-                maxDate={maxDate}
-              />
-              {errors.date && <div className="text-danger">{errors.date}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  showIcon
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  // isClearable
+                  closeOnScroll={true}
+                  wrapperClassName="date-picker-wrapper"
+                  dateFormat={DATE_FORMAT}
+                  maxDate={maxDate}
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedDate && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleDateClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+
+            {errors.date && <div className="error-text">{errors.date}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
-          <div className="position-relative">
-            <label htmlFor="validationTooltip01" className="form-label">
+          <div class="position-relative d-flex flex-column gap-1">
+            <label for="validationTooltip01" class="form-label">
               Time *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedTime}
-                onChange={handleTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                isClearable
-                closeOnScroll={true}
-                timeIntervals={5}
-                dateFormat="h:mm aa"
-              />
-              {errors.time && <div className="text-danger">{errors.time}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  selected={selectedTime}
+                  onChange={handleTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  closeOnScroll={true}
+                  timeIntervals={5}
+                  dateFormat="HH:mm"
+                  timeFormat="HH:mm"
+                  customInput={<CustomInput />}
+                  showIcon={false}
+                  wrapperClassName="time-picker-style"
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedTime && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+            {errors.time && <div className="error-text">{errors.time}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
@@ -197,10 +238,10 @@ const FluidIntakeForm = ({
                   defaultValue={defaultValues?.act_type || null}
                   getSelectedValue={getSelectedValue}
                 />
-                {errors.fluidType && (
-                  <div className="text-danger">{errors.fluidType}</div>
-                )}
               </div>
+              {errors.fluidType && (
+                <div className="text-danger">{errors.fluidType}</div>
+              )}
             </div>
           </div>
         </CCol>

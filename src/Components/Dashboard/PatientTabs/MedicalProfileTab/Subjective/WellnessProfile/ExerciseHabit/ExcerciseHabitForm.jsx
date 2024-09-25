@@ -12,6 +12,7 @@ import { Assets } from "../../../../../../../assets/Assets";
 import ActiveButton from "../../../../../../Buttons/ActiveButton/ActiveButton";
 import { useLocation } from "react-router-dom";
 import { format } from "date-fns";
+import { CustomInput } from "../../../../../../../Utils/dateUtils";
 
 const ExerciseHabitForm = ({
   back,
@@ -205,7 +206,9 @@ const ExerciseHabitForm = ({
                     isClearable
                     closeOnScroll={true}
                     timeIntervals={5}
-                    dateFormat="h:mm aa"
+                    dateFormat="HH:mm"
+                    timeFormat="HH:mm"
+                    // customInput={<CustomInput />}
                   />
                 </div>
                 {errors[`time_${index}`] && (
@@ -301,9 +304,9 @@ const ExerciseHabitForm = ({
             {index !== 0 && (
               <CCol
                 xs={1}
-                className="d-flex align-items-center justify-content-start"
+                className="d-flex align-items-start justify-content-start"
               >
-                <div style={{ width: "40px" }}>
+                <div style={{ width: "40px", marginTop: "2rem" }}>
                   <ActiveButton onClick={() => deleteFormEntry(index)}>
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.whiteDel} alt="add" />
@@ -314,9 +317,9 @@ const ExerciseHabitForm = ({
             )}
             <CCol
               xs={2}
-              className="d-flex align-items-center justify-content-start"
+              className="d-flex align-items-start justify-content-start"
             >
-              <div style={{ width: "40px" }}>
+              <div style={{ width: "40px", marginTop: "2rem" }}>
                 <ActiveButton onClick={addFormEntry}>
                   <div className="d-flex align-items-center gap-2">
                     <img src={Assets.whiteAdd} alt="add" />

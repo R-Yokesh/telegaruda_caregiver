@@ -21,15 +21,15 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit }) => {
   const [fertTreatmentDesc, setFertTreatmentDesc] = useState(
     defaultValues?.values?.fertility_treatment_desc || ""
   );
-  const [preg, setPreg] = useState(defaultValues?.values?.pregnant || "No");
+  const [preg, setPreg] = useState(defaultValues?.values?.pregnant || "");
   const [fertTreat, setFertTreat] = useState(
     defaultValues?.values?.fertility_treatment || "No"
   );
   const [lact, setLact] = useState(defaultValues?.values?.lactation || "No");
   const [cesarean, setCesarean] = useState(
-    defaultValues?.values?.previous_cesarean_sections || "No"
+    defaultValues?.values?.previous_cesarean_sections || ""
   );
-  const [obstetric, setObsteric] = useState(defaultValues?.values?.boh || "No");
+  const [obstetric, setObsteric] = useState(defaultValues?.values?.boh || "");
   const [gravidaValue, setGravidaValue] = useState(
     defaultValues?.values?.gravida || ""
   );
