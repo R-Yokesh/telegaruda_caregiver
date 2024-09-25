@@ -1,12 +1,15 @@
 import { CCol, CRow } from "@coreui/react";
-import React, { useEffect, useState,useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../../../Buttons/SecondaryButton/SecondaryButton";
 import DatePicker from "react-datepicker";
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 import { format, isValid, parse } from "date-fns";
-import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import {
+  CustomInput,
+  getCurrentTime,
+} from "../../../../../../../Utils/dateUtils";
 import { toast } from "react-toastify";
 import useApi from "../../../../../../../ApiServices/useApi";
 import {
@@ -16,9 +19,9 @@ import {
 } from "../../../../../../../Utils/commonUtils";
 import { useLocation } from "react-router-dom";
 import ICDCodeDrop from "../../../../../../Dropdown/ICDCodeDrop";
+import { Assets } from "../../../../../../../assets/Assets";
 
 const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
-
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -28,10 +31,11 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
   const [icd10, setIcd10] = useState([]);
   const [icdkey, setIcdKey] = useState(defaultValues?.values?.code || "");
   const [icd, setIcd] = useState(defaultValues?.values?.code || "");
-  const [Description, setDescription] = useState([defaultValues?.values?.name || null])
- 
+  const [Description, setDescription] = useState([
+    defaultValues?.values?.name || null,
+  ]);
 
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultValues?.values?.date || "";
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
@@ -77,7 +81,6 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
     }
   };
 
-
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -86,38 +89,33 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
       newErrors.date = "Date is required.";
       isValid = false;
     }
-    if (!icd ) {
+    if (!icd) {
       newErrors.icd = "Code is required.";
       isValid = false;
     }
-
 
     setErrors(newErrors);
     return isValid;
   };
 
-
   const onSubmit = () => {
-    const  values = {
-      date: format(selectedDate, "yyyy-MM-dd"),
-      time: format(selectedTime, "HH:mm"),
-      code: icd,
-      name: Description,
-    }
     if (validate()) {
+      const values = {
+        date: format(selectedDate, "yyyy-MM-dd"),
+        time: format(selectedTime, "HH:mm"),
+        code: icd,
+        name: Description,
+      };
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editCpt(values,defaultValues?.id)
-
+        editCpt(values, defaultValues?.id);
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
         addCpt(values);
-
       }
     }
   };
-
 
   const getSelectedIcd = (data) => {
     setIcd(data?.slug);
@@ -200,64 +198,105 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
   //   }
   // };
 
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
   return (
     <>
       <CRow className="mb-3">
         <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Date *
-              </label>
-              <div className="date-size">
+          <div class="position-relative d-flex flex-column gap-1">
+            <label for="validationTooltip01" class="form-label">
+              Date *
+            </label>
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
                 <DatePicker
                   showIcon
                   selected={selectedDate}
                   onChange={handleDateChange}
+                  // isClearable
                   closeOnScroll={true}
                   wrapperClassName="date-picker-wrapper"
                   dateFormat={DATE_FORMAT}
                   maxDate={maxDate}
                 />
-                {errors.date && <div className="error-text">{errors.date}</div>}
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedDate && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleDateClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
               </div>
             </div>
+
+            {errors.date && <div className="error-text">{errors.date}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
-          <div class="position-relative">
+          <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Time *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedTime}
-                onChange={handleTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                closeOnScroll={true}
-                timeIntervals={5}
-                dateFormat="h:mm aa"
-              />
-              {errors.time && <div className="error-text">{errors.time}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  selected={selectedTime}
+                  onChange={handleTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  closeOnScroll={true}
+                  timeIntervals={5}
+                  dateFormat="HH:mm"
+                  timeFormat="HH:mm"
+                  customInput={<CustomInput />}
+                  showIcon={false}
+                  wrapperClassName="time-picker-style"
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedTime && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+            {errors.time && <div className="error-text">{errors.time}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
-        <div style={{ width: "100%" }}>
+          <div style={{ width: "100%" }}>
             <div class="position-relative dropdown-container">
               <label for="validationTooltip01" class="form-label">
                 Code *
               </label>
               <ICDCodeDrop
-                  getSelectedValue={getSelectedIcd}
-                  options={icd10}
-                  defaultValue={icdkey}
-                  icdKey={setIcdKey}
-                />
+                getSelectedValue={getSelectedIcd}
+                options={icd10}
+                defaultValue={icdkey}
+                icdKey={setIcdKey}
+              />
               {errors.icd && <div className="error-text">{errors.icd}</div>}
-
             </div>
           </div>
         </CCol>
@@ -276,7 +315,7 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
                 placeholder="Enter"
                 // defaultValue={defaultValues?.remark}
                 disabled
-                 value={Description}
+                value={Description}
               />
             </div>
           </div>

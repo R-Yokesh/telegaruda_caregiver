@@ -25,14 +25,13 @@ import { toast } from "react-toastify";
 const TherapiesTab = ({ from }) => {
   const columnData = [
     { id: 1, label: "No." },
-    { id: 2, label: "Date & Time" },
+    { id: 2, label: "Date" },
     { id: 3, label: "Type" },
     { id: 4, label: "Therapy Name" },
     { id: 5, label: "Therapist Name" },
     { id: 6, label: "Duration (in days)" },
     { id: 7, label: "ACTIONS" },
   ];
-
 
   const { loading, error, get, post, patch, del, clearCache } = useApi();
   const location = useLocation();
@@ -55,14 +54,12 @@ const TherapiesTab = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-
   };
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
 
   const addFormPage = () => {
     setAddFormView(true);
@@ -78,16 +75,19 @@ const TherapiesTab = ({ from }) => {
       addFormPage();
     }
     if (type === "delete") {
-      setId(id)
+      setId(id);
       detailPage();
     }
   };
 
-
   const fetchTherapies = useCallback(async () => {
     try {
       const response = await get(
-        `resource/therapy?patient_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&order_by=date&dir=2`
+        `resource/therapy?patient_id=${
+          data?.user_id
+        }&limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&order_by=date&dir=2`
       );
       if (response.code === 200) {
         setRowData(response.data.therapies);
@@ -98,7 +98,7 @@ const TherapiesTab = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate, searchValue]);
+  }, [get, data?.user_id, currentPage, startDate, endDate]);
 
   useEffect(() => {
     fetchTherapies();
@@ -124,7 +124,6 @@ const TherapiesTab = ({ from }) => {
         await fetchTherapies();
         setAddFormView(false);
         toast.success("Added successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -152,7 +151,6 @@ const TherapiesTab = ({ from }) => {
         await fetchTherapies();
         setAddFormView(false);
         toast.success("Updated successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -160,7 +158,6 @@ const TherapiesTab = ({ from }) => {
       console.error("Error fetching data:", error);
     }
   };
-
 
   // Delte Allergies
   const deleteTherapies = async () => {
@@ -178,8 +175,6 @@ const TherapiesTab = ({ from }) => {
       console.error("Error fetching data:", error);
     }
   };
-
-
 
   return (
     <>
@@ -208,7 +203,12 @@ const TherapiesTab = ({ from }) => {
                   className="d-flex justify-content-end align-items-center gap-2"
                 >
                   <div>
-                    <PrimaryButton onClick={() => addFormPage()}>
+                    <PrimaryButton
+                      onClick={() => {
+                        addFormPage();
+                        setSelectedData({});
+                      }}
+                    >
                       <div className="d-flex align-items-center gap-2">
                         <img src={Assets.Add} alt="add" />
                         <span className="fs-16 fw-600">Add</span>
@@ -225,7 +225,6 @@ const TherapiesTab = ({ from }) => {
                     getselectedData={getselectedData}
                     currentPage={currentPage || 1}
                     itemsPerPage={itemsPerPage || 5}
-
                   />
                 </CRow>
                 <CRow className="mb-3">

@@ -15,14 +15,18 @@ import {
   getFileTypeFromMime,
   openFile,
 } from "../../../../../../../Utils/commonUtils";
-import Select from 'react-select';
+import Select from "react-select";
 import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
 import { useLocation } from "react-router-dom";
+import { CustomInput } from "../../../../../../../Utils/dateUtils";
 
-const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNextAppointment }) => {
-
-
+const NextAppointmentForm = ({
+  back,
+  defaultValues,
+  addNextAppointment,
+  editNextAppointment,
+}) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -32,8 +36,12 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
 
   const [reason, setReason] = useState(defaultValues?.reason || "");
   const [providerDetails, setproviderDetails] = useState([]);
-  const [providerKey, setProviderKey] = useState(`${defaultValues?.provider?.first_name || ''} ${defaultValues?.provider?.last_name || ''}`);
-  const [provider, setProvider] = useState(defaultValues?.provider || {});
+  const [providerKey, setProviderKey] = useState(
+    `${defaultValues?.provider?.first_name || ""} ${
+      defaultValues?.provider?.last_name || ""
+    }`
+  );
+  const [provider, setProvider] = useState(defaultValues?.provider || "");
 
   const minDate = new Date(); // Restrict past dates
   const getFormattedDate = (date) => {
@@ -95,8 +103,6 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
     }
   };
 
-
-
   const validate = () => {
     let isValid = true;
     const newErrors = {};
@@ -110,7 +116,7 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
       isValid = false;
     }
     if (!provider) {
-      newErrors.provider = "provider is required.";
+      newErrors.provider = "Provider is required.";
       isValid = false;
     }
     if (!reason) {
@@ -122,23 +128,24 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
     return isValid;
   };
 
-
   const onSubmit = () => {
-    const values = {
-      date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm:ss")}`,
-      provider_id: provider?.user_id,
-      reason: reason,
-      provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
-    }
     if (validate()) {
+      const values = {
+        date: `${format(selectedDate, "yyyy-MM-dd")} ${format(
+          selectedTime,
+          "HH:mm:ss"
+        )}`,
+        provider_id: provider?.user_id,
+        reason: reason,
+        provider: `${provider?.user?.first_name} ${provider?.user?.last_name}`,
+      };
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editNextAppointment(values,defaultValues?.id)
+        editNextAppointment(values, defaultValues?.id);
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
         addNextAppointment(values);
-
       }
     }
   };
@@ -163,9 +170,6 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
   useEffect(() => {
     getProvider();
   }, [getProvider]);
-
-
-
 
   // // Add NextAppointment
   // const addNextAppointment = async () => {
@@ -222,48 +226,91 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
   //   }
   // };
 
-
-
-
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
 
   return (
     <>
       <CRow className="mb-3">
         <CCol lg={4}>
-          <div class="position-relative">
+          <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Date *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedDate}
-                onChange={handleDateChange}
-                dateFormat="dd-MM-yyyy"
-                minDate={minDate}
-              />
-              {errors.date && <div className="error-text">{errors.date}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  showIcon
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  // isClearable
+                  closeOnScroll={true}
+                  wrapperClassName="date-picker-wrapper"
+                  dateFormat={DATE_FORMAT}
+                  maxDate={new Date()}
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedDate && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleDateClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+
+            {errors.date && <div className="error-text">{errors.date}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
-          <div class="position-relative">
+          <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Time *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedTime}
-                onChange={handleTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={15}
-                timeCaption="Time"
-                dateFormat="h:mm aa"
-              />
-              {errors.date && <div className="error-text">{errors.date}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  selected={selectedTime}
+                  onChange={handleTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  closeOnScroll={true}
+                  timeIntervals={5}
+                  dateFormat="HH:mm"
+                  timeFormat="HH:mm"
+                  customInput={<CustomInput />}
+                  showIcon={false}
+                  wrapperClassName="time-picker-style"
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedTime && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+            {errors.time && <div className="error-text">{errors.time}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
@@ -286,7 +333,9 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
                   dropKey={setProviderKey}
                 />
               </div>
-              {errors.provider && <div className="error-text">{errors.provider}</div>}
+              {errors.provider && (
+                <div className="error-text">{errors.provider}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -307,7 +356,9 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
-              {errors.reason && <div className="error-text">{errors.reason}</div>}
+              {errors.reason && (
+                <div className="error-text">{errors.reason}</div>
+              )}
             </div>
           </div>
         </CCol>
@@ -321,7 +372,7 @@ const NextAppointmentForm = ({ back, defaultValues, addNextAppointment, editNext
         </div>
       </CRow>
     </>
-  )
-}
+  );
+};
 
-export default NextAppointmentForm
+export default NextAppointmentForm;

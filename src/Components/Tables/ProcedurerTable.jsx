@@ -9,10 +9,16 @@ import {
 import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
-import { getSerialNumber } from "../../Utils/commonUtils";
+import { getSerialNumber, removeQuotes } from "../../Utils/commonUtils";
 
-
-const ProcedurerTable = ({ columns, rowData, getselectedData, from, itemsPerPage, currentPage }) => {
+const ProcedurerTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  itemsPerPage,
+  currentPage,
+}) => {
   const selectedData = (data, id, type) => {
     getselectedData(data, id, type);
   };
@@ -23,7 +29,14 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from, itemsPerPage
           <CTableRow>
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+                <CTableHeaderCell
+                  key={i}
+                  style={{
+                    textWrap: i === 2 ? "nowrap" : "wrap",
+                  }}
+                >
+                  {data?.label}
+                </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -42,18 +55,26 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from, itemsPerPage
                   {getSerialNumber(itemsPerPage, currentPage, i)}
                 </CTableHeaderCell>
                 <CTableDataCell>
-                  <span className="fs-16 fw-500"> {dt?.values?.date?.split(" ")[0]
-                    .split("-")
-                    .reverse()
-                    .join("-")} </span>
-                    <span className="fs-16 fw-500">
+                  <span className="fs-16 fw-500">
+                    {" "}
+                    {dt?.values?.date
+                      ?.split(" ")[0]
+                      .split("-")
+                      .reverse()
+                      .join("-")}{" "}
+                  </span>
+                  {/* <span className="fs-16 fw-500">
                     {dt?.values?.time ? dt?.values?.time : "-"}
+                  </span> */}
+                </CTableDataCell>
+                <CTableDataCell>
+                  <span className="fs-16 fw-500">
+                    {dt?.values?.code ? dt?.values?.code : "-"}
                   </span>
                 </CTableDataCell>
                 <CTableDataCell>
-                  <span className="fs-16 fw-500">{dt?.values?.code ? dt?.values?.code : "-"}</span>
+                  {dt?.values?.name ? removeQuotes(dt?.values?.name) : "-"}
                 </CTableDataCell>
-                <CTableDataCell>{dt?.values?.name ? dt?.values?.name : "-"}</CTableDataCell>
                 {/* <CTableDataCell>
                 <div className="d-flex align-items-center justify-content-center gap-2">
                   <img
@@ -68,18 +89,28 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from, itemsPerPage
                   <CTableDataCell style={{ height: "10px" }}>
                     <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                       {dt?.consult_id === !null ? (
-                        <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
+                        <div>
+                          <img
+                            src={Assets.Warning}
+                            alt="warn"
+                            className="cursor"
+                          />
+                        </div>
                       ) : (
                         <>
                           <div
                             style={{
                               width: "50%",
+                              display: "flex",
+                              justifyContent: "flex-end",
                             }}
                           >
                             <img
                               alt="edit"
                               src={Assets?.EditPencil}
-                              className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
+                              className={`cursor ${
+                                dt?.freeze === 1 ? "greyed-out" : ""
+                              }`}
                               onClick={() => selectedData(dt, dt?.id, "edit")}
                             />
                           </div>
@@ -93,13 +124,12 @@ const ProcedurerTable = ({ columns, rowData, getselectedData, from, itemsPerPage
                             <img
                               alt="delete"
                               src={Assets?.Delete}
-                              className='cursor'
+                              className="cursor"
                               onClick={() => selectedData(dt, dt?.id, "delete")}
                             />
                           </div>
                         </>
                       )}
-
                     </div>
                   </CTableDataCell>
                 )}

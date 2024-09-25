@@ -7,7 +7,10 @@ import PrimaryButton from "../../../../../../Buttons/PrimaryButton/PrimaryButton
 import Dropdown from "../../../../../../Dropdown/Dropdown";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 import { format, isValid, parse } from "date-fns";
-import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import {
+  CustomInput,
+  getCurrentTime,
+} from "../../../../../../../Utils/dateUtils";
 import { toast } from "react-toastify";
 import useApi from "../../../../../../../ApiServices/useApi";
 import {
@@ -17,9 +20,12 @@ import {
 } from "../../../../../../../Utils/commonUtils";
 import { useLocation } from "react-router-dom";
 
-const PatientEducationForm = ({ back, defaultValues, addPatientEducation, editPatientEducation }) => {
-
-
+const PatientEducationForm = ({
+  back,
+  defaultValues,
+  addPatientEducation,
+  editPatientEducation,
+}) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -27,12 +33,12 @@ const PatientEducationForm = ({ back, defaultValues, addPatientEducation, editPa
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-   title: defaultValues?.addition_info?.title || null,
-   notes: defaultValues?.addition_info?.notes || null,
+    title: defaultValues?.addition_info?.title || null,
+    notes: defaultValues?.addition_info?.notes || null,
   });
- 
-  const maxDate = new Date(); // Restrict future dates 
-  
+
+  const maxDate = new Date(); // Restrict future dates
+
   const defaultDateTime = defaultValues?.addition_info?.date || "";
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
@@ -99,71 +105,111 @@ const PatientEducationForm = ({ back, defaultValues, addPatientEducation, editPa
     return isValid;
   };
 
-
   const onSubmit = () => {
-   const values = {
-      date: format(selectedDate, "yyyy-MM-dd"),
-      time: format(selectedTime,  "HH:mm"),
-      title: formData?.title,
-      notes: formData?.notes,
-    }
     if (validate()) {
+      const values = {
+        date: format(selectedDate, "yyyy-MM-dd"),
+        time: format(selectedTime, "HH:mm"),
+        title: formData?.title,
+        notes: formData?.notes,
+      };
       if (defaultValues.id !== undefined) {
-        editPatientEducation(values,defaultValues?.id)
-
+        editPatientEducation(values, defaultValues?.id);
       }
       if (defaultValues.id === undefined) {
         addPatientEducation(values);
-
       }
     }
   };
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
 
   return (
     <>
       <CRow className="mb-3">
         <CCol lg={4}>
-          <div class="position-relative">
+          <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Date *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedDate}
-                onChange={handleDateChange}
-                closeOnScroll={true}
-                wrapperClassName="date-picker-wrapper"
-                dateFormat={DATE_FORMAT}
-                maxDate={maxDate}
-              />
-              {errors.date && <div className="error-text">{errors.date}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  showIcon
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  // isClearable
+                  closeOnScroll={true}
+                  wrapperClassName="date-picker-wrapper"
+                  dateFormat={DATE_FORMAT}
+                  maxDate={maxDate}
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedDate && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleDateClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+
+            {errors.date && <div className="error-text">{errors.date}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
-          <div class="position-relative">
+          <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Time *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedTime}
-                onChange={handleTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                closeOnScroll={true}
-                timeIntervals={5}
-                dateFormat="h:mm aa"
-              />
-              {errors.time && <div className="error-text">{errors.time}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  selected={selectedTime}
+                  onChange={handleTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  closeOnScroll={true}
+                  timeIntervals={5}
+                  dateFormat="HH:mm"
+                  timeFormat="HH:mm"
+                  customInput={<CustomInput />}
+                  showIcon={false}
+                  wrapperClassName="time-picker-style"
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedTime && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+            {errors.time && <div className="error-text">{errors.time}</div>}
           </div>
         </CCol>
         <CCol lg={4}>
@@ -196,7 +242,7 @@ const PatientEducationForm = ({ back, defaultValues, addPatientEducation, editPa
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
-                 name="notes"
+                name="notes"
                 rows={3}
                 value={formData?.notes}
                 onChange={handleChange}

@@ -58,9 +58,9 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
   );
   const [providerDetails, setproviderDetails] = useState([]);
   const [providerKey, setProviderKey] = useState(
-    defaultValues?.values?.provider.user?.first_name +
+    defaultValues?.values?.provider ? defaultValues?.values?.provider.user?.first_name +
       " " +
-      defaultValues?.values?.provider.user?.last_name || ""
+      defaultValues?.values?.provider.user?.last_name : ""
   );
   const [provider, setProvider] = useState(
     defaultValues?.values?.provider || {}

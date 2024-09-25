@@ -9,9 +9,7 @@ import {
 import React from "react";
 import Badge from "../Badge/Badge";
 import { Assets } from "../../assets/Assets";
-import { getSerialNumber,isWithin24Hours } from "../../Utils/commonUtils";
-
-
+import { getSerialNumber, isWithin24Hours } from "../../Utils/commonUtils";
 
 // Helper function to format date to dd-MM-yyyy HH:mm:ss
 const formatDate = (dateString) => {
@@ -19,19 +17,25 @@ const formatDate = (dateString) => {
   if (isNaN(parsedDate)) return "N/A"; // Return "N/A" if the date is invalid
 
   const date = new Date(parsedDate);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
   const year = date.getFullYear();
 
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-
-  return `${day}-${month}-${year} ${hours}:${minutes}`; // Format as dd-MM-yyyy HH:mm
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  // ${hours}:${minutes}
+  return `${day}-${month}-${year}`; // Format as dd-MM-yyyy HH:mm
 };
 
-
-const TherapiesTable = ({ columns, rowData, getselectedData, from, itemsPerPage, currentPage }) => {
+const TherapiesTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  itemsPerPage,
+  currentPage,
+}) => {
   const selectedData = (data, id, type) => {
     getselectedData(data, id, type);
   };
@@ -65,33 +69,53 @@ const TherapiesTable = ({ columns, rowData, getselectedData, from, itemsPerPage,
                   <span className="fs-16 fw-500">{formatDate(dt?.date)}</span>
                 </CTableDataCell>
                 <CTableDataCell>
-                  <span className="fs-16 fw-500">{dt?.type ? dt?.type : "-"}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.type ? dt?.type : "-"}
+                  </span>
                 </CTableDataCell>
                 <CTableDataCell>
-                  <span className="fs-16 fw-500">{dt?.therapy_name ? dt?.therapy_name : "-"}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.therapy_name ? dt?.therapy_name : "-"}
+                  </span>
                 </CTableDataCell>
                 <CTableDataCell>
-                  <span className="fs-16 fw-500">{dt?.therapist_name ? dt?.therapist_name : "-"}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.therapist_name ? dt?.therapist_name : "-"}
+                  </span>
                 </CTableDataCell>
                 <CTableDataCell>
-                  <span className="fs-16 fw-500">{dt?.duration ? dt?.duration : "-"}</span>
+                  <span className="fs-16 fw-500">
+                    {dt?.duration ? dt?.duration : "-"}
+                  </span>
                 </CTableDataCell>
                 {from !== "Consult" && (
                   <CTableDataCell>
-                     <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
                       {dt?.consult_id === !null ? (
-                        <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
+                        <div>
+                          <img
+                            src={Assets.Warning}
+                            alt="warn"
+                            className="cursor"
+                          />
+                        </div>
                       ) : (
                         <>
                           <div
                             style={{
                               width: "50%",
+                              display: "flex",
+                              justifyContent: "flex-end",
                             }}
                           >
                             <img
                               alt="edit"
                               src={Assets?.EditPencil}
-                              className={`cursor ${isWithin24Hours(`${dt?.created_at}`) ? "" : "greyed-out"}`}
+                              className={`cursor ${
+                                isWithin24Hours(`${dt?.created_at}`)
+                                  ? ""
+                                  : "greyed-out"
+                              }`}
                               onClick={() => selectedData(dt, dt?.id, "edit")}
                             />
                           </div>
@@ -105,7 +129,7 @@ const TherapiesTable = ({ columns, rowData, getselectedData, from, itemsPerPage,
                             <img
                               alt="delete"
                               src={Assets?.Delete}
-                              className='cursor'
+                              className="cursor"
                               onClick={() => selectedData(dt, dt?.id, "delete")}
                             />
                           </div>

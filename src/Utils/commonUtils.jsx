@@ -62,3 +62,8 @@ export const celsiusToFahrenheit = (celsius) => {
 export const fahrenheitToCelsius = (fahrenheit) => {
   return ((fahrenheit - 32) * (5 / 9)).toFixed(2);
 };
+
+export const removeQuotes = (input) => {
+  // Remove leading and trailing quotes
+  return input.replace(/^"|"$/g, "").trim();
+};

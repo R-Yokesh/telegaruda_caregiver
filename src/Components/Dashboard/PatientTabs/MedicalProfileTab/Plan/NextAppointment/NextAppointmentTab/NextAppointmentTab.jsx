@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   CCard,
   CCardBody,
@@ -29,7 +29,6 @@ const NextAppointmentTab = ({ from }) => {
     { id: 3, label: "Reason" },
     { id: 7, label: "ACTIONS" },
   ];
-
 
   // const rowData = [
   //   {
@@ -64,17 +63,17 @@ const NextAppointmentTab = ({ from }) => {
   //   },
   // ];
 
-  const { loading, error, get,post,patch,del,clearCache } = useApi();
+  const { loading, error, get, post, patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
-  console.log('daattttta',data)
+  console.log("daattttta", data);
 
   const [rowData, setRowData] = useState([]);
   const [pagination, setPagination] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -86,14 +85,12 @@ const NextAppointmentTab = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-   
   };
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };  
-
+  };
 
   const addFormPage = () => {
     setAddFormView(true);
@@ -103,22 +100,27 @@ const NextAppointmentTab = ({ from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data,id, type) => {
+  const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
     }
     if (type === "delete") {
-      setId(id)
+      setId(id);
       detailPage();
     }
   };
 
-  
   const fetchNextAppointment = useCallback(async () => {
     try {
       const response = await get(
-        `resource/next-appointment?patient_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=date&dir=2`
+        `resource/next-appointment?patient_id=${
+          data?.user_id
+        }&limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${
+          searchValue ?? ""
+        }&order_by=date&dir=2`
       );
       if (response.code === 200) {
         setRowData(response.data.next_appointments);
@@ -129,13 +131,13 @@ const NextAppointmentTab = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,startDate,endDate,searchValue]);
+  }, [get, currentPage, startDate, endDate, searchValue]);
 
   useEffect(() => {
     fetchNextAppointment();
   }, [fetchNextAppointment]);
 
-   // Add NextAppointment
+  // Add NextAppointment
   const addNextAppointment = async (values) => {
     try {
       const body = {
@@ -143,8 +145,8 @@ const NextAppointmentTab = ({ from }) => {
         provider_id: values?.provider_id,
         date: values?.date,
         reason: values?.reason,
-         provider: values?.provider,
-      }
+        provider: values?.provider,
+      };
       // Use the provided `post` function to send the request
       const response = await post(`resource/next-appointment`, body);
       if (response.code === 201) {
@@ -161,15 +163,15 @@ const NextAppointmentTab = ({ from }) => {
   };
 
   // Edit NextAppointment
-  const editNextAppointment = async (values,id) => {
+  const editNextAppointment = async (values, id) => {
     try {
       const body = {
         patient_id: data?.user_id,
         provider_id: values?.provider_id,
         date: values?.date,
         reason: values?.reason,
-         provider: values?.provider,
-      }
+        provider: values?.provider,
+      };
       // Use the provided `post` function to send the request
       const response = await patch(`resource/next-appointment/${id}`, body);
 
@@ -178,7 +180,6 @@ const NextAppointmentTab = ({ from }) => {
         await fetchNextAppointment();
         setAddFormView(false);
         toast.success("Updated successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -187,12 +188,11 @@ const NextAppointmentTab = ({ from }) => {
     }
   };
 
-
   // Delte Patient Education
   const deleteNextAppointment = async () => {
     try {
       const response = await del(`resource/next-appointment/${id}`);
-  
+
       if (response.code === 200) {
         setDetailView(false);
         clearCache();
@@ -205,17 +205,15 @@ const NextAppointmentTab = ({ from }) => {
       console.error("Error fetching data:", error);
     }
   };
- 
 
- 
   return (
     <>
       {from === "Consult" && (
         <CRow>
           <NextAppointmentTable
-             rowData={rowData}
-             columns={columnData}
-             getselectedData={getselectedData}
+            rowData={rowData}
+            columns={columnData}
+            getselectedData={getselectedData}
             from={from}
             currentPage={currentPage || 1}
             itemsPerPage={itemsPerPage || 5}
@@ -228,14 +226,19 @@ const NextAppointmentTab = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                <DateRangePicker getFilterValues={getFilterValues} />
+                  {/* <DateRangePicker getFilterValues={getFilterValues} /> */}
                 </CCol>
                 <CCol
                   lg={4}
                   className="d-flex justify-content-end align-items-center gap-2"
                 >
                   <div>
-                    <PrimaryButton onClick={() => addFormPage()}>
+                    <PrimaryButton
+                      onClick={() => {
+                        addFormPage();
+                        setSelectedData({});
+                      }}
+                    >
                       <div className="d-flex align-items-center gap-2">
                         <img src={Assets.Add} alt="add" />
                         <span className="fs-16 fw-600">Add</span>
@@ -247,20 +250,20 @@ const NextAppointmentTab = ({ from }) => {
               <div className="mb-2">
                 <CRow>
                   <NextAppointmentTable
-                     rowData={rowData}
-                     columns={columnData}
-                     getselectedData={getselectedData}
-                     currentPage={currentPage || 1}
-                     itemsPerPage={itemsPerPage || 5}
+                    rowData={rowData}
+                    columns={columnData}
+                    getselectedData={getselectedData}
+                    currentPage={currentPage || 1}
+                    itemsPerPage={itemsPerPage || 5}
                   />
                 </CRow>
                 <CRow className="mb-3">
                   <CCol lg={12} className="d-flex justify-content-center">
                     <Pagination
-                     currentPage={currentPage}
-                     onPageChange={onPageChange}
-                     totalItems={pagination?.total}
-                     itemsPerPage={itemsPerPage}
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                      totalItems={pagination?.total}
+                      itemsPerPage={itemsPerPage}
                     />
                   </CCol>
                 </CRow>
@@ -296,7 +299,9 @@ const NextAppointmentTab = ({ from }) => {
                     <h5>Are you sure want to delete ?</h5>
                     <div className="d-flex gap-2 mt-2">
                       <div style={{ width: "80px" }}>
-                        <PrimaryButton onClick={() => deleteNextAppointment(false)}>
+                        <PrimaryButton
+                          onClick={() => deleteNextAppointment(false)}
+                        >
                           Yes
                         </PrimaryButton>
                       </div>

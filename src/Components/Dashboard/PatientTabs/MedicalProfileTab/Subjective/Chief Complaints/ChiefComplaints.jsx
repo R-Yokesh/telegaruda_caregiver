@@ -90,9 +90,12 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const getChiefComplaints = useCallback(async () => {
     try {
       const response = await get(
-        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
-        }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""
-        }&order_by=created_at&dir=2&slug=chief-complaints&user_id=${data?.user_id
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${
+          searchValue ?? ""
+        }&order_by=created_at&dir=2&slug=chief-complaints&user_id=${
+          data?.user_id
         }&scanOrdersOnly=&scanstatus=`
       );
       if (response.code === 200) {
@@ -231,7 +234,13 @@ const ChiefComplaints = ({ OnClose, from }) => {
                 xl={4}
                 className="mb-3 d-flex justify-content-end align-items-center gap-15"
               >
-                <div className="patient-adding" onClick={() => {addFormPage(); setSelectedData({})}}>
+                <div
+                  className="patient-adding"
+                  onClick={() => {
+                    setSelectedData({});
+                    addFormPage();
+                  }}
+                >
                   <button>+ ADD</button>
                 </div>
                 {/* <div className="patient-adding">
