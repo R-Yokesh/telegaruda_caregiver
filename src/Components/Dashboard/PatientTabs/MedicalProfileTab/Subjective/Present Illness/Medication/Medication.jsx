@@ -33,7 +33,7 @@ const Medication = ({ from }) => {
     // { id: 3, label: "Strength" },
     // { id: 4, label: " strength measurement" },
     // { id: 5, label: "dosage " },
-    { id: 6, label: "M | A | E | N " },
+    { id: 6, label: "M - A - E - N " },
     { id: 7, label: "BF/AF" },
     { id: 8, label: "Quantity" },
     { id: 9, label: " start date" },

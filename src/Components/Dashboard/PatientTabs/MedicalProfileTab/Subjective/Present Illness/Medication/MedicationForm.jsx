@@ -24,6 +24,7 @@ import {
 import { useLocation } from "react-router-dom";
 import SearchInput from "../../../../../../Input/SearchInput";
 
+
 const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
@@ -116,7 +117,10 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
   const currentDate = new Date();
   const formattedDate = getFormattedDate(currentDate);
 
-  const defaultDateTime = defaultValues?.date || "";
+  const defaultDateTime = defaultValues?.values !== undefined
+    ? defaultValues?.values[0]?.start_date
+    : "";
+
 
   const defaultDate = defaultDateTime.split(" ")[0] || "";
   const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
@@ -371,102 +375,6 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
     setMedicationName(data);
   };
 
-  // // Add Medication
-  // const addMedication = async () => {
-  //   try {
-  //     const body = {
-
-  //       slug: "medicine",
-  //       patient_id: data?.user_id,
-  //       values: [
-  //         {
-  //           start_date: format(selectedStartDate, "dd-MM-yyyy"),
-  //           end_date: format(selectedEndDate, "dd-MM-yyyy"),
-  //           medicine_type: formData?.medicine_type,
-  //           medicine_name: medicationName?.slug,
-  //           dosage: formData?.dosage,
-  //           strength: formData?.strength,
-  //           strength_measurement: formData?.strength_measurement,
-  //           total_qty: formData?.total_qty,
-  //           route_administration: formData?.route_administration,
-  //           no_of_days: formData?.no_of_days,
-  //           medicine_takenat: formData.medicine_taken,
-  //           notes: formData.notes,
-  //           status: formData.status,
-  //           medicine_taken: {
-  //             m: formData.m,
-  //             a: formData.a,
-  //             e: formData.e,
-  //             n: formData.n,
-  //           },
-  //           medicine_input: {
-  //             m: "",
-  //             a: "",
-  //             e: "",
-  //             n: "",
-  //           },
-  //         }
-  //       ]
-  //     };
-
-  //     // Use the provided `post` function to send the request
-  //     const response = await post(`resource/patientHealth`, body);
-
-  //     if (response.code === 201) {
-  //       clearCache();
-  //       await fetchMedication();
-  //       setAddFormView(false);
-  //       toast.success("Added successfully");
-
-  //     } else {
-  //       console.error("Failed to fetch data:", response.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // const editMedication = async () => {
-  //   try {
-  //     const body = {
-
-  //       slug: "medicine",
-  //       patient_id: data?.user_id,
-
-  //       values: {
-  //         start_date: format(selectedStartDate, "dd-MM-yyyy"),
-  //         end_date: format(selectedEndDate, "dd-MM-yyyy"),
-  //         dosage: formData.dosage,
-  //         strength: formData.strength,
-  //         strength_measurement: formData.strength_measurement,
-  //         total_qty: formData.total_qty,
-  //         route_administration: formData.route_administration,
-  //         no_of_days: formData.no_of_days,
-  //         m: formData.m,
-  //         a: formData.a,
-  //         e: formData.e,
-  //         n: formData.n,
-  //         medicine_taken: formData.medicine_taken,
-  //         notes: formData.notes,
-  //         status: formData.status
-  //       }
-  //     };
-  //     // Use the provided `post` function to send the request
-  //     const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
-
-  //     if (response.code === 200) {
-  //       clearCache();
-  //       await fetchMedication();
-  //       setAddFormView(false);
-  //       toast.success("Updated successfully");
-  //     } else {
-  //       console.error("Failed to fetch data:", response.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-
-  // };
 
   const calculateEndDate = () => {
     if (selectedStartDate && formData.no_of_days) {
@@ -504,11 +412,11 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                   defaultValue={
                     defaultValues?.values !== undefined
                       ? medicineTypeOptions[
-                          findItemIndex(
-                            medicineTypeOptions,
-                            defaultValues?.values[0]?.medicine_type
-                          )
-                        ]
+                      findItemIndex(
+                        medicineTypeOptions,
+                        defaultValues?.values[0]?.medicine_type
+                      )
+                      ]
                       : null
                   }
                   getSelectedValue={getSelectedMedicineType}
@@ -558,11 +466,11 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                   defaultValue={
                     defaultValues?.values !== undefined
                       ? dosageOptions[
-                          findItemIndex(
-                            dosageOptions,
-                            defaultValues?.values[0]?.dosage
-                          )
-                        ]
+                      findItemIndex(
+                        dosageOptions,
+                        defaultValues?.values[0]?.dosage
+                      )
+                      ]
                       : null
                   }
                   getSelectedValue={getSelectedDosage}
@@ -724,6 +632,7 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                 onChange={handleStartDateChange}
                 dateFormat="dd-MM-yyyy"
                 disabled={view}
+                maxDate={currentDate}
               />
               {errors.date && <div className="error-text">{errors.date}</div>}
             </div>
@@ -866,10 +775,10 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                   view === true
                     ? view
                     : defaultValues?.lab_status === "Prescribed"
-                    ? false
-                    : defaultValues?.medicines?.length >= 1
-                    ? true
-                    : false
+                      ? false
+                      : defaultValues?.medicines?.length >= 1
+                        ? true
+                        : false
                 }
                 label={
                   <label for="validationTooltip01" class="form-label mb-0">
@@ -932,11 +841,11 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                   defaultValue={
                     defaultValues?.values !== undefined
                       ? statusOptions[
-                          findItemIndex(
-                            statusOptions,
-                            defaultValues?.values[0]?.status
-                          )
-                        ]
+                      findItemIndex(
+                        statusOptions,
+                        defaultValues?.values[0]?.status
+                      )
+                      ]
                       : null
                   }
                   getSelectedValue={getSelectedStatus}
