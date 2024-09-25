@@ -53,12 +53,13 @@ const AllergiesTable = ({ columns, rowData, getselectedData,itemsPerPage,current
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.values?.name?.name ? dt?.values?.name?.name : "-"}</span>
+                  <span className="fs-16 fw-500" style={{textTransform:"capitalize"}}>
+                    {dt?.values?.name?.name ? dt?.values?.name?.name : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.values?.reaction?.name ? dt?.values?.reaction?.name : "-"}</span>
+                  <span className="fs-16 fw-500"style={{textTransform:"capitalize"}}>{dt?.values?.reaction?.name ? dt?.values?.reaction?.name : "-"}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
@@ -72,7 +73,7 @@ const AllergiesTable = ({ columns, rowData, getselectedData,itemsPerPage,current
                 </div>
               </CTableDataCell>
                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                    <div className="d-flex align-items-center justify-content-center  h-100">
                     {dt?.consult_id === !null ? (
                         <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
                       ) : (

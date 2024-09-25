@@ -98,7 +98,8 @@ const MedicationTable = ({ columns, rowData, getselectedData, from,itemsPerPage,
                          <img
                            alt="edit"
                            src={Assets?.visibleEye}
-                           className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
+                          //  className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
+                          className="cursor"
                            onClick={() => selectedData(dt, dt?.id, "view")}
                          />
                        </div>

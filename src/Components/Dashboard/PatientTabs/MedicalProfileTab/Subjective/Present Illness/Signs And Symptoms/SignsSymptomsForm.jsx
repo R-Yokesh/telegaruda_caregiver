@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 import { format, isValid, parse } from "date-fns";
 import { duration } from "moment";
-import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import { CustomInput,getCurrentTime } from "../../../../../../../Utils/dateUtils";
 import useApi from "../../../../../../../ApiServices/useApi";
 import {
   findItemIndex,
@@ -107,7 +107,7 @@ const SignsSymptomsForm = ({
     "Very Severe",
     "Worst",
   ];
-  const options1 = ["None", "Insignificant", "Moderate", "Extreme"];
+  const options1 = ["Normal", "Mild", "Moderate", "Severe","Very Severe","Worst"];
 
   // Function to update symptoms
   const getSelectedValue = (data) => {
@@ -158,21 +158,31 @@ const SignsSymptomsForm = ({
     return isValid;
   };
 
+
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
+
+  
   const onSubmit = () => {
-    const values = {
-      date: format(selectedDate, "dd-MM-yyyy"),
-      time: format(selectedTime, "HH:mm"),
-      location: locationName?.name,
-      duration: formData.duration_days,
-      symptoms: reasonName?.name,
-      aggravating_factors: formData.aggravating_factors,
-      releiving_factors: formData.releiving_factors,
-      temporal_factors: formData.temporal_factors,
-      severity: formData.severity,
-      notes: formData.notes,
-      quality: "",
-    };
     if (validate()) {
+      const values = {
+        date: format(selectedDate, "dd-MM-yyyy"),
+        time: format(selectedTime, "HH:mm"),
+        location: locationName?.name,
+        duration: formData.duration_days,
+        symptoms: reasonName?.name,
+        aggravating_factors: formData.aggravating_factors,
+        releiving_factors: formData.releiving_factors,
+        temporal_factors: formData.temporal_factors,
+        severity: formData.severity,
+        notes: formData.notes,
+        quality: "",
+      };
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
         editSymptoms(values, defaultValues?.id);
@@ -250,40 +260,79 @@ const SignsSymptomsForm = ({
     <>
       <CRow className="mb-3">
         <CCol lg={3}>
-          <div class="position-relative">
+           <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Date *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedDate}
-                onChange={handleDateChange}
-                dateFormat={DATE_FORMAT}
-                maxDate={new Date()}
-              />
-              {errors.date && <div className="error-text">{errors.date}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  showIcon
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  // isClearable
+                  closeOnScroll={true}
+                  wrapperClassName="date-picker-wrapper"
+                  dateFormat={DATE_FORMAT}
+                  maxDate={maxDate}
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedDate && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleDateClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+
+            {errors.date && <div className="error-text">{errors.date}</div>}
           </div>
         </CCol>
         <CCol lg={3}>
-          <div class="position-relative">
+        <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Time *
             </label>
-            <div className="date-size">
-              <DatePicker
-                showIcon
-                selected={selectedTime}
-                onChange={handleTimeChange}
-                showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={15}
-                timeCaption="Time"
-                dateFormat="h:mm aa"
-              />
-              {errors.time && <div className="error-text">{errors.time}</div>}
+            <div className="w-100 d-flex align-items-center gap-2">
+              <div style={{ width: "80%" }}>
+                <DatePicker
+                  selected={selectedTime}
+                  onChange={handleTimeChange}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  closeOnScroll={true}
+                  timeIntervals={5}
+                  dateFormat="HH:mm"
+                  timeFormat="HH:mm"
+                  customInput={<CustomInput />}
+                  showIcon={false}
+                  wrapperClassName="time-picker-style"
+                />
+              </div>
+              <div style={{ width: "20%" }}>
+                {selectedTime && (
+                  <img
+                    src={Assets.Close}
+                    onClick={handleClear}
+                    alt="close"
+                    style={{
+                      borderRadius: "15px",
+                      height: "18px",
+                    }}
+                    className="cursor"
+                  />
+                )}
+              </div>
             </div>
+            {errors.time && <div className="error-text">{errors.time}</div>}
           </div>
         </CCol>
         <CCol lg={3}>
