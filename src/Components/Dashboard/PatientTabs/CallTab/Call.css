@@ -68,6 +68,13 @@
     gap: 20px;
     align-items: end;
 }
+  /* Isd code package css */
+  .react-tel-input .form-control {
+    width: 250px !important;
+  }
+  .react-tel-input .selected-flag .arrow {
+    display: none;
+  }
 .start-btn{
     background-color: var(--theme-blue);
 }

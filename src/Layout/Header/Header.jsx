@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./Header.css";
 import { Assets } from "../../assets/Assets";
 import { useNavigate } from "react-router-dom";
@@ -73,11 +73,26 @@ const Header = () => {
     localStorage.removeItem("PatientSubMenu-5");
   };
 
-  // Handle button click to fetch patients
-  const handleSearchClick = () => {
-    getPatients();
-    setView(true);
-  };
+  // // Handle button click to fetch patients
+  // const handleSearchClick = () => {
+  //   getPatients();
+  //   setView(true);
+  // };
+
+   // Debounce function to delay API call until user stops typing
+   useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchValue) {
+        getPatients();
+        setView(true);
+      } else {
+        setView(false);
+      }
+    }, 500); 
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchValue]); 
+
 
   return (
     <div>
@@ -95,44 +110,22 @@ const Header = () => {
                   setView(false);
                 }
               }}
+              // onKeyDown={(e) => {
+              //   if (e.key === 'Enter') {
+              //     handleSearchClick();  // Trigger the API call when "Enter" is pressed
+              //   }
+              // }}
               aria-label="Search Patient"
             />
             <button
               type="button"
-              onClick={handleSearchClick}
+              // onClick={handleSearchClick}
               aria-label="Search"
               disabled={loading}
             >
               <i className="fas fa-search"></i>
             </button>
           </div>
-          {/* <div className="search-suggestions-sec">
-            {searchValue && view && (
-              <>
-                {loading ? (
-                  <div className="loading">Loading...</div>
-                ) : error ? (
-                  <div className="error">{error}</div>
-                ) : patientDetail.length > 0 ? (
-                  <ul className="search-suggestions">
-                    {patientDetail.map((patient) => (
-                      <li
-                        key={patient?.id}
-                        onClick={() => handlePatientSelect(patient)}
-                        className="suggestion-item"
-                      >
-                        {patient?.user?.first_name} {patient?.user?.last_name}
-                      </li>
-                    ))}
-                  </ul>
-                ) : !searchValue && noData ? (
-                  <div className="no-data">1No data</div>
-                ) : patientDetail?.length === 0 && searchValue ? (
-                  <div className="no-data">No data</div>
-                ) : null}
-              </>
-            )}
-          </div> */}
           <div className="search-suggestions-sec">
             {searchValue && view && (
               <>
