@@ -51,8 +51,18 @@ const DiagnosisTable = ({ columns, rowData, getselectedData, from, itemsPerPage,
                 <CTableDataCell>
                   <span className="fs-16 fw-500">{dt?.addition_info?.title ? dt?.addition_info?.title : "-"}</span>
                 </CTableDataCell>
-                <CTableDataCell>{dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}</CTableDataCell>
-                {/* <CTableDataCell>{dt?.remark}</CTableDataCell> */}
+                <CTableDataCell>
+                  {Array.isArray(dt?.addition_info?.notes)
+                    ? dt.addition_info.notes.map(note =>
+                      typeof note === 'string'
+                        ? note.replace(/['"]+/g, '')
+                        : note
+                    ).join(', ')
+                    : typeof dt?.addition_info?.notes === 'string'
+                      ? dt.addition_info.notes.replace(/['"]+/g, '')
+                      : dt?.addition_info?.notes || "-"}
+                </CTableDataCell>
+
                 {from !== "Consult" && (
                   <CTableDataCell style={{ height: "10px" }}>
                     <div className="d-flex align-items-center justify-content-center gap-2 h-100">

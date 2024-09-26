@@ -7,6 +7,7 @@ import CloseButton from "../../Components/Buttons/CloseButton/CloseButton";
 import SecondaryButton from "../../Components/Buttons/SecondaryButton/SecondaryButton";
 import { useAuth } from "../../contexts/AuthContext";
 import useApi from "../../ApiServices/useApi";
+import PrimaryButton from "../../Components/Buttons/PrimaryButton/PrimaryButton";
 
 const Header = () => {
   const [exit, setExit] = useState(false);
@@ -192,11 +193,11 @@ const Header = () => {
           <CModalBody>
             <CContainer className="p-2 d-flex flex-column align-items-center mb-2">
               <span className="signout-message mb-3">
-                Are you sure you want to close this session?
+              Are you sure want to signout?
               </span>
               <div className="w-100 d-flex justify-content-center gap-3 flex-wrap">
                 <div style={{ width: "128px" }}>
-                  <CloseButton onClick={logoutHandler}>CLOSE</CloseButton>
+                  <PrimaryButton onClick={logoutHandler}>SIGNOUT</PrimaryButton>
                 </div>
                 <div style={{ width: "128px" }}>
                   <SecondaryButton onClick={() => setExit(false)}>

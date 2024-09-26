@@ -77,7 +77,7 @@ const DynamicTable = ({
               {columnsData?.map(
                 (data, i) =>
                   from === "Consult" && i === columnsData.length - 1 ? null : (
-                    <th key={i}>{data?.label}</th>
+                    <th key={i} style={{paddingLeft:"15px"}}>{data?.label}</th>
                   )
                 // <th key={column.id}>{column.label}</th>
               )}
@@ -377,7 +377,7 @@ const DynamicTable = ({
       );
     } else if (columnKey === "action") {
       return (
-        <div className="d-flex gap-2">
+        <div className="d-flex gap-3">
           {value.map((data, i) => (
             <div key={i} className="d-flex">
               {renderActionButton(data, row)}

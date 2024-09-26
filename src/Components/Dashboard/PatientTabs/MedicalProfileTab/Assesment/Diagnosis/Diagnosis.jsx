@@ -132,7 +132,7 @@ const Diagnosis = ({ onClose, from }) => {
     }
   };
   // Edit API
-  const editDiagnosis = async (values) => {
+  const editDiagnosis = async (values,id) => {
     try {
       const body = {
         user_id: data?.user_id,
