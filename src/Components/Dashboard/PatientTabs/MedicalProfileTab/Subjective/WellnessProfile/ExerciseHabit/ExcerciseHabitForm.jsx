@@ -249,8 +249,7 @@ const ExerciseHabitForm = ({
                   )}
                 </div>
               </div>
-            </CCol>
-            <CCol lg={4}>
+            </CCol>   <CCol lg={4} className="mt-3">
               <div className="mb-3">
                 <div className="d-flex flex-column">
                   <label htmlFor={`duration_${index}`} className="form-label">
@@ -272,7 +271,7 @@ const ExerciseHabitForm = ({
                 </div>
               </div>
             </CCol>
-            <CCol lg={4}>
+            <CCol lg={4} className="mt-3">
               <div style={{ width: "100%" }}>
                 <div className="position-relative">
                   <label htmlFor={`intensity_${index}`} className="form-label">
@@ -317,7 +316,7 @@ const ExerciseHabitForm = ({
             )}
             <CCol
               xs={2}
-              className="d-flex align-items-start justify-content-start"
+              className="d-flex align-items-start justify-content-start mt-3"
             >
               <div style={{ width: "40px", marginTop: "2rem" }}>
                 <ActiveButton onClick={addFormEntry}>

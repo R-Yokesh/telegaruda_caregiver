@@ -234,6 +234,7 @@ body {
 
 .responsive-table td {
   padding: 10px;
+  padding-left: 15px;
   text-align: left;
   border-bottom: 2px solid #E8E8E8
 }

@@ -7,12 +7,13 @@ import { useLocation } from "react-router-dom";
 const PatentProfile = () => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
+  console.log('DATTTTTAA',data)
   return (
     <>
       <CCard className="card-profile">
         <CCardBody className="d-flex gap-4">
           <div className="img-container">
-            <img src={Assets.patient1} alt="profile-img" />
+            <img src={data?.user?.profile_image || Assets.NoImg} alt="profile-img" className="img-container"/>
           </div>
           <div className="user-details">
             <span className="user-title">
