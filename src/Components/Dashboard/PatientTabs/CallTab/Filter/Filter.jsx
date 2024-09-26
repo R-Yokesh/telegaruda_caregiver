@@ -86,7 +86,7 @@ const Filter = ({ visible, setVisible, getFilterValues }) => {
               { label: "Dcotor Three", value: "3" },
             ]}
           />
-          <CRow className="mb-4">
+          {/* <CRow className="mb-4">
             <CCol lg={6} sm={12}>
               <p className="date-sec">From Date</p>
               <DatePicker
@@ -108,7 +108,7 @@ const Filter = ({ visible, setVisible, getFilterValues }) => {
                 className="date-range-picker picker-sec"
               />
             </CCol>
-          </CRow>
+          </CRow> */}
           <CRow className="">
             <CCol lg={6} md={6} sm={12}>
               <CFormSelect

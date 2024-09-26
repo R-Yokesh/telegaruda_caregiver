@@ -20,6 +20,8 @@ import Filter from "./Filter/Filter";
 import RegisteredDoctorCards from "../../../DoctorCards/RegisteredDoctorCards";
 import useApi from "../../../../ApiServices/useApi";
 import Pagination from "../../../Pagination/Pagination";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const CallTab = () => {
   const { get } = useApi();
@@ -27,6 +29,7 @@ const CallTab = () => {
   const data = location.state?.PatientDetail;
   const [visible, setVisible] = useState(false);
   const [showMobileInput, setShowMobileInput] = useState(false);
+  const [phone, setPhone] = useState('');
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const [doctorsPagi, setDoctorsPagi] = useState({});
@@ -131,8 +134,7 @@ const CallTab = () => {
   const getDoctorLists = useCallback(async () => {
     try {
       const response = await get(
-        `resource/providers?limit=${itemsPerPage}&page=${currentPage}&order_by=id&dir=1&searchkey=${searchValue}&gender=${
-          filters?.gender ?? ""
+        `resource/providers?limit=${itemsPerPage}&page=${currentPage}&order_by=id&dir=1&searchkey=${searchValue}&gender=${filters?.gender ?? ""
         }&speciality=${filters?.speciality ?? ""}`
       );
       const listData = response?.data?.providers; //
@@ -208,7 +210,7 @@ const CallTab = () => {
             <hr />
             <CForm>
               <div className="mobile-input-section">
-                <div>
+                {/* <div>
                   <CFormSelect
                     aria-label="Default select example"
                     label={"ISD Code"}
@@ -219,16 +221,26 @@ const CallTab = () => {
                       { label: " Three", value: "3" },
                     ]}
                   />
-                </div>
+                </div> */}
                 <div>
-                  <CFormInput
-                    type="text"
-                    id="exampleFormControlInput1"
-                    label="Mobile Number"
-                    placeholder="Enter"
-                    aria-describedby="exampleFormControlInputHelpInline"
+                  <p className="form-label">Mobile Number</p>
+                  <PhoneInput
+                    country={'in'}
+                    placeholder="Enter" // Set placeholder here
+                    onChange={(value) => setPhone(value)}
                   />
                 </div>
+                {/* <div>
+                  <CFormInput
+                     type="text"
+                     id="exampleFormControlInput1"
+                     label="Mobile Number"
+                     placeholder="Enter"
+                     aria-describedby="exampleFormControlInputHelpInline"
+                     value={phone}
+                     onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div> */}
                 <div>
                   <CButton color="primary" className="start-btn">
                     Start
