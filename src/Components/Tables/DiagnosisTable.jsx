@@ -65,7 +65,7 @@ const DiagnosisTable = ({
                 </CTableDataCell>
                 <CTableDataCell>
                   {dt?.addition_info?.notes
-                    ? removeQuotes(dt?.addition_info?.notes)
+                    ? removeQuotes(dt?.addition_info?.notes ?? "")
                     : "-"}
                 </CTableDataCell>
                 {/* <CTableDataCell>{dt?.remark}</CTableDataCell> */}

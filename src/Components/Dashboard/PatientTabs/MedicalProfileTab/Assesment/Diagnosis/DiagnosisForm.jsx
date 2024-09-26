@@ -12,8 +12,12 @@ import useApi from "../../../../../../ApiServices/useApi";
 import ICDCodeDrop from "../../../../../Dropdown/ICDCodeDrop";
 import { useLocation } from "react-router-dom";
 
-const DiagnosisForm = ({ back, defaultValues, addDiagnosis, editDiagnosis }) => {
-
+const DiagnosisForm = ({
+  back,
+  defaultValues,
+  addDiagnosis,
+  editDiagnosis,
+}) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -21,9 +25,13 @@ const DiagnosisForm = ({ back, defaultValues, addDiagnosis, editDiagnosis }) => 
   const [selectedDate, setSelectedDate] = useState(null);
   const [errors, setErrors] = useState({});
   const [icd10, setIcd10] = useState([]);
-  const [icdkey, setIcdKey] = useState(defaultValues?.addition_info?.title || "");
+  const [icdkey, setIcdKey] = useState(
+    defaultValues?.addition_info?.title || ""
+  );
   const [icd, setIcd] = useState(defaultValues?.addition_info?.title || "");
-  const [Description, setDescription] = useState([defaultValues?.addition_info?.notes || null])
+  const [Description, setDescription] = useState([
+    defaultValues?.addition_info?.notes || null,
+  ]);
 
   const maxDate = new Date(); // Restrict past dates (today or future)
   const defaultDateTime = defaultValues?.addition_info?.date || "";
@@ -88,23 +96,20 @@ const DiagnosisForm = ({ back, defaultValues, addDiagnosis, editDiagnosis }) => 
     return isValid;
   };
 
-
   const onSubmit = () => {
-    const values = {
-      date: format(selectedDate, "yyyy-MM-dd"),
-      title: icd,
-      notes: Description,
-    }
     if (validate()) {
+      const values = {
+        date: format(selectedDate, "yyyy-MM-dd"),
+        title: icd,
+        notes: Description,
+      };
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editDiagnosis(values, defaultValues?.id)
-
+        editDiagnosis(values, defaultValues?.id);
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
         addDiagnosis(values);
-
       }
     }
   };
@@ -173,7 +178,6 @@ const DiagnosisForm = ({ back, defaultValues, addDiagnosis, editDiagnosis }) => 
                 icdKey={setIcdKey}
               />
               {errors.icd && <div className="error-text">{errors.icd}</div>}
-
             </div>
           </div>
         </CCol>
