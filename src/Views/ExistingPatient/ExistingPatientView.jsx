@@ -19,6 +19,7 @@ import Loader from "../../Components/Loader/Loader";
 import PhoneNumberInput from "../../Components/PhoneNumberInput/PhoneNumberInput";
 import { toast } from "react-toastify";
 import ProfileUpdate from "./ProfileUpdate";
+import { format } from "date-fns";
 
 function ExistingPatientView() {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ function ExistingPatientView() {
 
   const addPatientModalClose = () => {
     setVisible(false);
+    setErrors({});
   };
 
   const validate = () => {
@@ -158,21 +160,23 @@ function ExistingPatientView() {
       const url = `resource/patients`; // Replace with your API endpoint
       const body = {
         user: {
+          address: {},
           first_name: firstName,
           last_name: lastName,
           gender: gender,
           mobile: mobile,
+          role: "folio",
+          is_2fa: 0,
           isd_code: iso,
-          role: "folio", //required fields from api so we give static
-          timezone_id: 1, //required fields from api so we give static
-          is_active: 1, //required fields from api so we give static
-          is_2fa: 0, //required fields from api so we give static
-          username: `0${mobile?.slice(0, 5)}417${age}07512`, //required fields from api so we give static
+          dob: null,
+          username: format(new Date(), "ddMMyyyyHHmmss"), //to generate unique user id
+          email: "unknown@unknown.co",
+          is_active: 1,
+          timezone_id: 1,
         },
-        additional_info: {
-          mrn_number: mrnNumber,
-          age: age,
-        },
+        additional_info: { age: age, mrn_number: mrnNumber },
+        peripheral_credentials: {},
+        is_admin: 1,
       };
       await post(url, body);
       clearCache();
@@ -260,7 +264,7 @@ function ExistingPatientView() {
         visible={visible}
         onClose={addPatientModalClose}
         aria-labelledby="VerticallyCenteredExample"
-        size="xl"
+        size="lg"
       >
         <CModalBody className="pad-custom">
           <CContainer>
@@ -268,7 +272,7 @@ function ExistingPatientView() {
               <span className="fs-20 fw-600">New Patient</span>
             </div>
             <CRow className="mb-2">
-              <CCol lg={4} className="mb-2">
+              {/* <CCol lg={4} className="mb-2">
                 <label className="profile-pic">
                   <input
                     type="file"
@@ -293,9 +297,9 @@ function ExistingPatientView() {
                     </>
                   )}
                 </label>
-                {/* <ProfileUpdate /> */}
-              </CCol>
-              <CCol lg={8} className="mb-2">
+                <ProfileUpdate />
+              </CCol> */}
+              <CCol lg={12} className="mb-2">
                 <CRow className="g-3">
                   <CCol lg={6}>
                     <div style={{ width: "100%" }}>
