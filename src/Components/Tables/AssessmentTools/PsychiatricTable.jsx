@@ -52,28 +52,35 @@ const PsychiatricTable = ({
     const additionalMatch = text?.match(/@f \s*(.*?)\s*@c /);
     const additional = additionalMatch ? additionalMatch[1].trim() : "";
 
-
     return (
-      <div className="d-flex justify-content-center align-items-center gap-2">
-        {score?.trim() ? (titleMatch ? titleMatch[1]?.trim() : "") : null}{" "}
-        {subTitMatch ? subTitMatch[1]?.trim() : ""}{" "}
-        <Badge
-          label={
-            <>
-              <span>
-                {score?.trim()
-                  ? score?.trim() + " Score"
-                  : titleMatch
-                  ? titleMatch[1]?.trim()
-                  : ""}{" "}
-              </span>
-              <br />
-              <span>{additional}</span>
-            </>
-          }
-          color={status?.trim()}
-        />
-      </div>
+      <>
+        {text ? (
+          <div className="d-flex justify-content-center align-items-center gap-2">
+            {score?.trim() ? (titleMatch ? titleMatch[1]?.trim() : "") : null}{" "}
+            {subTitMatch ? subTitMatch[1]?.trim() : ""}{" "}
+            <Badge
+              label={
+                <>
+                  <span style={{ color: status?.trim() ? "white" : "black" }}>
+                    {score?.trim()
+                      ? score?.trim() + " Score"
+                      : titleMatch
+                      ? titleMatch[1]?.trim()
+                      : ""}{" "}
+                  </span>
+                  <br />
+                  <span>{additional}</span>
+                </>
+              }
+              color={status?.trim()}
+            />
+          </div>
+        ) : (
+          <div>
+            <span></span>
+          </div>
+        )}
+      </>
     );
   };
 
