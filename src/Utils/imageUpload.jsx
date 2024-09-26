@@ -26,13 +26,13 @@ export const uploadBuckets = async (data) => {
   const result = await fetch(`${data}`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      "X-API-KEY": apiKey,
+      // Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      // "X-API-KEY": apiKey,
     },
   });
-  const response = await result?.json();
-  if (response?.code === 200) {
-    return response?.data;
+  // const response = await result?.json();
+  if (result?.status === 200) {
+    return;
   }
 };
 

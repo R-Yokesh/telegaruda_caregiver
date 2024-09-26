@@ -305,6 +305,7 @@ const Medication = ({ from }) => {
         clearCache();
         await fetchMedication();
         setAddFormView(false);
+        setSelectedData({});
         toast.success("Added successfully");
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -352,6 +353,7 @@ const Medication = ({ from }) => {
                     onClick={() => {
                       addFormPage();
                       setView(false);
+                      setSelectedData({});
                     }}
                   >
                     <div className="d-flex align-items-center gap-2">

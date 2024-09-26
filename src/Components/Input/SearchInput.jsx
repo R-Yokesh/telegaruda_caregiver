@@ -31,6 +31,13 @@ const SearchInput = ({
       }
     }
   }, [searchTerm, data, isSelect]);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      setIsDropdownVisible(false); // Close dropdown on Enter key
+    }
+  };
+
   // Handle clicks outside of the component
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -40,9 +47,10 @@ const SearchInput = ({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
   const handleChange = (e) => {
@@ -77,7 +85,10 @@ const SearchInput = ({
     }
   }, [searchTerm, data, selectedItem]);
   return (
-    <div className={`search-container ${view === true ? "disabled" : ""}`} ref={inputRef}>
+    <div
+      className={`search-container ${view === true ? "disabled" : ""}`}
+      ref={inputRef}
+    >
       <input
         type="text"
         placeholder="Enter"

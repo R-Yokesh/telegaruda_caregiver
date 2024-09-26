@@ -172,6 +172,7 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
         console.log("Add clicked");
 
         const uploadedImage = await heartRateFileUpload(ecgFile);
+        console.log("first", uploadedImage);
         if (uploadedImage) {
           onAdd(uploadedImage, 1);
         } else {
@@ -250,7 +251,7 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
     <>
       <CContainer>
         <CRow className="mb-3">
-        <CCol lg={4}>
+          <CCol lg={4}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
                 Date *

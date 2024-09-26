@@ -24,7 +24,6 @@ import {
 import { useLocation } from "react-router-dom";
 import SearchInput from "../../../../../../Input/SearchInput";
 
-
 const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
@@ -96,12 +95,12 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
   const [medicationDetails, setMedicationDetails] = useState([]);
   const [medicationKey, setMedicationKey] = useState(
     defaultValues?.values !== undefined
-      ? defaultValues?.values[0]?.medicine_name
+      ? defaultValues?.values[0]?.medicine_type
       : ""
   );
   const [medicationName, setMedicationName] = useState(
     defaultValues?.values !== undefined
-      ? defaultValues?.values[0]?.medicine_name
+      ? defaultValues?.values[0]?.medicine_type
       : {}
   );
 
@@ -117,10 +116,10 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
   const currentDate = new Date();
   const formattedDate = getFormattedDate(currentDate);
 
-  const defaultDateTime = defaultValues?.values !== undefined
-    ? defaultValues?.values[0]?.start_date
-    : "";
-
+  const defaultDateTime =
+    defaultValues?.values !== undefined
+      ? defaultValues?.values[0]?.start_date
+      : "";
 
   const defaultDate = defaultDateTime.split(" ")[0] || "";
   const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
@@ -251,26 +250,26 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
       newErrors.date = "End Date is required.";
       isValid = false;
     }
-    if (!formData.medicine_type) {
-      newErrors.medicine_type = "Medication Type is required.";
+    if (!medicationNameKey) {
+      newErrors.medicine_type = "Medication Name is required.";
       isValid = false;
     }
     if (medicationName?.slug === undefined) {
-      newErrors.medicationName = "Medication Name is required.";
+      newErrors.medicationName = "Medication Type is required.";
       isValid = false;
     }
-    if (!formData.dosage) {
-      newErrors.dosage = "Dosage is required.";
-      isValid = false;
-    }
-    if (!formData.strength) {
-      newErrors.strength = "Strength is required.";
-      isValid = false;
-    }
-    if (!formData.strength_measurement) {
-      newErrors.strength_measurement = "Strength Measurement is required.";
-      isValid = false;
-    }
+    // if (!formData.dosage) {
+    //   newErrors.dosage = "Dosage is required.";
+    //   isValid = false;
+    // }
+    // if (!formData.strength) {
+    //   newErrors.strength = "Strength is required.";
+    //   isValid = false;
+    // }
+    // if (!formData.strength_measurement) {
+    //   newErrors.strength_measurement = "Strength Measurement is required.";
+    //   isValid = false;
+    // }
     if (!formData.total_qty) {
       newErrors.total_qty = "Quantity is required.";
       isValid = false;
@@ -298,8 +297,10 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
         {
           start_date: format(selectedStartDate, "yyyy-MM-dd"),
           end_date: format(selectedEndDate, "yyyy-MM-dd"),
-          medicine_type: formData?.medicine_type,
-          medicine_name: medicationName?.slug,
+          // medicine_type: formData?.medicine_type,
+          // medicine_name: medicationName?.slug,
+          medicine_name: medicineName?.name || medicationNameKey,
+          medicine_type: medicationName?.name,
           dosage: formData?.dosage,
           strength: formData?.strength,
           strength_measurement: formData?.strength_measurement,
@@ -375,7 +376,6 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
     setMedicationName(data);
   };
 
-
   const calculateEndDate = () => {
     if (selectedStartDate && formData.no_of_days) {
       const numDays = parseInt(formData.no_of_days, 10);
@@ -391,6 +391,37 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
   useEffect(() => {
     calculateEndDate();
   }, [selectedStartDate, formData.no_of_days]);
+  const [medicationNameDetails, setMedicationNameDetails] = useState([]);
+  const [medicationNameKey, setMedicationNameKey] = useState(
+    defaultValues?.values !== undefined
+      ? defaultValues?.values[0]?.medicine_name
+      : ""
+  );
+  const [medicineName, setMedicineName] = useState(
+    defaultValues?.values !== undefined
+      ? defaultValues?.values[0]?.medicine_name
+      : {}
+  );
+
+  const getSelectedmedicine = (data) => {
+    setMedicineName(data);
+  };
+  //medication name list
+  const getmedicationName = useCallback(async () => {
+    try {
+      const response = await get(
+        `resource/medicines/all?limit=20&searchkey=${medicationNameKey}&type=${medicationName?.name}`
+      );
+      const listData = response?.data?.medicines; //
+      setMedicationNameDetails(listData);
+    } catch (error) {
+      console.error("Error fetching card data:", error);
+    }
+  }, [get, medicationNameKey]);
+
+  useEffect(() => {
+    getmedicationName();
+  }, [getmedicationName]);
   return (
     <>
       <CRow className="mb-3">
@@ -400,7 +431,26 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
               <label for="validationTooltip01" class="form-label">
                 Medication Type *
               </label>
-              <div
+              <SearchInput
+                data={medicationDetails}
+                setSurgeryKey={setMedicationKey}
+                getSelectedData={getSelectedmedication}
+                defaultkey={medicationKey}
+                view={view}
+              />
+              {errors.medicationName && (
+                <div className="error-text">{errors.medicationName}</div>
+              )}
+            </div>
+          </div>
+        </CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Medication Name *
+              </label>
+              {/* <div
                 className="w-100"
                 style={{
                   border: "1px solid #17171D33",
@@ -422,33 +472,21 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                   getSelectedValue={getSelectedMedicineType}
                   view={view}
                 />
-              </div>
+              </div> */}
+              <SearchInput
+                data={medicationNameDetails}
+                setSurgeryKey={setMedicationNameKey}
+                getSelectedData={getSelectedmedicine}
+                defaultkey={medicationNameKey}
+                view={view}
+              />
               {errors.medicine_type && (
                 <div className="error-text">{errors.medicine_type}</div>
               )}
             </div>
           </div>
         </CCol>
-        <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Medication Name *
-              </label>
-              <SearchInput
-                data={medicationDetails}
-                setSurgeryKey={setMedicationKey}
-                getSelectedData={getSelectedmedication}
-                defaultkey={medicationKey}
-                view={view}
-              />
-              {errors.medicationName && (
-                <div className="error-text">{errors.medicationName}</div>
-              )}
-            </div>
-          </div>
-        </CCol>
-        <CCol lg={4} className="mb-3">
+        {/* <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -466,11 +504,11 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                   defaultValue={
                     defaultValues?.values !== undefined
                       ? dosageOptions[
-                      findItemIndex(
-                        dosageOptions,
-                        defaultValues?.values[0]?.dosage
-                      )
-                      ]
+                          findItemIndex(
+                            dosageOptions,
+                            defaultValues?.values[0]?.dosage
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getSelectedDosage}
@@ -550,7 +588,7 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
               )}
             </div>
           </div>
-        </CCol>
+        </CCol> */}
 
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
@@ -678,7 +716,7 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                 minDate={minDate}
                 disabled
               />
-              {errors.date && <div className="error-text">{errors.date}</div>}
+              {/* {errors.date && <div className="error-text">{errors.date}</div>} */}
             </div>
           </div>
         </CCol>
@@ -775,10 +813,10 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                   view === true
                     ? view
                     : defaultValues?.lab_status === "Prescribed"
-                      ? false
-                      : defaultValues?.medicines?.length >= 1
-                        ? true
-                        : false
+                    ? false
+                    : defaultValues?.medicines?.length >= 1
+                    ? true
+                    : false
                 }
                 label={
                   <label for="validationTooltip01" class="form-label mb-0">
@@ -841,11 +879,11 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
                   defaultValue={
                     defaultValues?.values !== undefined
                       ? statusOptions[
-                      findItemIndex(
-                        statusOptions,
-                        defaultValues?.values[0]?.status
-                      )
-                      ]
+                          findItemIndex(
+                            statusOptions,
+                            defaultValues?.values[0]?.status
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getSelectedStatus}

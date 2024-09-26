@@ -55,7 +55,7 @@ const PsychiatricTable = ({
     return (
       <>
         {text ? (
-          <div className="d-flex justify-content-center align-items-center gap-2">
+          <div className="d-flex justify-content-end align-items-center gap-2">
             {score?.trim() ? (titleMatch ? titleMatch[1]?.trim() : "") : null}{" "}
             {subTitMatch ? subTitMatch[1]?.trim() : ""}{" "}
             <Badge
@@ -83,6 +83,41 @@ const PsychiatricTable = ({
       </>
     );
   };
+  const extractHeadingsAndStatus = (text) => {
+    const regex =
+      /@span\s+([^@]*)\s+@c\s+(!\w+!)\s+@f\s+([^@]*)\s+@c\s+@br\s+@c\s+! @f\s+(Score is \d+)\s+@c@br/g;
+
+    const results = [];
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+      const heading = match[1].trim(); // Heading captured
+      const status = match[2].replace(/!/g, "").trim(); // Status without '!'
+      const subText = match[3].trim(); // Subtext captured
+      const score = match[4].trim(); // Score captured
+
+      results.push({ heading, status, subText, score });
+    }
+
+    return (
+      <div style={{ textAlign: "end" }}>
+        {results?.map((dt, i) => (
+          <div key={i} className="mb-2">
+            <span style={{ color: "black" }}>{dt?.heading} </span>
+            <Badge
+              label={
+                <>
+                  <span>{dt?.subText ?? ""}</span>
+                </>
+              }
+              color={dt?.status}
+            />
+            <span style={{ fontWeight: "bold" }}> {dt?.score ?? ""}</span>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -107,6 +142,7 @@ const PsychiatricTable = ({
               <CTableDataCell>
                 <span className="fs-16 fw-500">
                   {capitalizeFirstLetter(dt?.name)}
+                  {/* {dt?.name} */}
                 </span>
               </CTableDataCell>
               <CTableDataCell>
@@ -125,10 +161,12 @@ const PsychiatricTable = ({
                     color={"error"}
                   />
                 </div> */}
-                {formatText(
-                  dt?.latest_form_submisson?.message,
-                  dt?.latest_form_submisson?.score
-                )}
+                {dt?.id === 22
+                  ? extractHeadingsAndStatus(dt?.latest_form_submisson?.message)
+                  : formatText(
+                      dt?.latest_form_submisson?.message,
+                      dt?.latest_form_submisson?.score
+                    )}
               </CTableDataCell>
 
               {from !== "Consult" && (

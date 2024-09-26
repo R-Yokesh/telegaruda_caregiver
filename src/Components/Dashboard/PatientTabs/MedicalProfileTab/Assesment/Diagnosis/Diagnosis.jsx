@@ -23,8 +23,6 @@ import useApi from "../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
 
-
-
 const Diagnosis = ({ onClose, from }) => {
   const columnData = [
     { id: 1, label: "No." },
@@ -34,8 +32,7 @@ const Diagnosis = ({ onClose, from }) => {
     { id: 5, label: "ACTIONS" },
   ];
 
-
-  const { loading, error, get,post,patch, del, clearCache } = useApi();
+  const { loading, error, get, post, patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -56,14 +53,12 @@ const Diagnosis = ({ onClose, from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-
   };
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
 
   const addFormPage = () => {
     setAddFormView(true);
@@ -79,17 +74,22 @@ const Diagnosis = ({ onClose, from }) => {
       addFormPage();
     }
     if (type === "delete") {
-      setId(id)
+      setId(id);
       detailPage();
     }
   };
-
 
   const fetchDiagnosis = useCallback(async () => {
     try {
       // clearCache();
       const response = await get(
-        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}&order_by=created_at&dir=2&slug=icd&user_id=${data?.user_id}&scanOrdersOnly=&scanstatus=`
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${
+          searchValue ?? ""
+        }&order_by=created_at&dir=2&slug=icd&user_id=${
+          data?.user_id
+        }&scanOrdersOnly=&scanstatus=`
       );
       if (response.code === 200) {
         setRowData(response?.data?.docs);
@@ -100,15 +100,22 @@ const Diagnosis = ({ onClose, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate, searchValue, addFormView]);
+  }, [
+    get,
+    currentPage,
+    startDate,
+    endDate,
+    searchValue,
+    addFormView,
+    data?.user_id,
+  ]);
 
   useEffect(() => {
     fetchDiagnosis();
   }, [fetchDiagnosis, addFormView]);
 
-  // Add API 
+  // Add API
   const addDiagnosis = async (values) => {
-
     try {
       const body = {
         user_id: data?.user_id,
@@ -123,7 +130,6 @@ const Diagnosis = ({ onClose, from }) => {
         await fetchDiagnosis();
         setAddFormView(false);
         toast.success("Added successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -132,7 +138,7 @@ const Diagnosis = ({ onClose, from }) => {
     }
   };
   // Edit API
-  const editDiagnosis = async (values) => {
+  const editDiagnosis = async (values, id) => {
     try {
       const body = {
         user_id: data?.user_id,
@@ -153,9 +159,7 @@ const Diagnosis = ({ onClose, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-
   };
-
 
   // Delte Allergies
   const deleteDiagnosis = async () => {
@@ -166,7 +170,6 @@ const Diagnosis = ({ onClose, from }) => {
         clearCache();
         fetchDiagnosis();
         toast.success("Deleted successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }

@@ -81,52 +81,97 @@ const NeurologicalForm = ({
         ) : (
           <>
             {defaultValues?.questions?.map((question, index) => (
-              <CRow key={index} className="mb-3">
-                <CCol>
-                  <h5>
-                    {index + 1}. {question?.question?.name}
-                  </h5>
-                  {question?.question?.type === "radio"
-                    ? question?.answers?.map((option, cIndex) => (
-                        <CFormCheck
-                          key={cIndex}
-                          type="radio"
-                          name={question?.question?.id} // Use question ID as the name
-                          id={`question${question?.question?.id}_choice${option?.id}`}
-                          // name={`question${index + 1}`}
-                          // id={`question${index + 1}_choice${cIndex + 1}`}
-                          value={option?.answer?.name}
-                          label={option?.answer?.name}
-                          onChange={(e) => handleChange(e, question)}
-                          checked={
-                            formData[question?.question?.id]?.answer?.name ===
-                            option?.answer?.name
-                          }
-                          disabled={isEditMode}
-                        />
-                      ))
-                    : null}
-                  {question?.question?.type === "instructions" ? (
-                    <img
-                      alt="img"
-                      src={
-                        "https://telegaruda.a2zhealth.in/hospital/assets/media/assessment/" +
-                        question?.question?.additional_info?.image_url
-                      }
-                    />
-                  ) : null}
-                  {question?.question?.type === "input" ? (
-                    <input
-                      name={question?.question?.id} // Use question ID as the name
-                      id={`question${question?.question?.id}`}
-                      onChange={(e) => handleInputChange(e, question)}
-                      disabled={isEditMode}
-                      defaultValue={formData[question?.question?.id]?.answer}
-                      class="form-control  pad-10"
-                    />
-                  ) : null}
-                </CCol>
-              </CRow>
+              <>
+                <CRow key={index} className="mb-3">
+                  <CCol>
+                    <h5>
+                      {index + 1}. {question?.question?.name}
+                    </h5>
+                    {question?.question?.type === "radio"
+                      ? question?.answers?.map((option, cIndex) => (
+                          <CFormCheck
+                            key={cIndex}
+                            type="radio"
+                            name={question?.question?.id} // Use question ID as the name
+                            id={`question${question?.question?.id}_choice${option?.id}`}
+                            // name={`question${index + 1}`}
+                            // id={`question${index + 1}_choice${cIndex + 1}`}
+                            value={option?.answer?.name}
+                            label={option?.answer?.name}
+                            onChange={(e) => handleChange(e, question)}
+                            checked={
+                              formData[question?.question?.id]?.answer?.name ===
+                              option?.answer?.name
+                            }
+                            disabled={isEditMode}
+                          />
+                        ))
+                      : null}
+                    {question?.question?.type === "instructions" ? (
+                      <img
+                        alt="img"
+                        src={
+                          "https://telegaruda.a2zhealth.in/hospital/assets/media/assessment/" +
+                          question?.question?.additional_info?.image_url
+                        }
+                      />
+                    ) : null}
+                    {question?.question?.type === "input" ? (
+                      <input
+                        name={question?.question?.id} // Use question ID as the name
+                        id={`question${question?.question?.id}`}
+                        onChange={(e) => handleInputChange(e, question)}
+                        disabled={isEditMode}
+                        defaultValue={formData[question?.question?.id]?.answer}
+                        class="form-control  pad-10"
+                      />
+                    ) : null}
+                    {question?.question?.type === "sub_question"
+                      ? question?.question?.sub_questions?.map((data, i) => (
+                          <>
+                            <CRow key={index} className="mb-3">
+                              <CCol>
+                                <div
+                                  style={{
+                                    marginLeft: "20px",
+                                  }}
+                                >
+                                  <h6>
+                                    {i + 1}. {data?.name}
+                                  </h6>
+                                  {data?.type === "radio"
+                                    ? question?.answers?.map(
+                                        (option, cIndex) => (
+                                          <CFormCheck
+                                            key={cIndex}
+                                            type="radio"
+                                            name={data?.id} // Use question ID as the name
+                                            id={`question${data?.id}_choice${option?.id}`}
+                                            // name={`question${index + 1}`}
+                                            // id={`question${index + 1}_choice${cIndex + 1}`}
+                                            value={option?.answer?.name}
+                                            label={option?.answer?.name}
+                                            onChange={(e) =>
+                                              handleChange(e, question)
+                                            }
+                                            checked={
+                                              formData[data?.id]?.answer
+                                                ?.name === option?.answer?.name
+                                            }
+                                            disabled={isEditMode}
+                                          />
+                                        )
+                                      )
+                                    : null}
+                                </div>
+                              </CCol>
+                            </CRow>
+                          </>
+                        ))
+                      : null}
+                  </CCol>
+                </CRow>
+              </>
             ))}
           </>
         )}
