@@ -1,8 +1,10 @@
 import React from "react";
 import { Assets } from "../../assets/Assets";
 import { formatDateTime } from "../../Utils/dateUtils";
+import useApi from "../../ApiServices/useApi";
+import { useLocation } from "react-router-dom";
 
-const RegisteredDoctorCards = ({ DoctorDetail }) => {
+const RegisteredDoctorCards = ({ DoctorDetail, getselectedProviderData }) => {
   return (
     <div className="card-sec">
       <div className="row align-items-center">
@@ -36,7 +38,12 @@ const RegisteredDoctorCards = ({ DoctorDetail }) => {
           </p>
         </div>
       </div>
-      <img src={Assets.videoCall_icon} className="edit-icon" alt="edit-icon" />
+      <img
+        src={Assets.videoCall_icon}
+        className="edit-icon"
+        alt="edit-icon"
+        onClick={() => getselectedProviderData(DoctorDetail)}
+      />
     </div>
   );
 };

@@ -174,6 +174,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
   };
 
   const onAdd = async () => {
+    
     try {
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
@@ -191,7 +192,9 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
       await getTableDatas(defaultData);
       toast.success("Added successfully");
       addBack();
+
     } catch (error) {
+      
       console.error("Failed to delete:", error);
     }
   };
@@ -372,7 +375,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={() => onSubmit()} >SAVE</PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
             <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>

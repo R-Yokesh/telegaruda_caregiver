@@ -1,12 +1,11 @@
-.call-tab-sec{
+.call-tab-sec {}
 
-}
-
-.call-tab-sec .search-filter-sec{
+.call-tab-sec .search-filter-sec {
     display: flex;
     gap: 30px;
     justify-content: end;
 }
+
 .call-tab-sec .search-bar {
     display: flex;
     align-items: center;
@@ -16,6 +15,7 @@
     width: 52%;
     background-color: white;
 }
+
 .call-tab-sec .search-bar input {
     border: none;
     outline: none;
@@ -23,6 +23,7 @@
     width: 100%;
     text-align: center;
 }
+
 .call-tab-sec .search-bar button {
     background-color: #0084CF;
     border: none;
@@ -31,21 +32,24 @@
     cursor: pointer;
     border-radius: unset;
 }
-.invite-doc-sec{
+
+.invite-doc-sec {
     padding: 3%;
     background-color: #ffff;
     margin-bottom: 3%;
     border-radius: 10px;
 }
-.invite-doc-sec-inside{
+
+.invite-doc-sec-inside {
     display: flex;
     justify-content: space-between;
 }
 
-.mobi-mail-btn-sec{
+.mobi-mail-btn-sec {
     display: flex;
     gap: 20px;
 }
+
 .cliked-icon button {
     background-color: #000000;
     border: 0px;
@@ -54,6 +58,7 @@
     border-radius: 8px;
     font-weight: 600;
 }
+
 .mobile-icon button {
     background-color: var(--theme-blue);
     border: 0px;
@@ -63,24 +68,91 @@
     font-weight: 600;
 }
 
-.mobile-input-section{
+.mobile-input-section {
     display: flex;
     gap: 20px;
     align-items: end;
 }
-  /* Isd code package css */
-  .react-tel-input .form-control {
+
+/* Isd code package css */
+.react-tel-input .form-control {
     width: 250px !important;
-  }
-  .react-tel-input .selected-flag .arrow {
+}
+
+.react-tel-input .selected-flag .arrow {
     display: none;
-  }
-.start-btn{
+}
+
+.start-btn {
     background-color: var(--theme-blue);
 }
-.doc-head{
+
+.doc-head {
     text-align: center;
     text-align: center;
     font-weight: 800;
     margin-bottom: 20px;
+}
+
+/* From Uiverse.io by cssbuttons-io */
+.callbutton {
+    width: 220px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: red;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    background: #e62222;
+}
+
+.callbutton,
+button span {
+    transition: 200ms;
+}
+
+.callbutton .text {
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+}
+
+.callbutton .icon {
+    position: absolute;
+    border-left: 1px solid #c41b1b;
+    transform: translateX(170px);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.callbutton svg {
+    width: 15px;
+    fill: #eee;
+}
+
+.callbutton:hover {
+    background: #ff3636;
+}
+
+.callbutton:hover .text {
+    color: transparent;
+}
+
+.callbutton:hover .icon {
+    width: 200px;
+    border-left: none;
+    transform: translateX(0);
+}
+
+.callbutton:focus {
+    outline: none;
+}
+
+.callbutton:active .icon svg {
+    transform: scale(0.8);
 }

@@ -65,5 +65,5 @@ export const fahrenheitToCelsius = (fahrenheit) => {
 
 export const removeQuotes = (input) => {
   // Remove leading and trailing quotes
-  return input?.replace(/^"|"$/g, "").trim();
+  return typeof input === "string" ? input?.replace(/^"|"$/g, "").trim() : "";
 };
