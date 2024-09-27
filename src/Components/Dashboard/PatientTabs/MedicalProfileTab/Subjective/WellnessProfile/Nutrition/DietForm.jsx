@@ -19,6 +19,7 @@ const DietForm = ({
   setAddFormView,
   addDiet,
   editDiet,
+  isSubmitting
 }) => {
   const parseDate = (dateString) => {
     if (!dateString) return null;
@@ -264,7 +265,9 @@ const DietForm = ({
       </CRow>
       <CRow className="mb-3">
         <CCol xs={3} md={2}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </CCol>
         <CCol xs={3} md={2}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

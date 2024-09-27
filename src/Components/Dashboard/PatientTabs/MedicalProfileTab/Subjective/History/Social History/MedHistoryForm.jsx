@@ -11,6 +11,7 @@ const MedHistoryForm = ({
   from,
   socialAdd,
   socialEdit,
+  isSubmitting
 }) => {
   const [smokingStatus, setSmokingStatus] = useState(
     defaultValues?.values?.smoking || "no"
@@ -289,8 +290,11 @@ const MedHistoryForm = ({
       {from !== "Consult" && (
         <CRow className="mb-1">
           <div style={{ width: "128px" }}>
-            <PrimaryButton onClick={onSubmit}>
+            {/* <PrimaryButton onClick={onSubmit}>
               {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
+            </PrimaryButton> */}
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
             </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>

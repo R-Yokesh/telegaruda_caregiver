@@ -15,6 +15,7 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [cell, setCell] = useState();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // useEffect(() => {
   //   // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
@@ -162,6 +163,8 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
 
   const onAdd = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
         details: {
@@ -193,11 +196,16 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const onEdit = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
       const body = {
         details: {
@@ -228,6 +236,9 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   return (
@@ -559,7 +570,7 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                // defaultValue={"Uric Acid Crystals"}
+              // defaultValue={"Uric Acid Crystals"}
               >
                 <option>Select</option>
                 <option value="Uric Acid Crystals">Uric Acid Crystals</option>
@@ -579,7 +590,7 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-                // defaultValue={"Bacteria"}
+              // defaultValue={"Bacteria"}
               >
                 <option>Select</option>
                 <option value="Bacteria">Bacteria</option>
@@ -591,7 +602,9 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "SAVE"}
+            </PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
             <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>

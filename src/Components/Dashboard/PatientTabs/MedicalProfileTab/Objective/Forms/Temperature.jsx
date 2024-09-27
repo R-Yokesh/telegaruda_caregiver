@@ -27,6 +27,7 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
   const [temperature, setTemperature] = useState(
     extractNum(defaultData?.temperature_value_units) || ""
   );
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [errors, setErrors] = useState({
     date: "",
@@ -141,6 +142,8 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
 
   const onAdd = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
         details: {
@@ -159,11 +162,16 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const onEdit = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
       const body = {
         details: {
@@ -183,6 +191,9 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -378,7 +389,9 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "SAVE"}
+            </PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
             <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>

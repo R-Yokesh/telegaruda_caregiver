@@ -26,7 +26,7 @@ import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 import ProviderDrop from "../../../../../../Dropdown/ProviderDrop";
 import { useLocation } from "react-router-dom";
 
-const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
+const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy,isSubmitting }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -591,7 +591,9 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy }) => {
 
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+        <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

@@ -20,6 +20,7 @@ import useApi from "../../../../../../../ApiServices/useApi";
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Mood = ({ from }) => {
   const columnData = [
@@ -43,6 +44,7 @@ const Mood = ({ from }) => {
   const [filters, setFilters] = useState(true);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -61,10 +63,8 @@ const Mood = ({ from }) => {
   const fetchMood = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${
-          startDate ?? ""
-        }&to=${
-          endDate ?? ""
+        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
+        }&to=${endDate ?? ""
         }&order_by=act_date&dir=2&act_catagory=mood&user_id=${data?.user_id}`
       );
       if (response.code === 200) {
@@ -111,6 +111,7 @@ const Mood = ({ from }) => {
           setDetailView(false);
           clearCache();
           fetchMood();
+          toast.success("Deleted successfully");
         } else {
           console.error("Failed to delete data:", response.message);
         }
@@ -121,33 +122,45 @@ const Mood = ({ from }) => {
   };
   const addMood = async (body) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await post(`resource/activity_wellness`, body);
 
       if (response.code === 201) {
         clearCache();
         await fetchMood();
         setAddFormView(false);
+        toast.success("Added successfully");
       } else {
         console.error("Failed to fetch data:", response.message);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const editMood = async (body, id) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await patch(`resource/activity_wellness/${id}`, body);
 
       if (response.code === 200) {
         clearCache();
         await fetchMood();
         setAddFormView(false);
+        toast.success("Updated successfully");
       } else {
         console.error("Failed to update data:", response.message);
       }
     } catch (error) {
       console.error("Error updating data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   return (
@@ -227,6 +240,7 @@ const Mood = ({ from }) => {
                   defaultValues={selectedData}
                   addMood={addMood}
                   editMood={editMood}
+                  isSubmitting={isSubmitting}
                 />
               </CCardBody>
             </CCard>

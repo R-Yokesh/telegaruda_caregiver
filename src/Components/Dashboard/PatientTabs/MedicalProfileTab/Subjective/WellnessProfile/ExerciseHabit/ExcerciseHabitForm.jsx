@@ -20,6 +20,7 @@ const ExerciseHabitForm = ({
   setAddFormView,
   fetchExciseHabit,
   addHabits,
+  isSubmitting
 }) => {
   const { loading, error, post, patch, clearCache, get } = useApi();
   const location = useLocation();
@@ -331,7 +332,9 @@ const ExerciseHabitForm = ({
 
         <CRow className="mb-3">
           <CCol xs={3}>
-            <PrimaryButton onClick={onSubmit}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
           </CCol>
           <CCol xs={3}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

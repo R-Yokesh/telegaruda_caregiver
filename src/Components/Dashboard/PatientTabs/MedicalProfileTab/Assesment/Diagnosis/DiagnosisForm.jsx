@@ -12,7 +12,7 @@ import useApi from "../../../../../../ApiServices/useApi";
 import ICDCodeDrop from "../../../../../Dropdown/ICDCodeDrop";
 import { useLocation } from "react-router-dom";
 
-const DiagnosisForm = ({ back, defaultValues, addDiagnosis, editDiagnosis }) => {
+const DiagnosisForm = ({ back, defaultValues, addDiagnosis, editDiagnosis,isSubmitting }) => {
 
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
@@ -200,7 +200,9 @@ const DiagnosisForm = ({ back, defaultValues, addDiagnosis, editDiagnosis }) => 
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+        <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

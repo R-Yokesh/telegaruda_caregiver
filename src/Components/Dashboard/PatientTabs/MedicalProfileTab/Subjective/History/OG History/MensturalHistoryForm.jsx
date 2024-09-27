@@ -14,6 +14,7 @@ const MensturalHistoryForm = ({
   from,
   mensuEdit,
   mensuAdd,
+  isSubmitting
 }) => {
   const [date, setDate] = useState(defaultValues?.values?.lmp || new Date());
   const maxDate = new Date(); // Restrict future dates 
@@ -292,11 +293,11 @@ const MensturalHistoryForm = ({
                   defaultValue={
                     defaultValues?.values?.flow?.duration
                       ? flow_duration[
-                          findItemIndex(
-                            flow_duration,
-                            defaultValues?.values?.flow?.duration
-                          )
-                        ]
+                      findItemIndex(
+                        flow_duration,
+                        defaultValues?.values?.flow?.duration
+                      )
+                      ]
                       : null
                   }
                   getSelectedValue={getSelectedValue2}
@@ -326,11 +327,11 @@ const MensturalHistoryForm = ({
                   defaultValue={
                     defaultValues?.values?.flow?.type
                       ? flow_type[
-                          findItemIndex(
-                            flow_type,
-                            defaultValues?.values?.flow?.type
-                          )
-                        ]
+                      findItemIndex(
+                        flow_type,
+                        defaultValues?.values?.flow?.type
+                      )
+                      ]
                       : null
                   }
                   getSelectedValue={getSelectedValue}
@@ -538,8 +539,11 @@ const MensturalHistoryForm = ({
       {from !== "Consult-Gynaec" && (
         <CRow className="mb-1">
           <div style={{ width: "130px" }}>
-            <PrimaryButton onClick={onSubmit}>
+            {/* <PrimaryButton onClick={onSubmit}>
               {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
+            </PrimaryButton> */}
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
             </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>

@@ -22,6 +22,7 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [keytone, setKeytone] = useState(defaultData?.blood_ketone_value || "");
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
@@ -104,6 +105,8 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
 
   const onAdd = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
         details: {
@@ -120,11 +123,16 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const onEdit = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
       const body = {
         details: {
@@ -141,6 +149,9 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -163,7 +174,7 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
     <>
       <CContainer>
         <CRow className="mb-3">
-        <CCol lg={4}>
+          <CCol lg={4}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
                 Date *
@@ -261,7 +272,9 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "SAVE"}
+            </PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
             <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>

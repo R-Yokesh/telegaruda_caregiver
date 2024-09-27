@@ -13,7 +13,7 @@ import ICDDrop from "../../../../../../Dropdown/ICDDrop";
 import { CustomInput, getCurrentTime } from "../../../../../../../Utils/dateUtils";
 import { format, isValid, parse } from "date-fns";
 
-const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
+const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit,isSubmitting }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -443,7 +443,9 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit }) => {
 
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={onSubmit}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

@@ -13,7 +13,7 @@ import { useLocation } from "react-router-dom";
 import { Assets } from "../../../../../../assets/Assets";
 
 const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
-  console.log('first',defaultData)
+  console.log('first', defaultData)
   const { post, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -21,6 +21,7 @@ const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [uricAcid, setUricAcid] = useState(defaultData?.blood_uric_acid_value || "");
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
@@ -103,6 +104,8 @@ const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
 
   const onAdd = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
         details: {
@@ -119,11 +122,16 @@ const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const onEdit = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
       const body = {
         details: {
@@ -140,6 +148,9 @@ const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -162,7 +173,7 @@ const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
     <>
       <CContainer>
         <CRow className="mb-3">
-        <CCol lg={4}>
+          <CCol lg={4}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
                 Date *
@@ -258,7 +269,9 @@ const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "SAVE"}
+            </PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
             <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>

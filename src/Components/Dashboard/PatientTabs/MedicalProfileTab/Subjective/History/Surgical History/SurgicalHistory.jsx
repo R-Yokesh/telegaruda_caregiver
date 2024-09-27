@@ -126,6 +126,7 @@ const SurgicalHistory = ({ from }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -183,6 +184,8 @@ const SurgicalHistory = ({ from }) => {
 
   const surgicalEdit = async (answerDatas, selectedId) => {
     try {
+        // Set the loading state to true
+        setIsSubmitting(true);
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -196,10 +199,15 @@ const SurgicalHistory = ({ from }) => {
       toast.success("Updated successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const surgicalAdd = async (answerDatas) => {
     try {
+        // Set the loading state to true
+        setIsSubmitting(true);
       const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -213,6 +221,9 @@ const SurgicalHistory = ({ from }) => {
       setAddFormView(false);
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const deleteMedicalLists = async () => {
@@ -302,6 +313,7 @@ const SurgicalHistory = ({ from }) => {
               defaultValues={selectedData}
               surgicalAdd={surgicalAdd}
               surgicalEdit={surgicalEdit}
+              isSubmitting={isSubmitting}
             />
           </CCardBody>
         </CCard>

@@ -14,11 +14,12 @@ import {
 import DatePicker from "react-datepicker";
 import useApi from "../../../../../ApiServices/useApi";
 
-const Filter = ({ visible, setVisible, getFilterValues }) => {
+const Filter = ({ visible, setVisible, getFilterValues, doctorsList }) => {
   const today = new Date();
   const { get } = useApi();
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
+  const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
   const [speciality, setSpeciality] = useState([]);
   const [selectedSpeciality, setSelectedSpeciality] = useState("");
@@ -34,6 +35,15 @@ const Filter = ({ visible, setVisible, getFilterValues }) => {
   const handleChange = (event) => {
     setSelectedGender(event.target.value);
   };
+
+  // Handler function for the select change event
+  const handleSelectDoctor = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedDoctor(selectedValue);
+    console.log("Selected doctor ID:", selectedValue);
+    // setErrors((prev) => ({ ...prev, doctor: "" }));
+  };
+
   const handleSpecialityChange = (event) => {
     setSelectedSpeciality(event.target.value);
   };
@@ -77,7 +87,7 @@ const Filter = ({ visible, setVisible, getFilterValues }) => {
           <CModalTitle id="LiveDemoExampleLabel">FILTER</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CFormSelect
+          {/* <CFormSelect
             aria-label="Default select example"
             options={[
               "Filter with Doctor",
@@ -85,7 +95,21 @@ const Filter = ({ visible, setVisible, getFilterValues }) => {
               { label: "Doctor Two", value: "2" },
               { label: "Dcotor Three", value: "3" },
             ]}
-          />
+          /> */}
+
+          <CFormSelect
+            aria-label="Default select example"
+            onChange={handleSelectDoctor}
+            value={selectedDoctor} // Optional: to control the select value
+          >
+            <option value="">Filter with Doctor</option>{" "}
+            {/* Default or placeholder option */}
+            {doctorsList?.map((doctor) => (
+              <option key={doctor?.user?.id} value={doctor?.user?.id}>
+                {doctor?.user?.first_name} {doctor?.user?.last_name}
+              </option>
+            ))}
+          </CFormSelect>
           {/* <CRow className="mb-4">
             <CCol lg={6} sm={12}>
               <p className="date-sec">From Date</p>

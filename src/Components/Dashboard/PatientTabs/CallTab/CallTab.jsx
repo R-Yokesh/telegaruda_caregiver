@@ -312,6 +312,7 @@ const CallTab = () => {
           visible={visible}
           setVisible={setVisible}
           getFilterValues={getFilterValues}
+          doctorsList={doctors}
         />
       </div>
     </section>

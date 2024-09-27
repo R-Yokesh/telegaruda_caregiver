@@ -36,7 +36,7 @@ const Allergies = () => {
   ];
 
 
-  const { loading, error, get,post,patch, del, clearCache } = useApi();
+  const { loading, error, get, post, patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -50,6 +50,7 @@ const Allergies = () => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -112,7 +113,8 @@ const Allergies = () => {
   const addAllergy = async (values) => {
 
     try {
-
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         patient_id: data?.user_id,
         slug: "allergy",
@@ -132,12 +134,16 @@ const Allergies = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   // Edit Allery
   const editAllergy = async (values, id) => {
-
+    // Set the loading state to true
+    setIsSubmitting(true);
     try {
       const body = {
         patient_id: data?.user_id,
@@ -159,6 +165,9 @@ const Allergies = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -196,7 +205,7 @@ const Allergies = () => {
               className="d-flex justify-content-end align-items-center gap-2"
             >
               <div>
-                <PrimaryButton onClick={() => {addFormPage(); setSelectedData({})}}>
+                <PrimaryButton onClick={() => { addFormPage(); setSelectedData({}) }}>
                   <div className="d-flex align-items-center gap-2">
                     <img src={Assets.Add} alt="add" />
                     <span className="fs-16 fw-600">Add</span>
@@ -244,6 +253,7 @@ const Allergies = () => {
               defaultValues={selectedData}
               addAllergy={addAllergy}
               editAllergy={editAllergy}
+              isSubmitting={isSubmitting}
             />
           </CCardBody>
         </CCard>

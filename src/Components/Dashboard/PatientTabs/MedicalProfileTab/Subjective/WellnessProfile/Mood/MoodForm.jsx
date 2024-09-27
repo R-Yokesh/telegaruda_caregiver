@@ -20,6 +20,7 @@ const MoodForm = ({
   setAddFormView,
   addMood,
   editMood,
+  isSubmitting
 }) => {
   const { loading, error, post, patch, clearCache, get } = useApi();
   const location = useLocation();
@@ -263,7 +264,9 @@ const MoodForm = ({
       {/* ... Submit and Cancel Button Components ... */}
       <CRow className="mb-3">
         <CCol xs={3} md={2}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </CCol>
         <CCol xs={3} md={2}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
