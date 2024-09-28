@@ -115,7 +115,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const addChiefComplaints = async (values) => {
     try {
       // Set the loading state to true
-      setIsSubmitting(true);
+      setIsSubmitting(true); 
       const body = {
         addition_info: values,
         user_id: data?.user_id,
