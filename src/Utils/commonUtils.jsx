@@ -67,3 +67,25 @@ export const removeQuotes = (input) => {
   // Remove leading and trailing quotes
   return typeof input === "string" ? input?.replace(/^"|"$/g, "").trim() : "";
 };
+
+export const filterFiles = (files) => {
+  const allowedExtensions = [".pdf", ".png", ".jpg", ".jpeg"];
+  const filteredFiles = [];
+
+  for (let file of files) {
+    const fileExtension = file
+      ?.slice(file?.lastIndexOf(".") || file?.length)
+      .toLowerCase();
+    if (allowedExtensions?.includes(fileExtension)) {
+      filteredFiles?.push(file);
+    }
+  }
+  console.log(files,"first", filteredFiles);
+  return filteredFiles;
+};
+
+export const getFileExtensionFromUrl = (url) => {
+  // Use a regular expression to match the extension
+  const extensionMatch = url?.match(/\.(\w+)$/);
+  return extensionMatch ? extensionMatch[1]?.toLowerCase() : null; // Return the extension or null if not found
+};

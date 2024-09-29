@@ -26,6 +26,7 @@ import useApi from "../../ApiServices/useApi";
 import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { getImageUrl } from "../../Utils/imageUpload";
+import { filterFiles, getFileExtensionFromUrl } from "../../Utils/commonUtils";
 
 const DynamicTable = ({
   columnsData,
@@ -40,7 +41,7 @@ const DynamicTable = ({
   const { loading, del, clearCache } = useApi();
 
   const deleteData = (data) => {
-    console.log('first',data)
+    console.log("first", data);
     setSelectedData(data);
     if (data) {
       setDeleteModal(true);
@@ -77,7 +78,9 @@ const DynamicTable = ({
               {columnsData?.map(
                 (data, i) =>
                   from === "Consult" && i === columnsData.length - 1 ? null : (
-                    <th key={i} style={{paddingLeft:"15px"}}>{data?.label}</th>
+                    <th key={i} style={{ paddingLeft: "15px" }}>
+                      {data?.label}
+                    </th>
                   )
                 // <th key={column.id}>{column.label}</th>
               )}
@@ -332,7 +335,9 @@ const DynamicTable = ({
           onClick={() => renderPdf(value?.properties?.file_path)}
         >
           {/* value?.name */}
-          <span className="hyperlink">{"png"}</span>
+          <span className="hyperlink cursor" style={{ textTransform: "uppercase" }}>
+            {getFileExtensionFromUrl(value?.properties?.file_name)}
+          </span>
         </div>
       );
     } else if (columnKey === "result") {

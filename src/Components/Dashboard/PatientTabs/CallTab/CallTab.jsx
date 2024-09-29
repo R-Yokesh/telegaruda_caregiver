@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import BlurBackground from "../../../BlurBackground/BlurBackground";
 import PrimaryButton from "../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../Buttons/SecondaryButton/SecondaryButton";
+import CallButton from "./CallButton/CallButton";
 
 const CallTab = () => {
   const { get, post, clearCache, patch } = useApi();
@@ -172,7 +173,7 @@ const CallTab = () => {
     try {
       const body = {
         provider_id: providerDetail?.user_id,
-        consult_date: "2024-09-27",
+        consult_date: "2024-09-29",
         consult_time: "11:18",
         patient_id: data?.user_id,
         patient_name: "test",
@@ -184,8 +185,8 @@ const CallTab = () => {
           camera_type: "minrray",
           camera_short_name: "M",
         },
-        consult_date_time: "2024-09-27 11:18:00",
-        consult_end_time: "2024-09-27 23:59:00",
+        consult_date_time: "2024-09-29 11:18:00",
+        consult_end_time: "2024-09-29 23:59:00",
       };
 
       // Use the provided `post` function to send the request
@@ -269,8 +270,9 @@ const CallTab = () => {
       // Use the provided `post` function to send the request
       const response = await patch(`resource/consults/${consultIdGet}`, body);
 
-      if (response.code === 201) {
+      if (response.code === 200) {
         clearCache();
+        consultUpdate(consultIdGet);
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -289,8 +291,10 @@ const CallTab = () => {
       // Use the provided `post` function to send the request
       const response = await post(`patient/ConsultCache`, body);
 
-      if (response.code === 201) {
+      if (response.code === 200) {
         clearCache();
+        setEndCall(false);
+        setCallStart(false);
         console.log("first", response?.data?.consults?.id);
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -472,71 +476,64 @@ const CallTab = () => {
         </>
       ) : (
         consultDetGet?.consult_status?.slug === "new" && (
-          <div className="row">
-            <div className="col-4">
-              <div className="card-sec">
-                <div className="row align-items-center">
-                  <div className="profile col-4">
-                    <img
-                      src={providerData?.profile || Assets.NoImg}
-                      alt="Patient-image"
-                    />
-                  </div>
-                  <div className="patient-details col-8 p-2">
-                    <h5>
-                      Dr. {providerData?.user?.first_name}{" "}
-                      {providerData?.user?.last_name}
-                    </h5>
-                    <p className="gap-sec d-flex flex-wrap">
-                      <small
-                        className="fs-10 fw-500"
-                        style={{ wordBreak: "break-all" }}
-                      >
-                        {providerData?.user?.email}
-                      </small>
-                      <small className="fs-10 fw-500">|</small>
-                      <small className="fs-10 fw-500">
-                        {providerData?.user?.mobile}
-                      </small>
-                    </p>
-                    <p className="flex-sec-wrap gap-sec">
-                      <small className="fs-10 fw-600">
-                        {providerData?.provider_speciality
-                          ?.map((item, i) => item?.speciality)
-                          .filter(Boolean)
-                          .join(", ")}
-                      </small>
-                      <small className="fs-10 fw-600">|</small>
-                      <small className="fs-10 fw-600">
-                        {providerData?.date}
-                      </small>
-                      <small className="fs-10 fw-600">
-                        {providerData?.time}
-                      </small>
-                    </p>
+          <>
+            <div>
+              {/* onClick={() => setEndCall(true)} */}
+              <div className="col-12 d-flex justify-content-center align-items-center mb-3">
+                <CallButton
+                  onClick={() => setEndCall(true)}
+                  callStatus={true}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-6">
+                <div className="card-sec">
+                  <div className="row align-items-center">
+                    <div className="profile col-4">
+                      <img
+                        src={providerData?.profile || Assets.NoImg}
+                        alt="Patient-image"
+                      />
+                    </div>
+                    <div className="patient-details col-8 p-2">
+                      <h5>
+                        Dr. {providerData?.user?.first_name}{" "}
+                        {providerData?.user?.last_name}
+                      </h5>
+                      <p className="gap-sec d-flex flex-wrap">
+                        <small
+                          className="fs-10 fw-500"
+                          style={{ wordBreak: "break-all" }}
+                        >
+                          {providerData?.user?.email}
+                        </small>
+                        <small className="fs-10 fw-500">|</small>
+                        <small className="fs-10 fw-500">
+                          {providerData?.user?.mobile}
+                        </small>
+                      </p>
+                      <p className="flex-sec-wrap gap-sec">
+                        <small className="fs-10 fw-600">
+                          {providerData?.provider_speciality
+                            ?.map((item, i) => item?.speciality)
+                            .filter(Boolean)
+                            .join(", ")}
+                        </small>
+                        <small className="fs-10 fw-600">|</small>
+                        <small className="fs-10 fw-600">
+                          {providerData?.date}
+                        </small>
+                        <small className="fs-10 fw-600">
+                          {providerData?.time}
+                        </small>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="col-4 d-flex justify-content-start align-items-center">
-              <button
-                class="noselect callbutton"
-                onClick={() => setEndCall(true)}
-              >
-                <span class="text">Call in progress...</span>
-                <span class="icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path>
-                  </svg>
-                </span>
-              </button>
-            </div>
-          </div>
+          </>
         )
       )}
       {endCall && (
@@ -552,7 +549,7 @@ const CallTab = () => {
                 <h5>Are you sure want to end the teleconsult ?</h5>
                 <div className="d-flex gap-2 mt-2">
                   <div style={{ width: "80px" }}>
-                    <PrimaryButton onClick={() => setEndCall(false)}>
+                    <PrimaryButton onClick={() => EndConslt()}>
                       Yes
                     </PrimaryButton>
                   </div>

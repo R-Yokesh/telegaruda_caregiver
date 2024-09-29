@@ -3,7 +3,7 @@ export const heartRateFileUpload = async (data) => {
   const apiKey = process.env.REACT_APP_API_KEY;
 
   const formData = new FormData();
-  formData.append("foo", "bar");
+  // formData.append("foo", "bar");
   formData.append("file", data);
   const result = await fetch(`${apiUrl}users/uploadDocs`, {
     method: "POST",
@@ -15,20 +15,27 @@ export const heartRateFileUpload = async (data) => {
   });
   const response = await result?.json();
   if (response?.code === 200) {
-    await uploadBuckets(response?.data?.s3_signed_url);
+    // await uploadBuckets(response?.data?.s3_signed_url, data);
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const binaryData = reader.result; // This will be an ArrayBuffer
+      await uploadBuckets(response?.data?.s3_signed_url, binaryData);
+    };
+    reader.readAsArrayBuffer(data);
     return response?.data;
   }
 };
 
-export const uploadBuckets = async (data) => {
+export const uploadBuckets = async (data, binaryImage) => {
   const apiKey = process.env.REACT_APP_API_KEY;
-
   const result = await fetch(`${data}`, {
     method: "PUT",
     headers: {
       // Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       // "X-API-KEY": apiKey,
+      "Content-Type": "image/png",
     },
+    body: binaryImage,
   });
   // const response = await result?.json();
   if (result?.status === 200) {
