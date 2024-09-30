@@ -18,6 +18,7 @@ const ChiefComplaintsForm = ({
   addChiefComplaints,
   editChiefComplaints,
   defaultValues,
+  isSubmitting
 }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -34,6 +35,7 @@ const ChiefComplaintsForm = ({
   );
   const [errors, setErrors] = useState({});
   const { get } = useApi();
+  
 
   const maxDate = new Date(); // Restrict future dates
 
@@ -110,7 +112,7 @@ const ChiefComplaintsForm = ({
   };
 
   const onSubmit = () => {
-  
+
     if (validate()) {
       const values = {
         date: format(selectedDate, "yyyy-MM-dd"),
@@ -136,7 +138,7 @@ const ChiefComplaintsForm = ({
     setSelectedDate(null); // Clear the selected time
     setSelectedTime(null);
   };
- 
+
   const getSurgeryReasons = useCallback(async () => {
     try {
       const response = await get(
@@ -283,7 +285,9 @@ const ChiefComplaintsForm = ({
 
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

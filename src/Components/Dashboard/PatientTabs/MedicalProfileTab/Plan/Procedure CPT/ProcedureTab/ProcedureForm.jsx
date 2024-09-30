@@ -21,7 +21,7 @@ import { useLocation } from "react-router-dom";
 import ICDCodeDrop from "../../../../../../Dropdown/ICDCodeDrop";
 import { Assets } from "../../../../../../../assets/Assets";
 
-const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
+const ProcedureForm = ({ back, defaultValues, addCpt, editCpt,isSubmitting }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -139,65 +139,7 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
     getICDCode();
   }, [getICDCode]);
 
-  // // Add Procedure
-  // const addCpt = async () => {
-  //   try {
-  //     const body = {
-  //       patient_id: data?.user_id,
-  //       slug: "procedure",
-  //       values: {
-  //         date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
-  //         code: icd,
-  //         name: Description,
-  //       }
-  //     };
-  //     // Use the provided `post` function to send the request
-  //     const response = await post(`resource/patientHealth`, body);
-
-  //     if (response.code === 201) {
-  //       clearCache();
-  //       await fetchCpt();
-  //       setAddFormView(false);
-  //       toast.success("Added successfully");
-
-  //     } else {
-  //       console.error("Failed to fetch data:", response.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // // Edit Procedure
-  // const editCpt = async () => {
-
-  //   try {
-  //     const body = {
-  //       patient_id: data?.user_id,
-  //       slug: "procedure",
-  //       values: {
-  //         date: `${format(selectedDate, "yyyy-MM-dd")} ${format(selectedTime, "HH:mm")}`,
-  //         code: icd,
-  //         name: Description,
-  //       }
-  //     };
-  //     // Use the provided `post` function to send the request
-  //     const response = await patch(`resource/patientHealth/${defaultValues.id}`, body);
-
-  //     if (response.code === 200) {
-  //       clearCache();
-  //       await fetchCpt();
-  //       setAddFormView(false);
-  //       toast.success("Added successfully");
-
-  //     } else {
-  //       console.error("Failed to fetch data:", response.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
+ 
   const handleClear = () => {
     setSelectedTime(null); // Clear the selected time
   };
@@ -323,7 +265,9 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt }) => {
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+        <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

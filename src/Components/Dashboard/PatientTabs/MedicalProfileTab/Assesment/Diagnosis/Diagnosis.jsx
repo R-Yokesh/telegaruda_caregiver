@@ -46,6 +46,7 @@ const Diagnosis = ({ onClose, from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -117,6 +118,8 @@ const Diagnosis = ({ onClose, from }) => {
   // Add API
   const addDiagnosis = async (values) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         user_id: data?.user_id,
         document_source: "icd",
@@ -135,11 +138,16 @@ const Diagnosis = ({ onClose, from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   // Edit API
   const editDiagnosis = async (values, id) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         user_id: data?.user_id,
         document_source: "icd",
@@ -158,6 +166,9 @@ const Diagnosis = ({ onClose, from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -284,6 +295,7 @@ const Diagnosis = ({ onClose, from }) => {
               defaultValues={selectedData}
               addDiagnosis={addDiagnosis}
               editDiagnosis={editDiagnosis}
+              isSubmitting={isSubmitting}
             />
           </CCardBody>
         </CCard>

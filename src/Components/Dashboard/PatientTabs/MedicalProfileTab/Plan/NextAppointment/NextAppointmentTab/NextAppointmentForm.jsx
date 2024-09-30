@@ -26,6 +26,7 @@ const NextAppointmentForm = ({
   defaultValues,
   addNextAppointment,
   editNextAppointment,
+  isSubmitting
 }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
@@ -37,8 +38,7 @@ const NextAppointmentForm = ({
   const [reason, setReason] = useState(defaultValues?.reason || "");
   const [providerDetails, setproviderDetails] = useState([]);
   const [providerKey, setProviderKey] = useState(
-    `${defaultValues?.provider?.first_name || ""} ${
-      defaultValues?.provider?.last_name || ""
+    `${defaultValues?.provider?.first_name || ""} ${defaultValues?.provider?.last_name || ""
     }`
   );
   const [provider, setProvider] = useState(defaultValues?.provider || "");
@@ -365,7 +365,9 @@ const NextAppointmentForm = ({
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

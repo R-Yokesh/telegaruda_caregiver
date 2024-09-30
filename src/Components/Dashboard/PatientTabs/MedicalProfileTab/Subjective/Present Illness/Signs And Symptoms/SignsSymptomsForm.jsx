@@ -25,6 +25,7 @@ const SignsSymptomsForm = ({
   defaultValues,
   addSymptoms,
   editSymptoms,
+  isSubmitting
 }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
@@ -534,7 +535,9 @@ const SignsSymptomsForm = ({
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={() => back()}>CANCEL</SecondaryButton>

@@ -24,7 +24,8 @@ import {
 import { useLocation } from "react-router-dom";
 import SearchInput from "../../../../../../Input/SearchInput";
 
-const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
+
+const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -900,7 +901,9 @@ const MedicationForm = ({ back, addMedication, defaultValues, view }) => {
       <CRow className="mb-1">
         {!view && (
           <div style={{ width: "128px" }}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
           </div>
         )}
         <div style={{ width: "128px" }}>

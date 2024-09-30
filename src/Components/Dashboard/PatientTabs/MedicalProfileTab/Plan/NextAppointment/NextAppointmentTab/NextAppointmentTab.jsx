@@ -78,6 +78,8 @@ const NextAppointmentTab = ({ from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -114,12 +116,9 @@ const NextAppointmentTab = ({ from }) => {
   const fetchNextAppointment = useCallback(async () => {
     try {
       const response = await get(
-        `resource/next-appointment?patient_id=${
-          data?.user_id
-        }&limit=${itemsPerPage}&page=${currentPage}&from=${
-          startDate ?? ""
-        }&to=${endDate ?? ""}&searchkey=${
-          searchValue ?? ""
+        `resource/next-appointment?patient_id=${data?.user_id
+        }&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""
         }&order_by=date&dir=2`
       );
       if (response.code === 200) {
@@ -140,6 +139,8 @@ const NextAppointmentTab = ({ from }) => {
   // Add NextAppointment
   const addNextAppointment = async (values) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         patient_id: data?.user_id,
         provider_id: values?.provider_id,
@@ -159,12 +160,17 @@ const NextAppointmentTab = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   // Edit NextAppointment
   const editNextAppointment = async (values, id) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         patient_id: data?.user_id,
         provider_id: values?.provider_id,
@@ -185,6 +191,9 @@ const NextAppointmentTab = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -281,6 +290,7 @@ const NextAppointmentTab = ({ from }) => {
                   defaultValues={selectedData}
                   addNextAppointment={addNextAppointment}
                   editNextAppointment={editNextAppointment}
+                  isSubmitting={isSubmitting}
                 />
               </CCardBody>
             </CCard>

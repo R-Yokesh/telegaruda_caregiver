@@ -20,6 +20,7 @@ import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ExerciseHabit = ({ from }) => {
   const columnData = [
@@ -48,6 +49,7 @@ const ExerciseHabit = ({ from }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const { loading, post, get, del, clearCache } = useApi();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -122,27 +124,34 @@ const ExerciseHabit = ({ from }) => {
           setDetailView(false);
           clearCache();
           fetchExciseHabit();
+          toast.success("Delete successfully");
         } else {
           console.error("Failed to delete data:", response.message);
         }
       }
     } catch (error) {
       console.error("Error deleting data:", error);
-    }
+    } 
   };
 
   const addHabits = async (body) => {
     try {
+       // Set the loading state to true
+       setIsSubmitting(true);
       const response = await post("resource/activity_wellness", body);
       if (response.code === 201) {
         clearCache();
         await fetchExciseHabit();
         setAddFormView(false);
+        toast.success("Added successfully");
       } else {
         console.error("Failed to fetch data:", response.message);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   return (
@@ -221,6 +230,7 @@ const ExerciseHabit = ({ from }) => {
                   fetchExciseHabit={fetchExciseHabit}
                   defaultValues={selectedData}
                   addHabits={addHabits}
+                  isSubmitting={isSubmitting}
                 />
               </CCardBody>
             </CCard>

@@ -228,6 +228,7 @@ const Medication = ({ from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -292,6 +293,8 @@ const Medication = ({ from }) => {
   // Add Medication
   const addMedication = async (values) => {
     try {
+       // Set the loading state to true
+      setIsSubmitting(true)
       const body = {
         slug: "medicine",
         patient_id: data?.user_id,
@@ -312,6 +315,9 @@ const Medication = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally{
+     // Reset the loading state to false after the API call is done
+     setIsSubmitting(false);
     }
   };
 
@@ -407,6 +413,7 @@ const Medication = ({ from }) => {
               defaultValues={selectedData}
               addMedication={addMedication}
               view={view}
+              isSubmitting={isSubmitting}
             />
           </CCardBody>
         </CCard>

@@ -13,6 +13,7 @@ const ScreeningHistoryForm = ({
   from,
   screeningAdd,
   screeningEdit,
+  isSubmitting
 }) => {
   const [date, setDate] = useState(
     defaultValues?.values?.last_pap_smear_at || new Date()
@@ -316,8 +317,11 @@ const ScreeningHistoryForm = ({
       {from !== "Consult-Screen" && (
         <CRow className="mb-1">
           <div style={{ width: "130px" }}>
-            <PrimaryButton onClick={onSubmit}>
+            {/* <PrimaryButton onClick={onSubmit}>
               {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
+            </PrimaryButton> */}
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
             </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>

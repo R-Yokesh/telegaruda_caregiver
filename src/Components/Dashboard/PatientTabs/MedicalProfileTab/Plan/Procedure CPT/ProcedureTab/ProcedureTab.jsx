@@ -43,6 +43,8 @@ const ProcedureTab = ({ onClose, from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -79,12 +81,9 @@ const ProcedureTab = ({ onClose, from }) => {
   const fetchCpt = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${
-          startDate ?? ""
-        }&to=${endDate ?? ""}&searchkey=${
-          searchValue ?? ""
-        }&order_by=values-%3Edate&dir=2&user_id=${
-          data?.user_id
+        `resource/patientHealth?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""
+        }&order_by=values-%3Edate&dir=2&user_id=${data?.user_id
         }&slug=procedure&slug_array=`
       );
       if (response.code === 200) {
@@ -105,6 +104,8 @@ const ProcedureTab = ({ onClose, from }) => {
   // Add Procedure
   const addCpt = async (values) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         patient_id: data?.user_id,
         slug: "procedure",
@@ -123,12 +124,17 @@ const ProcedureTab = ({ onClose, from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   // Edit Procedure
-  const editCpt = async (values,id) => {
+  const editCpt = async (values, id) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         patient_id: data?.user_id,
         slug: "procedure",
@@ -146,6 +152,9 @@ const ProcedureTab = ({ onClose, from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -242,6 +251,7 @@ const ProcedureTab = ({ onClose, from }) => {
                   defaultValues={selectedData}
                   addCpt={addCpt}
                   editCpt={editCpt}
+                  isSubmitting={isSubmitting}
                 />
               </CCardBody>
             </CCard>

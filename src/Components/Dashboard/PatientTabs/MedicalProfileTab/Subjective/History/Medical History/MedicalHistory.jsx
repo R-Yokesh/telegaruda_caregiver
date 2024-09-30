@@ -134,6 +134,7 @@ const MedicalHistory = ({ from }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 10; // Number of items to display per page
   const getFilterValues = (startDate, endDate, searchValue) => {
@@ -221,6 +222,8 @@ const MedicalHistory = ({ from }) => {
   // api integration of medical history form submit
   const medicalHistoryForm = async (body) => {
     try {
+       // Set the loading state to true
+       setIsSubmitting(true);
       const response = await post(`resource/patientHistories`, body);
 
       if (response.code === 201) {
@@ -232,11 +235,16 @@ const MedicalHistory = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   // api integration of edit form
   const editMedicalHistory = async (body, defaultId) => {
     try {
+        // Set the loading state to true
+        setIsSubmitting(true);
       const response = await patch(
         `resource/patientHistories/${defaultId}`,
         body
@@ -251,6 +259,9 @@ const MedicalHistory = ({ from }) => {
       }
     } catch (error) {
       console.error("Error editing data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   return (
@@ -321,6 +332,7 @@ const MedicalHistory = ({ from }) => {
               defaultValues={selectedData}
               medicalHistoryForm={medicalHistoryForm}
               editMedicalHistory={editMedicalHistory}
+              isSubmitting={isSubmitting}
             />
           </CCardBody>
         </CCard>

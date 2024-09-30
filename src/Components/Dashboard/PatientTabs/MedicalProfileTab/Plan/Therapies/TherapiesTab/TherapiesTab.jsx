@@ -47,6 +47,7 @@ const TherapiesTab = ({ from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -83,10 +84,8 @@ const TherapiesTab = ({ from }) => {
   const fetchTherapies = useCallback(async () => {
     try {
       const response = await get(
-        `resource/therapy?patient_id=${
-          data?.user_id
-        }&limit=${itemsPerPage}&page=${currentPage}&from=${
-          startDate ?? ""
+        `resource/therapy?patient_id=${data?.user_id
+        }&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
         }&to=${endDate ?? ""}&order_by=date&dir=2`
       );
       if (response.code === 200) {
@@ -107,6 +106,8 @@ const TherapiesTab = ({ from }) => {
   // Add Therapies
   const addTherapies = async (values) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         patient_id: data?.user_id,
         date: values?.date,
@@ -129,12 +130,17 @@ const TherapiesTab = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   // Edit Therapies
   const editTherapies = async (values, id) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         patient_id: data?.user_id,
         date: values?.date,
@@ -156,6 +162,9 @@ const TherapiesTab = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -251,6 +260,7 @@ const TherapiesTab = ({ from }) => {
                   defaultValues={selectedData}
                   addTherapies={addTherapies}
                   editTherapies={editTherapies}
+                  isSubmitting={isSubmitting}
                 />
               </CCardBody>
             </CCard>

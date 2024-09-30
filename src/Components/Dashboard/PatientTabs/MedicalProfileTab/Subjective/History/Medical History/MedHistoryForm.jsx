@@ -19,6 +19,7 @@ const MedHistoryForm = ({
   setAddFormView,
   medicalHistoryForm,
   editMedicalHistory,
+  isSubmitting
 }) => {
   const { loading, error, get, post, clearCache } = useApi();
   // const [date, setDate] = useState(null);
@@ -454,7 +455,9 @@ const MedHistoryForm = ({
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+        <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

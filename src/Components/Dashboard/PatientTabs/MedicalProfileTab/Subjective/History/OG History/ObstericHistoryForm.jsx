@@ -8,7 +8,7 @@ import { format, isValid, parse } from "date-fns";
 import { getCurrentTime } from "../../../../../../../Utils/dateUtils";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 
-const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit }) => {
+const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting }) => {
   const [date, setDate] = useState(null);
   const [date2, setDate2] = useState(null);
   const [prev, setPrev] = useState(defaultValues?.fert_treatment || "No");
@@ -521,7 +521,9 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit }) => {
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "130px" }}>
-          <PrimaryButton onClick={handleSubmit}>SAVE</PrimaryButton>
+          <PrimaryButton onClick={handleSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "SAVE"}
+          </PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

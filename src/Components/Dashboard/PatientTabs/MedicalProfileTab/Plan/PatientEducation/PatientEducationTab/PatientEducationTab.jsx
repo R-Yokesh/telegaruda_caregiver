@@ -43,6 +43,7 @@ const PatientEducationTab = ({ from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -79,12 +80,9 @@ const PatientEducationTab = ({ from }) => {
   const fetchPatientEducation = useCallback(async () => {
     try {
       const response = await get(
-        `resource/docs?user_id=${
-          data?.user_id
-        }&limit=${itemsPerPage}&page=${currentPage}&from=${
-          startDate ?? ""
-        }&to=${endDate ?? ""}&searchkey=${
-          searchValue ?? ""
+        `resource/docs?user_id=${data?.user_id
+        }&limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""
         }&order_by=id&dir=2&slug=patient-education`
       );
       if (response.code === 200) {
@@ -105,6 +103,8 @@ const PatientEducationTab = ({ from }) => {
   // Add PatientEducation
   const addPatientEducation = async (values) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         user_id: data?.user_id,
         document_source: "patient-education",
@@ -123,12 +123,17 @@ const PatientEducationTab = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   // Edit PatientEducation
   const editPatientEducation = async (values, id) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         user_id: data?.user_id,
         document_source: "patient-education",
@@ -146,6 +151,9 @@ const PatientEducationTab = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -164,7 +172,7 @@ const PatientEducationTab = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-    }
+    } 
   };
 
   return (
@@ -242,6 +250,7 @@ const PatientEducationTab = ({ from }) => {
                   defaultValues={selectedData}
                   addPatientEducation={addPatientEducation}
                   editPatientEducation={editPatientEducation}
+                  isSubmitting={isSubmitting}
                 />
               </CCardBody>
             </CCard>

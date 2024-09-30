@@ -424,6 +424,7 @@ const OGHistory = ({ from, back }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -522,6 +523,8 @@ const OGHistory = ({ from, back }) => {
 
   const obsAdd = async (answerDatas) => {
     try {
+        // Set the loading state to true
+        setIsSubmitting(true);
       const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -536,10 +539,15 @@ const OGHistory = ({ from, back }) => {
       setCurrentTab(1);
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const obsEdit = async (answerDatas, selectedId) => {
     try {
+       // Set the loading state to true
+       setIsSubmitting(true);
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -554,6 +562,9 @@ const OGHistory = ({ from, back }) => {
       setCurrentTab(1);
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const onDelete = async () => {
@@ -586,6 +597,8 @@ const OGHistory = ({ from, back }) => {
   }, [get]);
   const mensuEdit = async (answerDatas, selectedId) => {
     try {
+       // Set the loading state to true
+       setIsSubmitting(true);
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -598,10 +611,15 @@ const OGHistory = ({ from, back }) => {
       toast.success("Updated successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const mensuAdd = async (answerDatas) => {
     try {
+       // Set the loading state to true
+       setIsSubmitting(true);
       const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -614,6 +632,9 @@ const OGHistory = ({ from, back }) => {
       toast.success("Added successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -630,6 +651,8 @@ const OGHistory = ({ from, back }) => {
   }, [get]);
   const screeningEdit = async (answerDatas, selectedId) => {
     try {
+       // Set the loading state to true
+       setIsSubmitting(true);
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -642,10 +665,15 @@ const OGHistory = ({ from, back }) => {
       toast.success("Updated successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const screeningAdd = async (answerDatas) => {
     try {
+       // Set the loading state to true
+       setIsSubmitting(true);
       const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -658,6 +686,9 @@ const OGHistory = ({ from, back }) => {
       toast.success("Added successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   useEffect(() => {
@@ -915,6 +946,7 @@ const OGHistory = ({ from, back }) => {
                       defaultValues={selectedData}
                       obsAdd={obsAdd}
                       obsEdit={obsEdit}
+                      isSubmitting={isSubmitting}
                     />
                   )}
                   {/* {currentTab === 2 && currentHistoryTab === 1 && (
@@ -950,6 +982,7 @@ const OGHistory = ({ from, back }) => {
                       defaultValues={mensuData}
                       mensuEdit={mensuEdit}
                       mensuAdd={mensuAdd}
+                      isSubmitting={isSubmitting}
                     />
                   )}
                   {currentTab === 2 && currentHistoryTab === 2 && (
@@ -958,6 +991,7 @@ const OGHistory = ({ from, back }) => {
                       defaultValues={screeningData}
                       screeningAdd={screeningAdd}
                       screeningEdit={screeningEdit}
+                      isSubmitting={isSubmitting}
                     />
                   )}
                 </CCardBody>

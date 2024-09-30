@@ -49,6 +49,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
   );
   const [notes, setNotes] = useState(defaultData?.notes || "");
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const maxDate = new Date(); // Restrict future dates 
   const defaultDateTime = defaultData?.date || "";
 
@@ -212,6 +213,8 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
 
   const onAdd = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
         details: {
@@ -243,11 +246,16 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const onEdit = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
       const body = {
         details: {
@@ -279,6 +287,9 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
       addBack();
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -293,7 +304,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
     <>
       <CContainer>
         <CRow className="mb-3">
-        <CCol lg={6}>
+          <CCol lg={6}>
             <div class="position-relative d-flex flex-column gap-1">
               <label for="validationTooltip01" class="form-label">
                 Date *
@@ -438,9 +449,9 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
                     </td>
                   </tr>
                   {errors.fev1L && <div className="error-text">{errors.fev1L}</div>}
-                {errors.fev1Percent && (
-                <div className="error-text">{errors.fev1Percent}</div>
-              )}
+                  {errors.fev1Percent && (
+                    <div className="error-text">{errors.fev1Percent}</div>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -457,33 +468,33 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                         maxLength={5}
-                         onInput={numWithDecimal}
-                         value={pefL}
-                         onChange={(e) => setPefL(e.target.value)}
+                        maxLength={5}
+                        onInput={numWithDecimal}
+                        value={pefL}
+                        onChange={(e) => setPefL(e.target.value)}
 
                       />(l/s)
                     </td>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                       maxLength={2}
-                       onInput={convertNum}
-                       value={pefPercent}
-                       onChange={(e) => setPefPercent(e.target.value)}
+                        maxLength={2}
+                        onInput={convertNum}
+                        value={pefPercent}
+                        onChange={(e) => setPefPercent(e.target.value)}
 
                       />(%)
                     </td>
                   </tr>
                 </tbody>
-                 
+
               </table>
             </div>
           </CCol>
         </CRow>
 
-       
+
         <CRow className="mb-3">
-        <CCol lg={4}>
+          <CCol lg={4}>
             <div className="fvc-container">
               <table className="fvc-table">
                 <thead>
@@ -495,23 +506,23 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                         maxLength={5}
-                         onInput={numWithDecimal}
-                         value={fef25L}
-                         onChange={(e) => setFef25L(e.target.value)}
+                        maxLength={5}
+                        onInput={numWithDecimal}
+                        value={fef25L}
+                        onChange={(e) => setFef25L(e.target.value)}
                       />(l/s)
                     </td>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                       maxLength={2}
-                       onInput={convertNum}
-                       value={fef25Percent}
-                       onChange={(e) => setFef25Percent(e.target.value)}
+                        maxLength={2}
+                        onInput={convertNum}
+                        value={fef25Percent}
+                        onChange={(e) => setFef25Percent(e.target.value)}
                       />(%)
                     </td>
                   </tr>
                 </tbody>
-                 
+
               </table>
             </div>
           </CCol>
@@ -527,23 +538,23 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                      maxLength={5}
-                      onInput={numWithDecimal}
-                      value={fef50L}
-                      onChange={(e) => setFef50L(e.target.value)}      
+                        maxLength={5}
+                        onInput={numWithDecimal}
+                        value={fef50L}
+                        onChange={(e) => setFef50L(e.target.value)}
                       />(l/s)
                     </td>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                       maxLength={2}
-                       onInput={convertNum}
-                       value={fef50Percent}
-                       onChange={(e) => setFef50Percent(e.target.value)}
+                        maxLength={2}
+                        onInput={convertNum}
+                        value={fef50Percent}
+                        onChange={(e) => setFef50Percent(e.target.value)}
                       />(%)
                     </td>
                   </tr>
                 </tbody>
-                 
+
               </table>
             </div>
           </CCol>
@@ -562,26 +573,26 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
                         maxLength={5}
                         onInput={numWithDecimal}
                         value={fef75L}
-                        onChange={(e) => setFef75L(e.target.value)}    
+                        onChange={(e) => setFef75L(e.target.value)}
                       />(l/s)
                     </td>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                       maxLength={2}
-                       onInput={convertNum}
-                       value={fef75Percent}
-                       onChange={(e) => setFef75Percent(e.target.value)}
+                        maxLength={2}
+                        onInput={convertNum}
+                        value={fef75Percent}
+                        onChange={(e) => setFef75Percent(e.target.value)}
                       />(%)
                     </td>
                   </tr>
                 </tbody>
-                 
+
               </table>
             </div>
           </CCol>
         </CRow>
         <CRow className="mb-3">
-        <CCol lg={4}>
+          <CCol lg={4}>
             <div className="fvc-container">
               <table className="fvc-table">
                 <thead>
@@ -593,27 +604,27 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
                   <tr>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                         maxLength={5}
-                         onInput={numWithDecimal}
-                         value={fef2575L}
-                         onChange={(e) => setFef2575L(e.target.value)} 
+                        maxLength={5}
+                        onInput={numWithDecimal}
+                        value={fef2575L}
+                        onChange={(e) => setFef2575L(e.target.value)}
                       />(l/s)
                     </td>
                     <td>
                       <input type="text" placeholder="Enter" className="fvc-input"
-                       maxLength={2}
-                       onInput={convertNum}
-                       value={fef2575Percent}
-                       onChange={(e) => setFef2575Percent(e.target.value)}
+                        maxLength={2}
+                        onInput={convertNum}
+                        value={fef2575Percent}
+                        onChange={(e) => setFef2575Percent(e.target.value)}
                       />(%)
                     </td>
                   </tr>
                   {errors.pefL && <div className="error-text">{errors.pefL}</div>}
                   {errors.pefPercent && (
-                <div className="error-text">{errors.pefPercent}</div>
-              )}
+                    <div className="error-text">{errors.pefPercent}</div>
+                  )}
                 </tbody>
-                 
+
               </table>
             </div>
           </CCol>
@@ -637,12 +648,12 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               )}
             </div>
           </CCol>
-         
+
         </CRow>
-     
+
 
         <CRow className="mb-3">
-        
+
         </CRow>
         <CRow className="mb-3">
           <CCol lg={8}>
@@ -665,7 +676,9 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
         </CRow>
         <CRow className="mb-3">
           <CCol xs={3} md={2}>
-            <PrimaryButton onClick={() => onSubmit()}>SAVE</PrimaryButton>
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "SAVE"}
+            </PrimaryButton>
           </CCol>
           <CCol xs={3} md={2}>
             <SecondaryButton onClick={() => addBack()}>CANCEL</SecondaryButton>

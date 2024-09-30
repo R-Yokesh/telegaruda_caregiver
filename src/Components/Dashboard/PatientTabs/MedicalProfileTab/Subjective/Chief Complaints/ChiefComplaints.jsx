@@ -47,7 +47,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const itemsPerPage = 5; // Number of items to display per page
 
   const getFilterValues = (startDate, endDate, searchValue) => {
@@ -90,12 +90,9 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const getChiefComplaints = useCallback(async () => {
     try {
       const response = await get(
-        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${
-          startDate ?? ""
-        }&to=${endDate ?? ""}&searchkey=${
-          searchValue ?? ""
-        }&order_by=created_at&dir=2&slug=chief-complaints&user_id=${
-          data?.user_id
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""
+        }&order_by=created_at&dir=2&slug=chief-complaints&user_id=${data?.user_id
         }&scanOrdersOnly=&scanstatus=`
       );
       if (response.code === 200) {
@@ -117,6 +114,8 @@ const ChiefComplaints = ({ OnClose, from }) => {
 
   const addChiefComplaints = async (values) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true); 
       const body = {
         addition_info: values,
         user_id: data?.user_id,
@@ -136,11 +135,17 @@ const ChiefComplaints = ({ OnClose, from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const editChiefComplaints = async (values, id) => {
+
     try {
+       // Set the loading state to true
+       setIsSubmitting(true);
       const body = {
         addition_info: values,
         user_id: data?.user_id,
@@ -160,6 +165,9 @@ const ChiefComplaints = ({ OnClose, from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
@@ -286,6 +294,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
               defaultValues={selectedData}
               addChiefComplaints={addChiefComplaints}
               editChiefComplaints={editChiefComplaints}
+              isSubmitting={isSubmitting}
             />
           </CCardBody>
         </CCard>

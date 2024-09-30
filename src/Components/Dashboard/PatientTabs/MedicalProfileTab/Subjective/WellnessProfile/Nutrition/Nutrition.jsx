@@ -24,6 +24,7 @@ import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Nutrition = ({ from }) => {
   const location = useLocation();
@@ -46,6 +47,7 @@ const Nutrition = ({ from }) => {
 
   const [selectedData, setSelectedData] = useState({});
   const { post, patch, get, del, clearCache } = useApi();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const columnData = [
     { id: 1, label: "No." },
@@ -89,10 +91,8 @@ const Nutrition = ({ from }) => {
   const fetchDiet = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?act_catagory=diet&user_id=${
-          data?.user_id
-        }&limit=${itemsPerPage}&page=${currentPage ?? ""}&from=${
-          startDate ?? ""
+        `resource/activity_wellness?act_catagory=diet&user_id=${data?.user_id
+        }&limit=${itemsPerPage}&page=${currentPage ?? ""}&from=${startDate ?? ""
         }&to=${endDate ?? ""}&order_by=act_date&dir=2`
       );
       if (response.code === 200) {
@@ -114,8 +114,7 @@ const Nutrition = ({ from }) => {
   const fetchFluid = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?&limit=${itemsPerPage}&page=${currentPageFluid}&order_by=act_date&dir=2&act_catagory=fluid&user_id=${
-          data?.user_id
+        `resource/activity_wellness?&limit=${itemsPerPage}&page=${currentPageFluid}&order_by=act_date&dir=2&act_catagory=fluid&user_id=${data?.user_id
         }&from=${startDate ?? ""}&to=${endDate ?? ""}`
       );
       // &from=${startDate}&to=${endDate}&
@@ -213,6 +212,7 @@ const Nutrition = ({ from }) => {
           clearCache();
           await fetchDiet();
           await fetchFluid();
+          toast.success("Delete successfully");
         } else {
           console.error("Failed to delete data:", response.message);
         }
@@ -223,6 +223,8 @@ const Nutrition = ({ from }) => {
   };
   const addDiet = async (body) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       // Use the provided `post` function to send the request
       const response = await post(`resource/activity_wellness`, body);
 
@@ -230,19 +232,22 @@ const Nutrition = ({ from }) => {
         clearCache();
         await fetchDiet(); // Refresh the list data here
         setAddFormView(false); // Close the form view
+        toast.success("Added successfully");
       } else {
         console.error("Failed to fetch data:", response.message);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const editDiet = async (body, defaultId) => {
     try {
-      // Construct the request body in the desired format
-
-      // Use the provided `patch` function to send the request
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await patch(
         `resource/activity_wellness/${defaultId}`,
         body
@@ -252,15 +257,21 @@ const Nutrition = ({ from }) => {
         clearCache();
         await fetchDiet(); // Refresh the list data here
         setAddFormView(false); // Close the form view
+        toast.success("Updated successfully");
       } else {
         console.error("Failed to update data:", response.message);
       }
     } catch (error) {
       console.error("Error updating data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const addFluid = async (body) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await post(`resource/activity_wellness`, body);
 
       if (response.code === 201) {
@@ -268,17 +279,22 @@ const Nutrition = ({ from }) => {
         await fetchFluid(); // Refresh the list data here
         setCurrentTab(2);
         setAddFormView(false); // Close the form view
+        toast.success("Added successfully");
       } else {
         console.error("Failed to fetch data:", response.message);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const editFluid = async (body, defaultValuesId) => {
     try {
-      // Use the PATCH function for editing
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await patch(
         `resource/activity_wellness/${defaultValuesId}`, // Use the ID from default values
         body
@@ -289,11 +305,15 @@ const Nutrition = ({ from }) => {
         await fetchFluid(); // Refresh the list data here
         setCurrentTab(2);
         setAddFormView(false); // Close the form view
+        toast.success("Updated successfully");
       } else {
         console.error("Failed to update data:", response.message);
       }
     } catch (error) {
       console.error("Error updating data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   return (
@@ -430,6 +450,7 @@ const Nutrition = ({ from }) => {
                       defaultValues={selectedData}
                       addDiet={addDiet}
                       editDiet={editDiet}
+                      isSubmitting={isSubmitting}
                     />
                   )}
                   {currentTab === 2 && (
@@ -443,6 +464,7 @@ const Nutrition = ({ from }) => {
                       defaultValues={selectedData}
                       addFluid={addFluid}
                       editFluid={editFluid}
+                      isSubmitting={isSubmitting}
                     />
                   )}
                 </CCardBody>

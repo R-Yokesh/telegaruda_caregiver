@@ -18,6 +18,8 @@ import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import { is } from "date-fns/locale";
 
 const Sleep = ({ from }) => {
   const columnData = [
@@ -42,6 +44,7 @@ const Sleep = ({ from }) => {
   const [filters, setFilters] = useState(true);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // const { get } = useApi();
 
   const itemsPerPage = 5; // Number of items to display per page
@@ -68,10 +71,8 @@ const Sleep = ({ from }) => {
   const fetchSleepData = useCallback(async () => {
     try {
       const response = await get(
-        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${
-          startDate ?? ""
-        }&to=${
-          endDate ?? ""
+        `resource/activity_wellness?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
+        }&to=${endDate ?? ""
         }&order_by=act_date&dir=2&act_catagory=sleep&user_id=${data?.user_id}`
       );
       if (response.code === 200) {
@@ -104,6 +105,7 @@ const Sleep = ({ from }) => {
           setDetailView(false);
           clearCache();
           await fetchSleepData();
+          toast.success("Deleted successfully");
         } else {
           console.error("Failed to delete data:", response.message);
         }
@@ -124,24 +126,29 @@ const Sleep = ({ from }) => {
   };
   const addSleep = async (body) => {
     try {
-      // Use the provided `post` function to send the request
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await post(`resource/activity_wellness`, body);
-
       if (response.code === 201) {
         clearCache();
         await fetchSleepData(); // Refresh the list data here
         setAddFormView(false); // Close the form view
+        toast.success("Added successfully");
       } else {
         console.error("Failed to fetch data:", response.message);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
 
   const editSleep = async (body, id) => {
     try {
-      // Use the PATCH function for editing
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await patch(
         `resource/activity_wellness/${id}`, // Use the ID from default values
         body
@@ -151,11 +158,15 @@ const Sleep = ({ from }) => {
         clearCache();
         await fetchSleepData(); // Refresh the list data here
         setAddFormView(false); // Close the form view
+        toast.success("Updated successfully");
       } else {
         console.error("Failed to update data:", response.message);
       }
     } catch (error) {
       console.error("Error updating data:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   return (
@@ -234,6 +245,7 @@ const Sleep = ({ from }) => {
                   defaultValues={selectedData}
                   addSleep={addSleep}
                   editSleep={editSleep}
+                  isSubmitting={isSubmitting}
                 />
               </CCardBody>
             </CCard>

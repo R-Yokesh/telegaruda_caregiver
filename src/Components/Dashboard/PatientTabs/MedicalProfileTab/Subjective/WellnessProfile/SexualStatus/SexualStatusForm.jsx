@@ -22,6 +22,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const [errors, setErrors] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const maxDate = new Date(); // Restrict future dates
 
   // Fetch the latest record
@@ -71,6 +72,8 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
 
   const statusEdit = async (selectedId) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/activity_wellness/${selectedId}`; // Replace with your API endpoint
       const body = {
         patient_id: data?.user_id, //data?.user_id
@@ -81,12 +84,12 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
           sti:
             historySti === "yes"
               ? {
-                  screen_date: format(selectedDate, DATE_FORMAT),
-                  screen_notes: stiNotes,
-                  status: currentSti,
-                  status_notes:
-                    currentSti === "positive" ? currentStiNotes : "",
-                }
+                screen_date: format(selectedDate, DATE_FORMAT),
+                screen_notes: stiNotes,
+                status: currentSti,
+                status_notes:
+                  currentSti === "positive" ? currentStiNotes : "",
+              }
               : {},
         },
       };
@@ -96,10 +99,15 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
       toast.success("Updated successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const statusAdd = async () => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/activity_wellness`; // Replace with your API endpoint
       const body = {
         patient_id: data?.user_id, //data?.user_id
@@ -110,12 +118,12 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
           sti:
             historySti === "yes"
               ? {
-                  screen_date: format(selectedDate, DATE_FORMAT),
-                  screen_notes: stiNotes,
-                  status: currentSti,
-                  status_notes:
-                    currentSti === "positive" ? currentStiNotes : "",
-                }
+                screen_date: format(selectedDate, DATE_FORMAT),
+                screen_notes: stiNotes,
+                status: currentSti,
+                status_notes:
+                  currentSti === "positive" ? currentStiNotes : "",
+              }
               : {},
         },
       };
@@ -125,6 +133,9 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
       toast.success("Added successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const validation = () => {
@@ -351,9 +362,13 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
       {from !== "Consult" && (
         <CRow className="mb-1">
           <div style={{ width: "128px" }}>
-            <PrimaryButton onClick={onSubmit}>
+            {/* <PrimaryButton onClick={onSubmit}>
               {allStatus?.id !== undefined ? "UPDATE" : "ADD"}
+            </PrimaryButton> */}
+            <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : allStatus?.id !== undefined ? "UPDATE" : "ADD"}
             </PrimaryButton>
+
           </div>
           <div style={{ width: "128px" }}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>

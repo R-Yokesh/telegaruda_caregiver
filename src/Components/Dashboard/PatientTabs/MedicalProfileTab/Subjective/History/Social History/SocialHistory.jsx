@@ -25,6 +25,7 @@ const SocialHistory = ({ from, back }) => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const [socialList, setSocialList] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const Data = {
     id: 1,
     smoking: "No",
@@ -46,6 +47,8 @@ const SocialHistory = ({ from, back }) => {
 
   const socialEdit = async (answerDatas, selectedId) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -58,10 +61,15 @@ const SocialHistory = ({ from, back }) => {
       toast.success("Updated successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   const socialAdd = async (answerDatas) => {
     try {
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -74,6 +82,9 @@ const SocialHistory = ({ from, back }) => {
       toast.success("Added successfully");
     } catch (error) {
       console.error("Failed to delete:", error);
+    } finally {
+      // Reset the loading state to false after the API call is done
+      setIsSubmitting(false);
     }
   };
   useEffect(() => {
@@ -90,6 +101,7 @@ const SocialHistory = ({ from, back }) => {
               from={from}
               socialAdd={socialAdd}
               socialEdit={socialEdit}
+              isSubmitting={isSubmitting}
             />
           )}
         </CCardBody>
