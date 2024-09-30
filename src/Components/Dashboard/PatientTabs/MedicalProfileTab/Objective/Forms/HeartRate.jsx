@@ -9,6 +9,7 @@ import { format, isValid, parse } from "date-fns";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import {
   findItemIndex,
+  getFileExtensionFromUrl,
   getFileTypeFromMime,
   openFile,
 } from "../../../../../../Utils/commonUtils";
@@ -16,7 +17,10 @@ import { toast } from "react-toastify";
 import useApi from "../../../../../../ApiServices/useApi";
 import { CustomInput, getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { useLocation } from "react-router-dom";
-import { heartRateFileUpload } from "../../../../../../Utils/imageUpload";
+import {
+  getImageUrl,
+  heartRateFileUpload,
+} from "../../../../../../Utils/imageUpload";
 import { Assets } from "../../../../../../assets/Assets";
 
 const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
@@ -35,7 +39,7 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
 
   const [preFile, setPreFile] = useState({
     name: "",
-    link: "",
+    link: defaultData?.result_file?.properties?.file_path || "",
     contentType: "",
   });
 
@@ -163,11 +167,20 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
     return isValid;
   };
 
+  console.log("first", defaultData);
   const onSubmit = async () => {
     if (validateInputs()) {
       if (defaultData) {
         console.log("Edit clicked");
-        onEdit();
+        // onEdit();
+        if (ecgFile) {
+          const uploadedImage = await heartRateFileUpload(ecgFile);
+          if (uploadedImage) {
+            onEdit(uploadedImage, 1);
+          }
+        } else {
+          onEdit();
+        }
       }
       if (!defaultData) {
         console.log("Add clicked");
@@ -214,25 +227,57 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
     }
   };
 
-  const onEdit = async () => {
+  const onEdit = async (imageFiles, created_doc) => {
     try {
       // Set the loading state to true
       setIsSubmitting(true);
       const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
-      const body = {
+      const body =
+        defaultData?.result_file.length === 0
+          ? {
+              details: {
+                date: format(selectedDate, "dd-MM-yyyy"),
+                time: format(selectedTime, "HH:mm"),
+                unit: "Bpm",
+                heart: Number(hr),
+                device_type: type,
+                interpretation: interpretation,
+                // result_file: ecgFile,
+              },
+              user_id: data?.user_id,
+              slug: "heart-rate",
+            }
+          : {
+              details: {
+                date: format(selectedDate, "dd-MM-yyyy"),
+                time: format(selectedTime, "HH:mm"),
+                unit: "Bpm",
+                heart: Number(hr),
+                device_type: type,
+                interpretation: interpretation,
+                // result_file: ecgFile,
+              },
+              properties: defaultData?.result_file?.properties || null,
+              document: defaultData?.result_file || null,
+              create_doc: defaultData?.result_file ? 1 : 0,
+              user_id: data?.user_id,
+              slug: "heart-rate",
+            };
+      const body1 = {
         details: {
           date: format(selectedDate, "dd-MM-yyyy"),
           time: format(selectedTime, "HH:mm"),
           unit: "Bpm",
           heart: Number(hr),
-          type: type,
+          device_type: type,
           interpretation: interpretation,
-          // result_file: ecgFile,
         },
+        create_doc: created_doc,
         user_id: data?.user_id,
         slug: "heart-rate",
+        properties: imageFiles,
       };
-      await patch(url, body);
+      await patch(url, created_doc === 1 ? body1 : body);
       await getTableDatas(defaultData);
       toast.success("Updated successfully");
       addBack();
@@ -257,6 +302,11 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
   const handleDateClear = () => {
     setSelectedDate(null); // Clear the selected time
     setSelectedTime(null);
+  };
+  const renderPdf = async (contentUrl) => {
+    const showImage = await getImageUrl(contentUrl);
+    window.open(showImage, "_blank");
+    // alert(showImage);
   };
   return (
     <>
@@ -380,9 +430,9 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
                   setHr(e.target.value.replace(/[^0-9]/g, ""));
                 }}
                 maxLength={3}
-              // onInput={(e) => {
-              //   e.target.value = e.target.value.replace(/[^0-9]/g, "");
-              // }}
+                // onInput={(e) => {
+                //   e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                // }}
               />
               {errors.hr && <div className="error-text">{errors.hr}</div>}
             </div>
@@ -397,8 +447,25 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
 
               <div class="d-flex flex-column gap-1 justify-content-center h-100">
                 {preFile?.link !== "" ? (
-                  <span className="cursor" onClick={() => openInNewTab()}>
-                    ECG.{getFileTypeFromMime(preFile?.contentType)}
+                  // onClick={() => openInNewTab()}
+                  <span
+                    className="cursor"
+                    onClick={() => {
+                      if (preFile?.contentType) {
+                        openInNewTab();
+                      } else {
+                        renderPdf(
+                          defaultData?.result_file?.properties?.file_path
+                        );
+                      }
+                    }}
+                  >
+                    ECG.
+                    {preFile?.contentType
+                      ? getFileTypeFromMime(preFile?.contentType)
+                      : getFileExtensionFromUrl(
+                          defaultData?.result_file?.properties?.file_name
+                        )}
                   </span>
                 ) : (
                   <span className="">No File Chosen</span>

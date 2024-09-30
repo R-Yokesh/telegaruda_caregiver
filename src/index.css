@@ -196,6 +196,58 @@ body {
   background-color: #ffc107 !important;
 }
 
+/* for specific gravity */
+.badge-Very-Dilute {
+  background-color: #89d4f5 !important;
+}
+
+.badge-Dilute {
+  background-color: #0000ff !important;
+}
+
+.badge-Normal {
+  background-color: #008000 !important;
+}
+
+.badge-Concentrated {
+  background-color: #fff707 !important;
+  color: #000 !important
+}
+
+.badge-Very-Concentrated {
+  background-color: #FFC107 !important;
+}
+
+.badge-Highly-Concentrated {
+  background-color: #FF0000 !important;
+}
+
+/* for glucose */
+.badge-Below-Normal-Glucose {
+  background-color: #89d4f5 !important;
+}
+
+.badge-Extremely-High-Glucose {
+  background-color: #8B0000 !important;
+}
+
+.badge-Negative-Glucose {
+  background-color: #008000 !important;
+}
+
+.badge-Moderately-High-Glucose {
+  background-color: #fff707 !important;
+  color: #000 !important
+}
+
+.badge-High-Glucose {
+  background-color: #FFC107 !important;
+}
+
+.badge-Very-High-Glucose {
+  background-color: #FF0000 !important;
+}
+
 .light-label {
   color: #17171D99 !important;
 }
@@ -206,6 +258,10 @@ body {
 
 .consultant-table {
   border-radius: 12px !important;
+}
+
+.react-datepicker-wrapper {
+  width: 100% !important;
 }
 
 /* Custom CSS for styling */

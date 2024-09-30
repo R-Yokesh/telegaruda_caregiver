@@ -35,6 +35,8 @@ import { findColorCodefev1_fvc } from "../../../../../../Utils/colorUtils";
 import {
   celsiusToFahrenheit,
   fahrenheitToCelsius,
+  getGlucoseLabel,
+  getSpeGraLabel,
 } from "../../../../../../Utils/commonUtils";
 
 const formatDateTime = (dateString) => {
@@ -139,8 +141,8 @@ const VitalSign = ({ setVitalView, onClose }) => {
     setVitalsLoading(true);
     try {
       // Create an array of promises to fetch data for each card
-      const fetchPromises = ObjectiveDatas.map(async (card) => {
-        if (card.slug !== null) {
+      const fetchPromises = ObjectiveDatas?.map(async (card) => {
+        if (card?.slug !== null) {
           try {
             const response = await get(
               `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=${data?.user_id}&slug=${card?.slug}`
@@ -148,7 +150,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
             const tableData = response?.data?.vitals;
 
             const cardbadge =
-              tableData.length > 0
+              tableData?.length > 0
                 ? card?.slug === "blood-pressure"
                   ? [
                       {
@@ -323,6 +325,33 @@ const VitalSign = ({ setVitalView, onClose }) => {
                         color: `${tableData[0]?.details?.gfrFlagColor}`,
                       },
                     ]
+                  : card?.slug === "urine"
+                  ? [
+                      {
+                        label: `Color: ${tableData[0].details?.color}`,
+                        color: "",
+                      },
+                      {
+                        label: `Clarity: ${tableData[0]?.details?.clarity}`,
+                        color: "",
+                      },
+                      {
+                        label: `Glucose: ${tableData[0]?.details?.glucose}`,
+                        color: getGlucoseLabel(tableData[0].details?.glucose),
+                      },
+                      {
+                        label: `Specific Gravity: ${tableData[0].details?.specificGravity}`,
+                        color: getSpeGraLabel(tableData[0].details?.specificGravity),
+                      },
+                      {
+                        label: `PH: ${tableData[0]?.details?.ph}`,
+                        color: tableData[0]?.details?.value_flag,
+                      },
+                      {
+                        label: `Protein: ${tableData[0]?.details?.protein}`,
+                        color: tableData[0]?.details?.protein_flag,
+                      },
+                    ]
                   : []
                 : [];
 
@@ -460,7 +489,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
         );
         const tableData = response?.data?.vitals;
         const cardbadge =
-          tableData.length > 0
+          tableData?.length > 0
             ? cardSelectedData?.slug === "blood-pressure"
               ? [
                   {

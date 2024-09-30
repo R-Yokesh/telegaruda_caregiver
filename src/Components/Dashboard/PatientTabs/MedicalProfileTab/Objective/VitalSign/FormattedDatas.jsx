@@ -3,6 +3,8 @@ import { findColorCodefev1_fvc } from "../../../../../../Utils/colorUtils";
 import {
   celsiusToFahrenheit,
   fahrenheitToCelsius,
+  getGlucoseLabel,
+  getSpeGraLabel,
 } from "../../../../../../Utils/commonUtils";
 
 export const transformBPData = (originalData, pagination) => {
@@ -1423,6 +1425,7 @@ export const transformGFRData = (originalData, pagination) => {
 
 export const transformUrinalysisData = (originalData, pagination) => {
   if (!Array.isArray(originalData) || originalData.length === 0) {
+    console.log("here :)", originalData);
     return {
       id: 14,
       icon: Assets.Urinalysis,
@@ -1452,20 +1455,20 @@ export const transformUrinalysisData = (originalData, pagination) => {
   }
 
   // Map through original data to create tableData
-  const tableData = originalData.map((item, index) => ({
+  const tableData = originalData?.map((item, index) => ({
     "no.": index + 1,
-    color: item?.details?.color || "N/A",
-    specific_gravity: item?.details?.specific_gravity || "N/A",
-    ph: item?.details?.ph || "N/A",
-    clarity: item?.details?.clarity || "N/A",
-    protein: item?.details?.protein || "N/A",
-    glucose: item?.details?.glucose || "N/A",
-    leukocyte: item?.details?.leukocytes || "N/A",
+    color: item?.details?.color || "",
+    specific_gravity: item?.details?.specificGravity || "",
+    ph: item?.details?.ph || "",
+    clarity: item?.details?.clarity || "",
+    protein: item?.details?.protein || "",
+    glucose: item?.details?.glucose || "",
+    leukocyte: item?.details?.leukocyteEsterase || "",
     leukocytes_flag: item?.details?.leukocytes_flag,
-    bilirubin: item?.details?.bilirubin || "N/A",
-    urobilinogen: item?.details?.urobilinogen || "N/A",
-    red_blood_cells: item?.details?.red_blood_cells || "N/A",
-    white_blood_cells: item?.details?.white_blood_cells || "N/A",
+    bilirubin: item?.details?.bilirubin || "",
+    urobilinogen: item?.details?.urobilinogen || "",
+    red_blood_cells: item?.details?.redBloodCells || "",
+    white_blood_cells: item?.details?.whiteBloodCells || "",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -1474,21 +1477,33 @@ export const transformUrinalysisData = (originalData, pagination) => {
     name: "Urinalysis",
     id: item.id,
     user_id: item.user_id,
+    allFlagDetails: item?.details,
+    icon: Assets.Urinalysis,
+    slug: "urine",
   }));
-
   // Create badges based on the first item in tableData if available
   const badge =
-    tableData.length > 0
+    tableData?.length > 0
       ? [
-          { label: `Color: ${tableData[0].color}`, color: "success" },
-          { label: `Clarity: ${tableData[0].clarity}`, color: "success" },
-          { label: `Glucose: ${tableData[0].glucose}`, color: "success" },
+          { label: `Color: ${tableData[0].color}`, color: "" },
+          { label: `Clarity: ${tableData[0].clarity}`, color: "" },
+          {
+            label: `Glucose: ${tableData[0].glucose}`,
+            color: getGlucoseLabel(tableData[0].glucose),
+          },
           {
             label: `Specific Gravity: ${tableData[0].specific_gravity}`,
-            color: "success",
+            color: getSpeGraLabel(tableData[0].specific_gravity),
           },
-          { label: `PH: ${tableData[0].ph}`, color: "success" },
-          { label: `Protein: ${tableData[0].protein}`, color: "success" },
+          {
+            label: `PH: ${tableData[0].ph}`,
+            color: tableData[0]?.allFlagDetails?.value_flag,
+          },
+          {
+            label: `Protein: ${tableData[0].protein}`,
+            // color: tableData[0]?.allFlagDetails?.protein_flag,
+            color: getGlucoseLabel(tableData[0].protein),
+          },
         ]
       : [];
 

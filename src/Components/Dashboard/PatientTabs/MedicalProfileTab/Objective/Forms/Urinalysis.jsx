@@ -7,6 +7,10 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import useApi from "../../../../../../ApiServices/useApi";
+import { Assets } from "../../../../../../assets/Assets";
+import { CustomInput, getCurrentTime } from "../../../../../../Utils/dateUtils";
+import { DATE_FORMAT } from "../../../../../../Config/config";
+import { format, isValid, parse } from "date-fns";
 
 const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
@@ -14,33 +18,34 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [cell, setCell] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // useEffect(() => {
-  //   // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
-  //   const parseDateString = (dateString) => {
-  //     const parts = dateString?.split(" ");
-  //     const datePart = parts[0];
-  //     const timePart = parts[1];
-  //     const [month, day, year] = datePart?.split("-")?.map(Number);
-  //     const [hours, minutes] = timePart?.split(":")?.map(Number);
-  //     return new Date(year, month - 1, day, hours, minutes);
-  //   };
+  const defaultDateTime = defaultData?.date || "";
 
-  //   // Example default date string
-  //   const defaultDateString = defaultData?.date;
+  // Split date and time
+  const defaultDate = defaultDateTime.split(" ")[0] || "";
+  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  useEffect(() => {
+    // Combine default date and time into a single Date object
+    let date = new Date();
 
-  //   // Parse default date string to Date object
-  //   const defaultDate = defaultData
-  //     ? parseDateString(defaultDateString)
-  //     : new Date();
+    if (defaultDate) {
+      const parsedDate = parse(defaultDate, "yyyy-MM-dd", new Date());
+      if (isValid(parsedDate)) {
+        date = parsedDate;
+      }
+    }
 
-  //   // Set default date in state
-  //   setSelectedDate(defaultDate);
-  //   setSelectedTime(defaultDate);
-  // }, [defaultData]);
+    if (defaultTime) {
+      const [hours, minutes] = defaultTime.split(":").map(Number);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(0); // Reset seconds
+    }
 
+    setSelectedDate(date);
+    setSelectedTime(date); // Initialize time picker with the same Date object
+  }, [defaultDate, defaultTime]);
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -55,64 +60,98 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
   };
 
   const oneNumWithOneDecimal = (e) => {
-    e.target.value = e.target.value
+    e = e
       .replace(/[^0-9.]/g, "")
       .replace(/^(\d{1})\d*$/, "$1")
       .replace(/^(\d{1})\.(\d{1}).*$/, "$1.$2")
       .replace(/(\..*)\./g, "$1");
+    return e;
   };
 
-  const oneNumWithDecimal = (e) => {
-    e.target.value = e.target.value
+  const oneNumWithDecimal = (value) => {
+    value = value
       .replace(/[^0-9.]/g, "")
       .replace(/^(\d{1})\d*$/, "$1")
       .replace(/^(\d{1})\.(\d{3}).*$/, "$1.$2")
       .replace(/(\..*)\./g, "$1");
+    return value;
   };
 
   const twoNumWithDecimal = (e) => {
-    e.target.value = e.target.value
+    e = e
       .replace(/[^0-9.]/g, "")
       .replace(/^(\d{2})\d*$/, "$1")
       .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2")
       .replace(/(\..*)\./g, "$1");
+    return e;
   };
   const threeNumWithDecimal = (e) => {
-    e.target.value = e.target.value
+    e = e
       .replace(/[^0-9.]/g, "")
       .replace(/^(\d{3})\d*$/, "$1")
       .replace(/^(\d{3})\.(\d{2}).*$/, "$1.$2")
       .replace(/(\..*)\./g, "$1");
+    return e;
   };
 
   const wholeNumber = (e) => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, "");
+    e = e.replace(/[^0-9]/g, "");
+    return e;
   };
-
+  console.log("first", defaultData);
   const [formData, setFormData] = useState({
-    color: "",
-    clarity: "",
-    specificGravity: "",
-    ph: "",
-    protein: "",
-    glucose: "",
-    ketones: "",
-    bloodInUrine: "",
-    leukocyteEsterase: "",
-    nitrites: "",
-    urobilinogen: "",
-    bilirubin: "",
-    redBloodCells: "",
-    whiteBloodCells: "",
-    epithelialCells: "",
+    color: defaultData?.color || "",
+    clarity: defaultData?.clarity || "",
+    specificGravity: Number(defaultData?.specific_gravity) || "",
+    ph: Number(defaultData?.ph) || "",
+    protein: defaultData?.protein || "",
+    glucose: defaultData?.glucose || "",
+    ketones: defaultData?.allFlagDetails?.ketones || "",
+    bloodInUrine: defaultData?.allFlagDetails?.bloodInUrine || "",
+    leukocyteEsterase: defaultData?.allFlagDetails?.leukocyteEsterase || "",
+    nitrites: defaultData?.allFlagDetails?.nitrites || "",
+    urobilinogen: Number(defaultData?.allFlagDetails?.urobilinogen) || "",
+    bilirubin: defaultData?.allFlagDetails?.bilirubin || "",
+    redBloodCells: defaultData?.allFlagDetails?.redBloodCells || "",
+    whiteBloodCells: defaultData?.allFlagDetails?.whiteBloodCells || "",
+    epithelialCells: defaultData?.allFlagDetails?.epithelialCells || "",
+    crystal: defaultData?.allFlagDetails?.crystal || "",
+    microorganisms: defaultData?.allFlagDetails?.microorganism || "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === "specificGravity") {
+      const newValue = oneNumWithDecimal(value);
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: newValue,
+      }));
+    } else if (name === "ph") {
+      const newValue = twoNumWithDecimal(value);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: newValue,
+      }));
+    } else if (name === "urobilinogen") {
+      const newValue = oneNumWithOneDecimal(value);
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: newValue,
+      }));
+    } else if (name === "redBloodCells" || name === "whiteBloodCells") {
+      const newValue = wholeNumber(value);
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: newValue,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
   const [errors, setErrors] = useState({});
 
@@ -143,7 +182,14 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
         isValid = false;
       }
     }
-
+    if (!selectedDate) {
+      currentErrors.date = "Date is required";
+      isValid = false;
+    }
+    if (!selectedTime) {
+      currentErrors.time = "Time is required";
+      isValid = false;
+    }
     setErrors(currentErrors);
     return isValid;
   };
@@ -168,24 +214,25 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
       const url = `resource/vitals`; // Replace with your API endpoint
       const body = {
         details: {
+          date: format(selectedDate, "dd-MM-yyyy"),
+          time: format(selectedTime, "HH:mm"),
           color: formData.color,
           clarity: formData.clarity,
-          specificGravity: formData.specificGravity,
-          ph: formData.ph,
-          value: formData.ph,
-          // protein: formData.protein,
-          protein: '++++',
+          specificGravity: Number(formData.specificGravity),
+          ph: Number(formData.ph),
+          protein: formData.protein,
           glucose: formData.glucose,
-          sugar: formData.glucose,
           ketones: formData.ketones,
           bloodInUrine: formData.bloodInUrine,
           leukocyteEsterase: formData.leukocyteEsterase,
           nitrites: formData.nitrites,
-          urobilinogen: formData.urobilinogen,
+          urobilinogen: Number(formData.urobilinogen),
           bilirubin: formData.bilirubin,
           redBloodCells: formData.redBloodCells,
           whiteBloodCells: formData.whiteBloodCells,
           epithelialCells: formData.epithelialCells,
+          crystal: formData.crystal,
+          microorganism: formData.microorganisms,
         },
         user_id: data?.user_id,
         slug: "urine",
@@ -209,23 +256,25 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
       const url = `resource/vitals/${defaultData.id}`; // Replace with your API endpoint
       const body = {
         details: {
+          date: format(selectedDate, "dd-MM-yyyy"),
+          time: format(selectedTime, "HH:mm"),
           color: formData.color,
           clarity: formData.clarity,
-          specific_gravity: formData.specificGravity,
-          ph: formData.ph,
-          value: formData.ph,
+          specificGravity: Number(formData.specificGravity),
+          ph: Number(formData.ph),
           protein: formData.protein,
           glucose: formData.glucose,
-          sugar: formData.glucose,
           ketones: formData.ketones,
-          blood_in_urine: formData.bloodInUrine,
-          leukocytes: formData.leukocyteEsterase,
+          bloodInUrine: formData.bloodInUrine,
+          leukocyteEsterase: formData.leukocyteEsterase,
           nitrites: formData.nitrites,
-          urobilinogen: formData.urobilinogen,
+          urobilinogen: Number(formData.urobilinogen),
           bilirubin: formData.bilirubin,
-          rbc: formData.redBloodCells,
-          wbc: formData.whiteBloodCells,
-          epithelial_cells: formData.epithelialCells,
+          redBloodCells: formData.redBloodCells,
+          whiteBloodCells: formData.whiteBloodCells,
+          epithelialCells: formData.epithelialCells,
+          crystal: formData.crystal,
+          microorganism: formData.microorganisms,
         },
         user_id: data?.user_id,
         slug: "urine",
@@ -241,10 +290,94 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
       setIsSubmitting(false);
     }
   };
+  const maxDate = new Date(); // Restrict future dates
+  const handleClear = () => {
+    setSelectedTime(null); // Clear the selected time
+  };
+  const handleDateClear = () => {
+    setSelectedDate(null); // Clear the selected time
+    setSelectedTime(null);
+  };
   return (
     <>
       <CContainer>
         <CRow className="mb-3">
+          <CCol lg={6} className="mb-3">
+            <div class="position-relative d-flex flex-column gap-1">
+              <label for="validationTooltip01" class="form-label">
+                Date *
+              </label>
+              <div className="w-100 d-flex align-items-center gap-2">
+                <div style={{ width: "80%" }}>
+                  <DatePicker
+                    showIcon
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                    // isClearable
+                    closeOnScroll={true}
+                    wrapperClassName="date-picker-wrapper"
+                    dateFormat={DATE_FORMAT}
+                    maxDate={maxDate}
+                  />
+                </div>
+                <div style={{ width: "20%" }}>
+                  {selectedDate && (
+                    <img
+                      src={Assets.Close}
+                      onClick={handleDateClear}
+                      alt="close"
+                      style={{
+                        borderRadius: "15px",
+                        height: "18px",
+                      }}
+                      className="cursor"
+                    />
+                  )}
+                </div>
+              </div>
+
+              {errors.date && <div className="error-text">{errors.date}</div>}
+            </div>
+          </CCol>
+          <CCol lg={6} className="mb-3">
+            <div class="position-relative d-flex flex-column gap-1">
+              <label for="validationTooltip01" class="form-label">
+                Time *
+              </label>
+              <div className="w-100 d-flex align-items-center gap-2">
+                <div style={{ width: "80%" }}>
+                  <DatePicker
+                    selected={selectedTime}
+                    onChange={handleTimeChange}
+                    showTimeSelect
+                    showTimeSelectOnly
+                    closeOnScroll={true}
+                    timeIntervals={5}
+                    dateFormat="HH:mm"
+                    timeFormat="HH:mm"
+                    customInput={<CustomInput />}
+                    showIcon={false}
+                    wrapperClassName="time-picker-style"
+                  />
+                </div>
+                <div style={{ width: "20%" }}>
+                  {selectedTime && (
+                    <img
+                      src={Assets.Close}
+                      onClick={handleClear}
+                      alt="close"
+                      style={{
+                        borderRadius: "15px",
+                        height: "18px",
+                      }}
+                      className="cursor"
+                    />
+                  )}
+                </div>
+              </div>
+              {errors.time && <div className="error-text">{errors.time}</div>}
+            </div>
+          </CCol>
           <CCol lg={4} className="mb-3">
             <div className="position-relative">
               <label htmlFor="color" className="form-label">
@@ -336,10 +469,10 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
               >
                 <option>Select</option>
                 <option value="Trace">Trace</option>
-                <option value="1+ (30 mg/dL)">1+ (30 mg/dL)</option>
-                <option value="2+ (100 mg/dL)">2+ (100 mg/dL)</option>
-                <option value="3+ (300 mg/dL)">3+ (300 mg/dL)</option>
-                <option value="4+ (>2000 mg/dL)">4+ (2000 mg/dL)</option>
+                <option value="+">1+ (30 mg/dL)</option>
+                <option value="++">2+ (100 mg/dL)</option>
+                <option value="+++">3+ (300 mg/dL)</option>
+                <option value="++++">4+ (2000 mg/dL)</option>
               </select>
               {errors.protein && (
                 <div className="error-text">{errors.protein}</div>
@@ -361,10 +494,10 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
                 <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
-                <option value="1+ (100 mg/dL)">1+ (100 mg/dL)</option>
-                <option value="2+ (250 mg/dL)">2+ (250 mg/dL)</option>
-                <option value="3+ (500 mg/dL)">3+ (500 mg/dL)</option>
-                <option value="4+ (1000 mg/dL)">4+ (1000 mg/dL)</option>
+                <option value="+">1+ (100 mg/dL)</option>
+                <option value="++">2+ (250 mg/dL)</option>
+                <option value="+++">3+ (500 mg/dL)</option>
+                <option value="++++">4+ (1000 mg/dL)</option>
               </select>
               {errors.glucose && (
                 <div className="error-text">{errors.glucose}</div>
@@ -386,9 +519,9 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
                 <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
-                <option value="Small (1+) mg/dL">Small (1+) mg/dL</option>
-                <option value="Moderate (2+) mg/dL">Moderate (2+) mg/dL</option>
-                <option value="Large (3+) mg/dL">Large (3+) mg/dL</option>
+                <option value="+">Small (1+) mg/dL</option>
+                <option value="++">Moderate (2+) mg/dL</option>
+                <option value="+++">Large (3+) mg/dL</option>
               </select>
               {errors.ketones && (
                 <div className="error-text">{errors.ketones}</div>
@@ -410,9 +543,9 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
                 <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
-                <option value="Small (1+) mg/dL">Small (1+) mg/dL</option>
-                <option value="Moderate (2+) mg/dL">Moderate (2+) mg/dL</option>
-                <option value="Large (3+) mg/dL">Large (3+) mg/dL</option>
+                <option value="+">Small (1+) mg/dL</option>
+                <option value="++">Moderate (2+) mg/dL</option>
+                <option value="+++">Large (3+) mg/dL</option>
               </select>
               {errors.bloodInUrine && (
                 <div className="error-text">{errors.bloodInUrine}</div>
@@ -434,9 +567,9 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
                 <option>Select</option>
                 <option value="Negative">Negative</option>
                 <option value="Trace">Trace</option>
-                <option value="Small (1+) mg/dL">Small (1+) mg/dL</option>
-                <option value="Moderate (2+) mg/dL">Moderate (2+) mg/dL</option>
-                <option value="Large (3+) mg/dL">Large (3+) mg/dL</option>
+                <option value="+">Small (1+) mg/dL</option>
+                <option value="++">Moderate (2+) mg/dL</option>
+                <option value="+++">Large (3+) mg/dL</option>
               </select>
               {errors.leukocyteEsterase && (
                 <div className="error-text">{errors.leukocyteEsterase}</div>
@@ -569,8 +702,11 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
               </label>
               <select
                 class="form-select"
+                name="crystal"
                 aria-label="Disabled select example"
-              // defaultValue={"Uric Acid Crystals"}
+                // defaultValue={"Uric Acid Crystals"}
+                defaultValue={formData.crystal}
+                onChange={handleChange}
               >
                 <option>Select</option>
                 <option value="Uric Acid Crystals">Uric Acid Crystals</option>
@@ -590,7 +726,10 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
               <select
                 class="form-select"
                 aria-label="Disabled select example"
-              // defaultValue={"Bacteria"}
+                // defaultValue={"Bacteria"}
+                name="microorganisms"
+                defaultValue={formData.microorganisms}
+                onChange={handleChange}
               >
                 <option>Select</option>
                 <option value="Bacteria">Bacteria</option>

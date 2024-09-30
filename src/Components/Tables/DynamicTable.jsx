@@ -26,7 +26,10 @@ import useApi from "../../ApiServices/useApi";
 import { toast } from "react-toastify";
 import { format, isValid, parse } from "date-fns";
 import { getImageUrl } from "../../Utils/imageUpload";
-import { filterFiles, getFileExtensionFromUrl } from "../../Utils/commonUtils";
+import {
+  getGlucoseLabel,
+  getFileExtensionFromUrl,
+} from "../../Utils/commonUtils";
 
 const DynamicTable = ({
   columnsData,
@@ -300,7 +303,38 @@ const DynamicTable = ({
   function renderCell(row, column) {
     const columnKey = getColumnKey(column?.label);
     const value = row[columnKey];
-    if (columnKey === "lipid_profile") {
+    if (columnKey === "color") {
+      return <span style={{ textTransform: "capitalize" }}>{value}</span>;
+    } else if (columnKey === "clarity") {
+      return <span style={{ textTransform: "capitalize" }}>{value}</span>;
+    } else if (columnKey === "protein") {
+      const value1 = row["allFlagDetails"];
+      return (
+        <div className="mt-2">
+          <span>
+            <Badge label={value ?? "-"} color={getGlucoseLabel(value) ?? ""} />
+          </span>
+        </div>
+      );
+    } else if (columnKey === "glucose") {
+      // const value1 = row["allFlagDetails"];
+      return (
+        <div className="mt-2">
+          <span>
+            <Badge label={value ?? "-"} color={getGlucoseLabel(value) ?? ""} />
+          </span>
+        </div>
+      );
+    } else if (columnKey === "leukocyte") {
+      // const value1 = row["allFlagDetails"];
+      return (
+        <div className="mt-2">
+          <span>
+            <Badge label={value ?? "-"} color={getGlucoseLabel(value) ?? ""} />
+          </span>
+        </div>
+      );
+    } else if (columnKey === "lipid_profile") {
       return value?.map((dt, i) => (
         <div key={i} className="mt-2">
           <span>
@@ -335,7 +369,10 @@ const DynamicTable = ({
           onClick={() => renderPdf(value?.properties?.file_path)}
         >
           {/* value?.name */}
-          <span className="hyperlink cursor" style={{ textTransform: "uppercase" }}>
+          <span
+            className="hyperlink cursor"
+            style={{ textTransform: "uppercase" }}
+          >
             {getFileExtensionFromUrl(value?.properties?.file_name)}
           </span>
         </div>

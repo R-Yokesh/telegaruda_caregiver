@@ -17,86 +17,89 @@ const LineChartDetails = ({ datas }) => {
   }
 
   // Transform tableData to the desired format
-  const formattedData = datas?.tableData?.map((item) => ({
-    name: item?.date?.split(" ")[0].split("-").reverse().join("-"), // Extract date part only
-    data1: parseFloat(
-      item?.["blood_ketone_value"] ||
-        item?.["hemoglobinValue"] ||
-        item?.["bmi_(kg/m²)"] ||
-        item?.["blood_sugar_value"] ||
-        item?.["pulse_(bpm)"] ||
-        item?.["hr_(bpm)"] ||
-        item?.["respiration_rate_(bpm)"] ||
-        item?.["spo2"] ||
-        item?.["hct_%"] ||
-        item?.["fvc_(%)"] ||
-        item?.["totalOnly"] ||
-        item?.["specific_gravity"] ||
-        item?.["temperatureValueF"] ||
-        item?.["blood_uric_acid_value"] ||
-        item?.["urea_value"] ||
-        item?.["creatinine_value"] ||
-        item?.["gfr_value"] ||
-        item?.["ldl_(mg/dl)"]
-    ), // Convert pluse to integer if needed
+  const formattedData = datas?.tableData
+    ?.map((item) => ({
+      name: item?.date?.split(" ")[0].split("-").reverse().join("-"), // Extract date part only
+      data1: parseFloat(
+        item?.["blood_ketone_value"] ||
+          item?.["hemoglobinValue"] ||
+          item?.["bmi_(kg/m²)"] ||
+          item?.["blood_sugar_value"] ||
+          item?.["pulse_(bpm)"] ||
+          item?.["hr_(bpm)"] ||
+          item?.["respiration_rate_(bpm)"] ||
+          item?.["spo2"] ||
+          item?.["hct_%"] ||
+          item?.["fvc_(%)"] ||
+          item?.["totalOnly"] ||
+          item?.["specific_gravity"] ||
+          item?.["temperatureValueF"] ||
+          item?.["blood_uric_acid_value"] ||
+          item?.["urea_value"] ||
+          item?.["creatinine_value"] ||
+          item?.["gfr_value"] ||
+          item?.["ldl_(mg/dl)"]
+      ), // Convert pluse to integer if needed
 
-    data2: parseInt(
-      item?.["systolic"]
-        ? item?.["systolic"]
-        : item?.["fev1_(%)"]
-        ? item?.["fev1_(%)"]
-        : item?.["hdl_(mg/dl)"]
-        ? item?.["hdl_(mg/dl)"]
-        : item?.["ph"]
-        ? item?.["ph"]
-        : item?.["temperature_fahrenheit"]
-        ? item?.["temperature_fahrenheit"]
-        : ""
-    ),
-    data3: parseInt(
-      item?.["diastolic"]
-        ? item?.["diastolic"]
-        : item?.["pef_(%)"]
-        ? item?.["pef_(%)"]
-        : item?.["vldl_(mg/dl)"]
-        ? item?.["vldl_(mg/dl)"]
-        : item?.["urobilinogen"]
-        ? item?.["urobilinogen"]
-        : ""
-    ),
+      data2: parseInt(
+        item?.["systolic"]
+          ? item?.["systolic"]
+          : item?.["fev1_(%)"]
+          ? item?.["fev1_(%)"]
+          : item?.["hdl_(mg/dl)"]
+          ? item?.["hdl_(mg/dl)"]
+          : item?.["ph"]
+          ? item?.["ph"]
+          : item?.["temperature_fahrenheit"]
+          ? item?.["temperature_fahrenheit"]
+          : ""
+      ),
+      data3: parseInt(
+        item?.["diastolic"]
+          ? item?.["diastolic"]
+          : item?.["pef_(%)"]
+          ? item?.["pef_(%)"]
+          : item?.["vldl_(mg/dl)"]
+          ? item?.["vldl_(mg/dl)"]
+          : item?.["urobilinogen"]
+          ? item?.["urobilinogen"]
+          : ""
+      ),
 
-    data4: parseInt(
-      item?.["fev1/fvc_(%)"]
-        ? item?.["fev1/fvc_(%)"]
-        : item?.["ldl/hdl_(mg/dl)"]
-        ? item?.["ldl/hdl_(mg/dl)"]
-        : item?.["red_blood_cells"]
-        ? item?.["red_blood_cells"]
-        : ""
-    ),
+      data4: parseInt(
+        item?.["fev1/fvc_(%)"]
+          ? item?.["fev1/fvc_(%)"]
+          : item?.["ldl/hdl_(mg/dl)"]
+          ? item?.["ldl/hdl_(mg/dl)"]
+          : item?.["red_blood_cells"]
+          ? item?.["red_blood_cells"]
+          : ""
+      ),
 
-    data5: parseInt(
-      item?.["triglycerides_(mg/dl)"]
-        ? item?.["triglycerides_(mg/dl)"]
-        : item?.["white_blood_cells"]
-        ? item?.["white_blood_cells"]
-        : ""
-    ),
-    data6: parseInt(
-      item?.["total_cholesterol_(mg/dl)"]
-        ? item?.["total_cholesterol_(mg/dl)"]
-        : ""
-    ),
-    // For temperature C / F
-    unit: item?.unit,
-  }))?.reverse();
-
+      data5: parseInt(
+        item?.["triglycerides_(mg/dl)"]
+          ? item?.["triglycerides_(mg/dl)"]
+          : item?.["white_blood_cells"]
+          ? item?.["white_blood_cells"]
+          : ""
+      ),
+      data6: parseInt(
+        item?.["total_cholesterol_(mg/dl)"]
+          ? item?.["total_cholesterol_(mg/dl)"]
+          : ""
+      ),
+      // For temperature C / F
+      unit: item?.unit,
+    }))
+    ?.reverse();
+  console.log("first", formattedData);
   const minValue = Math?.min(...formattedData?.map((item) => item.data1)) || 3;
-  const maxValue = Math?.max(
-    ...formattedData?.map((item) =>
-      !isNaN(item?.data1) ? item?.data1 : -Infinity
-    )
-  ) || 30;
+  const maxValue =
+    Math?.max(
+      ...formattedData?.map((item) =>
+        !isNaN(item?.data1) ? item?.data1 : -Infinity
+      )
+    ) || 30;
   // Custom tooltip formatter function
   const tooltipFormatter = (value, name, props) => {
     const item = formattedData.find((d) => d.name === props.payload.name);

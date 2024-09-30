@@ -80,7 +80,7 @@ export const filterFiles = (files) => {
       filteredFiles?.push(file);
     }
   }
-  console.log(files,"first", filteredFiles);
+  console.log(files, "first", filteredFiles);
   return filteredFiles;
 };
 
@@ -89,3 +89,54 @@ export const getFileExtensionFromUrl = (url) => {
   const extensionMatch = url?.match(/\.(\w+)$/);
   return extensionMatch ? extensionMatch[1]?.toLowerCase() : null; // Return the extension or null if not found
 };
+
+export function getSpeGraLabel(value) {
+  // Define the concentration ranges and their corresponding labels and colors
+  const ranges = [
+    {
+      min: 1.001,
+      max: 1.005,
+      label: "Very-Dilute",
+      color: "#89d4f5",
+    },
+    { min: 1.006, max: 1.01, label: "Dilute", color: "#0000ff" },
+    { min: 1.011, max: 1.015, label: "Normal", color: "#008000" },
+    { min: 1.016, max: 1.02, label: "Concentrated", color: "#fff707" },
+    {
+      min: 1.021,
+      max: 1.025,
+      label: "Very-Concentrated",
+      color: "#FFC107",
+    },
+    {
+      min: 1.026,
+      max: 1.03,
+      label: "Highly-Concentrated",
+      color: "#FF0000",
+    },
+  ];
+
+  // Iterate through the ranges to find the matching label
+  for (const range of ranges) {
+    if (value >= range.min && value <= range.max) {
+      return range.label; // Return the corresponding label
+    }
+  }
+
+  return ""; // Return "None" if value is out of range
+}
+export function getGlucoseLabel(value) {
+  // Define the glucose levels and their corresponding labels and colors
+  const glucoseLevels = {
+    Negative: { label: "Negative-Glucose", color: "#008000" },
+    Trace: { label: "Below-Normal-Glucose", color: "#89d4f5" },
+    "+": { label: "Moderately-High-Glucose", color: "#fff707" },
+    "++": { label: "High-Glucose", color: "#FFC107" },
+    "+++": { label: "Very-High-Glucose", color: "#FF0000" },
+    "++++": { label: "Extremely-High-Glucose", color: "#8B0000" },
+  };
+
+  // Return the label and color based on the input value
+  const result = glucoseLevels[value];
+  return result ? result.label : ""; // Return "Unknown" if the value doesn't match
+}

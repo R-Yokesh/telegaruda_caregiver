@@ -49,18 +49,17 @@ import Pagination from "../../../../../Pagination/Pagination";
 
 const formatDateTime = (dateString) => {
   const dateObj = new Date(dateString);
-  
-  const day = String(dateObj.getDate()).padStart(2, '0'); // Get day and ensure 2 digits
-  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Get month (0-indexed) and ensure 2 digits
+
+  const day = String(dateObj.getDate()).padStart(2, "0"); // Get day and ensure 2 digits
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Get month (0-indexed) and ensure 2 digits
   const year = dateObj.getFullYear(); // Get full year
 
-  const hours = String(dateObj.getHours()).padStart(2, '0'); // Get hours and ensure 2 digits
-  const minutes = String(dateObj.getMinutes()).padStart(2, '0'); // Get minutes and ensure 2 digits
+  const hours = String(dateObj.getHours()).padStart(2, "0"); // Get hours and ensure 2 digits
+  const minutes = String(dateObj.getMinutes()).padStart(2, "0"); // Get minutes and ensure 2 digits
 
   // Format the string as DD-MM-YYYY HH:MM
   return `${day}-${month}-${year} ${hours}:${minutes}`;
 };
-
 
 const ObjectiveDetailPage = ({
   data,
@@ -70,8 +69,6 @@ const ObjectiveDetailPage = ({
   onPageChange,
   topData,
 }) => {
-
-
   const [chartView, setChartView] = useState(false);
   const [addView, setAddView] = useState(false);
   const [filterView, setFilterView] = useState(false);
@@ -100,8 +97,7 @@ const ObjectiveDetailPage = ({
     getFilterValues(startDate, endDate, searchValue);
   };
 
-  
-  // console.log('topDatatopDatatopDatatopData', topData)
+  // console.log('topDatatopDatatopDatatopData', data?.tableData)
   return (
     <>
       <CContainer className="p-0">
@@ -140,9 +136,8 @@ const ObjectiveDetailPage = ({
                       <span className="fs-14 fw-500">
                         {/* {topData[0]?.tableData?.[0]?.date} */}
                         {topData[0]?.tableData?.[0]?.date
-                        ? formatDateTime(topData[0]?.tableData?.[0]?.date) // Format date to DD-MM-YYYY HH:MM
-                        : ""}
-                         
+                          ? formatDateTime(topData[0]?.tableData?.[0]?.date) // Format date to DD-MM-YYYY HH:MM
+                          : ""}
                       </span>
                     </>
                   )}
@@ -234,17 +229,23 @@ const ObjectiveDetailPage = ({
               <>
                 {/* {filterView && <DateSearch />} */}
                 {filterView && (
-                  <DateRangePicker
-                    onClose={filterBack}
-                    getFilterValues={getFilters}
-                  />
+                  <CCol
+                    lg={12}
+                    className="d-flex flex-column"
+                    style={{ marginLeft: "15px" }}
+                  >
+                    <DateRangePicker
+                      onClose={filterBack}
+                      getFilterValues={getFilters}
+                    />
+                  </CCol>
                 )}
                 <DynamicTable
                   columnsData={data?.columnsData}
                   tableData={data?.tableData}
                   getTableDatas={getTableDatas}
                 />
-                {data?.tableData.length > 0 && (
+                {data?.tableData?.length > 0 && (
                   <CRow className="mb-3 mt-3">
                     <CCol lg={12} className="d-flex justify-content-center">
                       <Pagination
@@ -333,7 +334,7 @@ const ObjectiveDetailPage = ({
                   <GFR addBack={addBack} getTableDatas={getTableDatas} />
                 )}
                 {data?.name === "Urinalysis" && (
-                  <Urinalysis addBack={addBack} getTableDatas={getTableDatas}/>
+                  <Urinalysis addBack={addBack} getTableDatas={getTableDatas} />
                 )}
               </CModalBody>
             </CModal>
