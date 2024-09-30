@@ -17,6 +17,7 @@ const DiagnosisForm = ({
   defaultValues,
   addDiagnosis,
   editDiagnosis,
+  isSubmitting
 }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
