@@ -610,9 +610,9 @@ export const transformHeartRateData = (originalData, pagination) => {
         ? [{ type: "edit", disabled: item?.freeze === 1 }, { type: "delete" }]
         : [{ type: "warning" }],
     name: "Heart",
-    type: item?.details?.type || "Unknown",
-    interpretation: item?.details?.interpretation || "-",
-    result_file: item?.document || "-",
+    type: item?.details?.device_type || "",
+    interpretation: item?.details?.interpretation || "",
+    result_file: item?.document || "",
     id: item.id,
     user_id: item.user_id,
     slug: "heart-rate",
