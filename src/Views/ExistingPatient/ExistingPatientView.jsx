@@ -230,7 +230,7 @@ function ExistingPatientView() {
           PatientDetail.length <= 0 ? null : (
             <>
               {PatientDetail.map((data, i) => (
-                <div className="col-lg-4 col-md-6 col-sm-12 col-12">
+                <div className="col-lg-4 col-md-6 col-sm-12 col-12 d-flex">
                   {/* <Link
                   //   to={"/patients/history"}
                   className="card-link"
