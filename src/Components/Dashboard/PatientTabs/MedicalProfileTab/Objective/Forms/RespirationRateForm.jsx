@@ -245,7 +245,7 @@ const RespirationRateForm = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Respiration Rate(BPM) *
+                Respiration Rate(bpm) *
               </label>
               <input
                 type="text"

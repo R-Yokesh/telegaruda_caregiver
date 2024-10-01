@@ -15,11 +15,11 @@ const Modal = ({ isOpen, onClose, children }) => {
       size="xl"
     >
       <CModalBody className="p-0">
-        <div className="close-modal" onClick={onClose}>
+        <div onClick={onClose} className="position-absolute top-0 end-0 cursor">
           <img
             src={Assets.CloseBtn}
             alt="close-btn"
-            style={{ width: "100%" }}
+            style={{ width: "75%" }}
           />{" "}
         </div>
         <div>{children}</div>
@@ -29,3 +29,13 @@ const Modal = ({ isOpen, onClose, children }) => {
 };
 
 export default Modal;
+
+{
+  /* <div className="close-modal" onClick={onClose}>
+          <img
+            src={Assets.CloseBtn}
+            alt="close-btn"
+            style={{ width: "100%" }}
+          />{" "}
+        </div> */
+}

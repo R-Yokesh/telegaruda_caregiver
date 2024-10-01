@@ -443,7 +443,7 @@ const CallTab = () => {
               ) : (
                 <>
                   {doctors?.map((data, i) => (
-                    <div className="col-4" key={i}>
+                    <div className="col-4 d-flex" key={i}>
                       {/* <Link className="card-link"> */}
                       <RegisteredDoctorCards
                         DoctorDetail={data}

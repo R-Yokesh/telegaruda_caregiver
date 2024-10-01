@@ -363,7 +363,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Weight (Kg) *
+                Weight (kg) *
               </label>
               <input
                 type="text"
@@ -387,7 +387,7 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                BMI (Kgm2) *
+                BMI (kgm2) *
               </label>
               <input
                 type="text"

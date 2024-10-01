@@ -1,5 +1,6 @@
 import loginbanner from "./Images/Login/loginbanner.svg";
-import logomain from "./Images/Login/logomain.svg";
+// import logomain from "./Images/Login/logomain.svg";
+import logomain from "./Images/Login/cureselect-logo.jpg";
 import eyei from "./Images/Login/eyei.svg";
 import MyAcc from "./Images/My-Acc-Frame.png";
 import Edit from "./Images/Edit.png";

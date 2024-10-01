@@ -71,6 +71,10 @@ body {
   /* Change cursor to indicate disabled state */
 }
 
+.fx-grow {
+  flex: 1 1 auto;
+}
+
 .primary-bg {
   background: var(--theme-blue) !important;
 }

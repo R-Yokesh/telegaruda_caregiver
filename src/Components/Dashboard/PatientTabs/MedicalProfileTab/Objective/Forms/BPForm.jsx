@@ -368,7 +368,7 @@ const BPForm = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={6}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Pulse (in BPM) *
+                Pulse (in bpm) *
               </label>
               <input
                 type="text"

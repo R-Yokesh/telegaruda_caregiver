@@ -1,4 +1,5 @@
 .card-sec {
+    flex: 1 1 auto;
     background-color: var(--white);
     padding: 20px 15px;
     border-radius: 15px;

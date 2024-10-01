@@ -5,7 +5,7 @@ import { formatDateTime } from "../../Utils/dateUtils";
 function DoctorCards({ DoctorDetail }) {
   //   console.log("DoctorDetail", DoctorDetail);
   return (
-    <div className="card-sec">
+    <div className="card-sec fx-grow">
       <div className="row align-items-center">
         <div className="profile col-4">
           <img

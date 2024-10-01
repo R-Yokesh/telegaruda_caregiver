@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 
 const RegisteredDoctorCards = ({ DoctorDetail, getselectedProviderData }) => {
   return (
-    <div className="card-sec">
+    <div className="card-sec fx-grow">
       <div className="row align-items-center">
         <div className="profile col-4">
           <img

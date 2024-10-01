@@ -6,9 +6,10 @@ const Card = ({ data, getSelectedData, className }) => {
   return (
     <>
       <CCard
-        className={`card ${
-          className ? className : "minheight-188 max-height-100"
-        }`}
+        // className={`card ${
+        //   className ? className : "minheight-188 max-height-100"
+        // }`}
+        className="fx-grow"
         onClick={() => getSelectedData(data)}
       >
         <CCardBody

@@ -27,7 +27,7 @@ const Subjective = () => {
     : 0;
   const GoTOConsultPage = localStorage.getItem("PatientConsultTab");
   const parsedConsult = GoTOConsultPage ? JSON.parse(GoTOConsultPage) : false;
- 
+
   const [selectedData, setSelectedData] = useState();
   const [cardView, setCardView] = useState(
     ParsedPatientSubMenu === 1 ? true : false
@@ -74,9 +74,10 @@ const Subjective = () => {
         !rosView ? (
           <CRow>
             {cardData.map((dt, i) => (
-              <CCol md={4} xl={3} className="mb-3">
+              <CCol md={4} xl={3} className="mb-3 d-flex">
+                {/* min-height-200 */}
                 <Card
-                  className="min-height-200"
+                  className="fx-grow"
                   data={dt}
                   getSelectedData={getSelectedData}
                 />

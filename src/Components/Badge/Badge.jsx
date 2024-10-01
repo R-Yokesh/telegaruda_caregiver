@@ -4,7 +4,10 @@ const Badge = ({ label, color }) => {
   return (
     <div
       className={`badge badge-${color} fs-14 fw-500`}
-      style={{ color: color ? "white" : "black", textTransform: "capitalize" }}
+      style={{
+        color: color ? "white" : "black",
+        textTransform: color ? "" : "capitalize",
+      }}
     >
       {label}
     </div>

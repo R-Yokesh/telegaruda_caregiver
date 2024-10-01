@@ -80,7 +80,7 @@ function CallHistoryView() {
           filter.endDate !== null ? `&to_date=${filter.endDate}` : ""
         }&participant_ref_number=${data?.user_id}`
       );
-     
+
       if (response.code === 200) {
         setDoctorDetail(response?.data?.consults);
         setTotalItems(response?.data?.pagination?.total);
@@ -93,7 +93,7 @@ function CallHistoryView() {
   };
   useEffect(() => {
     getDoctors();
-  }, [currentPage, filter,data?.user_id]);
+  }, [currentPage, filter, data?.user_id]);
 
   const getRegisteredDoctors = useCallback(async () => {
     try {
@@ -149,10 +149,10 @@ function CallHistoryView() {
             ) : (
               <>
                 {DoctorDetail.map((data, i) => (
-                  <div className="col-4" onClick={() => DetailSec()}>
-                    <Link className="card-link">
+                  <div className="col-4 d-flex" onClick={() => DetailSec()}>
+                    {/* <Link className="card-link "> */}
                       <DoctorCards DoctorDetail={data} />
-                    </Link>
+                    {/* </Link> */}
                   </div>
                 ))}
               </>
