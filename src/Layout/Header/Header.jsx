@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { Assets } from "../../assets/Assets";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import useApi from "../../ApiServices/useApi";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton/PrimaryButton";
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   const [exit, setExit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -80,8 +80,8 @@ const Header = () => {
   //   setView(true);
   // };
 
-   // Debounce function to delay API call until user stops typing
-   useEffect(() => {
+  // Debounce function to delay API call until user stops typing
+  useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchValue) {
         getPatients();
@@ -89,15 +89,19 @@ const Header = () => {
       } else {
         setView(false);
       }
-    }, 500); 
+    }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchValue]); 
+  }, [searchValue]);
 
 
   return (
     <div>
       <header className="header">
+        {/* Mobile Menu Icon */}
+        <div className="mobile-menu-icon">
+        <i className="fa fa-bars" onClick={toggleSidebar}></i>
+        </div>
         <div className="logo">{/* <img src={""} alt="Apollo Logo" /> */}</div>
         <div className="sbn">
           <div className="search-bar">
@@ -146,8 +150,8 @@ const Header = () => {
                           <div className="patient-info">
 
                             <span className="patient-pad"><strong>{patient?.user?.first_name} {patient?.user?.last_name}</strong></span>
-                            <span>{patient?.additional_info?.age ? patient?.additional_info?.age : "-"}</span> <span>{patient?.user?.gender ? patient?.user?.gender :"-"}</span>
-                          
+                            <span>{patient?.additional_info?.age ? patient?.additional_info?.age : "-"}</span> <span>{patient?.user?.gender ? patient?.user?.gender : "-"}</span>
+
                             <p>MRN: {patient?.additional_info?.mrn_number ? patient?.additional_info?.mrn_number : "-"}</p>
                           </div>
                         </div>
@@ -193,7 +197,7 @@ const Header = () => {
           <CModalBody>
             <CContainer className="p-2 d-flex flex-column align-items-center mb-2">
               <span className="signout-message mb-3">
-              Are you sure want to signout?
+                Are you sure want to signout?
               </span>
               <div className="w-100 d-flex justify-content-center gap-3 flex-wrap">
                 <div style={{ width: "128px" }}>

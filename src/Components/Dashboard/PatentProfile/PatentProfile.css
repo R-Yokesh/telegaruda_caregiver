@@ -1,3 +1,4 @@
+
 .card-profile {
     background-color: #0084CF;
     border-radius: 12px;
@@ -32,3 +33,12 @@
     flex-direction: column;
     justify-content: center;
 }
+
+@media screen and (max-width: 568px) {
+  .tab-icon {
+    display: none;
+  }
+  .tab-title {
+    font-size: 14px !important;
+  }
+  }
