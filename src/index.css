@@ -713,4 +713,10 @@ body {
   padding-left: 10px !important;
   padding-right: 10px !important;
  }
+ .bread-crumbs a{
+  font-size: 13px;
+ }
+ .bread-crumbs a.active {
+  font-size: 13px;
+ }
 }

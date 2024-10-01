@@ -70,35 +70,105 @@ const Pagination = ({
   const pageNumbers = getPageNumbers();
 
   return (
-    <div
-      // className="pagination-home"
-      style={{
-        display: "flex",
-      }}
-    >
+    // <div
+    //   // className="pagination-home"
+    //   style={{
+    //     display: "flex",
+    //   }}
+    // >
+    //   <div
+    //     onClick={() => handlePageChange(currentPage - 1)}
+    //     disabled={currentPage === 1}
+    //     aria-label="Previous"
+    //      className="left-arrow-sec"
+    //     style={{
+    //       width: "56px",
+    //       height: "56px",
+    //       display: "flex",
+    //       alignItems: "center",
+    //       justifyContent: "center",
+    //       gap: "0px",
+    //       borderRadius: "8px",
+    //       opacity: "0px",
+    //       boxShadow: "0px 4px 24px 0px #0084CF14",
+    //       marginLeft: "10px",
+    //       outline: "none",
+    //       border: "none",
+    //       fontSize: "20px",
+    //       fontWeight: "600",
+    //       lineHeight: "28.9px",
+    //       cursor: "pointer",
+    //     }}
+    //   >
+    //     &lt;
+    //   </div>
+    //   {pageNumbers.map((number, index) => (
+    //     <div
+    //       key={index}
+    //       onClick={() => {
+    //         if (number !== "...") {
+    //           handlePageChange(number);
+    //         }
+    //       }}
+    //       className={number === currentPage ? "active-home-page" : ""}
+    //       disabled={number === "..."}
+    //       aria-current={number === currentPage ? "page" : undefined}
+    //       style={{
+    //         // display: "flex",
+    //         // alignItems: "center",
+    //         // justifyContent: "center",
+    //         // gap: "0px ",
+    //         // borderRadius: "8px ",
+    //         // opacity: "0px ",
+    //         // boxShadow: "0px 4px 24px 0px #0084CF14 ",
+    //         // marginLeft: "10px ",
+    //         // outline: "none ",
+    //         // border: "none ",
+    //         // fontSize: "20px ",
+    //         // fontWeight: "600 ",
+    //         // lineHeight: "28.9px ",
+    //         // cursor: "pointer",
+    //         // width: "56px",
+    //         // height: "56px",
+    //       }}
+    //     >
+    //       {number}
+    //     </div>
+    //   ))}
+    //   <div
+    //     onClick={() => handlePageChange(currentPage + 1)}
+    //     disabled={currentPage === totalPages}
+    //     className="right-arrow-sec"
+    //     aria-label="Next"
+    //     // style={{
+    //     //   width: "56px",
+    //     //   height: "56px",
+    //     //   display: "flex",
+    //     //   alignItems: "center",
+    //     //   justifyContent: "center",
+    //     //   gap: "0px",
+    //     //   borderRadius: "8px",
+    //     //   opacity: "0px",
+    //     //   boxShadow: "0px 4px 24px 0px #0084CF14",
+    //     //   marginLeft: "10px",
+    //     //   outline: "none",
+    //     //   border: "none",
+    //     //   fontSize: "20px",
+    //     //   fontWeight: "600",
+    //     //   lineHeight: "28.9px",
+    //     //   cursor: "pointer",
+    //     // }}
+    //   >
+    //     &gt;
+    //   </div>
+    // </div>
+
+    <div className="pagination-home">
       <div
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Previous"
-        // className="div-pagination"
-        style={{
-          width: "56px",
-          height: "56px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "0px",
-          borderRadius: "8px",
-          opacity: "0px",
-          boxShadow: "0px 4px 24px 0px #0084CF14",
-          marginLeft: "10px",
-          outline: "none",
-          border: "none",
-          fontSize: "20px",
-          fontWeight: "600",
-          lineHeight: "28.9px",
-          cursor: "pointer",
-        }}
+        className={`left-arrow-sec ${currentPage === 1 ? 'disabled' : ''}`}
       >
         &lt;
       </div>
@@ -110,27 +180,12 @@ const Pagination = ({
               handlePageChange(number);
             }
           }}
-          className={number === currentPage ? "active-home-page" : ""}
-          disabled={number === "..."}
+          className={`
+        pagination-number 
+        ${number === currentPage ? 'active-home-page' : ''} 
+        ${number === '...' ? 'disabled' : ''}
+      `}
           aria-current={number === currentPage ? "page" : undefined}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0px ",
-            borderRadius: "8px ",
-            opacity: "0px ",
-            boxShadow: "0px 4px 24px 0px #0084CF14 ",
-            marginLeft: "10px ",
-            outline: "none ",
-            border: "none ",
-            fontSize: "20px ",
-            fontWeight: "600 ",
-            lineHeight: "28.9px ",
-            cursor: "pointer",
-            width: "56px",
-            height: "56px",
-          }}
         >
           {number}
         </div>
@@ -139,28 +194,12 @@ const Pagination = ({
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="Next"
-        style={{
-          width: "56px",
-          height: "56px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "0px",
-          borderRadius: "8px",
-          opacity: "0px",
-          boxShadow: "0px 4px 24px 0px #0084CF14",
-          marginLeft: "10px",
-          outline: "none",
-          border: "none",
-          fontSize: "20px",
-          fontWeight: "600",
-          lineHeight: "28.9px",
-          cursor: "pointer",
-        }}
+        className={`right-arrow-sec ${currentPage === totalPages ? 'disabled' : ''}`}
       >
         &gt;
       </div>
     </div>
+
   );
 };
 

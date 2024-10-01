@@ -308,7 +308,7 @@ const CallTab = () => {
     <section className="call-tab-sec mt-3">
       {!callStart ? (
         <>
-          <div className="flex-sec top-sec">
+          <div className="flex-sec flex-sec-mobile top-sec">
             <div className="bread-crumbs">
               <p className="mb-0">
                 <Link to="/patients">Patient</Link> /{" "}
@@ -443,7 +443,7 @@ const CallTab = () => {
               ) : (
                 <>
                   {doctors?.map((data, i) => (
-                    <div className="col-4 d-flex" key={i}>
+                    <div className="col-lg-4 col-md-6 col-sm-12 d-flex" key={i}>
                       {/* <Link className="card-link"> */}
                       <RegisteredDoctorCards
                         DoctorDetail={data}
