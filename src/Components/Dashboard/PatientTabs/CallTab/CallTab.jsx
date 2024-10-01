@@ -173,7 +173,7 @@ const CallTab = () => {
     try {
       const body = {
         provider_id: providerDetail?.user_id,
-        consult_date: "2024-09-29",
+        consult_date: "2024-10-01",
         consult_time: "11:18",
         patient_id: data?.user_id,
         patient_name: "test",
@@ -185,8 +185,8 @@ const CallTab = () => {
           camera_type: "minrray",
           camera_short_name: "M",
         },
-        consult_date_time: "2024-09-29 11:18:00",
-        consult_end_time: "2024-09-29 23:59:00",
+        consult_date_time: "2024-10-01 11:18:00",
+        consult_end_time: "2024-10-01 23:59:00",
       };
 
       // Use the provided `post` function to send the request
@@ -217,6 +217,11 @@ const CallTab = () => {
     }
   };
   const isOpeningRef = useRef(false);
+
+  // For check tab is open or closed
+  const [tab, setTab] = useState(null);
+  const [isTabClosed, setIsTabClosed] = useState(true);
+
   const consultCreate = async (consultId, consulDetail) => {
     try {
       const body = {
@@ -246,7 +251,8 @@ const CallTab = () => {
             `https://teleconsult.a2zhealth.in/consult/${token}`,
             "_blank"
           );
-
+          setTab(newWindow);
+          setIsTabClosed(false);
           // Optional: Reset isOpeningRef after some time or when window is closed
           const interval = setInterval(() => {
             if (newWindow.closed) {
@@ -295,7 +301,6 @@ const CallTab = () => {
         clearCache();
         setEndCall(false);
         setCallStart(false);
-        console.log("first", response?.data?.consults?.id);
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -303,6 +308,22 @@ const CallTab = () => {
       console.error("Error fetching data:", error);
     }
   };
+  useEffect(() => {
+    const checkTabClosed = () => {
+      if (tab) {
+        if (tab.closed) {
+          setIsTabClosed(true);
+          clearInterval(intervalId); // Clear the interval if the tab is closed
+          clearCache();
+          consultUpdate(consultDetGet?.id); // Call the API function
+        }
+      }
+    };
+
+    const intervalId = setInterval(checkTabClosed, 1000); // Check every second
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, [consultDetGet?.id, tab]);
   console.log(consultDetGet);
   return (
     <section className="call-tab-sec mt-3">

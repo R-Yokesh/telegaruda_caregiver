@@ -304,7 +304,7 @@ const ExerciseHabitForm = ({
             {index !== 0 && (
               <CCol
                 xs={1}
-                className="d-flex align-items-start justify-content-start"
+                className="d-flex align-items-start justify-content-start mt-3"
               >
                 <div style={{ width: "40px", marginTop: "2rem" }}>
                   <ActiveButton onClick={() => deleteFormEntry(index)}>
@@ -331,12 +331,12 @@ const ExerciseHabitForm = ({
         ))}
 
         <CRow className="mb-3">
-          <CCol xs={3}>
+          <CCol xs={3} md={2}>
             <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
             {isSubmitting ? "Saving..." : "SAVE"}
           </PrimaryButton>
           </CCol>
-          <CCol xs={3}>
+          <CCol xs={3} md={2}>
             <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
           </CCol>
         </CRow>

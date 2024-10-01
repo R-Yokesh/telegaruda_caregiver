@@ -49,7 +49,7 @@ const Assesment = () => {
       {!diagnosisView && !immunizationView && !assessmentView ? (
         <CRow>
           {cardData.map((dt, i) => (
-            <CCol md={4} xl={3} className="mb-3">
+            <CCol md={4} xl={3} className="mb-3 d-flex">
               <Card data={dt} getSelectedData={getSelectedData} />
             </CCol>
           ))}
