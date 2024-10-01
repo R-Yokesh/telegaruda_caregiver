@@ -297,7 +297,7 @@ const PhysicalExam = ({ onClose, from }) => {
   };
 
   const handleNotesKeyPress = (slug, event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       onSubmit(
         { ...selectedOptions, [slug]: true }, // Sending selected options along with notes
         slug
@@ -342,6 +342,7 @@ const PhysicalExam = ({ onClose, from }) => {
   }, [getLists]);
 
   const onSubmit = async (formattedOptions, selectedSlug) => {
+    console.log("firstnote", notes[selectedSlug]);
     try {
       const url = `resource/patientHealth`; // Replace with your API endpoint
       const body = {
@@ -587,7 +588,9 @@ const PhysicalExam = ({ onClose, from }) => {
                                 onChange={(e) =>
                                   handleNotesChange(item?.slug, e.target.value)
                                 }
-                                onKeyDown={(e) => handleNotesKeyPress(item?.slug, e)} // Trigger API call on Enter
+                                onKeyDown={(e) =>
+                                  handleNotesKeyPress(item?.slug, e)
+                                } // Trigger API call on Enter
                                 disabled={editView}
                               />
                             </div>

@@ -219,7 +219,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                         color: `${tableData[0].details?.flags?.pefFlagColor}`,
                       },
                       {
-                        label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                        label: `FEV1/FVC Ratio:  ${tableData[0].details?.fev1_fvc}`,
                         color: `${tableData[0].details?.flags?.fev1FvcFlagColor}`,
                       },
                     ]
@@ -341,7 +341,9 @@ const VitalSign = ({ setVitalView, onClose }) => {
                       },
                       {
                         label: `Specific Gravity: ${tableData[0].details?.specificGravity}`,
-                        color: getSpeGraLabel(tableData[0].details?.specificGravity),
+                        color: getSpeGraLabel(
+                          tableData[0].details?.specificGravity
+                        ),
                       },
                       {
                         label: `PH: ${tableData[0]?.details?.ph}`,
@@ -554,7 +556,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     color: `${tableData[0].details?.flags?.pefFlagColor}`,
                   },
                   {
-                    label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                    label: `FEV1/FVC Ratio:  ${tableData[0].details?.fev1_fvc}`,
                     color: `${tableData[0].details?.flags?.fev1FvcFlagColor}`,
                   },
                 ]
@@ -648,6 +650,35 @@ const VitalSign = ({ setVitalView, onClose }) => {
                       tableData[0]?.details?.gfr || "N/A"
                     } mL/min/1.73m²`,
                     color: `${tableData[0]?.details?.gfrFlagColor}`,
+                  },
+                ]
+              : card?.slug === "urine"
+              ? [
+                  {
+                    label: `Color: ${tableData[0].details?.color}`,
+                    color: "",
+                  },
+                  {
+                    label: `Clarity: ${tableData[0]?.details?.clarity}`,
+                    color: "",
+                  },
+                  {
+                    label: `Glucose: ${tableData[0]?.details?.glucose}`,
+                    color: getGlucoseLabel(tableData[0].details?.glucose),
+                  },
+                  {
+                    label: `Specific Gravity: ${tableData[0].details?.specificGravity}`,
+                    color: getSpeGraLabel(
+                      tableData[0].details?.specificGravity
+                    ),
+                  },
+                  {
+                    label: `PH: ${tableData[0]?.details?.ph}`,
+                    color: tableData[0]?.details?.value_flag,
+                  },
+                  {
+                    label: `Protein: ${tableData[0]?.details?.protein}`,
+                    color: tableData[0]?.details?.protein_flag,
                   },
                 ]
               : []
