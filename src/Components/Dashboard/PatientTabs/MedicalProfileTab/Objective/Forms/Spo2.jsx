@@ -21,10 +21,10 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
   }
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [spO2, setSpO2] = useState(removePercent(defaultData?.spo2) || "");
+  const [spO2, setSpO2] = useState(removePercent(defaultData?.spo2));
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -85,6 +85,10 @@ const Spo2 = ({ addBack, defaultData, getTableDatas }) => {
     }
     if (!spO2) {
       currentErrors.spO2 = "SpO2 is required";
+      isValid = false;
+    }
+    if (spO2 === "0" || spO2 === "00" || spO2 === "000") {
+      currentErrors.spO2 = "SpO2 must be greater than 0";
       isValid = false;
     }
     setErrors(currentErrors);

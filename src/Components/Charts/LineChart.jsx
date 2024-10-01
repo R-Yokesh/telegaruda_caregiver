@@ -25,7 +25,7 @@ const LineChartDetails = ({ datas }) => {
           item?.["hemoglobinValue"] ||
           item?.["bmi_(kg/m²)"] ||
           item?.["blood_sugar_value"] ||
-          item?.["pulse_(bpm)"] ||
+          Number(item?.["pulse_(bpm)"]) ||
           item?.["hr_(bpm)"] ||
           item?.["respiration_rate_(bpm)"] ||
           item?.["spo2"] ||
@@ -38,7 +38,7 @@ const LineChartDetails = ({ datas }) => {
           item?.["urea_value"] ||
           item?.["creatinine_value"] ||
           item?.["gfr_value"] ||
-          item?.["ldl_(mg/dl)"]
+          item?.["ldl_(mg/dl)"] || 0
       ), // Convert pluse to integer if needed
 
       data2: parseInt(
@@ -52,7 +52,7 @@ const LineChartDetails = ({ datas }) => {
           ? item?.["ph"]
           : item?.["temperature_fahrenheit"]
           ? item?.["temperature_fahrenheit"]
-          : ""
+          : 0
       ),
       data3: parseInt(
         item?.["diastolic"]
@@ -63,7 +63,7 @@ const LineChartDetails = ({ datas }) => {
           ? item?.["vldl_(mg/dl)"]
           : item?.["urobilinogen"]
           ? item?.["urobilinogen"]
-          : ""
+          : 0
       ),
 
       data4: parseInt(
@@ -73,7 +73,7 @@ const LineChartDetails = ({ datas }) => {
           ? item?.["ldl/hdl_(mg/dl)"]
           : item?.["red_blood_cells"]
           ? item?.["red_blood_cells"]
-          : ""
+          : 0
       ),
 
       data5: parseInt(
@@ -81,12 +81,12 @@ const LineChartDetails = ({ datas }) => {
           ? item?.["triglycerides_(mg/dl)"]
           : item?.["white_blood_cells"]
           ? item?.["white_blood_cells"]
-          : ""
+          : 0
       ),
       data6: parseInt(
         item?.["total_cholesterol_(mg/dl)"]
           ? item?.["total_cholesterol_(mg/dl)"]
-          : ""
+          : 0
       ),
       // For temperature C / F
       unit: item?.unit,

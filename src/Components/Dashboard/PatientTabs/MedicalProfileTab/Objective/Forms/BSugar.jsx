@@ -15,7 +15,6 @@ import { useLocation } from "react-router-dom";
 import { Assets } from "../../../../../../assets/Assets";
 
 const BSugar = ({ addBack, defaultData, getTableDatas }) => {
-
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -23,7 +22,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [type, setType] = useState(defaultData?.type || "");
-  const [bloodSugar, setBloodSugar] = useState(defaultData?.blood_sugar_value || "");
+  const [bloodSugar, setBloodSugar] = useState(defaultData?.blood_sugar_value);
 
   const [errors, setErrors] = useState({
     date: "",
@@ -32,7 +31,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
     bloodSugar: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultData?.date || "";
   console.log("time", getCurrentTime());
   // Split date and time
@@ -112,6 +111,15 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
       currentErrors.bloodSugar = "Blood Sugar is required";
       isValid = false;
     }
+    if (
+      bloodSugar === "0" ||
+      bloodSugar === "00" ||
+      bloodSugar === "000" ||
+      bloodSugar === "0000"
+    ) {
+      currentErrors.bloodSugar = "Blood Sugar must be greater than 0";
+      isValid = false;
+    }
 
     setErrors(currentErrors);
     return isValid;
@@ -140,7 +148,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           unit: "mg/dL",
           type: type,
-          blood_sugar: bloodSugar,
+          blood_sugar: Number(bloodSugar),
         },
         user_id: data?.user_id,
         slug: "blood-sugar",
@@ -168,7 +176,7 @@ const BSugar = ({ addBack, defaultData, getTableDatas }) => {
           time: format(selectedTime, "HH:mm"),
           unit: "mg/dL",
           type: type,
-          blood_sugar: bloodSugar,
+          blood_sugar: Number(bloodSugar),
         },
         user_id: data?.user_id,
         slug: "blood-sugar",

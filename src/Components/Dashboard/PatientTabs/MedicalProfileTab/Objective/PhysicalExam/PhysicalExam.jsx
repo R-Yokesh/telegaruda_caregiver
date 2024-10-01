@@ -23,6 +23,7 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import ExamOptions from "../../../../../OptionItems/ExamOptions";
 import { format } from "date-fns";
+import DateSearch from "../../../../../DateRangePicker/DateSearch";
 
 const PhysicalExam = ({ onClose, from }) => {
   // const dateCards = [
@@ -419,7 +420,8 @@ const PhysicalExam = ({ onClose, from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateSelector getFilterValues={getFilterValues} />
+                  {/* <DateSelector getFilterValues={getFilterValues} /> */}
+                  <DateSearch getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}

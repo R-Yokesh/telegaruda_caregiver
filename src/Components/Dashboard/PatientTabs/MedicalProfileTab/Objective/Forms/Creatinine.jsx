@@ -18,10 +18,10 @@ const Creatinine = ({ addBack, defaultData, getTableDatas }) => {
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [creatinine, setCreatinine] = useState(defaultData?.creatinine_value || "");
+  const [creatinine, setCreatinine] = useState(defaultData?.creatinine_value);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -82,6 +82,10 @@ const Creatinine = ({ addBack, defaultData, getTableDatas }) => {
     }
     if (!creatinine) {
       currentErrors.creatinine = "Creatinine is required";
+      isValid = false;
+    }
+    if (creatinine === "0" || creatinine === "0.") {
+      currentErrors.creatinine = "Creatinine must be greater than 0";
       isValid = false;
     }
     setErrors(currentErrors);
@@ -264,7 +268,9 @@ const Creatinine = ({ addBack, defaultData, getTableDatas }) => {
                 value={creatinine}
                 onChange={(e) => numWithDecimal(e)}
               />
-              {errors.creatinine && <div className="error-text">{errors.creatinine}</div>}
+              {errors.creatinine && (
+                <div className="error-text">{errors.creatinine}</div>
+              )}
             </div>
           </CCol>
         </CRow>

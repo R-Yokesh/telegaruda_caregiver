@@ -18,10 +18,10 @@ const GFR = ({ addBack, defaultData, getTableDatas }) => {
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [gfr, setGfr] = useState(defaultData?.gfr_value || "");
+  const [gfr, setGfr] = useState(defaultData?.gfr_value);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -84,6 +84,11 @@ const GFR = ({ addBack, defaultData, getTableDatas }) => {
       currentErrors.gfr = "gfr is required";
       isValid = false;
     }
+    if (gfr === 0) {
+      currentErrors.gfr = "Gfr must be greater than 0";
+      isValid = false;
+    }
+    console.log("gff", gfr);
     setErrors(currentErrors);
     return isValid;
   };
@@ -192,7 +197,7 @@ const GFR = ({ addBack, defaultData, getTableDatas }) => {
     formattedValue = parts.join(".");
 
     // Set the formatted value to state or whatever variable you are using
-    setGfr(formattedValue);
+    setGfr(Number(formattedValue));
   };
   const handleClear = () => {
     setSelectedTime(null); // Clear the selected time

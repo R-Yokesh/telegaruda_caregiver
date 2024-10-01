@@ -25,7 +25,7 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
   );
   const [selectedUnit, setSelectedUnit] = useState(defaultData?.unit || null);
   const [temperature, setTemperature] = useState(
-    extractNum(defaultData?.temperature_value_units) || ""
+    extractNum(defaultData?.temperature_value_units)
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -58,8 +58,11 @@ const Temperature = ({ addBack, defaultData, getTableDatas }) => {
       isValid = false;
     }
     if (!temperature || isNaN(temperature)) {
-      currentErrors.temperature =
-        "Temperature is required and must be a number";
+      currentErrors.temperature = "Temperature is required";
+      isValid = false;
+    }
+    if (temperature === '0' ||temperature === '00'||temperature === '000'||temperature === '0000') {
+      currentErrors.temperature = "Temperature must be greater than 0";
       isValid = false;
     }
 

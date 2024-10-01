@@ -33,7 +33,7 @@ const CardChart = ({ datas }) => {
           item?.["urea_value"] ||
           item?.["creatinine_value"] ||
           item?.["gfr_value"] ||
-          item?.["ldl_(mg/dl)"]
+          item?.["ldl_(mg/dl)"] || 0
       ),
       // For temperature C / F
       unit: item?.unit,

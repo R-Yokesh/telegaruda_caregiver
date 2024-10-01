@@ -13,17 +13,16 @@ import { useLocation } from "react-router-dom";
 import { Assets } from "../../../../../../assets/Assets";
 
 const BKetone = ({ addBack, defaultData, getTableDatas }) => {
-
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
   const { post, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [keytone, setKeytone] = useState(defaultData?.blood_ketone_value || "");
+  const [keytone, setKeytone] = useState(defaultData?.blood_ketone_value);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -82,8 +81,8 @@ const BKetone = ({ addBack, defaultData, getTableDatas }) => {
       currentErrors.time = "Time is required";
       isValid = false;
     }
-    if (!keytone) {
-      currentErrors.keytone = "Blood keytone is required";
+    if (keytone === undefined || keytone === null || keytone === "") {
+      currentErrors.keytone = "Blood ketone is required";
       isValid = false;
     }
     setErrors(currentErrors);

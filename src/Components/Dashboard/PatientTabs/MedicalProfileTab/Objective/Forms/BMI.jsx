@@ -79,8 +79,8 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
       .replace(/^(\d{2})\.(\d{2}).*$/, "$1.$2")
       .replace(/(\..*)\./g, "$1");
   };
-  const [height, setHeight] = useState(defaultData?.["height_(cm)"] || "");
-  const [weight, setWeight] = useState(defaultData?.["weight_(kg)"] || "");
+  const [height, setHeight] = useState(defaultData?.["height_(cm)"]);
+  const [weight, setWeight] = useState(defaultData?.["weight_(kg)"]);
   const [heightUnit, setHeightUnit] = useState(
     defaultData?.height_unit || "cm"
   );
@@ -108,6 +108,14 @@ const BMI = ({ addBack, defaultData, getTableDatas }) => {
     }
     if (!weight || isNaN(weight) || weight <= 0) {
       currentErrors.weight = "Weight is required";
+      isValid = false;
+    }
+    if (height === 0) {
+      currentErrors.height = "Height must be greater than 0";
+      isValid = false;
+    }
+    if (weight === 0) {
+      currentErrors.weight = "Weight must be greater than 0";
       isValid = false;
     }
 

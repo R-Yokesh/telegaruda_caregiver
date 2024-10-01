@@ -112,8 +112,8 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
     nitrites: defaultData?.allFlagDetails?.nitrites || "",
     urobilinogen: Number(defaultData?.allFlagDetails?.urobilinogen) || "",
     bilirubin: defaultData?.allFlagDetails?.bilirubin || "",
-    redBloodCells: defaultData?.allFlagDetails?.redBloodCells || "",
-    whiteBloodCells: defaultData?.allFlagDetails?.whiteBloodCells || "",
+    redBloodCells: defaultData?.allFlagDetails?.redBloodCells,
+    whiteBloodCells: defaultData?.allFlagDetails?.whiteBloodCells,
     epithelialCells: defaultData?.allFlagDetails?.epithelialCells || "",
     crystal: defaultData?.allFlagDetails?.crystal || "",
     microorganisms: defaultData?.allFlagDetails?.microorganism || "",
@@ -172,13 +172,25 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
 
     let currentErrors = {};
     let isValid = true;
-
     for (const field of requiredFields) {
+      console.log(formData[field], field);
+
       if (!formData[field]) {
         currentErrors[field] = `${field.replace(
           /([A-Z])/g,
           " $1"
         )} is required.`;
+        isValid = false;
+      }
+      if (
+        (field === "ph" && formData[field] === "0") ||
+        formData[field] === "00"
+      ) {
+        currentErrors[field] = "This field must be greater than 0";
+        isValid = false;
+      }
+      if (field === "urobilinogen" && formData[field] === "0") {
+        currentErrors[field] = "This field must be greater than 0";
         isValid = false;
       }
     }
@@ -228,8 +240,8 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
           nitrites: formData.nitrites,
           urobilinogen: Number(formData.urobilinogen),
           bilirubin: formData.bilirubin,
-          redBloodCells: formData.redBloodCells,
-          whiteBloodCells: formData.whiteBloodCells,
+          redBloodCells: Number(formData.redBloodCells),
+          whiteBloodCells: Number(formData.whiteBloodCells),
           epithelialCells: formData.epithelialCells,
           crystal: formData.crystal,
           microorganism: formData.microorganisms,
@@ -270,8 +282,8 @@ const Urinalysis = ({ addBack, defaultData, getTableDatas }) => {
           nitrites: formData.nitrites,
           urobilinogen: Number(formData.urobilinogen),
           bilirubin: formData.bilirubin,
-          redBloodCells: formData.redBloodCells,
-          whiteBloodCells: formData.whiteBloodCells,
+          redBloodCells: Number(formData.redBloodCells),
+          whiteBloodCells: Number(formData.whiteBloodCells),
           epithelialCells: formData.epithelialCells,
           crystal: formData.crystal,
           microorganism: formData.microorganisms,

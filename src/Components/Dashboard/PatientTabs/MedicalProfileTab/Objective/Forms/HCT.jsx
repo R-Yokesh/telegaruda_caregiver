@@ -19,10 +19,10 @@ const HCT = ({ addBack, defaultData, getTableDatas }) => {
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [hct, setHct] = useState(defaultData?.["hct_%"] || "");
+  const [hct, setHct] = useState(defaultData?.["hct_%"]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
   const defaultDateTime = defaultData?.date || "";
 
   // Split date and time
@@ -83,6 +83,10 @@ const HCT = ({ addBack, defaultData, getTableDatas }) => {
     }
     if (!hct) {
       currentErrors.hct = "HCT is required";
+      isValid = false;
+    }
+    if (hct === 0) {
+      currentErrors.hct = "HCT must be greater than 0";
       isValid = false;
     }
     setErrors(currentErrors);
@@ -160,7 +164,7 @@ const HCT = ({ addBack, defaultData, getTableDatas }) => {
       .replace(/^(\d{3})\d*$/, "$1")
       .replace(/^(\d{3})\.(\d{1}).*$/, "$1.$2")
       .replace(/(\..*)\./g, "$1");
-    setHct(deciNum);
+    setHct(Number(deciNum));
   };
   const handleClear = () => {
     setSelectedTime(null); // Clear the selected time
@@ -263,6 +267,7 @@ const HCT = ({ addBack, defaultData, getTableDatas }) => {
                 value={hct}
                 onChange={(e) => numWithDecimal(e)}
               />
+              {errors.hct && <div className="error-text">{errors.hct}</div>}
             </div>
           </CCol>
         </CRow>

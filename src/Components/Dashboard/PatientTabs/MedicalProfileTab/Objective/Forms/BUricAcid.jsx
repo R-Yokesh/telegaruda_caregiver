@@ -13,13 +13,12 @@ import { useLocation } from "react-router-dom";
 import { Assets } from "../../../../../../assets/Assets";
 
 const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
-  console.log('first', defaultData)
   const { post, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [uricAcid, setUricAcid] = useState(defaultData?.blood_uric_acid_value || "");
+  const [uricAcid, setUricAcid] = useState(defaultData?.blood_uric_acid_value);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const maxDate = new Date(); // Restrict future dates 
@@ -81,7 +80,7 @@ const BUricAcid = ({ addBack, defaultData, getTableDatas }) => {
       currentErrors.time = "Time is required";
       isValid = false;
     }
-    if (!uricAcid) {
+    if (uricAcid === undefined || uricAcid === null || uricAcid === '') {
       currentErrors.uricAcid = "Blood Uric Acid is required";
       isValid = false;
     }

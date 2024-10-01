@@ -10,11 +10,10 @@ import { toast } from "react-toastify";
 import { CustomInput, getCurrentTime } from "../../../../../../Utils/dateUtils";
 import { DATE_FORMAT } from "../../../../../../Config/config";
 import { useLocation } from "react-router-dom";
-import "./LFTForm.css"
+import "./LFTForm.css";
 import { Assets } from "../../../../../../assets/Assets";
 
 const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
-
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const { post, patch } = useApi();
@@ -26,32 +25,26 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
   const [fev1Percent, setFev1Percent] = useState(
     defaultData?.fev1Percent || ""
   );
-  const [pefL, setPefL] = useState(defaultData?.["pef_(%)"] || "");
-  const [pefPercent, setPefPercent] = useState(defaultData?.pefPercent || "");
+  const [pefL, setPefL] = useState(defaultData?.["pef_(%)"]);
+  const [pefPercent, setPefPercent] = useState(defaultData?.pefPercent);
   const [fev1FvcPercent, setFev1FvcPercent] = useState(
-    defaultData?.["fev1/fvc_(%)"] || ""
+    defaultData?.["fev1/fvc_(%)"]
   );
-  const [fef25L, setFef25L] = useState(defaultData?.fef25 || "");
-  const [fef25Percent, setFef25Percent] = useState(
-    defaultData?.fef25Percent || ""
-  );
-  const [fef50L, setFef50L] = useState(defaultData?.fef50 || "");
-  const [fef50Percent, setFef50Percent] = useState(
-    defaultData?.fef50Percent || ""
-  );
-  const [fef75L, setFef75L] = useState(defaultData?.fef75 || "");
-  const [fef75Percent, setFef75Percent] = useState(
-    defaultData?.fef75Percent || ""
-  );
-  const [fef2575L, setFef2575L] = useState(defaultData?.fef2575 || "");
+  const [fef25L, setFef25L] = useState(defaultData?.fef25);
+  const [fef25Percent, setFef25Percent] = useState(defaultData?.fef25Percent);
+  const [fef50L, setFef50L] = useState(defaultData?.fef50);
+  const [fef50Percent, setFef50Percent] = useState(defaultData?.fef50Percent);
+  const [fef75L, setFef75L] = useState(defaultData?.fef75);
+  const [fef75Percent, setFef75Percent] = useState(defaultData?.fef75Percent);
+  const [fef2575L, setFef2575L] = useState(defaultData?.fef2575);
   const [fef2575Percent, setFef2575Percent] = useState(
-    defaultData?.fef2575Percent || ""
+    defaultData?.fef2575Percent
   );
-  const [notes, setNotes] = useState(defaultData?.notes || "");
+  const [notes, setNotes] = useState(defaultData?.notes);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const maxDate = new Date(); // Restrict future dates 
-  const defaultDateTime = defaultData?.date || "";
+  const maxDate = new Date(); // Restrict future dates
+  const defaultDateTime = defaultData?.date;
 
   // Split date and time
   const defaultDate = defaultDateTime.split(" ")[0] || "";
@@ -178,12 +171,16 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
         label: "FEV1/FVC (%)",
       },
     ];
-
-    fields?.forEach((field) => {
-      if (field?.required && !field?.value) {
-        newErrors[field?.name] = `${field?.label} is required`;
+    fields.forEach((field) => {
+      if (
+        field.required &&
+        (field.value === undefined ||
+          field.value === null ||
+          field.value === "")
+      ) {
+        newErrors[field.name] = `${field.label} is required`;
         isValid = false;
-      } else if (field?.maxLength && field?.value?.length > field?.maxLength) {
+      } else if (field.maxLength && field.value.length > field.maxLength) {
         newErrors[
           field.name
         ] = `Maximum length is ${field.maxLength} characters`;
@@ -191,8 +188,26 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
       } else if (isNaN(field.value)) {
         newErrors[field.name] = "Must be a number";
         isValid = false;
+      } else if (field.value <= 0) {
+        // Check if the value is less than or equal to 0
+        newErrors[field.name] = `${field.label} must be greater than 0`;
+        isValid = false;
       }
     });
+    // fields?.forEach((field) => {
+    //   if (field?.required && !field?.value) {
+    //     newErrors[field?.name] = `${field?.label} is required`;
+    //     isValid = false;
+    //   } else if (field?.maxLength && field?.value?.length > field?.maxLength) {
+    //     newErrors[
+    //       field.name
+    //     ] = `Maximum length is ${field.maxLength} characters`;
+    //     isValid = false;
+    //   } else if (isNaN(field.value)) {
+    //     newErrors[field.name] = "Must be a number";
+    //     isValid = false;
+    //   }
+    // });
 
     setErrors(newErrors);
     return isValid;
@@ -388,33 +403,44 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               <table className="fvc-table">
                 <thead>
                   <tr>
-                    <th colSpan="2" className="head">FVC *</th>
+                    <th colSpan="2" className="head">
+                      FVC *
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={5}
                         onInput={numWithDecimal}
                         value={fvcL}
                         onChange={(e) => setFvcL(e.target.value)}
-
-                      />(l)
+                      />
+                      (l)
                     </td>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={2}
                         onInput={convertNum}
                         value={fvcPercent}
                         onChange={(e) => setFvcPercent(e.target.value)}
-
-                      />(%)
+                      />
+                      (%)
                     </td>
                   </tr>
-                  {errors.fvcL && <div className="error-text">{errors.fvcL}</div>}
+                  {errors.fvcL && (
+                    <div className="error-text">{errors.fvcL}</div>
+                  )}
                   {errors.fvcPercent && (
-                    <div className="error-text">{errors.fvcPercent}</div>)}
+                    <div className="error-text">{errors.fvcPercent}</div>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -424,31 +450,42 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               <table className="fvc-table">
                 <thead>
                   <tr>
-                    <th colSpan="2" className="head"> FEV1 *</th>
+                    <th colSpan="2" className="head">
+                      {" "}
+                      FEV1 *
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={5}
                         onInput={numWithDecimal}
                         value={fev1L}
                         onChange={(e) => setFev1L(e.target.value)}
-
-                      />(l)
+                      />
+                      (l)
                     </td>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={2}
                         onInput={convertNum}
                         value={fev1Percent}
                         onChange={(e) => setFev1Percent(e.target.value)}
-
-                      />(%)
+                      />
+                      (%)
                     </td>
                   </tr>
-                  {errors.fev1L && <div className="error-text">{errors.fev1L}</div>}
+                  {errors.fev1L && (
+                    <div className="error-text">{errors.fev1L}</div>
+                  )}
                   {errors.fev1Percent && (
                     <div className="error-text">{errors.fev1Percent}</div>
                   )}
@@ -461,37 +498,44 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               <table className="fvc-table">
                 <thead>
                   <tr>
-                    <th colSpan="2" className="head"> PEF</th>
+                    <th colSpan="2" className="head">
+                      {" "}
+                      PEF
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={5}
                         onInput={numWithDecimal}
                         value={pefL}
                         onChange={(e) => setPefL(e.target.value)}
-
-                      />(l/s)
+                      />
+                      (l/s)
                     </td>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={2}
                         onInput={convertNum}
                         value={pefPercent}
                         onChange={(e) => setPefPercent(e.target.value)}
-
-                      />(%)
+                      />
+                      (%)
                     </td>
                   </tr>
                 </tbody>
-
               </table>
             </div>
           </CCol>
         </CRow>
-
 
         <CRow className="mb-3">
           <CCol lg={4}>
@@ -499,30 +543,39 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               <table className="fvc-table">
                 <thead>
                   <tr>
-                    <th colSpan="2" className="head">FEF25</th>
+                    <th colSpan="2" className="head">
+                      FEF25
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={5}
                         onInput={numWithDecimal}
                         value={fef25L}
                         onChange={(e) => setFef25L(e.target.value)}
-                      />(l/s)
+                      />
+                      (l/s)
                     </td>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={2}
                         onInput={convertNum}
                         value={fef25Percent}
                         onChange={(e) => setFef25Percent(e.target.value)}
-                      />(%)
+                      />
+                      (%)
                     </td>
                   </tr>
                 </tbody>
-
               </table>
             </div>
           </CCol>
@@ -531,30 +584,39 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               <table className="fvc-table">
                 <thead>
                   <tr>
-                    <th colSpan="2" className="head">FEF50</th>
+                    <th colSpan="2" className="head">
+                      FEF50
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={5}
                         onInput={numWithDecimal}
                         value={fef50L}
                         onChange={(e) => setFef50L(e.target.value)}
-                      />(l/s)
+                      />
+                      (l/s)
                     </td>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={2}
                         onInput={convertNum}
                         value={fef50Percent}
                         onChange={(e) => setFef50Percent(e.target.value)}
-                      />(%)
+                      />
+                      (%)
                     </td>
                   </tr>
                 </tbody>
-
               </table>
             </div>
           </CCol>
@@ -563,30 +625,39 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               <table className="fvc-table">
                 <thead>
                   <tr>
-                    <th colSpan="2" className="head">FEF75</th>
+                    <th colSpan="2" className="head">
+                      FEF75
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={5}
                         onInput={numWithDecimal}
                         value={fef75L}
                         onChange={(e) => setFef75L(e.target.value)}
-                      />(l/s)
+                      />
+                      (l/s)
                     </td>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={2}
                         onInput={convertNum}
                         value={fef75Percent}
                         onChange={(e) => setFef75Percent(e.target.value)}
-                      />(%)
+                      />
+                      (%)
                     </td>
                   </tr>
                 </tbody>
-
               </table>
             </div>
           </CCol>
@@ -597,34 +668,45 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               <table className="fvc-table">
                 <thead>
                   <tr>
-                    <th colSpan="2" className="head">FEF2575  </th>
+                    <th colSpan="2" className="head">
+                      FEF2575{" "}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={5}
                         onInput={numWithDecimal}
                         value={fef2575L}
                         onChange={(e) => setFef2575L(e.target.value)}
-                      />(l/s)
+                      />
+                      (l/s)
                     </td>
                     <td>
-                      <input type="text" placeholder="Enter" className="fvc-input"
+                      <input
+                        type="text"
+                        placeholder="Enter"
+                        className="fvc-input"
                         maxLength={2}
                         onInput={convertNum}
                         value={fef2575Percent}
                         onChange={(e) => setFef2575Percent(e.target.value)}
-                      />(%)
+                      />
+                      (%)
                     </td>
                   </tr>
-                  {errors.pefL && <div className="error-text">{errors.pefL}</div>}
+                  {errors.pefL && (
+                    <div className="error-text">{errors.pefL}</div>
+                  )}
                   {errors.pefPercent && (
                     <div className="error-text">{errors.pefPercent}</div>
                   )}
                 </tbody>
-
               </table>
             </div>
           </CCol>
@@ -648,13 +730,9 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
               )}
             </div>
           </CCol>
-
         </CRow>
 
-
-        <CRow className="mb-3">
-
-        </CRow>
+        <CRow className="mb-3"></CRow>
         <CRow className="mb-3">
           <CCol lg={8}>
             <div class="position-relative">

@@ -27,6 +27,7 @@ import BlurBackground from "../../../BlurBackground/BlurBackground";
 import PrimaryButton from "../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../Buttons/SecondaryButton/SecondaryButton";
 import CallButton from "./CallButton/CallButton";
+import { getCurrentDateTime } from "../../../../Utils/commonUtils";
 
 const CallTab = () => {
   const { get, post, clearCache, patch } = useApi();
@@ -168,15 +169,15 @@ const CallTab = () => {
     setProviderData(data);
     startConslt(data);
   };
-
+  const currentDateTime = getCurrentDateTime();
   const startConslt = async (providerDetail) => {
     try {
       const body = {
         provider_id: providerDetail?.user_id,
-        consult_date: "2024-10-01",
-        consult_time: "11:18",
+        consult_date: currentDateTime?.consult_date,
+        consult_time: currentDateTime?.consult_time,
         patient_id: data?.user_id,
-        patient_name: "test",
+        patient_name: data?.user?.first_name + " " + data?.user?.last_name,
         speciality: "unknown",
         reason_for_consult: "Garuda Consult Call",
         cart_camera: {
@@ -185,8 +186,8 @@ const CallTab = () => {
           camera_type: "minrray",
           camera_short_name: "M",
         },
-        consult_date_time: "2024-10-01 11:18:00",
-        consult_end_time: "2024-10-01 23:59:00",
+        consult_date_time: currentDateTime?.consult_date_time,
+        consult_end_time: currentDateTime?.consult_end_time,
       };
 
       // Use the provided `post` function to send the request
@@ -324,7 +325,8 @@ const CallTab = () => {
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [consultDetGet?.id, tab]);
-  console.log(consultDetGet);
+  console.log(data);
+
   return (
     <section className="call-tab-sec mt-3">
       {!callStart ? (
