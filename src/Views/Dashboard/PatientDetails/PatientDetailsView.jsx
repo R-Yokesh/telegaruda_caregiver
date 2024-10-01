@@ -32,7 +32,7 @@ const PatientDetailsView = () => {
   return (
     <div className="">
       {/* <CContainer> */}
-      <CRow className="mb-2">
+      <CRow className="mb-2 card-profile-sec">
         <CCol md={12} xl={5} className="mb-2">
           <PatentProfile />
         </CCol>

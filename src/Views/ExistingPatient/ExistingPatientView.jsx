@@ -20,6 +20,8 @@ import PhoneNumberInput from "../../Components/PhoneNumberInput/PhoneNumberInput
 import { toast } from "react-toastify";
 import ProfileUpdate from "./ProfileUpdate";
 import { format } from "date-fns";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 function ExistingPatientView() {
   const navigate = useNavigate();
@@ -122,8 +124,8 @@ function ExistingPatientView() {
     if (isNaN(age)) newErrors.age = "Age must be a number.";
     if (!gender) newErrors.gender = "Gender is required.";
     if (!mobile) newErrors.mobileNumber = "Mobile Number is required.";
-    if (mobile?.length > 10)
-      newErrors.mobileNumber = "Mobile Number must be in 10 digit.";
+    // if (mobile?.length > 10)
+    //   newErrors.mobileNumber = "Mobile Number must be in 10 digit.";
     // You can add more validations for phone number if needed
 
     setErrors(newErrors);
@@ -223,12 +225,12 @@ function ExistingPatientView() {
           <button>+ ADD Patient</button>
         </div>
       </div>
-      <div className="row mb-3">
+      <div className="row mb-3 container-fluid">
         {!loading ? (
           PatientDetail.length <= 0 ? null : (
             <>
               {PatientDetail.map((data, i) => (
-                <div className="col-4">
+                <div className="col-lg-4 col-md-6 col-sm-12 col-12">
                   {/* <Link
                   //   to={"/patients/history"}
                   className="card-link"
@@ -406,17 +408,12 @@ function ExistingPatientView() {
                     </div>
                   </CCol>
                   <CCol lg={6}>
-                    <div style={{ width: "100%" }}>
+                    {/* <div style={{ width: "100%" }}>
                       <div class="position-relative">
                         <label for="validationTooltip01" class="form-label">
                           Mobile Number *
                         </label>
-                        {/* <input
-                          type="text"
-                          class="form-control pad-10"
-                          id="validationTooltip01"
-                          placeholder="Enter"
-                        /> */}
+                       
                         <PhoneNumberInput getPhone={getPhone} />
                         {errors.mobileNumber && (
                           <div className="text-danger">
@@ -424,6 +421,20 @@ function ExistingPatientView() {
                           </div>
                         )}
                       </div>
+                    </div> */}
+
+                    <div>
+                      <p className="form-label">Mobile Number</p>
+                      <PhoneInput
+                        country={'in'}
+                        placeholder="Enter" // Set placeholder here
+                        onChange={(value) => setMobile(value)}
+                      />
+                      {errors.mobileNumber && (
+                        <div className="text-danger">
+                          {errors.mobileNumber}
+                        </div>
+                      )}
                     </div>
                   </CCol>
                   <CCol lg={6}>

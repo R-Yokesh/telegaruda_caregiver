@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header/Header";
 import SideBar from "./Sidebar/SideBar";
 import AppContent from "./AppContent/AppContent";
@@ -12,20 +12,27 @@ const DefaultLayout = () => {
   const { ses_exp, logout, setSes_exp } = useAuth();
   const navigate = useNavigate();
   console.log("first", ses_exp);
+  // State to manage the sidebar visibility on mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
   return (
     <div>
       <div className="d-flex">
-        <SideBar />
+        {/* Pass the toggle and isSidebarOpen state to Sidebar */}
+        <SideBar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="flex-grow-1 d-flex flex-column">
-          <Header />
-          <div className="flex-grow-1 light-back px-4 py-4">
+          <Header toggleSidebar={toggleSidebar} />
+          <div className="flex-grow-1 light-back  py-4 content-sec-main">
             <AppContent />
             {ses_exp && (
               <SessionExpiredModal
                 show={ses_exp}
                 onClose={() => {
                   setSes_exp(false);
-                  logout(); // Handle logout
+                  logout();
                   navigate("/");
                 }}
               />

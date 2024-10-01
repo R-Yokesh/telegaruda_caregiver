@@ -34,6 +34,11 @@ code {
   pointer-events: none;
   /* Disable any interactions like clicks */
 }
+.content-sec-main{
+  padding-right: 1.5rem !important;
+  padding-left: 1.5rem !important;
+}
+
 
 .cursor-default {
   cursor: default !important;
@@ -699,4 +704,13 @@ body {
   100% {
     background-color: #e0e0e0;
   }
+}
+
+
+
+@media screen and (max-width: 568px) {
+ .content-sec-main{
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+ }
 }
