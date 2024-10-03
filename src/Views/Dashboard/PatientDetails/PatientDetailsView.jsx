@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./PatientDetailsView.css";
 import PatentProfile from "../../../Components/Dashboard/PatentProfile/PatentProfile";
 import { CCol, CContainer, CRow } from "@coreui/react";
@@ -12,6 +12,7 @@ import CallHistoryView from "../../CallHistory/CallHistoryView";
 import CallTab from "../../../Components/Dashboard/PatientTabs/CallTab/CallTab";
 import { useLocation } from "react-router-dom";
 import CameraControl from "../../../Components/Dashboard/PatientTabs/CameraControlTab/CameraControl";
+import CommonCallButton from "../../../Components/Dashboard/PatientTabs/CallTab/CallButton/CommonCallButton";
 
 const PatientDetailsView = () => {
   const [currentTab, setCurrentTab] = useState(() => {
@@ -25,13 +26,26 @@ const PatientDetailsView = () => {
       ? Number(storedFrom)
       : null;
   });
+  const storedCallStatusData = localStorage.getItem("callStatus");
+  const [callStart, setCallStart] = useState(
+    storedCallStatusData ? storedCallStatusData : false
+  );
   const getCurrentTab = (data) => {
     setCurrentTab(data);
   };
-
+  useEffect(() => {
+    setCallStart(storedCallStatusData);
+  }, [storedCallStatusData, callStart]);
   return (
     <div className="">
       {/* <CContainer> */}
+      <CRow className="d-flex justify-content-center">
+        {currentTab !== 1 && (
+          <CCol md={12} xl={5} className="mb-2 d-flex justify-content-center">
+            {storedCallStatusData === "true" && <CommonCallButton />}
+          </CCol>
+        )}
+      </CRow>
       <CRow className="mb-2 card-profile-sec">
         <CCol md={12} xl={5} className="mb-2">
           <PatentProfile />

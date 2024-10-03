@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Assets } from "../../assets/Assets";
 import { formatDateTime } from "../../Utils/dateUtils";
 
 function DoctorCards({ DoctorDetail }) {
-  //   console.log("DoctorDetail", DoctorDetail);
+  const [publisherObjects, setPublisherObjects] = useState([]);
+
+  useEffect(() => {
+    if (DoctorDetail) {
+      const getPublisherData = () => {
+        return DoctorDetail?.participants?.filter(
+          (participant) => participant?.role === "publisher"
+        );
+      };
+      setPublisherObjects(getPublisherData);
+    }
+  }, [DoctorDetail]);
+  console.log("first", publisherObjects);
   return (
     <div className="card-sec fx-grow">
       <div className="row align-items-center">
@@ -17,30 +29,35 @@ function DoctorCards({ DoctorDetail }) {
           <h5>
             Dr.{" "}
             {DoctorDetail?.participants
-              ? DoctorDetail?.participants[1]?.participant_info?.name
+              ? publisherObjects[0]?.participant_info?.name
               : "--"}
           </h5>
           <p className="gap-sec d-flex flex-wrap">
             <small className="fs-10 fw-500">
               {DoctorDetail?.participants
-                ? DoctorDetail?.participants[1]?.participant_info?.email
+                ? publisherObjects[0]?.participant_info?.email
                 : "--"}
             </small>
             <small className="fs-10 fw-500">|</small>
             <small className="fs-10 fw-500">
               {DoctorDetail?.participants
-                ? DoctorDetail?.participants[1]?.participant_info?.phone
+                ? publisherObjects[0]?.participant_info?.phone
                 : "--"}
             </small>
           </p>
           <p className="flex-sec-wrap gap-sec">
-            <small className="fs-10 fw-600">{DoctorDetail?.participants
-                ? DoctorDetail?.participants[1]?.participant_info?.additional_info?.consult_speciality
-                : "--"}</small>
-            <small className="fs-10 fw-600">|</small> 
-            <small className="fs-10 fw-600">{DoctorDetail?.scheduled_at
+            <small className="fs-10 fw-600">
+              {DoctorDetail?.participants
+                ? publisherObjects[0]?.participant_info?.additional_info
+                    ?.consult_speciality
+                : "--"}
+            </small>
+            <small className="fs-10 fw-600">|</small>
+            <small className="fs-10 fw-600">
+              {DoctorDetail?.scheduled_at
                 ? formatDateTime(DoctorDetail?.scheduled_at)
-                : "--"}</small>
+                : "--"}
+            </small>
           </p>
         </div>
       </div>

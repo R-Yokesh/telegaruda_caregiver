@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { Assets } from "../../assets/Assets";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CContainer, CModal, CModalBody } from "@coreui/react";
 import CloseButton from "../../Components/Buttons/CloseButton/CloseButton";
 import SecondaryButton from "../../Components/Buttons/SecondaryButton/SecondaryButton";
@@ -20,7 +20,14 @@ const Header = ({ toggleSidebar }) => {
 
   const navigate = useNavigate();
   const { logout, user } = useAuth();
-  const { get } = useApi();
+  const { post, clearCache, patch, get } = useApi();
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  const storedConsultData = localStorage.getItem("consultDetails");
+  const parseConsultData = JSON.parse(storedConsultData);
+
+  const storedCallStatusData = localStorage.getItem("callStatus");
+  const parsedCallStatusData = JSON.parse(storedCallStatusData);
 
   const logoutHandler = () => {
     sessionStorage.setItem("loggedIn", "false");
@@ -63,7 +70,7 @@ const Header = ({ toggleSidebar }) => {
   const handlePatientSelect = (patient) => {
     navigate("/patients/history", { state: { PatientDetail: patient } });
     setView(false);
-    setSearchValue('')
+    setSearchValue("");
     localStorage.removeItem("PatientConsultTab");
     localStorage.removeItem("patiendDetailTab");
     localStorage.removeItem("PatientMenu");
@@ -94,13 +101,62 @@ const Header = ({ toggleSidebar }) => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchValue]);
 
+  // Logout and SignOut
+  const EndConslt = async () => {
+    try {
+      const body = { consult_id: parseConsultData?.id, status: "ended" };
+
+      // Use the provided `post` function to send the request
+      const response = await patch(
+        `resource/consults/${parseConsultData?.id}`,
+        body
+      );
+
+      if (response.code === 200) {
+        clearCache();
+        consultUpdate(parseConsultData?.id);
+        // localStorage.setItem("callStatus", JSON.stringify(false));
+        localStorage.removeItem("callStatus");
+        localStorage.removeItem("consultDetails");
+        localStorage.removeItem("providerData");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const consultUpdate = async (consultId) => {
+    try {
+      const body = {
+        consult_id: consultId,
+        user_id: data?.user_id,
+        cache_type: "delete",
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`patient/ConsultCache`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        localStorage.removeItem("consultDetails");
+        localStorage.removeItem("providerData");
+        localStorage.removeItem("callStatus");
+        logoutHandler();
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <div>
       <header className="header">
         {/* Mobile Menu Icon */}
         <div className="mobile-menu-icon">
-        <i className="fa fa-bars" onClick={toggleSidebar}></i>
+          <i className="fa fa-bars" onClick={toggleSidebar}></i>
         </div>
         <div className="logo">{/* <img src={""} alt="Apollo Logo" /> */}</div>
         <div className="sbn">
@@ -148,11 +204,28 @@ const Header = ({ toggleSidebar }) => {
                       >
                         <div className="patient-card">
                           <div className="patient-info">
-
-                            <span className="patient-pad"><strong>{patient?.user?.first_name} {patient?.user?.last_name}</strong></span>
-                            <span>{patient?.additional_info?.age ? patient?.additional_info?.age : "-"}</span> <span>{patient?.user?.gender ? patient?.user?.gender : "-"}</span>
-
-                            <p>MRN: {patient?.additional_info?.mrn_number ? patient?.additional_info?.mrn_number : "-"}</p>
+                            <span className="patient-pad">
+                              <strong>
+                                {patient?.user?.first_name}{" "}
+                                {patient?.user?.last_name}
+                              </strong>
+                            </span>
+                            <span>
+                              {patient?.additional_info?.age
+                                ? patient?.additional_info?.age
+                                : "-"}
+                            </span>{" "}
+                            <span>
+                              {patient?.user?.gender
+                                ? patient?.user?.gender
+                                : "-"}
+                            </span>
+                            <p>
+                              MRN:{" "}
+                              {patient?.additional_info?.mrn_number
+                                ? patient?.additional_info?.mrn_number
+                                : "-"}
+                            </p>
                           </div>
                         </div>
                       </li>
@@ -197,11 +270,23 @@ const Header = ({ toggleSidebar }) => {
           <CModalBody>
             <CContainer className="p-2 d-flex flex-column align-items-center mb-2">
               <span className="signout-message mb-3">
-                Are you sure want to signout?
+                {parsedCallStatusData
+                  ? "There is an active tele-consultation. Are you sure you to cancel and close this session?"
+                  : "Are you sure want to signout?"}
               </span>
               <div className="w-100 d-flex justify-content-center gap-3 flex-wrap">
                 <div style={{ width: "128px" }}>
-                  <PrimaryButton onClick={logoutHandler}>SIGNOUT</PrimaryButton>
+                  <PrimaryButton
+                    onClick={() => {
+                      if (parsedCallStatusData) {
+                        EndConslt();
+                      } else {
+                        logoutHandler();
+                      }
+                    }}
+                  >
+                    SIGNOUT
+                  </PrimaryButton>
                 </div>
                 <div style={{ width: "128px" }}>
                   <SecondaryButton onClick={() => setExit(false)}>
