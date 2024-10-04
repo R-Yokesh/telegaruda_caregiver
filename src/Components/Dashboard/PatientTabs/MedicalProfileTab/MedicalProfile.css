@@ -44,3 +44,9 @@
     color: white;
     /* text-transform: uppercase; */
 }
+
+@media screen and (max-width: 568px) {
+.medical-tabs-container {
+  flex-wrap: wrap;
+    }
+}

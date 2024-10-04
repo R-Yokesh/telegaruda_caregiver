@@ -50,7 +50,7 @@
   cursor: not-allowed;
 }
 
-@media screen and (max-width: 568px) {
+@media screen and (max-width: 768px) {
   .left-arrow-sec,
   .right-arrow-sec {
     width: 35px;

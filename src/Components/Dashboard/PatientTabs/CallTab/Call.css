@@ -44,7 +44,7 @@
 .invite-doc-sec-inside {
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 
 .mobi-mail-btn-sec {
@@ -159,6 +159,22 @@ button span {
   transform: scale(0.8);
 }
 
+@media screen and (max-width: 768px) {
+  .call-tab-sec .search-bar {
+        width: 60%;
+    }
+  .call-tab-sec .search-bar input {
+        padding: 6px;
+    }
+  .call-tab-sec .search-bar button {
+    padding: 6px 10px;
+    }
+  .mobile-icon button {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+}
+
 @media screen and (max-width: 568px) {
   .flex-sec-mobile {
     display: block;
@@ -167,11 +183,11 @@ button span {
     justify-content: space-between;
     margin-top: 15px;
   }
-  h3{
+  h3 {
     font-size: 17px;
   }
-  .mobile-icon button {
+  /* .mobile-icon button {
     padding: 8px 20px;
     font-size: 14px;
-  }
+  } */
 }

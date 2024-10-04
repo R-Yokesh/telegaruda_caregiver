@@ -26,6 +26,7 @@ const ChiefComplaintTable = ({
 
   return (
     <>
+    <div className="responsive-table-container" style={{overflowX:"auto"}}>
       <CTable className="lab-responsive-table">
         <CTableHead color="dark">
           <CTableRow>
@@ -124,6 +125,7 @@ const ChiefComplaintTable = ({
           )}
         </CTableBody>
       </CTable>
+      </div>
     </>
   );
 };

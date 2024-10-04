@@ -321,13 +321,12 @@ body {
   overflow-x: auto;
 }
 
+
 .lab-responsive-table {
   border-collapse: collapse;
   width: 100%;
   border-radius: 10px;
-  /* Adjust the radius value as needed */
   overflow: hidden;
-  /* Ensures rounded corners display properly */
 }
 
 .lab-responsive-table th {
@@ -429,7 +428,9 @@ body {
 .bread-crumbs a.active {
   color: var(--text-color);
 }
-
+.breadCrumb-sec{
+  justify-content: end;
+}
 .top-sec {
   justify-content: space-between;
   align-items: center;
@@ -708,7 +709,7 @@ body {
 
 
 
-@media screen and (max-width: 568px) {
+@media screen and (max-width: 768px) {
  .content-sec-main{
   padding-left: 10px !important;
   padding-right: 10px !important;
@@ -719,4 +720,14 @@ body {
  .bread-crumbs a.active {
   font-size: 13px;
  }
+
+.breadcrumb-label {
+  font-size: 12px !important;
+}
+}
+
+@media screen and (max-width: 568px) {
+  .breadCrumb-sec{
+    justify-content: start;
+  }
 }
