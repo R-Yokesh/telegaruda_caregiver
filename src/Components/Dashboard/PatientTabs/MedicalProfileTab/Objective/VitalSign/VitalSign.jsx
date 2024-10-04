@@ -219,14 +219,14 @@ const VitalSign = ({ setVitalView, onClose }) => {
                         color: `${tableData[0].details?.flags?.pefFlagColor}`,
                       },
                       {
-                        label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                        label: `FEV1/FVC Ratio:  ${tableData[0].details?.fev1_fvc}`,
                         color: `${tableData[0].details?.flags?.fev1FvcFlagColor}`,
                       },
                     ]
                   : card?.slug === "heart-rate"
                   ? [
                       {
-                        label: `${tableData[0]?.details?.heart || "N/A"} bpm`,
+                        label: `${tableData[0]?.details?.heart || ""} bpm`,
                         color: tableData[0].details?.heartRateFlagColor,
                       },
                     ]
@@ -234,7 +234,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ? [
                       {
                         label: `${
-                          tableData[0]?.details?.blood_sugar || "N/A"
+                          tableData[0]?.details?.blood_sugar || ""
                         } mg/dL`,
                         color: tableData[0].details?.bsFlagColor,
                       },
@@ -243,25 +243,25 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ? [
                       {
                         label: `Total Cholesterol:${
-                          tableData[0]?.details?.total || "N/A"
+                          tableData[0]?.details?.total || ""
                         } mg/dL`,
                         color: tableData[0].details?.total_message_flag,
                       },
                       {
                         label: `LDL:${
-                          tableData[0]?.details?.ldl || "N/A"
+                          tableData[0]?.details?.ldl || ""
                         } mg/dL`,
                         color: tableData[0].details?.ldl_message_flag,
                       },
                       {
                         label: `HDL:${
-                          tableData[0]?.details?.hdl || "N/A"
+                          tableData[0]?.details?.hdl || ""
                         } mg/dL`,
                         color: tableData[0].details?.hdl_message_flag,
                       },
                       {
                         label: `Triglycerides:${
-                          tableData[0]?.details?.triglycerides || "N/A"
+                          tableData[0]?.details?.triglycerides || ""
                         } mg/dL`,
                         color: tableData[0].details?.triglycerides_message_flag,
                       },
@@ -269,7 +269,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   : card?.slug === "hct"
                   ? [
                       {
-                        label: `${tableData[0]?.details?.hct || "N/A"} %`,
+                        label: `${tableData[0]?.details?.hct || ""} %`,
                         color: tableData[0].details?.hctFlagColor,
                       },
                     ]
@@ -277,7 +277,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ? [
                       {
                         label: `${
-                          tableData[0]?.details?.hemoglobin || "N/A"
+                          tableData[0]?.details?.hemoglobin || ""
                         } g/dL`,
                         color: tableData[0].details?.hemoglobinFlagColor,
                       },
@@ -286,7 +286,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ? [
                       {
                         label: `${
-                          tableData[0]?.details?.keytone || "N/A"
+                          tableData[0]?.details?.keytone
                         } mmol/L`,
                         color: tableData[0].details?.keytoneFlagColor,
                       },
@@ -295,7 +295,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ? [
                       {
                         label: `${
-                          tableData[0]?.details?.uric_acid || "N/A"
+                          tableData[0]?.details?.uric_acid 
                         } mg/dL`,
                         color: tableData[0].details?.uricFlagColor,
                       },
@@ -303,7 +303,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   : card?.slug === "urea"
                   ? [
                       {
-                        label: `${tableData[0]?.details?.urea || "N/A"} mg/dL`,
+                        label: `${tableData[0]?.details?.urea || ""} mg/dL`,
                         color: `${tableData[0]?.details?.ureaFlagColor}`,
                       },
                     ]
@@ -311,7 +311,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ? [
                       {
                         label: `${
-                          tableData[0]?.details?.creatinine || "N/A"
+                          tableData[0]?.details?.creatinine || ""
                         } mg/dL`,
                         color: `${tableData[0]?.details?.creatinineFlagColor}`,
                       },
@@ -320,7 +320,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
                   ? [
                       {
                         label: `${
-                          tableData[0]?.details?.gfr || "N/A"
+                          tableData[0]?.details?.gfr || ""
                         } mL/min/1.73m²`,
                         color: `${tableData[0]?.details?.gfrFlagColor}`,
                       },
@@ -341,7 +341,9 @@ const VitalSign = ({ setVitalView, onClose }) => {
                       },
                       {
                         label: `Specific Gravity: ${tableData[0].details?.specificGravity}`,
-                        color: getSpeGraLabel(tableData[0].details?.specificGravity),
+                        color: getSpeGraLabel(
+                          tableData[0].details?.specificGravity
+                        ),
                       },
                       {
                         label: `PH: ${tableData[0]?.details?.ph}`,
@@ -455,7 +457,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
             return {
               ...card,
               cardbadge: card.badge,
-              created: "N/A",
+              created: "",
             };
           }
         }
@@ -554,14 +556,14 @@ const VitalSign = ({ setVitalView, onClose }) => {
                     color: `${tableData[0].details?.flags?.pefFlagColor}`,
                   },
                   {
-                    label: `FEV1/FVC Ratio (%):  ${tableData[0].details?.fev1_fvc}`,
+                    label: `FEV1/FVC Ratio:  ${tableData[0].details?.fev1_fvc}`,
                     color: `${tableData[0].details?.flags?.fev1FvcFlagColor}`,
                   },
                 ]
               : card?.slug === "heart-rate"
               ? [
                   {
-                    label: `${tableData[0]?.details?.heart || "N/A"} bpm`,
+                    label: `${tableData[0]?.details?.heart || ""} bpm`,
                     color: tableData[0].details?.heartRateFlagColor,
                   },
                 ]
@@ -569,7 +571,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
               ? [
                   {
                     label: `${
-                      tableData[0]?.details?.blood_sugar || "N/A"
+                      tableData[0]?.details?.blood_sugar || ""
                     } mg/dL`,
                     color: tableData[0].details?.bsFlagColor,
                   },
@@ -578,21 +580,21 @@ const VitalSign = ({ setVitalView, onClose }) => {
               ? [
                   {
                     label: `Total Cholesterol:${
-                      tableData[0]?.details?.total || "N/A"
+                      tableData[0]?.details?.total || ""
                     } mg/dL`,
                     color: tableData[0].details?.total_message_flag,
                   },
                   {
-                    label: `LDL:${tableData[0]?.details?.ldl || "N/A"} mg/dL`,
+                    label: `LDL:${tableData[0]?.details?.ldl || ""} mg/dL`,
                     color: tableData[0].details?.ldl_message_flag,
                   },
                   {
-                    label: `HDL:${tableData[0]?.details?.hdl || "N/A"} mg/dL`,
+                    label: `HDL:${tableData[0]?.details?.hdl || ""} mg/dL`,
                     color: tableData[0].details?.hdl_message_flag,
                   },
                   {
                     label: `Triglycerides:${
-                      tableData[0]?.details?.triglycerides || "N/A"
+                      tableData[0]?.details?.triglycerides || ""
                     } mg/dL`,
                     color: tableData[0].details?.triglycerides_message_flag,
                   },
@@ -600,35 +602,35 @@ const VitalSign = ({ setVitalView, onClose }) => {
               : card?.slug === "hct"
               ? [
                   {
-                    label: `${tableData[0]?.details?.hct || "N/A"} %`,
+                    label: `${tableData[0]?.details?.hct || ""} %`,
                     color: tableData[0].details?.hctFlagColor,
                   },
                 ]
               : card?.slug === "hemoglobin"
               ? [
                   {
-                    label: `${tableData[0]?.details?.hemoglobin || "N/A"} g/dL`,
+                    label: `${tableData[0]?.details?.hemoglobin || ""} g/dL`,
                     color: tableData[0].details?.hemoglobinFlagColor,
                   },
                 ]
               : card?.slug === "keytone"
               ? [
                   {
-                    label: `${tableData[0]?.details?.keytone || "N/A"} mmol/L`,
+                    label: `${tableData[0]?.details?.keytone || ""} mmol/L`,
                     color: tableData[0].details?.keytoneFlagColor,
                   },
                 ]
               : card?.slug === "uric_acid"
               ? [
                   {
-                    label: `${tableData[0]?.details?.uric_acid || "N/A"} mg/dL`,
+                    label: `${tableData[0]?.details?.uric_acid || ""} mg/dL`,
                     color: tableData[0].details?.uricFlagColor,
                   },
                 ]
               : card?.slug === "urea"
               ? [
                   {
-                    label: `${tableData[0]?.details?.urea || "N/A"} mg/dL`,
+                    label: `${tableData[0]?.details?.urea || ""} mg/dL`,
                     color: `${tableData[0]?.details?.ureaFlagColor}`,
                   },
                 ]
@@ -636,7 +638,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
               ? [
                   {
                     label: `${
-                      tableData[0]?.details?.creatinine || "N/A"
+                      tableData[0]?.details?.creatinine || ""
                     } mg/dL`,
                     color: `${tableData[0]?.details?.creatinineFlagColor}`,
                   },
@@ -645,9 +647,38 @@ const VitalSign = ({ setVitalView, onClose }) => {
               ? [
                   {
                     label: `${
-                      tableData[0]?.details?.gfr || "N/A"
+                      tableData[0]?.details?.gfr || ""
                     } mL/min/1.73m²`,
                     color: `${tableData[0]?.details?.gfrFlagColor}`,
+                  },
+                ]
+              : card?.slug === "urine"
+              ? [
+                  {
+                    label: `Color: ${tableData[0].details?.color}`,
+                    color: "",
+                  },
+                  {
+                    label: `Clarity: ${tableData[0]?.details?.clarity}`,
+                    color: "",
+                  },
+                  {
+                    label: `Glucose: ${tableData[0]?.details?.glucose}`,
+                    color: getGlucoseLabel(tableData[0].details?.glucose),
+                  },
+                  {
+                    label: `Specific Gravity: ${tableData[0].details?.specificGravity}`,
+                    color: getSpeGraLabel(
+                      tableData[0].details?.specificGravity
+                    ),
+                  },
+                  {
+                    label: `PH: ${tableData[0]?.details?.ph}`,
+                    color: tableData[0]?.details?.value_flag,
+                  },
+                  {
+                    label: `Protein: ${tableData[0]?.details?.protein}`,
+                    color: tableData[0]?.details?.protein_flag,
                   },
                 ]
               : []
@@ -756,7 +787,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
         return {
           ...card,
           cardbadge: card.badge,
-          created: "N/A",
+          created: "",
         };
       }
     },

@@ -17,7 +17,7 @@ function PatientCard({ PatientDetail }) {
     localStorage.removeItem("PatientSubMenu-5");
   };
   return (
-    <div className="card-sec">
+    <div className="card-sec fx-grow">
       <div className="row align-items-center">
         <div className="profile col-4">
           <img

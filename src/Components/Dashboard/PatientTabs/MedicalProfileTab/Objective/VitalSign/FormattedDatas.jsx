@@ -41,8 +41,8 @@ export const transformBPData = (originalData, pagination) => {
       name: item.details.bpFlag || "Unknown",
     },
     systolic: Number(item.details.systolic),
-    diastolic: item.details.diastolic,
-    "pulse_(bpm)": item.details.pulse,
+    diastolic: Number(item.details.diastolic),
+    "pulse_(bpm)": Number(item.details.pulse),
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -130,9 +130,9 @@ export const transformBMIData = (originalData, pagination) => {
       status: item?.details?.bmiFlagColor,
       name: item?.details?.bmiFlag || "Unknown",
     },
-    "bmi_(kg/m²)": item?.details?.bmi || "N/A",
-    "height_(cm)": item?.details?.height || "N/A",
-    "weight_(kg)": item?.details?.weight || "N/A",
+    "bmi_(kg/m²)": item?.details?.bmi || "",
+    "height_(cm)": item?.details?.height || "",
+    "weight_(kg)": item?.details?.weight || "",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -214,7 +214,7 @@ export const transformRespirationRateData = (originalData, pagination) => {
       status: item.details.respirationFlagColor,
       name: item.details.respirationFlag,
     },
-    "respiration_rate_(bpm)": item.details.respiration || "N/A",
+    "respiration_rate_(bpm)": item.details.respiration || "",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -290,7 +290,7 @@ export const transformSpO2Data = (originalData, pagination) => {
       status: item?.details?.spo2FlagColor,
       name: item?.details?.spo2Flag,
     },
-    spo2: item?.details?.spo2 + "" + item?.details?.unit || "N/A",
+    spo2: item?.details?.spo2 + "" + item?.details?.unit || "",
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
       item?.consult_id === null
@@ -369,7 +369,7 @@ export const transformTemperatureData = (originalData, pagination) => {
       name: item?.details?.temperatureFlag,
     },
     temperature_value_units: `${item?.details?.temperature}${
-      item?.details?.unit === "Fahrenheit" ? "°F" : "°C" || "N/A"
+      item?.details?.unit === "Fahrenheit" ? "°F" : "°C" || ""
     }`,
 
     temperature:
@@ -444,18 +444,18 @@ export const transformLFTData = (originalData, pagination) => {
       badge: [],
       columnsData: [
         { id: 1, label: "NO." },
-        { id: 2, label: "RESULT" },
-        { id: 3, label: "FVC (%)" },
-        { id: 4, label: "FEV1 (%)" },
-        { id: 5, label: "PEF (%)" },
-        { id: 6, label: "FEV1/FVC (%)" },
+        { id: 2, label: "LUNG FUNCTION TEST (LFT)" },
+        // { id: 3, label: "FVC (%)" },
+        // { id: 4, label: "FEV1 (%)" },
+        // { id: 5, label: "PEF (%)" },
+        // { id: 6, label: "FEV1/FVC (%)" },
         { id: 7, label: "DATE" },
         { id: 8, label: "ACTION" },
       ],
       tableData: [],
       chartLabel1: "FVC (L)",
       chartLabel2: "FEV1 (%)",
-      chartLabel3: "FEV1/FVC Ratio (%)",
+      chartLabel3: "FEV1/FVC Ratio",
       chartLabel4: "PEF (%)",
     };
   }
@@ -467,10 +467,10 @@ export const transformLFTData = (originalData, pagination) => {
       status: item?.details?.spirometerFlagColor,
       name: item?.details?.spirometerFlag || "Unknown",
     },
-    "fvc_(%)": item?.details?.fvc || "N/A",
-    "fev1_(%)": item?.details?.fev1 || "N/A",
-    "fev1/fvc_(%)": item?.details?.fev1_fvc || "N/A",
-    "pef_(%)": item?.details?.pef || "N/A",
+    "fvc_(%)": item?.details?.fvc || "",
+    "fev1_(%)": item?.details?.fev1 || "",
+    "fev1/fvc_(%)": item?.details?.fev1_fvc || "",
+    "pef_(%)": item?.details?.pef || "",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -513,7 +513,7 @@ export const transformLFTData = (originalData, pagination) => {
         percent: item?.details?.pef,
       },
       {
-        label: "FEV1/FVC (%)",
+        label: "FEV1/FVC",
         flagName: item?.details?.flags?.fev1FvcFlag,
         flagColor: item?.details?.flags?.fev1FvcFlagColor,
         percent: item?.details?.fev1_fvc,
@@ -524,20 +524,20 @@ export const transformLFTData = (originalData, pagination) => {
   // Create badge and other static information
   const badge = [
     {
-      label: `FVC (%): ${tableData[0]?.["fvc_(%)"] || "N/A"}`,
+      label: `FVC (%): ${tableData[0]?.["fvc_(%)"] || ""}`,
       color: tableData[0].flags?.fvcFlagColor,
     },
     {
-      label: `FEV1 (%): ${tableData[0]?.["fev1_(%)"] || "N/A"}`,
+      label: `FEV1 (%): ${tableData[0]?.["fev1_(%)"] || ""}`,
       color: tableData[0].flags?.fev1FlagColor,
     },
 
     {
-      label: `PEF (%): ${tableData[0]?.["pef_(%)"] || "N/A"}`,
+      label: `PEF (%): ${tableData[0]?.["pef_(%)"] || ""}`,
       color: tableData[0].flags?.pefFlagColor,
     },
     {
-      label: `FEV1/FVC Ratio (%): ${tableData[0]?.["fev1/fvc_(%)"] || "N/A"}`,
+      label: `FEV1/FVC Ratio: ${tableData[0]?.["fev1/fvc_(%)"] || ""}`,
       color: tableData[0]?.flags?.fev1FvcFlagColor,
     },
   ];
@@ -566,7 +566,7 @@ export const transformLFTData = (originalData, pagination) => {
     tableData,
     chartLabel1: "FVC (%)",
     chartLabel2: "FEV1 (%)",
-    chartLabel4: "FEV1/FVC Ratio (%)",
+    chartLabel4: "FEV1/FVC Ratio",
     chartLabel3: "PEF (%)",
     total: pagination?.total,
   };
@@ -604,8 +604,8 @@ export const transformHeartRateData = (originalData, pagination) => {
       status: item?.details?.heartRateFlagColor || "unknown",
       name: item?.details?.heartRateFlag || "Unknown",
     },
-    unit: item?.details?.unit || "N/A",
-    "hr_(bpm)": item?.details?.heart || "N/A",
+    unit: item?.details?.unit || "",
+    "hr_(bpm)": item?.details?.heart || "",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -625,7 +625,7 @@ export const transformHeartRateData = (originalData, pagination) => {
     tableData.length > 0
       ? [
           {
-            label: `${tableData[0]?.["hr_(bpm)"] || "N/A"} bpm`,
+            label: `${tableData[0]?.["hr_(bpm)"] || ""} bpm`,
             color: tableData[0].result.status,
           },
         ]
@@ -687,9 +687,9 @@ export const transformBloodSugarData = (originalData, pagination) => {
       status: item?.details?.bsFlagColor,
       name: item?.details?.bsFlag || "Unknown",
     },
-    "blood_sugar_(mg/dl)": item?.details?.blood_sugar || "N/A",
-    blood_sugar_value: item?.details?.blood_sugar || "N/A",
-    type: item?.details?.type || "N/A",
+    "blood_sugar_(mg/dl)": item?.details?.blood_sugar || "",
+    blood_sugar_value: item?.details?.blood_sugar || "",
+    type: item?.details?.type || "",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -750,12 +750,12 @@ export const transformLipidProfileData = (originalData, pagination) => {
       badge: [],
       columnsData: [
         { id: 1, label: "NO." },
-        { id: 2, label: "RESULT" },
-        { id: 3, label: "LDL (mg/dL)" },
-        { id: 4, label: "HDL (mg/dL)" },
-        { id: 5, label: "VLDL (mg/dL)" },
-        { id: 6, label: "LDL/HDL (mg/dL)" },
-        { id: 7, label: "TRIGLYCERIDES (mg/dL)" },
+        { id: 2, label: "LIPID PROFILE" },
+        // { id: 3, label: "LDL (mg/dL)" },
+        // { id: 4, label: "HDL (mg/dL)" },
+        // { id: 5, label: "VLDL (mg/dL)" },
+        // { id: 6, label: "LDL/HDL (mg/dL)" },
+        // { id: 7, label: "TRIGLYCERIDES (mg/dL)" },
         { id: 8, label: "TOTAL CHOLESTEROL (mg/dL)" },
         { id: 9, label: "DATE" },
         { id: 10, label: "ACTION" },
@@ -833,21 +833,21 @@ export const transformLipidProfileData = (originalData, pagination) => {
   const badge = [
     {
       label: `Total Cholesterol: ${
-        tableData[0]?.["total_cholesterol_(mg/dl)"] || "N/A"
+        tableData[0]?.["total_cholesterol_(mg/dl)"] || ""
       } mg/dl`,
       color: `${tableData[0]?.result.status}`,
     },
     {
-      label: `LDL: ${tableData[0]?.["ldl_(mg/dl)"] || "N/A"} mg/dl`,
+      label: `LDL: ${tableData[0]?.["ldl_(mg/dl)"] || ""} mg/dl`,
       color: `${tableData[0]?.ldl_message_flag}`,
     },
     {
-      label: `HDL: ${tableData[0]?.["hdl_(mg/dl)"] || "N/A"} mg/dl`,
+      label: `HDL: ${tableData[0]?.["hdl_(mg/dl)"] || ""} mg/dl`,
       color: `${tableData[0]?.hdl_message_flag}`,
     },
     {
       label: `Triglycerides: ${
-        tableData[0]?.["triglycerides_(mg/dl)"] || "N/A"
+        tableData[0]?.["triglycerides_(mg/dl)"] || ""
       } mg/dl`,
       color: `${tableData[0]?.triglycerides_message_flag}`,
     },
@@ -990,8 +990,8 @@ export const transformHemoglobinData = (originalData, pagination) => {
       status: item?.details?.hemoglobinFlagColor,
       name: item?.details?.hemoglobinFlag || "Unknown",
     },
-    "hemoglobin_(g/dl)": item?.details?.hemoglobin || "N/A",
-    hemoglobinValue: item?.details?.hemoglobin || "N/A",
+    "hemoglobin_(g/dl)": item?.details?.hemoglobin || "",
+    hemoglobinValue: item?.details?.hemoglobin || "",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -1066,8 +1066,8 @@ export const transformBloodKetoneData = (originalData, pagination) => {
       status: item?.details?.keytoneFlagColor,
       name: item?.details?.keytoneFlag || "Unknown",
     },
-    "blood_ketone_(mmol/l)": item?.details?.keytone || "N/A",
-    blood_ketone_value: item?.details?.keytone || "N/A",
+    "blood_ketone_(mmol/l)": item?.details?.keytone,
+    blood_ketone_value: item?.details?.keytone,
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -1143,8 +1143,8 @@ export const transformBloodUricAcidData = (originalData, pagination) => {
       status: item?.details?.uricFlagColor,
       name: item?.details?.uricFlag || "Unknown",
     },
-    "blood_uric_acid_(mg/dl)": item?.details?.uric_acid || "N/A",
-    blood_uric_acid_value: item?.details?.uric_acid || "N/A",
+    "blood_uric_acid_(mg/dl)": Number(item?.details?.uric_acid),
+    blood_uric_acid_value: Number(item?.details?.uric_acid),
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -1221,8 +1221,8 @@ export const transformUreaData = (originalData, pagination) => {
       status: item?.details?.ureaFlagColor,
       name: item?.details?.ureaFlag || "Unknown",
     },
-    "urea_(mg/dl)": item.details?.urea || "N/A",
-    urea_value: item?.details?.urea || "N/A",
+    "urea_(mg/dl)": item.details?.urea || "",
+    urea_value: item?.details?.urea || "",
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null
@@ -1298,8 +1298,8 @@ export const transformCreatinineData = (originalData, pagination) => {
       status: item?.details?.creatinineFlagColor,
       name: item?.details?.creatinineFlag || "Unknown",
     },
-    "creatinine_(mg/dl)": item?.details?.creatinine || "N/A",
-    creatinine_value: item?.details?.creatinine || "N/A",
+    "creatinine_(mg/dl)": item?.details?.creatinine || "",
+    creatinine_value: item?.details?.creatinine || "",
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
       item?.consult_id === null
@@ -1375,8 +1375,8 @@ export const transformGFRData = (originalData, pagination) => {
       status: item?.details?.gfrFlagColor,
       name: item?.details?.gfrFlag || "Unknown",
     },
-    "gfr_(ml/min/1.73m²)": item?.details?.gfr || "N/A",
-    gfr_value: item?.details?.gfr || "N/A",
+    "gfr_(ml/min/1.73m²)": item?.details?.gfr || "",
+    gfr_value: item?.details?.gfr || "",
     date: `${item?.details?.date} ${item?.details?.time || ""}`,
     action:
       item?.consult_id === null
@@ -1466,9 +1466,9 @@ export const transformUrinalysisData = (originalData, pagination) => {
     leukocyte: item?.details?.leukocyteEsterase || "",
     leukocytes_flag: item?.details?.leukocytes_flag,
     bilirubin: item?.details?.bilirubin || "",
-    urobilinogen: item?.details?.urobilinogen || "",
-    red_blood_cells: item?.details?.redBloodCells || "",
-    white_blood_cells: item?.details?.whiteBloodCells || "",
+    urobilinogen: item?.details?.urobilinogen,
+    red_blood_cells: Number(item?.details?.redBloodCells),
+    white_blood_cells: Number(item?.details?.whiteBloodCells),
     date: `${item.details.date} ${item.details.time || ""}`,
     action:
       item?.consult_id === null

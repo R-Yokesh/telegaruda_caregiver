@@ -27,6 +27,13 @@ import BlurBackground from "../../../BlurBackground/BlurBackground";
 import PrimaryButton from "../../../Buttons/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../Buttons/SecondaryButton/SecondaryButton";
 import CallButton from "./CallButton/CallButton";
+import { getCurrentDateTime } from "../../../../Utils/commonUtils";
+import { format, parseISO } from "date-fns";
+
+const formatDate = (dateString) => {
+  const date = dateString ? parseISO(dateString) : null;
+  return date ? format(date, "dd-MM-yyyy hh:mm a") : "";
+};
 
 const CallTab = () => {
   const { get, post, clearCache, patch } = useApi();
@@ -35,6 +42,7 @@ const CallTab = () => {
   const [visible, setVisible] = useState(false);
   const [showMobileInput, setShowMobileInput] = useState(false);
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const [doctorsPagi, setDoctorsPagi] = useState({});
@@ -158,25 +166,40 @@ const CallTab = () => {
     console.log(selectedGender, selectedSpeciality);
     setFilters({ gender: selectedGender, speciality: selectedSpeciality });
   };
-  const [providerData, setProviderData] = useState();
-  const [consultIdGet, setConsultIdGet] = useState();
-  const [consultDetGet, setConsultDetGet] = useState();
-  const [callStart, setCallStart] = useState(false);
+  const storedProviderData = localStorage.getItem("providerData");
+  const parseProviderData = JSON.parse(storedProviderData);
+  const [providerData, setProviderData] = useState(
+    parseProviderData ? parseProviderData : ""
+  );
+  const storedConsultData = localStorage.getItem("consultDetails");
+  const parseConsultData = JSON.parse(storedConsultData);
+  const [consultIdGet, setConsultIdGet] = useState(
+    parseConsultData ? parseConsultData?.id : ""
+  );
+  const [consultDetGet, setConsultDetGet] = useState(
+    parseConsultData ? parseConsultData : ""
+  );
+  const storedCallStatusData = localStorage.getItem("callStatus");
+
+  const [callStart, setCallStart] = useState(
+    storedCallStatusData ? storedCallStatusData : false
+  );
   const [endCall, setEndCall] = useState(false);
 
   const getselectedProviderData = (data) => {
+    localStorage.setItem("providerData", JSON.stringify(data));
     setProviderData(data);
     startConslt(data);
   };
-
+  const currentDateTime = getCurrentDateTime();
   const startConslt = async (providerDetail) => {
     try {
       const body = {
         provider_id: providerDetail?.user_id,
-        consult_date: "2024-09-29",
-        consult_time: "11:18",
+        consult_date: currentDateTime?.consult_date,
+        consult_time: currentDateTime?.consult_time,
         patient_id: data?.user_id,
-        patient_name: "test",
+        patient_name: data?.user?.first_name + " " + data?.user?.last_name,
         speciality: "unknown",
         reason_for_consult: "Garuda Consult Call",
         cart_camera: {
@@ -185,8 +208,8 @@ const CallTab = () => {
           camera_type: "minrray",
           camera_short_name: "M",
         },
-        consult_date_time: "2024-09-29 11:18:00",
-        consult_end_time: "2024-09-29 23:59:00",
+        consult_date_time: currentDateTime?.consult_date_time,
+        consult_end_time: currentDateTime?.consult_end_time,
       };
 
       // Use the provided `post` function to send the request
@@ -211,12 +234,18 @@ const CallTab = () => {
       );
       const listData = response?.data?.consults[0]; //
       setConsultDetGet(listData);
+      localStorage.setItem("consultDetails", JSON.stringify(listData));
       consultCreate(consultId, listData);
     } catch (error) {
       console.error("Error fetching card data:", error);
     }
   };
   const isOpeningRef = useRef(false);
+
+  // For check tab is open or closed
+  const [tab, setTab] = useState(null);
+  const [isTabClosed, setIsTabClosed] = useState(true);
+
   const consultCreate = async (consultId, consulDetail) => {
     try {
       const body = {
@@ -239,6 +268,7 @@ const CallTab = () => {
           };
           const token = participantToken();
           setCallStart(true);
+          localStorage.setItem("callStatus", JSON.stringify(true));
           await getConsulToken(consultId);
 
           isOpeningRef.current = true; // Set to true to prevent reopening
@@ -246,7 +276,8 @@ const CallTab = () => {
             `https://teleconsult.a2zhealth.in/consult/${token}`,
             "_blank"
           );
-
+          setTab(newWindow);
+          setIsTabClosed(false);
           // Optional: Reset isOpeningRef after some time or when window is closed
           const interval = setInterval(() => {
             if (newWindow.closed) {
@@ -273,6 +304,10 @@ const CallTab = () => {
       if (response.code === 200) {
         clearCache();
         consultUpdate(consultIdGet);
+        // localStorage.setItem("callStatus", JSON.stringify(false));
+        localStorage.removeItem("callStatus");
+        localStorage.removeItem("consultDetails");
+        localStorage.removeItem("providerData");
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -294,8 +329,11 @@ const CallTab = () => {
       if (response.code === 200) {
         clearCache();
         setEndCall(false);
+        // localStorage.setItem("callStatus", JSON.stringify(false));
         setCallStart(false);
-        console.log("first", response?.data?.consults?.id);
+        localStorage.removeItem("consultDetails");
+        localStorage.removeItem("providerData");
+        localStorage.removeItem("callStatus");
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -303,7 +341,124 @@ const CallTab = () => {
       console.error("Error fetching data:", error);
     }
   };
-  console.log(consultDetGet);
+  useEffect(() => {
+    const checkTabClosed = () => {
+      if (tab) {
+        if (tab.closed) {
+          setIsTabClosed(true);
+          clearInterval(intervalId); // Clear the interval if the tab is closed
+          clearCache();
+          consultUpdate(consultDetGet?.id); // Call the API function
+        }
+      }
+    };
+
+    const intervalId = setInterval(checkTabClosed, 1000); // Check every second
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, [consultDetGet?.id, tab]);
+
+  //Call via mobile
+  const [callError, setCallError] = useState("");
+  const mobileCall = async () => {
+    setCallError("");
+    try {
+      const body = {
+        consult_date: currentDateTime?.consult_date,
+        consult_time: currentDateTime?.consult_time,
+        provider_id: 0,
+        patient_id: data?.user_id,
+        patient_name: "Test",
+        speciality: "unknown",
+        reason_for_consult: "Garuda Consult Call",
+        consult_doctor: "UnKnown",
+        cart_camera: {
+          camera_ip: "192.168.5.163",
+          camera_name: "Internal IP Camera",
+          camera_type: "minrray",
+          camera_short_name: "M",
+        },
+        doctor_mobile: `+${phone}`,
+        teleType: "1",
+        consult_date_time: currentDateTime?.consult_date_time,
+        consult_end_time: currentDateTime?.consult_end_time,
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/consults`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        getConsulToken(response?.data?.consults?.id);
+        setConsultIdGet(response?.data?.consults?.id);
+        setProviderData("");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setCallError(
+        "Please enter the right ISD Code of your mobile number or Try Again..."
+      );
+    }
+  };
+
+  //Call via mail
+  const [mailError, setMailError] = useState("");
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+  const mailValidate = (e) => {
+    e.preventDefault();
+    if (validateEmail(email)) {
+      mailCall();
+    } else {
+      setMailError("Please enter a valid email address.");
+    }
+  };
+  const mailCall = async () => {
+    setMailError("");
+    try {
+      const body = {
+        consult_date: currentDateTime?.consult_date,
+        consult_time: currentDateTime?.consult_time,
+        provider_id: 0,
+        patient_id: data?.user_id,
+        patient_name: "Test",
+        speciality: "unknown",
+        reason_for_consult: "Garuda Consult Call",
+        consult_doctor: "UnKnown",
+        cart_camera: {
+          camera_ip: "192.168.5.163",
+          camera_name: "Internal IP Camera",
+          camera_type: "minrray",
+          camera_short_name: "M",
+        },
+        doctor_email: email,
+        teleType: "3",
+        consult_date_time: currentDateTime?.consult_date_time,
+        consult_end_time: currentDateTime?.consult_end_time,
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`resource/consults`, body);
+
+      if (response.code === 201) {
+        clearCache();
+        getConsulToken(response?.data?.consults?.id);
+        setConsultIdGet(response?.data?.consults?.id);
+        setProviderData("");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setMailError(
+        "Please enter the right ISD Code of your mobile number or Try Again..."
+      );
+    }
+  };
   return (
     <section className="call-tab-sec mt-3">
       {!callStart ? (
@@ -398,11 +553,20 @@ const CallTab = () => {
                   />
                 </div> */}
                     <div>
-                      <CButton color="primary" className="start-btn">
+                      <CButton
+                        color="primary"
+                        className="start-btn"
+                        onClick={() => mobileCall()}
+                      >
                         Start
                       </CButton>
                     </div>
                   </div>
+                  {callError && (
+                    <small className="mt-2" style={{ color: "red" }}>
+                      {callError}
+                    </small>
+                  )}
                 </CForm>
               </>
             )}
@@ -418,14 +582,25 @@ const CallTab = () => {
                         label="Email Address"
                         placeholder="Enter"
                         aria-describedby="exampleFormControlInputHelpInline"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                     <div>
-                      <CButton color="primary" className="start-btn">
+                      <CButton
+                        color="primary"
+                        className="start-btn"
+                        onClick={(e) => mailValidate(e)}
+                      >
                         Start
                       </CButton>
                     </div>
                   </div>
+                  {mailError && (
+                    <small className="mt-2" style={{ color: "red" }}>
+                      {mailError}
+                    </small>
+                  )}
                 </CForm>
               </>
             )}
@@ -477,9 +652,9 @@ const CallTab = () => {
       ) : (
         consultDetGet?.consult_status?.slug === "new" && (
           <>
-            <div>
+            <div className="row d-flex justify-content-center align-items-center mb-3">
               {/* onClick={() => setEndCall(true)} */}
-              <div className="col-12 d-flex justify-content-center align-items-center mb-3">
+              <div className="col-lg-3 col-sm-6">
                 <CallButton
                   onClick={() => setEndCall(true)}
                   callStatus={true}
@@ -497,24 +672,40 @@ const CallTab = () => {
                       />
                     </div>
                     <div className="patient-details col-8 p-2">
-                      <h5>
-                        Dr. {providerData?.user?.first_name}{" "}
-                        {providerData?.user?.last_name}
-                      </h5>
+                      {!providerData?.user?.first_name ? (
+                        <h5>
+                          Dr.
+                          {
+                            consultDetGet?.participants[0]?.participant_info
+                              ?.name
+                          }
+                        </h5>
+                      ) : (
+                        <h5>
+                          Dr. {providerData?.user?.first_name}{" "}
+                          {providerData?.user?.last_name}
+                        </h5>
+                      )}
                       <p className="gap-sec d-flex flex-wrap">
                         <small
                           className="fs-10 fw-500"
                           style={{ wordBreak: "break-all" }}
                         >
-                          {providerData?.user?.email}
+                          {providerData?.user?.email ||
+                            consultDetGet?.participants[0]?.participant_info
+                              ?.email}
                         </small>
-                        <small className="fs-10 fw-500">|</small>
+                        {providerData?.user?.mobile && (
+                          <small className="fs-10 fw-500">|</small>
+                        )}
                         <small className="fs-10 fw-500">
-                          {providerData?.user?.mobile}
+                          {providerData?.user?.mobile ||
+                            consultDetGet?.participants[0]?.participant_info
+                              ?.phone}
                         </small>
                       </p>
                       <p className="flex-sec-wrap gap-sec">
-                        <small className="fs-10 fw-600">
+                        {/* <small className="fs-10 fw-600">
                           {providerData?.provider_speciality
                             ?.map((item, i) => item?.speciality)
                             .filter(Boolean)
@@ -526,6 +717,9 @@ const CallTab = () => {
                         </small>
                         <small className="fs-10 fw-600">
                           {providerData?.time}
+                        </small> */}
+                        <small className="fs-10 fw-600">
+                          {formatDate(consultDetGet?.scheduled_at)}
                         </small>
                       </p>
                     </div>

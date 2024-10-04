@@ -18,7 +18,7 @@ const Urea = ({ addBack, defaultData, getTableDatas }) => {
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [urea, setUrea] = useState(defaultData?.urea_value || "");
+  const [urea, setUrea] = useState(defaultData?.urea_value);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const maxDate = new Date(); // Restrict future dates
@@ -82,6 +82,10 @@ const Urea = ({ addBack, defaultData, getTableDatas }) => {
     }
     if (!urea) {
       currentErrors.urea = "Urea is required";
+      isValid = false;
+    }
+    if (urea === "0" || urea === "00" || urea === "000") {
+      currentErrors.urea = "Urea must be greater than 0";
       isValid = false;
     }
     setErrors(currentErrors);

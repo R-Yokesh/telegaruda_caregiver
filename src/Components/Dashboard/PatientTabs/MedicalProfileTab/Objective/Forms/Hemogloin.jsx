@@ -18,7 +18,7 @@ const Hemogloin = ({ addBack, defaultData, getTableDatas }) => {
   const data = location.state?.PatientDetail;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [hemoglobin, setHemoglobin] = useState(defaultData?.hemoglobinValue || "");
+  const [hemoglobin, setHemoglobin] = useState(defaultData?.hemoglobinValue);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const maxDate = new Date(); // Restrict future dates 
@@ -82,6 +82,10 @@ const Hemogloin = ({ addBack, defaultData, getTableDatas }) => {
     }
     if (!hemoglobin) {
       currentErrors.hemoglobin = "Hemoglobin is required";
+      isValid = false;
+    }
+    if (hemoglobin === 0) {
+      currentErrors.hemoglobin = "Hemoglobin must be greater than 0";
       isValid = false;
     }
     setErrors(currentErrors);
@@ -159,7 +163,7 @@ const Hemogloin = ({ addBack, defaultData, getTableDatas }) => {
       .replace(/^(\d{3})\d*$/, "$1")
       .replace(/^(\d{3})\.(\d{1}).*$/, "$1.$2")
       .replace(/(\..*)\./g, "$1");
-    setHemoglobin(deciNum);
+    setHemoglobin(Number(deciNum));
   };
   const handleClear = () => {
     setSelectedTime(null); // Clear the selected time
@@ -251,7 +255,7 @@ const Hemogloin = ({ addBack, defaultData, getTableDatas }) => {
           <CCol lg={4}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Hemogloin (g/dL) *
+                Hemoglobin (g/dL) *
               </label>
               <input
                 type="text"

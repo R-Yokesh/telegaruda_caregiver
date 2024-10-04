@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { addHours, format } from "date-fns";
 export const findItemIndex = (options, value) => {
   // Use findIndex to get the index of the item with the specified id
   const index = options.findIndex((item) => item === value);
@@ -140,3 +140,22 @@ export function getGlucoseLabel(value) {
   const result = glucoseLevels[value];
   return result ? result.label : ""; // Return "Unknown" if the value doesn't match
 }
+
+export const getCurrentDateTime = () => {
+  const now = new Date();
+
+  const consult_date = format(now, 'yyyy-MM-dd');
+  const consult_time = format(now, 'HH:mm');
+  const consult_date_time = format(now, 'yyyy-MM-dd HH:mm:ss');
+  
+  // Set end time to 23:59:00 of the same day
+  const endOfDay = addHours(now, 23 - now.getHours());
+  const consult_end_time = format(endOfDay, 'yyyy-MM-dd HH:mm:ss');
+
+  return {
+    consult_date,
+    consult_time,
+    consult_date_time,
+    consult_end_time,
+  };
+};

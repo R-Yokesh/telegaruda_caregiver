@@ -162,6 +162,10 @@ const HeartRate = ({ addBack, defaultData, getTableDatas }) => {
       currentErrors.hr = "Heart Rate is required";
       isValid = false;
     }
+    if (hr === "0" || hr === "00" || hr === "000") {
+      currentErrors.hr = "Heart must be greater than 0";
+      isValid = false;
+    }
 
     setErrors(currentErrors);
     return isValid;

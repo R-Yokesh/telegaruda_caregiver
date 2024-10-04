@@ -36,7 +36,7 @@ const ColumnChartDetails = ({ datas }) => {
         item?.["urea_value"] ||
         item?.["creatinine_value"] ||
         item?.["gfr_value"] ||
-        item?.["ldl_(mg/dl)"]
+        item?.["ldl_(mg/dl)"] || 0
     ),
 
     data2: parseInt(
@@ -50,7 +50,7 @@ const ColumnChartDetails = ({ datas }) => {
         ? item?.["ph"]
         : item?.["temperature_fahrenheit"]
         ? item?.["temperature_fahrenheit"]
-        : ""
+        : 0
     ),
 
     data3: parseInt(
@@ -62,7 +62,7 @@ const ColumnChartDetails = ({ datas }) => {
         ? item?.["vldl_(mg/dl)"]
         : item?.["urobilinogen"]
         ? item?.["urobilinogen"]
-        : ""
+        : 0
     ),
 
     data4: parseInt(
@@ -72,7 +72,7 @@ const ColumnChartDetails = ({ datas }) => {
         ? item?.["ldl/hdl_(mg/dl)"]
         : item?.["red_blood_cells"]
         ? item?.["red_blood_cells"]
-        : ""
+        : 0
     ),
 
     data5: parseInt(
@@ -80,12 +80,12 @@ const ColumnChartDetails = ({ datas }) => {
         ? item?.["triglycerides_(mg/dl)"]
         : item?.["white_blood_cells"]
         ? item?.["white_blood_cells"]
-        : ""
+        : 0
     ),
     data6: parseInt(
       item?.["total_cholesterol_(mg/dl)"]
         ? item?.["total_cholesterol_(mg/dl)"]
-        : ""
+        : 0
     ),
     // For temperature C / F
     unit: item.unit,
