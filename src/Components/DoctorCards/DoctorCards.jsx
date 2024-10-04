@@ -15,7 +15,6 @@ function DoctorCards({ DoctorDetail }) {
       setPublisherObjects(getPublisherData);
     }
   }, [DoctorDetail]);
-  console.log("first", publisherObjects);
   return (
     <div className="card-sec fx-grow">
       <div className="row align-items-center">

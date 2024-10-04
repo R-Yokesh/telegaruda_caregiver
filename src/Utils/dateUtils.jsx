@@ -14,7 +14,8 @@ export function formatDateTime(originalDateStr) {
     hour12: true,
   };
 
-  return date.toLocaleString("en-GB", options).replace(",", "");
+  const formatedDate = date.toLocaleString("en-GB", options).replace(",", "");
+  return formatedDate.replace(/\//g, "-");
 }
 
 // Function to format date as DD-MM-YYYY

@@ -8,6 +8,7 @@ import SecondaryButton from "../../Components/Buttons/SecondaryButton/SecondaryB
 import { useAuth } from "../../contexts/AuthContext";
 import useApi from "../../ApiServices/useApi";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton/PrimaryButton";
+import { toast } from "react-toastify";
 
 const Header = ({ toggleSidebar }) => {
   const [exit, setExit] = useState(false);
@@ -24,10 +25,15 @@ const Header = ({ toggleSidebar }) => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const storedConsultData = localStorage.getItem("consultDetails");
-  const parseConsultData = JSON.parse(storedConsultData);
+  const parseConsultData =
+    storedConsultData !== undefined ? JSON.parse(storedConsultData) : null;
 
   const storedCallStatusData = localStorage.getItem("callStatus");
-  const parsedCallStatusData = JSON.parse(storedCallStatusData);
+  const parsedCallStatusData = storedCallStatusData
+    ? JSON.parse(storedCallStatusData)
+    : null;
+
+  const [isConfirmtocallcut, setIsConfirmToCallCut] = useState(false);
 
   const logoutHandler = () => {
     sessionStorage.setItem("loggedIn", "false");
@@ -66,6 +72,7 @@ const Header = ({ toggleSidebar }) => {
       setLoading(false);
     }
   };
+  const [searchPatient, setSearchPatient] = useState();
   // Handle patient selection
   const handlePatientSelect = (patient) => {
     navigate("/patients/history", { state: { PatientDetail: patient } });
@@ -151,6 +158,58 @@ const Header = ({ toggleSidebar }) => {
     }
   };
 
+  // End Consultwhile search
+  const EndCallWhileSearch = async () => {
+    try {
+      const body = { consult_id: parseConsultData?.id, status: "ended" };
+
+      // Use the provided `post` function to send the request
+      const response = await patch(
+        `resource/consults/${parseConsultData?.id}`,
+        body
+      );
+
+      if (response.code === 200) {
+        clearCache();
+        consultUpdateWhileSearch(parseConsultData?.id);
+        // localStorage.setItem("callStatus", JSON.stringify(false));
+        localStorage.removeItem("callStatus");
+        localStorage.removeItem("consultDetails");
+        localStorage.removeItem("providerData");
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  const consultUpdateWhileSearch = async (consultId) => {
+    try {
+      const body = {
+        consult_id: consultId,
+        user_id: data?.user_id,
+        cache_type: "delete",
+      };
+
+      // Use the provided `post` function to send the request
+      const response = await post(`patient/ConsultCache`, body);
+
+      if (response.code === 200) {
+        clearCache();
+        localStorage.removeItem("consultDetails");
+        localStorage.removeItem("providerData");
+        localStorage.removeItem("callStatus");
+        toast.success("Session ended successfully.");
+        setIsConfirmToCallCut(false);
+        handlePatientSelect(searchPatient);
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <div>
       <header className="header">
@@ -199,7 +258,14 @@ const Header = ({ toggleSidebar }) => {
                     {patientDetail.map((patient) => (
                       <li
                         key={patient?.id}
-                        onClick={() => handlePatientSelect(patient)}
+                        onClick={() => {
+                          if (parsedCallStatusData) {
+                            setSearchPatient(patient);
+                            setIsConfirmToCallCut(true);
+                          } else {
+                            handlePatientSelect(patient);
+                          }
+                        }}
                         className="suggestion-item"
                       >
                         <div className="patient-card">
@@ -291,6 +357,44 @@ const Header = ({ toggleSidebar }) => {
                 <div style={{ width: "128px" }}>
                   <SecondaryButton onClick={() => setExit(false)}>
                     CANCEL
+                  </SecondaryButton>
+                </div>
+              </div>
+            </CContainer>
+          </CModalBody>
+        </CModal>
+        {/* Search in call tym alert modal */}
+        <CModal
+          alignment="center"
+          visible={isConfirmtocallcut}
+          onClose={() => setIsConfirmToCallCut(false)}
+          aria-labelledby="signout-modal"
+          size="lg"
+          className="signout-modal"
+        >
+          <CModalBody>
+            <CContainer className="p-2 d-flex flex-column align-items-center mb-2">
+              <span className="fs-18 fw-500 mb-3">
+                {parsedCallStatusData &&
+                  "There is an active tele-consultation. Are you sure you to cancel and close this session?"}
+              </span>
+              <div className="w-100 d-flex justify-content-center gap-3 flex-wrap">
+                <div style={{ width: "128px" }}>
+                  <PrimaryButton
+                    onClick={() => {
+                      localStorage.setItem(
+                        "searchwhencall",
+                        JSON.stringify(true)
+                      );
+                      EndCallWhileSearch();
+                    }}
+                  >
+                    Yes
+                  </PrimaryButton>
+                </div>
+                <div style={{ width: "128px" }}>
+                  <SecondaryButton onClick={() => setIsConfirmToCallCut(false)}>
+                    No
                   </SecondaryButton>
                 </div>
               </div>

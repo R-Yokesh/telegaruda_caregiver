@@ -459,6 +459,33 @@ const CallTab = () => {
       );
     }
   };
+
+  const render = localStorage.getItem("searchwhencall");
+  const isRender = JSON.parse(render);
+  //for buton auto hide if call cut
+  const getConsul = useCallback(
+    async (consultId) => {
+      try {
+        const response = await get(
+          `resource/consults?limit=&page=1&searchkey=&order_by=&dir=2&from_date=&to_date=&participant_ref_number=${data?.user_id}&consult_status=&consult_id=${consultId}`
+        );
+        const listData = response?.data?.consults[0]; //
+        setConsultDetGet();
+        setCallStart(false);
+        localStorage.removeItem("searchwhencall");
+      } catch (error) {
+        console.error("Error fetching card data:", error);
+      }
+    },
+    [get, data?.user_id]
+  );
+  useEffect(() => {
+    if (isRender) {
+      getConsul();
+    }
+  }, [getConsul, isRender]);
+
+  console.log("consultDetGet", consultDetGet);
   return (
     <section className="call-tab-sec mt-3">
       {!callStart ? (
