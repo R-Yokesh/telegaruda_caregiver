@@ -55,6 +55,7 @@ const TherapiesTab = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
   };
 
   // Function to handle page change
@@ -125,6 +126,7 @@ const TherapiesTab = ({ from }) => {
         await fetchTherapies();
         setAddFormView(false);
         toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }
