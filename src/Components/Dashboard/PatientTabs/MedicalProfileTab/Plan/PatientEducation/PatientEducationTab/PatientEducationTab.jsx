@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 
 const PatientEducationTab = ({ from }) => {
   const columnData = [
-    { id: 1, label: "No" },
+    { id: 1, label: "No." },
     { id: 2, label: "Date" },
     { id: 3, label: "Title" },
     { id: 4, label: "Notes" },

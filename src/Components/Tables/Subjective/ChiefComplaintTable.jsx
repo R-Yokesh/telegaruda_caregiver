@@ -26,7 +26,7 @@ const ChiefComplaintTable = ({
 
   return (
     <>
-      <div className="responsive-table-container" style={{ overflowX: "auto" }}>
+      <div className="responsive-table-container">
         <CTable className="lab-responsive-table">
           <CTableHead color="dark">
             <CTableRow>
@@ -35,7 +35,7 @@ const ChiefComplaintTable = ({
                   // <CTableHeaderCell key={i} className="subGridTh">{data?.label}</CTableHeaderCell>
                   <CTableHeaderCell
                     key={i}
-                    className={data?.label === "No." ? "subGridTh-Date" : "subGridTh"} 
+                    className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
                   >
                     {data?.label}
                   </CTableHeaderCell>
@@ -53,10 +53,10 @@ const ChiefComplaintTable = ({
             ) : (
               rowData?.map((dt, i) => (
                 <CTableRow key={i}>
-                  <CTableHeaderCell className="subGrid-right">
+                  <CTableDataCell className="subGrid-right grid-vertical-line">
                     {getSerialNumber(itemsPerPage, currentPage, i)}
-                  </CTableHeaderCell>
-                  <CTableHeaderCell className="subGrid-date subGrid-left">
+                  </CTableDataCell>
+                  <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                     <span className="fs-16 fw-500" style={{ marginRight: "6px" }}>
                       {dt?.addition_info?.date
                         ?.split(" ")[0]
@@ -67,19 +67,19 @@ const ChiefComplaintTable = ({
                     <span className="fs-16 fw-500">
                       {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}
                     </span>
-                  </CTableHeaderCell>
-                  <CTableDataCell className="subGrid-left">
+                  </CTableDataCell>
+                  <CTableDataCell className="subGrid-left grid-vertical-line">
                     <span className="fs-16 fw-500">
                       {dt?.addition_info?.title ? dt?.addition_info?.title : "-"}
                     </span>
                   </CTableDataCell>
-                  <CTableDataCell className="subGrid-left">
+                  <CTableDataCell className="subGrid-left grid-vertical-line">
                     <span className="fs-16 fw-500">
                       {dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}
                     </span>
                   </CTableDataCell>
                   {from !== "Consult" && (
-                    <CTableDataCell style={{ height: "10px" }} className="subGrid-left">
+                    <CTableDataCell className="subGrid-left grid-vertical-line">
                       <div className="d-flex align-items-center gap-3 h-100">
                         {dt?.consult_id === !null ? (
                           <div>

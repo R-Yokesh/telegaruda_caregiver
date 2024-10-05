@@ -26,7 +26,7 @@ import { toast } from "react-toastify";
 const Allergies = () => {
 
   const columnData = [
-    { id: 1, label: "No." },
+    { id:1, label: "No." },
     { id: 2, label: "Onset Date" },
     { id: 6, label: "Allergy" },
     { id: 7, label: "Reaction" },

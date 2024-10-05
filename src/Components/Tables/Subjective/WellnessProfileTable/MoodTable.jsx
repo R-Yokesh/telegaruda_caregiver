@@ -30,7 +30,12 @@ const MoodTable = ({
           <CTableRow>
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+                <CTableHeaderCell
+                key={i}
+                className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+              >
+                {data?.label}
+              </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -45,13 +50,10 @@ const MoodTable = ({
           ) : (
             moodData?.map((dt, i) => (
               <CTableRow key={i}>
-                <CTableHeaderCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    {getSerialNumber(itemsPerPage, currentPage, i)}
-                  </div>
-                </CTableHeaderCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
+                 <CTableDataCell className="subGrid-right grid-vertical-line">
+                  {getSerialNumber(itemsPerPage, currentPage, i)}
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                     <span className="fs-16 fw-500">
                       {dt?.act_date
                         ?.split(" ")[0]
@@ -59,16 +61,13 @@ const MoodTable = ({
                         ?.reverse()
                         ?.join("-")}
                     </span>
-                  </div>
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
+               <CTableDataCell className="subGrid-left grid-vertical-line">
                     <span className="fs-16 fw-500">{dt?.act_type}</span>
-                  </div>
                 </CTableDataCell>
                 {from !== "Consult" && (
-                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                 <CTableDataCell className="subGrid-left grid-vertical-line">
+                      <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>
                           <img
@@ -81,7 +80,7 @@ const MoodTable = ({
                         <>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                               display: "flex",
                               justifyContent: "flex-end",
                             }}
@@ -97,7 +96,7 @@ const MoodTable = ({
                           </div>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                               display: "flex",
                               justifyContent: "flex-start",
                             }}

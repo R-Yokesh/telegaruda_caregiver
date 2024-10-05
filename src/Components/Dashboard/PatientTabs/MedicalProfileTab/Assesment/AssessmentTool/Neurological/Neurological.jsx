@@ -17,7 +17,7 @@ import NeurologicalForm from "./NeurologicalForm";
 
 const Neurological = ({ from }) => {
   const columnData = [
-    { label: "NO" },
+    { label: "No." },
     { label: "Name" },
     { label: "Taken" },
     { label: "result" },

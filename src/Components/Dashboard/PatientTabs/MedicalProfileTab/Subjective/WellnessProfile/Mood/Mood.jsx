@@ -24,7 +24,7 @@ import { toast } from "react-toastify";
 
 const Mood = ({ from }) => {
   const columnData = [
-    { label: "NO." },
+    { label: "No." },
     { label: "Date" },
     { label: "Type" },
     { label: "Actions" },

@@ -21,7 +21,7 @@ import { useLocation } from "react-router-dom";
 
 const MedicalHistory = ({ from }) => {
   const columnData = [
-    { id: 1, label: "NO." },
+    { id: 1, label: "No." },
     { id: 2, label: "ONSET DATE" },
     { id: 3, label: "CONDITIONS" },
     { id: 4, label: "ICD" },

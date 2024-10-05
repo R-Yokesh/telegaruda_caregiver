@@ -23,7 +23,7 @@ import { is } from "date-fns/locale";
 
 const Sleep = ({ from }) => {
   const columnData = [
-    { label: "NO." },
+    { label: "No." },
     { label: "Date" },
     { label: "Type" },
     { label: "DURATION (IN MINS)" },

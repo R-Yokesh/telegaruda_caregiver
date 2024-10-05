@@ -58,7 +58,7 @@ const SignsSymptoms = ({ from }) => {
   ];
 
   const columnData = [
-    { id: 1, label: "NO." },
+    { label: "No." },
     { id: 2, label: "DATE" },
     { id: 3, label: "LOCATION" },
     { id: 5, label: "Symptoms" },

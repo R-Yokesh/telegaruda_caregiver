@@ -34,6 +34,7 @@ const ProcedurerTable = ({
                   style={{
                     textWrap: i === 2 ? "nowrap" : "wrap",
                   }}
+                  className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
                 >
                   {data?.label}
                 </CTableHeaderCell>
@@ -51,10 +52,10 @@ const ProcedurerTable = ({
           ) : (
             rowData?.map((dt, i) => (
               <CTableRow key={i}>
-                <CTableHeaderCell>
+                  <CTableDataCell className="subGrid-right grid-vertical-line">
                   {getSerialNumber(itemsPerPage, currentPage, i)}
-                </CTableHeaderCell>
-                <CTableDataCell>
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
                     {" "}
                     {dt?.values?.date
@@ -67,12 +68,12 @@ const ProcedurerTable = ({
                     {dt?.values?.time ? dt?.values?.time : "-"}
                   </span> */}
                 </CTableDataCell>
-                <CTableDataCell>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
                     {dt?.values?.code ? dt?.values?.code : "-"}
                   </span>
                 </CTableDataCell>
-                <CTableDataCell>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
                   {dt?.values?.name ? removeQuotes(dt?.values?.name) : "-"}
                 </CTableDataCell>
                 {/* <CTableDataCell>
@@ -86,8 +87,8 @@ const ProcedurerTable = ({
                 </div>
               </CTableDataCell> */}
                 {from !== "Consult" && (
-                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                  <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>
                           <img
@@ -100,7 +101,7 @@ const ProcedurerTable = ({
                         <>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                               display: "flex",
                               justifyContent: "flex-end",
                             }}
@@ -116,7 +117,7 @@ const ProcedurerTable = ({
                           </div>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                               display: "flex",
                               justifyContent: "flex-start",
                             }}

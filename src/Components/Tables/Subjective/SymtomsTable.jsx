@@ -9,7 +9,7 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
-import { getSerialNumber,isWithin24Hours } from "../../../Utils/commonUtils";
+import { getSerialNumber, isWithin24Hours } from "../../../Utils/commonUtils";
 
 
 // Helper function to format date to dd-MM-yyyy HH:mm:ss
@@ -22,17 +22,17 @@ const formatDate = (dateString) => {
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
   const year = date.getFullYear();
 
-  
+
 
   return `${day}-${month}-${year} `; // Format as dd-MM-yyyy HH:mm
 };
 
 
 
-const SymtomsTable = ({ columns, rowData, getselectedData, from,itemsPerPage,currentPage }) => {
+const SymtomsTable = ({ columns, rowData, getselectedData, from, itemsPerPage, currentPage }) => {
 
-  const selectedData = (data,id, type) => {
-    getselectedData(data,id, type);
+  const selectedData = (data, id, type) => {
+    getselectedData(data, id, type);
   };
 
   return (
@@ -42,117 +42,101 @@ const SymtomsTable = ({ columns, rowData, getselectedData, from,itemsPerPage,cur
           <CTableRow>
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+                <CTableHeaderCell
+                  key={i}
+                  className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+                >
+                  {data?.label}
+                </CTableHeaderCell>
               )
             )}
           </CTableRow>
         </CTableHead>
         <CTableBody>
-        {rowData?.length <= 0 ? (
+          {rowData?.length <= 0 ? (
             <tr>
               <td colSpan={columns.length} className="no-data-message">
                 No data available
               </td>
             </tr>
           ) : (
-          rowData?.map((dt, i) => (
-            <CTableRow key={i}>
-              <CTableHeaderCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                {getSerialNumber(itemsPerPage, currentPage, i)}
-                </div>
-              </CTableHeaderCell>
-              <CTableHeaderCell>
-                <span className="fs-16 fw-500">
-                <span className="fs-16 fw-500">{formatDate(dt?.values?.date )}</span>
-                </span>
-                <span className="fs-16 fw-500">
-                  {dt?.values?.time ? dt?.values?.time : "-"}
-                </span>
-              </CTableHeaderCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.values?.location ? dt?.values?.location : "-"}</span>
-                </div>
-              </CTableDataCell>
+            rowData?.map((dt, i) => (
+              <CTableRow key={i}>
+                <CTableDataCell className="subGrid-right grid-vertical-line">
+                  {getSerialNumber(itemsPerPage, currentPage, i)}
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
+                  <span className="fs-16 fw-500">
+                    <span className="fs-16 fw-500">{formatDate(dt?.values?.date)}</span>
+                  </span>
+                  <span className="fs-16 fw-500">
+                    {dt?.values?.time ? dt?.values?.time : "-"}
+                  </span>
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                    <span className="fs-16 fw-500">{dt?.values?.location ? dt?.values?.location : "-"}</span>
+                </CTableDataCell>
 
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+                <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span>{dt?.values?.symptoms ? dt?.values?.symptoms : "-"}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span>{dt?.values?.duration ? dt?.values?.duration : "-"}</span>
-                </div>
-              </CTableDataCell>
-              {/* <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.aggravating}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.relieving}</span>
-                </div>
-              </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.temporal}</span>
-                </div>
-              </CTableDataCell> */}
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span>{dt?.values?.severity ? dt?.values?.severity : "-"}</span>
-                </div>
-              </CTableDataCell>
-              {/* <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.notes}</span>
-                </div>
-              </CTableDataCell> */}
-
-              {from !== "Consult" && (
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                  {dt?.consult_id === !null ? (
-                        <div><img src={Assets.Warning} alt="warn" className="cursor" /></div>
-                      ) : (
+                </CTableDataCell>
+              
+                {from !== "Consult" && (
+                  <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <div className="d-flex align-items-center gap-3 h-100">
+                    {dt?.consult_id === !null ? (
+                      <div>
+                        <img
+                          src={Assets.Warning}
+                          alt="warn"
+                          className="cursor"
+                        />
+                      </div>
+                    ) : (
                       <>
-                       <div
-                      style={{
-                        width: "50%",
-                      }}
-                    >
-                      <img
-                        alt="edit"
-                        src={Assets?.EditPencil}
-                        className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""}`}
-                        onClick={() => selectedData(dt,dt?.id, "edit")}
-                      />
-                    </div>
-                    <div
-                      style={{
-                        width: "50%",
-                        display: "flex",
-                        justifyContent: "flex-start",
-                      }}
-                    >
-                      <img
-                        alt="delete"
-                        src={Assets?.Delete}
-                        className='cursor' 
-                        onClick={() => selectedData(dt,dt?.id, "delete")}
-                      />
-                    </div>
-                      </>  
-                      )}
+                        <div
+                          style={{
+                            // width: "50%",
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <img
+                            alt="edit"
+                            src={Assets?.EditPencil}
+                            className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""
+                              }`}
+                            onClick={() => selectedData(dt, dt?.id, "edit")}
+                          />
+                        </div>
+                        <div
+                          style={{
+                            // width: "50%",
+                            display: "flex",
+                            justifyContent: "flex-start",
+                          }}
+                        >
+                          <img
+                            alt="delete"
+                            src={Assets?.Delete}
+                            className="cursor"
+                            onClick={() => selectedData(dt, dt?.id, "delete")}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </CTableDataCell>
-              )}
-            </CTableRow>
-          ))
-        )}
+                )}
+              </CTableRow>
+            ))
+          )}
         </CTableBody>
       </CTable>
     </>
