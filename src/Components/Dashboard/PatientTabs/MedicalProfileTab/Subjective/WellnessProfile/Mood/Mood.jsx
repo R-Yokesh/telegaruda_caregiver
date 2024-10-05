@@ -58,6 +58,7 @@ const Mood = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
   };
 
   const fetchMood = useCallback(async () => {
@@ -131,6 +132,7 @@ const Mood = ({ from }) => {
         await fetchMood();
         setAddFormView(false);
         toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }

@@ -215,6 +215,7 @@ const SignsSymptoms = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
    
   };
  
@@ -285,6 +286,7 @@ const SignsSymptoms = ({ from }) => {
         await fetchSignsSymptoms();
         setAddFormView(false);
         toast.success("Added successfully");
+        setCurrentPage(1)
 
       } else {
         console.error("Failed to fetch data:", response.message);

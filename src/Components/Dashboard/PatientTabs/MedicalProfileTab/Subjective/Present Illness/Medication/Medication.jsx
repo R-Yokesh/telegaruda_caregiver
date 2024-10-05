@@ -236,6 +236,7 @@ const Medication = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
   };
 
   // Function to handle page change
@@ -310,6 +311,7 @@ const Medication = ({ from }) => {
         setAddFormView(false);
         setSelectedData({});
         toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }

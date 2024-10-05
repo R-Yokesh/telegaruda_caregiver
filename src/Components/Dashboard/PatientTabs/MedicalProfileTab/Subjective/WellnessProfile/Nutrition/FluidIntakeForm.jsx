@@ -97,10 +97,10 @@ const FluidIntakeForm = ({
     if (!selectedDate) newErrors.date = "Date is required";
     if (!selectedTime) newErrors.time = "Time is required";
     if (!fluidType) newErrors.fluidType = "Fluid type is required";
-    if (!water && !intake) newErrors.intake = "Intake is required"; // Validate based on edit mode
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  
 
   const onSubmit = () => {
     if (validate()) {
@@ -266,7 +266,7 @@ const FluidIntakeForm = ({
         <CCol lg={12}>
           <div className="position-relative">
             <label htmlFor="validationTooltip01" className="form-label">
-              Intake(ml)*
+              Intake(ml)
             </label>
             <input
               type="text"
@@ -280,9 +280,9 @@ const FluidIntakeForm = ({
               onChange={handleChange}
               placeholder="0000"
             />
-            {errors.intake && (
+            {/* {errors.intake && (
               <div className="text-danger">{errors.intake}</div>
-            )}
+            )} */}
           </div>
         </CCol>
       </CRow>

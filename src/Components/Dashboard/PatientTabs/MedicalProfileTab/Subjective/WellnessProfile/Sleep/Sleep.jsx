@@ -66,6 +66,7 @@ const Sleep = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
   };
   // Fetch sleep data
   const fetchSleepData = useCallback(async () => {
@@ -134,6 +135,7 @@ const Sleep = ({ from }) => {
         await fetchSleepData(); // Refresh the list data here
         setAddFormView(false); // Close the form view
         toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }

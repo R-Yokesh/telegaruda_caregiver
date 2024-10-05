@@ -86,6 +86,8 @@ const Nutrition = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1);
+    setCurrentPageFluid(1)
   };
 
   const fetchDiet = useCallback(async () => {
@@ -233,6 +235,7 @@ const Nutrition = ({ from }) => {
         await fetchDiet(); // Refresh the list data here
         setAddFormView(false); // Close the form view
         toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -280,7 +283,9 @@ const Nutrition = ({ from }) => {
         setCurrentTab(2);
         setAddFormView(false); // Close the form view
         toast.success("Added successfully");
-      } else {
+        setCurrentPageFluid(1)
+      } 
+      else {
         console.error("Failed to fetch data:", response.message);
       }
     } catch (error) {

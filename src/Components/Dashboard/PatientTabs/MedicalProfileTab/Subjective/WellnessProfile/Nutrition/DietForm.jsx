@@ -123,14 +123,17 @@ const DietForm = ({
           notes: notes, // The notes from the form
         },
       };
+      
       if (defaultValues?.id) {
         console.log("Edit clicked");
         editDiet(body, defaultValues?.id); // Call edit function if id is present
       } else {
         console.log("Add clicked");
-        addDiet(body); // Call add function if id is not present
+        addDiet(body); // Call add function if id is not present  
       }
+      
     }
+    
   };
   const handleClear = () => {
     setSelectedTime(null); // Clear the selected time

@@ -134,6 +134,7 @@ const SurgicalHistory = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
   };
   // Function to handle page change
   const onPageChange = (pageNumber) => {
@@ -219,6 +220,7 @@ const SurgicalHistory = ({ from }) => {
       await getHistoryLists();
       toast.success("Added successfully");
       setAddFormView(false);
+      setCurrentPage(1)
     } catch (error) {
       console.error("Failed to delete:", error);
     } finally {
