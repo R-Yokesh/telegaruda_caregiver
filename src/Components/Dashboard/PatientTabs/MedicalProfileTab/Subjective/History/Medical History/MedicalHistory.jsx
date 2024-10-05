@@ -18,6 +18,8 @@ import MedicalHistoryTable from "../../../../../../Tables/Subjective/MedicalHist
 import DateSearch from "../../../../../../DateRangePicker/DateSearch";
 import useApi from "../../../../../../../ApiServices/useApi";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 const MedicalHistory = ({ from }) => {
   const columnData = [
@@ -136,7 +138,7 @@ const MedicalHistory = ({ from }) => {
   const [searchValue, setSearchValue] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const itemsPerPage = 10; // Number of items to display per page
+  const itemsPerPage = 5; // Number of items to display per page
   const getFilterValues = (startDate, endDate, searchValue) => {
     setStartDate(startDate);
     setEndDate(endDate);
@@ -230,6 +232,8 @@ const MedicalHistory = ({ from }) => {
         clearCache();
         await getMedicalLists();
         setAddFormView(false);
+        toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }

@@ -66,6 +66,7 @@ const Sleep = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
   };
   // Fetch sleep data
   const fetchSleepData = useCallback(async () => {

@@ -537,6 +537,7 @@ const OGHistory = ({ from, back }) => {
       toast.success("Added successfully");
       setAddFormView(false);
       setCurrentTab(1);
+      setCurrentPage(1)
     } catch (error) {
       console.error("Failed to delete:", error);
     } finally {

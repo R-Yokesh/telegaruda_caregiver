@@ -58,6 +58,7 @@ const Mood = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
   };
 
   const fetchMood = useCallback(async () => {

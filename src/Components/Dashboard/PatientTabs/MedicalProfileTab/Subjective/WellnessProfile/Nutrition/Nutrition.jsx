@@ -86,6 +86,8 @@ const Nutrition = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1);
+    setCurrentPageFluid(1)
   };
 
   const fetchDiet = useCallback(async () => {
