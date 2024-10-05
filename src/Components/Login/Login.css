@@ -5,9 +5,9 @@ body {
 
 .login-container-logiss {
   display: flex;
-  overflow-y: scroll;
   height: 100vh;
-  overflow-x: scroll;
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 .login-left-logiss {
