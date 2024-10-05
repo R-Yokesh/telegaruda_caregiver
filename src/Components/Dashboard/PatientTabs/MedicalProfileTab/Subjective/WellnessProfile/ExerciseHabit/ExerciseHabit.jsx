@@ -69,6 +69,7 @@ const ExerciseHabit = ({ from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPage(1)
   };
 
   const fetchExciseHabit = useCallback(async () => {
@@ -144,6 +145,7 @@ const ExerciseHabit = ({ from }) => {
         await fetchExciseHabit();
         setAddFormView(false);
         toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }

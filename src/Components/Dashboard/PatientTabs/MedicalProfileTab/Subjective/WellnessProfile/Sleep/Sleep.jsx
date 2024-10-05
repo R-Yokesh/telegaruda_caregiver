@@ -134,6 +134,7 @@ const Sleep = ({ from }) => {
         await fetchSleepData(); // Refresh the list data here
         setAddFormView(false); // Close the form view
         toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }

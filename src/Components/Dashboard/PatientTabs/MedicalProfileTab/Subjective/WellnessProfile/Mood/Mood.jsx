@@ -131,6 +131,7 @@ const Mood = ({ from }) => {
         await fetchMood();
         setAddFormView(false);
         toast.success("Added successfully");
+        setCurrentPage(1)
       } else {
         console.error("Failed to fetch data:", response.message);
       }
