@@ -23,7 +23,7 @@ import { toast } from "react-toastify";
 
 const NextAppointmentTab = ({ from }) => {
   const columnData = [
-    { id: 1, label: "No" },
+    { id: 1, label: "No." },
     { id: 2, label: "Date & Time" },
     { id: 3, label: "Provider Name" },
     { id: 3, label: "Reason" },

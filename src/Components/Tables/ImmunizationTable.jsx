@@ -41,20 +41,25 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPag
         <CTableHead color="dark">
           <CTableRow>
             {columns?.map((data, i) => (
-              <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+              <CTableHeaderCell
+              key={i}
+              className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+            >
+              {data?.label}
+            </CTableHeaderCell>
             ))}
           </CTableRow>
         </CTableHead>
         <CTableBody>
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
-              <CTableHeaderCell style={tableCellStyle}>
+              <CTableDataCell  className="subGrid-right grid-vertical-line">
               {getSerialNumber(itemsPerPage, currentPage, i)}
-              </CTableHeaderCell>
-              <CTableDataCell style={tableCellStyle}>
+              </CTableDataCell>
+              <CTableDataCell  className="subGrid-left grid-vertical-line">
                 <span className="fs-16 fw-500">{dt?.name}</span>
               </CTableDataCell>
-              <CTableDataCell style={tableCellStyle}>
+              <CTableDataCell  className="subGrid-left grid-vertical-line">
                 <div>
                   {dt?.attributes?.values.map((value, index) => (
                     <div key={index} className="fs-16 fw-500">
@@ -64,7 +69,7 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPag
                 </div>
               </CTableDataCell>
 
-              <CTableDataCell style={tableCellStyle}>
+              <CTableDataCell  className="subGrid-left grid-vertical-line">
                 {dt?.attributes?.values.map((value, index) => (
                   <div
                     key={index}
@@ -94,7 +99,7 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPag
                 ))}
               </CTableDataCell>
 
-              <CTableDataCell style={tableCellStyle}>
+              <CTableDataCell  className="subGrid-date subGrid-left grid-vertical-line">
                 <div>
                   {dt?.attributes?.values.map((value, index) => (
                     <div key={index} className="fs-16 fw-500">
@@ -104,7 +109,7 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPag
                 </div>
               </CTableDataCell>
 
-              <CTableDataCell style={tableCellStyle}>
+              <CTableDataCell  className="subGrid-left grid-vertical-line">
                 <div>
                   {dt?.attributes?.values.map((value, index) => (
                     <div key={index} className="fs-16 fw-500">

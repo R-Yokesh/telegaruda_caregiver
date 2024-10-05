@@ -206,7 +206,7 @@ const ChiefComplaints = ({ OnClose, from, consultSummaryData }) => {
       )}
       {from !== "Consult" && (
         <CRow>
-          <CCol lg={6} md={12} sm={12} className="mb-2">
+          <CCol lg={6} md={12} sm={12} className="">
             <div className="d-flex gap-2">
               <img
                 alt="BackBtn"
@@ -222,7 +222,7 @@ const ChiefComplaints = ({ OnClose, from, consultSummaryData }) => {
               </span>
             </div>
           </CCol>
-          <CCol lg={6} md={12} sm={12} className="mb-2 d-flex breadCrumb-sec">
+          <CCol lg={6} md={12} sm={12}className="d-flex breadCrumb-sec">
             <div className="d-flex mt-2">
               <Breadcrumb
                 paths={[
@@ -240,7 +240,7 @@ const ChiefComplaints = ({ OnClose, from, consultSummaryData }) => {
         <>
           {from !== "Consult" && (
             <CRow>
-              <CCol lg={8} md={8} xl={8} sm={8} className="mb-3 ">
+              <CCol lg={8} md={8} xl={8} sm={8} className="mb-2 ">
                 {/* <div className="search-bar">
                 <input type="text" placeholder="Search" />
                 <button type="submit">
@@ -255,7 +255,7 @@ const ChiefComplaints = ({ OnClose, from, consultSummaryData }) => {
                 md={4}
                 xl={4}
                 sm={4}
-                className="mb-3 d-flex justify-content-end align-items-center gap-15"
+                className="mb-2 d-flex justify-content-end align-items-center gap-15"
               >
                 <div
                   className="patient-adding"

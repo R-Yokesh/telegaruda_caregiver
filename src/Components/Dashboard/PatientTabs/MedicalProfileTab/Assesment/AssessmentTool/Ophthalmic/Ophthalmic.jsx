@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 const Ophthalmic = ({ from }) => {
   const columnData = [
-    { label: "NO" },
+    { label: "No." },
     { label: "Name" },
     { label: "Taken" },
     { label: "result" },

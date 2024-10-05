@@ -30,7 +30,12 @@ const MedicationTable = ({
           <CTableRow>
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+                <CTableHeaderCell
+                  key={i}
+                  className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+                >
+                  {data?.label}
+                </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -45,90 +50,75 @@ const MedicationTable = ({
           ) : (
             rowData?.map((dt, i) => (
               <CTableRow key={i}>
-                <CTableHeaderCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    {getSerialNumber(itemsPerPage, currentPage, i)}
-                  </div>
-                </CTableHeaderCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100 flex-column">
-                    <span className="fs-16 fw-500">
-                      {dt?.values[0]?.medicine_name
-                        ? dt?.values[0]?.medicine_name
-                        : "-"}
-                    </span>
-                    <small>
-                      {dt?.values[0]?.medicine_type}
-                      {/* {dt?.values[0]?.strength ? dt?.values[0]?.strength : "-"} {dt?.values[0]?.strength_measurement ? dt?.values[0]?.strength_measurement : "-"} {dt?.values[0]?.dosage ? dt?.values[0]?.dosage : "-"} */}
-                    </small>
-                  </div>
+                <CTableDataCell className="subGrid-right grid-vertical-line">
+                  {getSerialNumber(itemsPerPage, currentPage, i)}
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span className="fs-16 fw-500">
+                    {dt?.values[0]?.medicine_name
+                      ? dt?.values[0]?.medicine_name
+                      : "-"}
+                  </span>
+                  <small>
+                    {dt?.values[0]?.medicine_type}
+                  </small>
                 </CTableDataCell>
 
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    <span className="fs-16 fw-500">
-                      {dt?.values[0]?.medicine_taken?.m?.length !== 0
-                        ? dt?.values[0]?.medicine_taken?.m
-                        : 0}{" "}
-                      -{" "}
-                      {dt?.values[0]?.medicine_taken?.a?.length !== 0
-                        ? dt?.values[0]?.medicine_taken?.a
-                        : 0}{" "}
-                      -{" "}
-                      {dt?.values[0]?.medicine_taken?.e?.length !== 0
-                        ? dt?.values[0]?.medicine_taken?.e
-                        : 0}{" "}
-                      -{" "}
-                      {dt?.values[0]?.medicine_taken?.n?.length !== 0
-                        ? dt?.values[0]?.medicine_taken?.n
-                        : 0}
-                    </span>
-                  </div>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span className="fs-16 fw-500">
+                    {dt?.values[0]?.medicine_taken?.m?.length !== 0
+                      ? dt?.values[0]?.medicine_taken?.m
+                      : 0}{" "}
+                    -{" "}
+                    {dt?.values[0]?.medicine_taken?.a?.length !== 0
+                      ? dt?.values[0]?.medicine_taken?.a
+                      : 0}{" "}
+                    -{" "}
+                    {dt?.values[0]?.medicine_taken?.e?.length !== 0
+                      ? dt?.values[0]?.medicine_taken?.e
+                      : 0}{" "}
+                    -{" "}
+                    {dt?.values[0]?.medicine_taken?.n?.length !== 0
+                      ? dt?.values[0]?.medicine_taken?.n
+                      : 0}
+                  </span>
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    <span
-                      className="fs-16 fw-500"
-                      style={{ textTransform: "capitalize" }}
-                    >
-                      {dt?.values[0]?.medicine_takenat
-                        ? dt?.values[0]?.medicine_takenat.toUpperCase()
-                        : "-"}
-                    </span>
-                  </div>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span
+                    className="fs-16 fw-500"
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {dt?.values[0]?.medicine_takenat
+                      ? dt?.values[0]?.medicine_takenat.toUpperCase()
+                      : "-"}
+                  </span>
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    <span className="fs-16 fw-500">
-                      {dt?.values[0]?.total_qty
-                        ? dt?.values[0]?.total_qty
-                        : "-"}
-                    </span>
-                  </div>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span className="fs-16 fw-500">
+                    {dt?.values[0]?.total_qty
+                      ? dt?.values[0]?.total_qty
+                      : "-"}
+                  </span>
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    <span className="fs-16 fw-500">
-                      {dt?.values[0]?.start_date
-                        ?.split(" ")[0]
-                        .split("-")
-                        .reverse()
-                        .join("-")}
-                    </span>
-                  </div>
+                <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
+                  <span className="fs-16 fw-500">
+                    {dt?.values[0]?.start_date
+                      ?.split(" ")[0]
+                      .split("-")
+                      .reverse()
+                      .join("-")}
+                  </span>
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    <span className="fs-16 fw-500">
-                      {" "}
-                      {dt?.values[0]?.status ? dt?.values[0]?.status : "-"}{" "}
-                    </span>
-                  </div>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span className="fs-16 fw-500">
+                    {" "}
+                    {dt?.values[0]?.status ? dt?.values[0]?.status : "-"}{" "}
+                  </span>
                 </CTableDataCell>
 
                 {from !== "Consult" && (
-                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                  <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>
                           <img
@@ -141,7 +131,7 @@ const MedicationTable = ({
                         <>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                             }}
                           >
                             <img
@@ -154,7 +144,7 @@ const MedicationTable = ({
                           </div>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                               display: "flex",
                               justifyContent: "flex-start",
                             }}

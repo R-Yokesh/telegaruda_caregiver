@@ -325,7 +325,7 @@ body {
 .lab-responsive-table {
   border-collapse: collapse;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
 }
 
@@ -337,15 +337,19 @@ body {
   font-size: 16px;
   font-weight: 500;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .lab-responsive-table td {
   padding: 10px !important;
   text-align: center;
-  border-bottom: 2px solid #E8E8E8;
+  border-bottom: 3px solid #E8E8E8;
 
 }
-.subGridTh-Date{
+.grid-vertical-line{  
+  /* border: 1px solid #d6d1d13b; */
+}
+.subGridTh-No{
   text-align: right !important;
 }
 .subGridTh{

@@ -43,7 +43,12 @@ const PatientEducationTable = ({
           <CTableRow>
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+                <CTableHeaderCell
+                  key={i}
+                  className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+                >
+                  {data?.label}
+                </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -58,10 +63,10 @@ const PatientEducationTable = ({
           ) : (
             rowData?.map((dt, i) => (
               <CTableRow key={i}>
-                <CTableHeaderCell>
+                 <CTableDataCell className="subGrid-right grid-vertical-line">
                   {getSerialNumber(itemsPerPage, currentPage, i)}
-                </CTableHeaderCell>
-                <CTableDataCell>
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
                     {formatDate(dt?.addition_info?.date)}
                   </span>
@@ -69,20 +74,19 @@ const PatientEducationTable = ({
                     {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}
                   </span> */}
                 </CTableDataCell>
-
-                <CTableDataCell>
+               <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
                     {dt?.addition_info?.title ? dt?.addition_info?.title : "-"}
                   </span>
                 </CTableDataCell>
-                <CTableDataCell>
+               <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
                     {dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}
                   </span>
                 </CTableDataCell>
                 {from !== "Consult" && (
-                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                 <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>
                           <img
@@ -95,7 +99,7 @@ const PatientEducationTable = ({
                         <>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                               display: "flex",
                               justifyContent: "flex-end",
                             }}
@@ -111,7 +115,7 @@ const PatientEducationTable = ({
                           </div>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                               display: "flex",
                               justifyContent: "flex-start",
                             }}

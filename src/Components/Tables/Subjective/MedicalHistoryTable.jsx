@@ -29,7 +29,12 @@ const MedicalHistoryTable = ({
           <CTableRow>
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+                <CTableHeaderCell
+                key={i}
+                className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+              >
+                {data?.label}
+              </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -44,53 +49,33 @@ const MedicalHistoryTable = ({
           ) : (
             rowData?.map((dt, i) => (
               <CTableRow key={i}>
-                <CTableHeaderCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    {getSerialNumber(itemsPerPage, currentPage, i)}
-                  </div>
-                </CTableHeaderCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
+                   <CTableDataCell className="subGrid-right grid-vertical-line">              
+                    {getSerialNumber(itemsPerPage, currentPage, i)}         
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">           
                     <span className="fs-16 fw-500">
                       {dt?.values?.onset_date ? dt?.values?.onset_date : ""}
                     </span>
-                  </div>
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
+                  <CTableDataCell className="subGrid-left grid-vertical-line">              
                     <span className="fs-16 fw-500">
                       {dt?.values?.condition?.name}
-                    </span>
-                  </div>
+                    </span>               
                 </CTableDataCell>
-
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex flex-column align-items-center">
-                    <span>{dt?.values?.condition?.icd?.slug ?? "-"}</span>
-                  </div>
+                  <CTableDataCell className="subGrid-left grid-vertical-line">               
+                    <span>{dt?.values?.condition?.icd?.slug ?? "-"}</span>              
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex flex-column align-items-center">
-                    <span style={{ textTransform: "capitalize" }}>{dt?.values?.condition?.chronic_illness}</span>
-                  </div>
+                  <CTableDataCell className="subGrid-left grid-vertical-line">              
+                    <span style={{ textTransform: "capitalize" }}>{dt?.values?.condition?.chronic_illness}</span>               
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex flex-column align-items-center">
+                  <CTableDataCell className="subGrid-left grid-vertical-line">             
                     <span style={{ textTransform: "capitalize" }}>
                       {dt?.values?.condition?.previous_illness}
-                    </span>
-                  </div>
+                    </span>                
                 </CTableDataCell>
-
-                {/* <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.notes}</span>
-                </div>
-              </CTableDataCell> */}
-
                 {from !== "Consult" && (
-                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                  <CTableDataCell className="subGrid-left grid-vertical-line">
+                    <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>
                           <img
@@ -103,21 +88,22 @@ const MedicalHistoryTable = ({
                         <>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
+                              display: "flex",
+                              justifyContent: "flex-end",
                             }}
                           >
                             <img
                               alt="edit"
                               src={Assets?.EditPencil}
-                              className={`cursor ${
-                                dt?.freeze === 1 ? "greyed-out" : ""
-                              }`}
+                              className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""
+                                }`}
                               onClick={() => selectedData(dt, dt?.id, "edit")}
                             />
                           </div>
                           <div
                             style={{
-                              width: "50%",
+                              // width: "50%",
                               display: "flex",
                               justifyContent: "flex-start",
                             }}

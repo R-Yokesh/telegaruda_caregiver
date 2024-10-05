@@ -31,7 +31,12 @@ function ExerciseHabitTable({
           <CTableRow>
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+                <CTableHeaderCell
+                  key={i}
+                  className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+                >
+                  {data?.label}
+                </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -46,45 +51,33 @@ function ExerciseHabitTable({
           ) : (
             habitData?.map((dt, i) => (
               <CTableRow key={i}>
-                <CTableHeaderCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    {getSerialNumber(itemsPerPage, currentPage, i)}
-                  </div>
-                </CTableHeaderCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    <span className="fs-16 fw-500">
-                      {moment(dt?.act_date).format("DD-MM-yyyy")}
-                    </span>
-                  </div>
+                <CTableDataCell className="subGrid-right grid-vertical-line">
+                  {getSerialNumber(itemsPerPage, currentPage, i)}
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex align-items-center justify-content-center h-100">
-                    <span
-                      className="fs-16 fw-500"
-                      style={{
-                        textTransform: "capitalize",
-                      }}
-                    >
-                      {dt?.act_type}
-                    </span>
-                  </div>
+                <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
+                  <span className="fs-16 fw-500">
+                    {moment(dt?.act_date).format("DD-MM-yyyy")}
+                  </span>
                 </CTableDataCell>
-
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex flex-column align-items-center">
-                    <span>{dt?.act_duration}</span>
-                  </div>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span
+                    className="fs-16 fw-500"
+                    style={{
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {dt?.act_type}
+                  </span>
                 </CTableDataCell>
-                <CTableDataCell style={{ height: "10px" }}>
-                  <div className="d-flex flex-column align-items-center">
-                    <span>{dt?.act_intensity}</span>
-                  </div>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span>{dt?.act_duration}</span>
                 </CTableDataCell>
-
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span>{dt?.act_intensity}</span>
+                </CTableDataCell>
                 {from !== "Consult" && (
-                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
+                  <CTableDataCell className="subGrid-left grid-vertical-line">
+                   <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>
                           <img
@@ -109,7 +102,7 @@ function ExerciseHabitTable({
                       </div> */}
                           <div
                             style={{
-                              width: "100%",
+                              // width: "100%",
                               display: "flex",
                               justifyContent: "center",
                             }}

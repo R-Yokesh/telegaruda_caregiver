@@ -27,7 +27,12 @@ const FamilyHistoryTable = ({
         <CTableHead color="dark">
           <CTableRow>
             {columns?.map((data, i) => (
-              <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+               <CTableHeaderCell
+               key={i}
+               className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+             >
+               {data?.label}
+             </CTableHeaderCell>
             ))}
           </CTableRow>
         </CTableHead>
@@ -41,20 +46,13 @@ const FamilyHistoryTable = ({
           ) : (
           rowData?.map((dt, i) => (
             <CTableRow key={i}>
-              <CTableHeaderCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">
-                    {getSerialNumber(itemsPerPage, currentPage, i)}
-                  </span>
-                </div>
-              </CTableHeaderCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
+                <CTableDataCell className="subGrid-right grid-vertical-line">
+                  {getSerialNumber(itemsPerPage, currentPage, i)}
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">{dt?.name}</span>
-                </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex align-items-center justify-content-center h-100">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                   <CFormCheck
                     id="flexCheckChecked"
                     defaultChecked={dt?.attributes?.values[0]?.status}
@@ -62,11 +60,8 @@ const FamilyHistoryTable = ({
                       selectedData(dt, dt?.attributes?.values[0])
                     }
                   />
-                </div>
               </CTableDataCell>
-
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                   <CFormCheck
                     id="flexCheckChecked"
                     defaultChecked={dt?.attributes?.values[1]?.status}
@@ -74,10 +69,8 @@ const FamilyHistoryTable = ({
                       selectedData(dt, dt?.attributes?.values[1])
                     }
                   />
-                </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                   <CFormCheck
                     id="flexCheckChecked"
                     defaultChecked={dt?.attributes?.values[2]?.status}
@@ -85,22 +78,17 @@ const FamilyHistoryTable = ({
                       selectedData(dt, dt?.attributes?.values[2])
                     }
                   />
-                </div>
               </CTableDataCell>
-
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
-                  <CFormCheck
+              <CTableDataCell className="subGrid-left grid-vertical-line">              
+                <CFormCheck
                     id="flexCheckChecked"
                     defaultChecked={dt?.attributes?.values[3]?.status}
                     onChange={(e) =>
                       selectedData(dt, dt?.attributes?.values[3])
                     }
                   />
-                </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                   <CFormCheck
                     id="flexCheckChecked"
                     defaultChecked={dt?.attributes?.values[4]?.status}
@@ -108,11 +96,8 @@ const FamilyHistoryTable = ({
                       selectedData(dt, dt?.attributes?.values[4])
                     }
                   />
-                </div>
               </CTableDataCell>
-
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                   <CFormCheck
                     id="flexCheckChecked"
                     defaultChecked={dt?.attributes?.values[5]?.status}
@@ -120,10 +105,8 @@ const FamilyHistoryTable = ({
                       selectedData(dt, dt?.attributes?.values[5])
                     }
                   />
-                </div>
               </CTableDataCell>
-              <CTableDataCell style={{ height: "10px" }}>
-                <div className="d-flex flex-column align-items-center">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                   <CFormCheck
                     id="flexCheckChecked"
                     defaultChecked={dt?.attributes?.values[6]?.status}
@@ -131,7 +114,6 @@ const FamilyHistoryTable = ({
                       selectedData(dt, dt?.attributes?.values[6])
                     }
                   />
-                </div>
               </CTableDataCell>
 
               {/* <CTableDataCell style={{ height: "10px" }}>

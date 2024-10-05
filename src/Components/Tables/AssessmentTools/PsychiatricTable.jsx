@@ -55,7 +55,7 @@ const PsychiatricTable = ({
     return (
       <>
         {text ? (
-          <div className="d-flex justify-content-end align-items-center gap-2">
+          <div className="">
             {score?.trim() ? (titleMatch ? titleMatch[1]?.trim() : "") : null}{" "}
             {subTitMatch ? subTitMatch[1]?.trim() : ""}{" "}
             <Badge
@@ -100,7 +100,7 @@ const PsychiatricTable = ({
     }
 
     return (
-      <div style={{ textAlign: "end" }}>
+      <div >
         {results?.map((dt, i) => (
           <div key={i} className="mb-2">
             <span style={{ color: "black" }}>{dt?.heading} </span>
@@ -126,7 +126,12 @@ const PsychiatricTable = ({
           <CTableRow>
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+                <CTableHeaderCell
+                key={i}
+                className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+              >
+                {data?.label}
+              </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -134,18 +139,16 @@ const PsychiatricTable = ({
         <CTableBody>
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
-              <CTableHeaderCell>
-                <span className="fs-16 fw-500">
+              <CTableDataCell className="subGrid-right grid-vertical-line">
                   {getSerialNumber(itemsPerPage, currentPage, i)}
-                </span>
-              </CTableHeaderCell>
-              <CTableDataCell>
+                </CTableDataCell>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
                 <span className="fs-16 fw-500">
                   {capitalizeFirstLetter(dt?.name)}
                   {/* {dt?.name} */}
                 </span>
               </CTableDataCell>
-              <CTableDataCell className="subGrid-date">
+              <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                 <span className="fs-16 fw-500">
                   {formatFetchDate(dt?.latest_form_submisson?.created_at)}
                   {/* {formatText(dt?.latest_form_submisson?.message)} */}
@@ -154,7 +157,7 @@ const PsychiatricTable = ({
               {/* <CTableDataCell>
               <span className="fs-16 fw-500">{dt?.result}</span>
               </CTableDataCell> */}
-              <CTableDataCell style={{ height: "10px" }}>
+             <CTableDataCell className="subGrid-left grid-vertical-line">
                 {/* <div className="d-flex flex-column align-items-center">
                   <Badge
                     label={dt?.latest_form_submisson?.score}
@@ -170,8 +173,8 @@ const PsychiatricTable = ({
               </CTableDataCell>
 
               {from !== "Consult" && (
-                <CTableDataCell>
-                  <div className="d-flex align-items-center justify-content-center gap-2">
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <div className="d-flex align-items-center gap-3 h-100">
                     <img
                       alt="edit"
                       src={
