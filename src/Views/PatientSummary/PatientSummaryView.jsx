@@ -110,6 +110,8 @@ function PatientSummaryView() {
   useEffect(() => {
     getConsultSummary();
   }, [consultData?.participants, getConsultSummary]);
+
+  console.log("first", summaryData?.health);
   return (
     <section className="patient-summary-sec">
       <div className="detailing-card">
@@ -163,7 +165,7 @@ function PatientSummaryView() {
               aria-labelledby="home-tab-pane"
               itemKey={"Subjective"}
             >
-              {summaryData?.health?.a_chief_complaints.length >= 0 && (
+              {summaryData?.health?.a_chief_complaints?.length >= 0 && (
                 <div className="mb-2">
                   <div
                     className="mb-3 cursor"
@@ -180,21 +182,23 @@ function PatientSummaryView() {
                   />
                 </div>
               )}
-              <div className="mb-2">
-                <div
-                  className="mb-3 cursor"
-                  onClick={() => {
-                    goTo(2, 1, 2, 1);
-                  }}
-                >
-                  <h4>History of Present Illness (HPI) - SYMPTOMS</h4>
-                </div>
+              {summaryData?.health?.d_hpi?.length >= 0 && (
+                <div className="mb-2">
+                  <div
+                    className="mb-3 cursor"
+                    onClick={() => {
+                      goTo(2, 1, 2, 1);
+                    }}
+                  >
+                    <h4>History of Present Illness (HPI) - SYMPTOMS</h4>
+                  </div>
 
-                <SignsSymptoms
-                  from={"Consult"}
-                  consultSummaryData={summaryData?.health?.d_hpi}
-                />
-              </div>
+                  <SignsSymptoms
+                    from={"Consult"}
+                    consultSummaryData={summaryData?.health?.d_hpi}
+                  />
+                </div>
+              )}
               {/* <div className="mb-2">
                 <div
                   className="mb-3 cursor"
@@ -206,31 +210,43 @@ function PatientSummaryView() {
                 </div>
 
                 <Medication from={"Consult"} />
-              </div>
-              <div className="mb-2">
-                <div
-                  className="mb-3 cursor"
-                  onClick={() => {
-                    goTo(2, 1, 3, 1);
-                  }}
-                >
-                  <h4>History - Medical History</h4>
+              </div> */}
+              {summaryData?.history?.a_medical_history?.length >= 0 && (
+                <div className="mb-2">
+                  <div
+                    className="mb-3 cursor"
+                    onClick={() => {
+                      goTo(2, 1, 3, 1);
+                    }}
+                  >
+                    <h4>History - Medical History</h4>
+                  </div>
+                  <MedicalHistory
+                    from={"Consult"}
+                    consultSummaryData={summaryData?.history?.a_medical_history}
+                  />
                 </div>
-                <MedicalHistory from={"Consult"} />
-              </div>
-              <div className="mb-2">
-                <div
-                  className="mb-3 cursor"
-                  onClick={() => {
-                    goTo(2, 1, 3, 3);
-                  }}
-                >
-                  <h4>History - Surgical History</h4>
-                </div>
+              )}
+              {summaryData?.history?.b_surgical_history?.length >= 0 && (
+                <div className="mb-2">
+                  <div
+                    className="mb-3 cursor"
+                    onClick={() => {
+                      goTo(2, 1, 3, 3);
+                    }}
+                  >
+                    <h4>History - Surgical History</h4>
+                  </div>
 
-                <SurgicalHistory from={"Consult"} />
-              </div>
-              <div className="mb-2">
+                  <SurgicalHistory
+                    from={"Consult"}
+                    consultSummaryData={
+                      summaryData?.history?.b_surgical_history
+                    }
+                  />
+                </div>
+              )}
+              {/* <div className="mb-2">
                 <div
                   className="mb-3 cursor"
                   onClick={() => {
@@ -241,8 +257,8 @@ function PatientSummaryView() {
                 </div>
 
                 <FamilyHistory from={"Consult"} />
-              </div>
-              <div className="mb-2">
+              </div> */}
+              {/* <div className="mb-2">
                 <div
                   className="mb-3 cursor"
                   onClick={() => {
@@ -253,8 +269,8 @@ function PatientSummaryView() {
                 </div>
 
                 <SocialHistory from={"Consult"} />
-              </div>
-              <div className="mb-2">
+              </div> */}
+              {/* <div className="mb-2">
                 <div
                   className="mb-3 cursor"
                   onClick={() => {

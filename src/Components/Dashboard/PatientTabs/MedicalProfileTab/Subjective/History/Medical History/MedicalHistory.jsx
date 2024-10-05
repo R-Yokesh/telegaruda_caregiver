@@ -20,8 +20,7 @@ import useApi from "../../../../../../../ApiServices/useApi";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
-const MedicalHistory = ({ from }) => {
+const MedicalHistory = ({ from, consultSummaryData }) => {
   const columnData = [
     { id: 1, label: "NO." },
     { id: 2, label: "ONSET DATE" },
@@ -224,8 +223,8 @@ const MedicalHistory = ({ from }) => {
   // api integration of medical history form submit
   const medicalHistoryForm = async (body) => {
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await post(`resource/patientHistories`, body);
 
       if (response.code === 201) {
@@ -233,7 +232,7 @@ const MedicalHistory = ({ from }) => {
         await getMedicalLists();
         setAddFormView(false);
         toast.success("Added successfully");
-        setCurrentPage(1)
+        setCurrentPage(1);
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -247,8 +246,8 @@ const MedicalHistory = ({ from }) => {
   // api integration of edit form
   const editMedicalHistory = async (body, defaultId) => {
     try {
-        // Set the loading state to true
-        setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const response = await patch(
         `resource/patientHistories/${defaultId}`,
         body
@@ -301,7 +300,7 @@ const MedicalHistory = ({ from }) => {
           )}
           <div className="mb-2">
             <MedicalHistoryTable
-              rowData={rowData}
+              rowData={consultSummaryData ? consultSummaryData : rowData}
               columns={columnData}
               getselectedData={getselectedData}
               from={from}

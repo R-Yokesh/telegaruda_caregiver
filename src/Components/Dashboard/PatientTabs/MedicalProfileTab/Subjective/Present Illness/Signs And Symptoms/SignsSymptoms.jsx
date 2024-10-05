@@ -7,7 +7,7 @@ import {
   CModalBody,
   CRow,
 } from "@coreui/react";
-import React, { useState,useCallback,useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import LabForm from "../../../Objective/Lab/LabForm";
 import Pagination from "../../../../../../Pagination/Pagination";
 import LabTable from "../../../../../../Tables/LabTable";
@@ -27,8 +27,7 @@ import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
-const SignsSymptoms = ({ from }) => {
+const SignsSymptoms = ({ from, consultSummaryData }) => {
   const detailsData = [
     { id: 1, label: "" },
     { id: 2, label: "RX" },
@@ -67,7 +66,6 @@ const SignsSymptoms = ({ from }) => {
     // { id: 10, label: "Notes" },
     { id: 6, label: "Actions" },
   ];
-
 
   // const rowData = [
   //   {
@@ -192,7 +190,7 @@ const SignsSymptoms = ({ from }) => {
   //   },
   // ];
 
-  const { loading, error, get,post,patch,del,clearCache } = useApi();
+  const { loading, error, get, post, patch, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -201,7 +199,7 @@ const SignsSymptoms = ({ from }) => {
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
   const [id, setId] = useState(null);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -210,21 +208,17 @@ const SignsSymptoms = ({ from }) => {
 
   const itemsPerPage = 5; // Number of items to display per page
 
-
   const getFilterValues = (startDate, endDate, searchValue) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-    setCurrentPage(1)
-   
+    setCurrentPage(1);
   };
- 
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-  };  
-
+  };
 
   const addFormPage = () => {
     setAddFormView(true);
@@ -234,22 +228,25 @@ const SignsSymptoms = ({ from }) => {
     setDetailView(true);
   };
 
-  const getselectedData = (data,id, type) => {
+  const getselectedData = (data, id, type) => {
     setSelectedData(data);
     if (type === "edit") {
       addFormPage();
     }
     if (type === "delete") {
-      setId(id)
+      setId(id);
       detailPage();
     }
   };
 
-  
   const fetchSignsSymptoms = useCallback(async () => {
     try {
       const response = await get(
-        `resource/patientHealth?slug=hpi&user_id=${data?.user_id}&limit=${itemsPerPage}&page=${currentPage}&dir=2&from=${startDate ?? ""}&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
+        `resource/patientHealth?slug=hpi&user_id=${
+          data?.user_id
+        }&limit=${itemsPerPage}&page=${currentPage}&dir=2&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
       );
       if (response.code === 200) {
         console.log(response.data.patient_healths);
@@ -261,17 +258,16 @@ const SignsSymptoms = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage,startDate,endDate,searchValue]);
+  }, [get, currentPage, startDate, endDate, searchValue]);
 
   useEffect(() => {
     fetchSignsSymptoms();
   }, [fetchSignsSymptoms]);
 
-  
   const addSymptoms = async (values) => {
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         slug: "hpi",
         patient_id: data?.user_id,
@@ -286,8 +282,7 @@ const SignsSymptoms = ({ from }) => {
         await fetchSignsSymptoms();
         setAddFormView(false);
         toast.success("Added successfully");
-        setCurrentPage(1)
-
+        setCurrentPage(1);
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -299,10 +294,10 @@ const SignsSymptoms = ({ from }) => {
     }
   };
 
-  const editSymptoms = async (values,id) => {
+  const editSymptoms = async (values, id) => {
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         slug: "hpi",
         patient_id: data?.user_id,
@@ -322,25 +317,22 @@ const SignsSymptoms = ({ from }) => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-    }finally {
+    } finally {
       // Reset the loading state to false after the API call is done
       setIsSubmitting(false);
     }
-
   };
-
 
   // Delte Signs Symptoms
   const deleteSignsSymptoms = async () => {
     try {
       const response = await del(`resource/patientHealth/${id}`);
-  
+
       if (response.code === 200) {
         setDetailView(false);
         clearCache();
         fetchSignsSymptoms();
         toast.success("Deleted successfully");
-
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -349,11 +341,6 @@ const SignsSymptoms = ({ from }) => {
     }
   };
 
-
-
-
-
-
   return (
     <>
       {!addFormView && (
@@ -361,14 +348,19 @@ const SignsSymptoms = ({ from }) => {
           {from !== "Consult" && (
             <CRow className="mb-2">
               <CCol lg={8} className="">
-              <DateSearch getFilterValues={getFilterValues} />
+                <DateSearch getFilterValues={getFilterValues} />
               </CCol>
               <CCol
                 lg={4}
                 className="d-flex justify-content-end align-items-center gap-2"
               >
                 <div>
-                  <PrimaryButton onClick={() => {addFormPage(); setSelectedData({})}}>
+                  <PrimaryButton
+                    onClick={() => {
+                      addFormPage();
+                      setSelectedData({});
+                    }}
+                  >
                     <div className="d-flex align-items-center gap-2">
                       <img src={Assets.Add} alt="add" />
                       <span className="fs-16 fw-600">Add</span>
@@ -387,7 +379,7 @@ const SignsSymptoms = ({ from }) => {
           )}
           <div className="mb-2">
             <SymtomsTable
-              rowData={rowData}
+              rowData={consultSummaryData ? consultSummaryData : rowData}
               columns={columnData}
               getselectedData={getselectedData}
               from={from}
