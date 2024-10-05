@@ -225,7 +225,7 @@ function ExistingPatientView() {
           <button>+ ADD Patient</button>
         </div>
       </div>
-      <div className="row mb-3 container-fluid">
+      <div className="row mb-3">
         {!loading ? (
           PatientDetail.length <= 0 ? null : (
             <>

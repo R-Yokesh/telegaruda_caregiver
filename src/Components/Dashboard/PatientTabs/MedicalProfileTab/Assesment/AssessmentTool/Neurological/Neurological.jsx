@@ -258,7 +258,7 @@ const Neurological = ({ from }) => {
   const getTableLists = useCallback(async () => {
     try {
       const response = await get(
-        `resource/form?limit=${itemsPerPage}&page=${currentPage}&slug=stroke-scale&searchkey=&order_by=id&dir=1&user_id=${data?.user_id}` //
+        `resource/form?slug=stroke-scale&searchkey=&order_by=id&dir=1&user_id=${data?.user_id}` //
       );
       const listData = response?.data?.forms; //pagination
       setQName(listData);
@@ -285,7 +285,7 @@ const Neurological = ({ from }) => {
               currentPage={currentPage || 1}
               itemsPerPage={itemsPerPage || 5}
             />
-            <CRow className="mb-3">
+            {/* <CRow className="mb-3">
               <CCol lg={12} className="d-flex justify-content-center">
                 <Pagination
                   currentPage={currentPage}
@@ -294,7 +294,7 @@ const Neurological = ({ from }) => {
                   itemsPerPage={itemsPerPage}
                 />
               </CCol>
-            </CRow>
+            </CRow> */}
           </div>
         </>
       )}

@@ -574,7 +574,7 @@ const Psychiatric = ({ from }) => {
   const getTableLists = useCallback(async () => {
     try {
       const response = await get(
-        `resource/form?limit=${itemsPerPage}&page=${currentPage}&slug=psychiatric-exam&searchkey=&order_by=id&dir=1&user_id=${data?.user_id}` //
+        `resource/form?slug=psychiatric-exam&searchkey=&order_by=id&dir=1&user_id=${data?.user_id}` //
       );
       const listData = response?.data?.forms; //pagination
       setQName(listData);
@@ -601,7 +601,7 @@ const Psychiatric = ({ from }) => {
               itemsPerPage={itemsPerPage || 5}
             />
 
-            <CRow className="mb-3">
+            {/* <CRow className="mb-3">
               <CCol lg={12} className="d-flex justify-content-center">
                 <Pagination
                   currentPage={currentPage}
@@ -610,7 +610,7 @@ const Psychiatric = ({ from }) => {
                   itemsPerPage={itemsPerPage}
                 />
               </CCol>
-            </CRow>
+            </CRow> */}
           </div>
         </>
       )}

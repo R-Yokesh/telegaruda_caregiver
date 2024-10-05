@@ -149,7 +149,7 @@ function CallHistoryView() {
             ) : (
               <>
                 {DoctorDetail.map((data, i) => (
-                  <div className="col-4 d-flex" onClick={() => DetailSec(data)}>
+                  <div className="col-lg-4 col-md-6 col-sm-12 d-flex" onClick={() => DetailSec(data)}>
                     {/* <Link className="card-link "> */}
                     <DoctorCards DoctorDetail={data} />
                     {/* </Link> */}

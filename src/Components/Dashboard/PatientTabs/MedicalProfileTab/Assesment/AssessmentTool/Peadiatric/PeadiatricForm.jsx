@@ -51,7 +51,7 @@ const PeadiatricForm = ({
     <>
       <form>
         <div className="d-flex align-items-center justify-content-between">
-          <h3>{capitalizeFirstLetter(formTitle)}</h3>
+          <h4 className="Assess-Head">{capitalizeFirstLetter(formTitle)}</h4>
           <div style={{ width: "128px" }}>
             <PrimaryButton onClick={back}>BACK</PrimaryButton>
           </div>
@@ -66,7 +66,7 @@ const PeadiatricForm = ({
             {defaultValues?.questions?.map((question, index) => (
               <CRow key={index} className="mb-3">
                 <CCol>
-                  <h5>
+                  <h5 className="Assess-ques">
                     {index + 1}. {question?.question?.name}
                   </h5>
                   {question?.answers?.map((option, cIndex) => (

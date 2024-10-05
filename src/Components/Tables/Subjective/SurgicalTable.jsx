@@ -50,7 +50,7 @@ const SurgicalTable = ({
                     </span>
                   </div>
                 </CTableHeaderCell>
-                <CTableDataCell style={{ height: "10px" }}>
+                <CTableDataCell style={{ height: "10px" }} className="subGrid-date">
                   <div className="d-flex align-items-center justify-content-center h-100">
                     <span className="fs-16 fw-500">
                       {dt?.values?.surgery_date

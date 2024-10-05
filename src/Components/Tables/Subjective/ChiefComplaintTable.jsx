@@ -26,104 +26,111 @@ const ChiefComplaintTable = ({
 
   return (
     <>
-      <CTable className="lab-responsive-table">
-        <CTableHead color="dark">
-          <CTableRow>
-            {columns?.map((data, i) =>
-              from === "Consult" && i === columns.length - 1 ? null : (
-                <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
-              )
-            )}
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {rowData?.length <= 0 ? (
-            <tr>
-              <td colSpan={columns.length} className="no-data-message">
-                No data available
-              </td>
-            </tr>
-          ) : (
-            rowData?.map((dt, i) => (
-              <CTableRow key={i}>
-                <CTableHeaderCell>
-                  {getSerialNumber(itemsPerPage, currentPage, i)}
-                </CTableHeaderCell>
-                <CTableHeaderCell>
-                  <span className="fs-16 fw-500" style={{ marginRight: "6px" }}>
-                    {dt?.addition_info?.date
-                      ?.split(" ")[0]
-                      .split("-")
-                      .reverse()
-                      .join("-")}
-                  </span>
-                  <span className="fs-16 fw-500">
-                    {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}
-                  </span>
-                </CTableHeaderCell>
-                <CTableDataCell>
-                  <span className="fs-16 fw-500">
-                    {dt?.addition_info?.title ? dt?.addition_info?.title : "-"}
-                  </span>
-                </CTableDataCell>
-                <CTableDataCell>
-                  <span className="fs-16 fw-500">
-                    {dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}
-                  </span>
-                </CTableDataCell>
-                {from !== "Consult" && (
-                  <CTableDataCell style={{ height: "10px" }}>
-                    <div className="d-flex align-items-center justify-content-center gap-2 h-100">
-                      {dt?.consult_id === !null ? (
-                        <div>
-                          <img
-                            src={Assets.Warning}
-                            alt="warn"
-                            className="cursor"
-                          />
-                        </div>
-                      ) : (
-                        <>
-                          <div
-                            style={{
-                              width: "50%",
-                              display: "flex",
-                              justifyContent: "flex-end",
-                            }}
-                          >
-                            <img
-                              alt="edit"
-                              src={Assets?.EditPencil}
-                              className={`cursor ${
-                                dt?.freeze === 1 ? "greyed-out" : ""
-                              }`}
-                              onClick={() => selectedData(dt, dt?.id, "edit")}
-                            />
-                          </div>
-                          <div
-                            style={{
-                              width: "50%",
-                              display: "flex",
-                              justifyContent: "flex-start",
-                            }}
-                          >
-                            <img
-                              alt="delete"
-                              src={Assets?.Delete}
-                              className="cursor"
-                              onClick={() => selectedData(dt, dt?.id, "delete")}
-                            />
-                          </div>
-                        </>
-                      )}
-                    </div>
+      <div className="responsive-table-container" style={{ overflowX: "auto" }}>
+        <CTable className="lab-responsive-table">
+          <CTableHead color="dark">
+            <CTableRow>
+              {columns?.map((data, i) =>
+                from === "Consult" && i === columns.length - 1 ? null : (
+                  // <CTableHeaderCell key={i} className="subGridTh">{data?.label}</CTableHeaderCell>
+                  <CTableHeaderCell
+                    key={i}
+                    className={data?.label === "No." ? "subGridTh-Date" : "subGridTh"} 
+                  >
+                    {data?.label}
+                  </CTableHeaderCell>
+                )
+              )}
+            </CTableRow>
+          </CTableHead>
+          <CTableBody>
+            {rowData?.length <= 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="no-data-message">
+                  No data available
+                </td>
+              </tr>
+            ) : (
+              rowData?.map((dt, i) => (
+                <CTableRow key={i}>
+                  <CTableHeaderCell className="subGrid-right">
+                    {getSerialNumber(itemsPerPage, currentPage, i)}
+                  </CTableHeaderCell>
+                  <CTableHeaderCell className="subGrid-date subGrid-left">
+                    <span className="fs-16 fw-500" style={{ marginRight: "6px" }}>
+                      {dt?.addition_info?.date
+                        ?.split(" ")[0]
+                        .split("-")
+                        .reverse()
+                        .join("-")}
+                    </span> <br />
+                    <span className="fs-16 fw-500">
+                      {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}
+                    </span>
+                  </CTableHeaderCell>
+                  <CTableDataCell className="subGrid-left">
+                    <span className="fs-16 fw-500">
+                      {dt?.addition_info?.title ? dt?.addition_info?.title : "-"}
+                    </span>
                   </CTableDataCell>
-                )}
-              </CTableRow>
-            ))
-          )}
-        </CTableBody>
-      </CTable>
+                  <CTableDataCell className="subGrid-left">
+                    <span className="fs-16 fw-500">
+                      {dt?.addition_info?.notes ? dt?.addition_info?.notes : "-"}
+                    </span>
+                  </CTableDataCell>
+                  {from !== "Consult" && (
+                    <CTableDataCell style={{ height: "10px" }} className="subGrid-left">
+                      <div className="d-flex align-items-center gap-3 h-100">
+                        {dt?.consult_id === !null ? (
+                          <div>
+                            <img
+                              src={Assets.Warning}
+                              alt="warn"
+                              className="cursor"
+                            />
+                          </div>
+                        ) : (
+                          <>
+                            <div
+                              style={{
+                                // width: "50%",
+                                display: "flex",
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <img
+                                alt="edit"
+                                src={Assets?.EditPencil}
+                                className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""
+                                  }`}
+                                onClick={() => selectedData(dt, dt?.id, "edit")}
+                              />
+                            </div>
+                            <div
+                              style={{
+                                // width: "50%",
+                                display: "flex",
+                                justifyContent: "flex-start",
+                              }}
+                            >
+                              <img
+                                alt="delete"
+                                src={Assets?.Delete}
+                                className="cursor"
+                                onClick={() => selectedData(dt, dt?.id, "delete")}
+                              />
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </CTableDataCell>
+                  )}
+                </CTableRow>
+              ))
+            )}
+          </CTableBody>
+        </CTable>
+      </div>
     </>
   );
 };
