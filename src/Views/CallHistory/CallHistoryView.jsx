@@ -62,8 +62,10 @@ function CallHistoryView() {
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
-  const DetailSec = () => {
-    navigate("/patients/summary", { state: { PatientDetail: data } });
+  const DetailSec = (consultData) => {
+    navigate("/patients/summary", {
+      state: { PatientDetail: data, consultDetail: consultData },
+    });
     localStorage.removeItem("patiendDetailTab");
   };
 
@@ -149,7 +151,11 @@ function CallHistoryView() {
             ) : (
               <>
                 {DoctorDetail.map((data, i) => (
-                  <div className="col-lg-4 col-md-6 col-sm-12 d-flex" onClick={() => DetailSec(data)}>
+                  <div
+                    className="col-lg-4 col-md-6 col-sm-12 d-flex"
+                    onClick={() => DetailSec(data)}
+                    key={i}
+                  >
                     {/* <Link className="card-link "> */}
                     <DoctorCards DoctorDetail={data} />
                     {/* </Link> */}

@@ -24,7 +24,7 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import DateSearch from "../../../../../DateRangePicker/DateSearch";
 
-const ChiefComplaints = ({ OnClose, from }) => {
+const ChiefComplaints = ({ OnClose, from, consultSummaryData }) => {
   const columnData = [
     { label: "No." },
     { label: "Date" },
@@ -90,9 +90,12 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const getChiefComplaints = useCallback(async () => {
     try {
       const response = await get(
-        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${startDate ?? ""
-        }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""
-        }&order_by=created_at&dir=2&slug=chief-complaints&user_id=${data?.user_id
+        `resource/docs?limit=${itemsPerPage}&page=${currentPage}&from=${
+          startDate ?? ""
+        }&to=${endDate ?? ""}&searchkey=${
+          searchValue ?? ""
+        }&order_by=created_at&dir=2&slug=chief-complaints&user_id=${
+          data?.user_id
         }&scanOrdersOnly=&scanstatus=`
       );
       if (response.code === 200) {
@@ -115,7 +118,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const addChiefComplaints = async (values) => {
     try {
       // Set the loading state to true
-      setIsSubmitting(true); 
+      setIsSubmitting(true);
       const body = {
         addition_info: values,
         user_id: data?.user_id,
@@ -142,10 +145,9 @@ const ChiefComplaints = ({ OnClose, from }) => {
   };
 
   const editChiefComplaints = async (values, id) => {
-
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         addition_info: values,
         user_id: data?.user_id,
@@ -190,6 +192,16 @@ const ChiefComplaints = ({ OnClose, from }) => {
 
   return (
     <>
+      {from === "Consult" && (
+        <ChiefComplaintTable
+          rowData={consultSummaryData}
+          columns={columnData}
+          getselectedData={getselectedData}
+          from={from}
+          currentPage={currentPage || 1}
+          itemsPerPage={itemsPerPage || 5}
+        />
+      )}
       {from !== "Consult" && (
         <CRow>
           <CCol lg={6} md={12} sm={12} className="mb-2">
@@ -208,7 +220,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
               </span>
             </div>
           </CCol>
-          <CCol lg={6} md={12} sm={12}className="mb-2 d-flex breadCrumb-sec">
+          <CCol lg={6} md={12} sm={12} className="mb-2 d-flex breadCrumb-sec">
             <div className="d-flex mt-2">
               <Breadcrumb
                 paths={[
@@ -260,16 +272,17 @@ const ChiefComplaints = ({ OnClose, from }) => {
               </CCol>
             </CRow>
           )}
-          <div className="mb-2">
-            <ChiefComplaintTable
-              rowData={rowData}
-              columns={columnData}
-              getselectedData={getselectedData}
-              from={from}
-              currentPage={currentPage || 1}
-              itemsPerPage={itemsPerPage || 5}
-            />
-            {from !== "Consult" && (
+
+          {from !== "Consult" && (
+            <div className="mb-2">
+              <ChiefComplaintTable
+                rowData={rowData}
+                columns={columnData}
+                getselectedData={getselectedData}
+                from={from}
+                currentPage={currentPage || 1}
+                itemsPerPage={itemsPerPage || 5}
+              />
               <CRow className="mb-3">
                 <CCol lg={12} className="d-flex justify-content-center">
                   <Pagination
@@ -280,8 +293,8 @@ const ChiefComplaints = ({ OnClose, from }) => {
                   />
                 </CCol>
               </CRow>
-            )}
-          </div>
+            </div>
+          )}
         </>
       )}
       {addFormView && (

@@ -145,7 +145,6 @@ function ExistingPatientView() {
       const response = await get(
         `resource/patients?limit=${itemsPerPage}&page=${currentPage}`
       );
-      console.log(response); // Handle the data as needed
       if (response.code === 200) {
         setPatientDetail(response?.data?.patients);
         setTotalItems(response?.data?.pagination?.total);

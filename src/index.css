@@ -439,6 +439,7 @@ body {
 
 .app_sidebar .sidebar_container {
   background: #0084CF !important;
+  z-index: 0;
 }
 
 .bread-crumbs a.active {
