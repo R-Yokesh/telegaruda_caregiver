@@ -60,7 +60,9 @@ function DoctorCards({ DoctorDetail }) {
           </p>
         </div>
       </div>
-      <img src={Assets.notes} className="edit-icon" alt="edit-icon" />
+      {DoctorDetail?.consult_status?.slug === "ended" && (
+        <img src={Assets.notes} className="edit-icon" alt="edit-icon" />
+      )}
     </div>
   );
 }

@@ -485,7 +485,6 @@ const CallTab = () => {
     }
   }, [getConsul, isRender]);
 
-  console.log("consultDetGet", consultDetGet);
   return (
     <section className="call-tab-sec mt-3">
       {!callStart ? (
