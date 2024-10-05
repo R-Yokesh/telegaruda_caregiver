@@ -145,7 +145,7 @@ const PsychiatricTable = ({
                   {/* {dt?.name} */}
                 </span>
               </CTableDataCell>
-              <CTableDataCell>
+              <CTableDataCell className="subGrid-date">
                 <span className="fs-16 fw-500">
                   {formatFetchDate(dt?.latest_form_submisson?.created_at)}
                   {/* {formatText(dt?.latest_form_submisson?.message)} */}

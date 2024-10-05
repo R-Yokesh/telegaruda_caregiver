@@ -336,13 +336,29 @@ body {
   text-align: center;
   font-size: 16px;
   font-weight: 500;
-  text-transform: uppercase
+  text-transform: uppercase;
 }
 
 .lab-responsive-table td {
   padding: 10px !important;
   text-align: center;
-  border-bottom: 2px solid #E8E8E8
+  border-bottom: 2px solid #E8E8E8;
+
+}
+.subGridTh-Date{
+  text-align: right !important;
+}
+.subGridTh{
+  text-align: left !important;
+}
+.subGrid-date{
+  white-space: nowrap;
+}
+.subGrid-right{
+  text-align: right !important;
+}
+.subGrid-left{
+  text-align: left !important;
 }
 
 /* Remove bottom border for last row in tbody */
@@ -706,6 +722,14 @@ body {
     background-color: #e0e0e0;
   }
 }
+
+ /* Assessment css */
+ .Assess-Head{
+  /* font-size: 25px; */
+ }
+ .Assess-ques{
+  /* font-size: 20px; */
+ }
 
 
 

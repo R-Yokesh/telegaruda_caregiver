@@ -185,7 +185,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                 type="radio"
                 id="activityYes"
                 value="yes"
-                label={<label className="form-label mb-0">Yes</label>}
+                label={<label className="form-label mb-0">Active</label>}
                 name="activity"
                 checked={historySexual === "yes"}
                 onChange={handleHistorySexualClick}
@@ -197,7 +197,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
                 type="radio"
                 id="activityNo"
                 value="no"
-                label={<label className="form-label mb-0">No</label>}
+                label={<label className="form-label mb-0">Not Active</label>}
                 name="activity"
                 checked={historySexual === "no"}
                 onChange={handleHistorySexualClick}

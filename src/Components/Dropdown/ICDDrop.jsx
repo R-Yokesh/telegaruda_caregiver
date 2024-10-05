@@ -24,8 +24,9 @@ const ICDDrop = ({ options, defaultValue, getSelectedValue, icdKey }) => {
   };
 
   const handleOptionClick = (option) => {
+    console.log('option',option)
     setSelectedOption(option);
-    setSearchTerm(option?.name || ""); // Set searchTerm to the selected option's name
+    setSearchTerm(`${option?.slug} - ${option?.name}` || ""); // Concatenate slug and name
     setIsOpen(false); // Close the dropdown after selecting an option
     getSelectedValue(option);
   };

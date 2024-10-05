@@ -183,9 +183,11 @@ const MedHistoryForm = ({
     }
   };
   const [icd10, setIcd10] = useState([]);
+  
   const [icdkey, setIcdKey] = useState(
-    defaultValues?.values?.condition?.icd?.name || ""
+     defaultValues?.values?.condition?.icd ? `${defaultValues?.values?.condition?.icd?.slug} - ${defaultValues?.values?.condition?.icd?.name}` : ""
   );
+
   const [icd, setIcd] = useState(defaultValues?.values?.condition?.icd || {});
 
   const onSubmit = () => {
@@ -240,6 +242,7 @@ const MedHistoryForm = ({
     getICDCode();
   }, [getICDCode]);
   const getSelectedGravida = (data) => {
+    console.log('SelectedData',data)
     setIcd(data);
   };
   const [reasonDetails, setReasonDetails] = useState([]);

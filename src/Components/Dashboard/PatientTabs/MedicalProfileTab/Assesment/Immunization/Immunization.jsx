@@ -316,7 +316,7 @@ const Immunization = ({ onClose, from }) => {
                     itemsPerPage={itemsPerPage || 5}
                   />
                 </CRow>
-                <CRow className="mb-3">
+                {/* <CRow className="mb-3">
                   <CCol lg={12} className="d-flex justify-content-center">
                     <Pagination
                       currentPage={currentPage}
@@ -325,7 +325,7 @@ const Immunization = ({ onClose, from }) => {
                       itemsPerPage={itemsPerPage}
                     />
                   </CCol>
-                </CRow>
+                </CRow> */}
               </div>
             </>
           )}

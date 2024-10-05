@@ -255,7 +255,7 @@ const MensturalHistoryForm = ({
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-                Cycle Length in days {menopause !== "yes" && "*"}
+              Cycle Length (in days) {menopause !== "yes" && "*"}
               </label>
               <input
                 type="text"

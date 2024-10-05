@@ -254,21 +254,25 @@ const ExerciseHabitForm = ({
               <div className="mb-3">
                 <div className="d-flex flex-column">
                   <label htmlFor={`duration_${index}`} className="form-label">
-                    Duration *
+                  Duration (Mins)
                   </label>
                   <input
                     type="text"
                     className="form-control pad-10"
                     id={`duration_${index}`}
-                    placeholder="Enter duration"
+                    placeholder="0000"
                     value={entry.duration}
                     onChange={(e) =>
                       handleChangeEntry(index, "duration", e.target.value)
                     }
+                    maxLength={4}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                    }}
                   />
-                  {errors[`duration_${index}`] && (
+                  {/* {errors[`duration_${index}`] && (
                     <p className="text-danger">{errors[`duration_${index}`]}</p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </CCol>

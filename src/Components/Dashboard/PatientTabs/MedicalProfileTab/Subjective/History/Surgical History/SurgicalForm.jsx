@@ -37,7 +37,9 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit,isSubmitt
   );
 
   const [icd10, setIcd10] = useState([]);
-  const [icdkey, setIcdKey] = useState(defaultValues?.values?.icd?.name || "");
+  const [icdkey, setIcdKey] = useState(
+    defaultValues?.values?.condition?.icd ? `${defaultValues?.values?.condition?.icd?.slug} - ${defaultValues?.values?.condition?.icd?.name}` : ""
+ );
   const [icd, setIcd] = useState(defaultValues?.values?.icd || {});
 
   const [notes, setNotes] = useState(
