@@ -31,11 +31,11 @@ const MoodTable = ({
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
                 <CTableHeaderCell
-                key={i}
-                className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
-              >
-                {data?.label}
-              </CTableHeaderCell>
+                  key={i}
+                  className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+                >
+                  {data?.label}
+                </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -50,24 +50,27 @@ const MoodTable = ({
           ) : (
             moodData?.map((dt, i) => (
               <CTableRow key={i}>
-                 <CTableDataCell className="subGrid-right grid-vertical-line">
+                <CTableDataCell className="subGrid-right grid-vertical-line">
                   {getSerialNumber(itemsPerPage, currentPage, i)}
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
-                    <span className="fs-16 fw-500">
-                      {dt?.act_date
-                        ?.split(" ")[0]
-                        ?.split("-")
-                        ?.reverse()
-                        ?.join("-")}
-                    </span>
+                  <span className="fs-16 fw-500">
+                    {dt?.act_date
+                      ?.split(" ")[0]
+                      ?.split("-")
+                      ?.reverse()
+                      ?.join("-")}
+                  </span> <br />
+                  <span className="fs-16 fw-500">
+                    {dt?.act_time ? dt?.act_time.split(":").slice(0, 2).join(":") : "-"}
+                  </span>
                 </CTableDataCell>
-               <CTableDataCell className="subGrid-left grid-vertical-line">
-                    <span className="fs-16 fw-500">{dt?.act_type}</span>
+                <CTableDataCell className="subGrid-left grid-vertical-line">
+                  <span className="fs-16 fw-500">{dt?.act_type}</span>
                 </CTableDataCell>
                 {from !== "Consult" && (
-                 <CTableDataCell className="subGrid-left grid-vertical-line">
-                      <div className="d-flex align-items-center gap-3 h-100">
+                  <CTableDataCell className="subGrid-left grid-vertical-line">
+                    <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>
                           <img
@@ -88,9 +91,8 @@ const MoodTable = ({
                             <img
                               alt="edit"
                               src={Assets?.EditPencil}
-                              className={`cursor ${
-                                dt?.freeze === 1 ? "greyed-out" : ""
-                              }`}
+                              className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""
+                                }`}
                               onClick={() => selectedData(dt, dt?.id, "edit")}
                             />
                           </div>

@@ -25,7 +25,7 @@ const PresentIllness = ({ OnClose }) => {
   return (
     <>
       <CRow className="mb-0">
-        <CCol md={4} className="mb-2">
+        <CCol md={4} className="">
           <div className="d-flex gap-2">
             <img
               alt="BackBtn"
@@ -39,7 +39,7 @@ const PresentIllness = ({ OnClose }) => {
             </span>
           </div>
         </CCol>
-        <CCol md={8} className="mb-2 d-flex justify-content-end">
+        <CCol md={8} className=" d-flex justify-content-end">
           <div className="d-flex mt-2">
             <Breadcrumb
               paths={[

@@ -62,7 +62,10 @@ const NutritionFluidTable = ({
                         ?.split("-")
                         ?.reverse()
                         ?.join("-")}
-                    </span>
+                    </span> <br />
+                    <span className="fs-16 fw-500">
+                    {dt?.act_time ? dt?.act_time.split(":").slice(0, 2).join(":") : "-"}
+                  </span>
                 </CTableDataCell>
               <CTableDataCell className="subGrid-left grid-vertical-line">
                     <span

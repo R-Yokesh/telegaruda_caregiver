@@ -68,7 +68,7 @@ const NeurologicalForm = ({
     <>
       <form>
         <div className="d-flex align-items-center justify-content-between">
-          <h4 className="Assess-Head">{capitalizeFirstLetter(formTitle)}</h4>
+          <h5 className="Assess-Head">{capitalizeFirstLetter(formTitle)}</h5>
           <div style={{ width: "128px" }}>
             <PrimaryButton onClick={back}>BACK</PrimaryButton>
           </div>
@@ -84,9 +84,9 @@ const NeurologicalForm = ({
               <>
                 <CRow key={index} className="mb-3">
                   <CCol>
-                    <h5 className="Assess-ques">
+                    <h6 className="Assess-ques">
                       {index + 1}. {question?.question?.name}
-                    </h5>
+                    </h6>
                     {question?.question?.type === "radio"
                       ? question?.answers?.map((option, cIndex) => (
                           <CFormCheck

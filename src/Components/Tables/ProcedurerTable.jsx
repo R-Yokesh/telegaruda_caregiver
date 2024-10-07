@@ -63,10 +63,10 @@ const ProcedurerTable = ({
                       .split("-")
                       .reverse()
                       .join("-")}{" "}
-                  </span>
-                  {/* <span className="fs-16 fw-500">
+                  </span><br />
+                  <span className="fs-16 fw-500">
                     {dt?.values?.time ? dt?.values?.time : "-"}
-                  </span> */}
+                  </span>
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">

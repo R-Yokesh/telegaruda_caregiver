@@ -345,7 +345,7 @@ const Nutrition = ({ from }) => {
       {from !== "Consult" && from !== "Consult-Intake" && (
         <>
           <>
-            <CRow className="mb-2">
+            <CRow className="mb-3">
               <CCol lg={12} className="">
                 <MedicalTab
                   tabs={tabs}
@@ -362,7 +362,7 @@ const Nutrition = ({ from }) => {
                   </CCol>
                   <CCol
                     lg={4}
-                    className="d-flex justify-content-end align-items-center gap-2"
+                    className="d-flex justify-content-end align-items-center gap-2 mt-4"
                   >
                     <div>
                       <PrimaryButton onClick={() => addFormPage()}>

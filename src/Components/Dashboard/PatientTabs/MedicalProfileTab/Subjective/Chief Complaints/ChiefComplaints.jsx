@@ -115,7 +115,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const addChiefComplaints = async (values) => {
     try {
       // Set the loading state to true
-      setIsSubmitting(true); 
+      setIsSubmitting(true);
       const body = {
         addition_info: values,
         user_id: data?.user_id,
@@ -144,8 +144,8 @@ const ChiefComplaints = ({ OnClose, from }) => {
   const editChiefComplaints = async (values, id) => {
 
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const body = {
         addition_info: values,
         user_id: data?.user_id,
@@ -208,7 +208,7 @@ const ChiefComplaints = ({ OnClose, from }) => {
               </span>
             </div>
           </CCol>
-          <CCol lg={6} md={12} sm={12}className="d-flex breadCrumb-sec">
+          <CCol lg={6} md={12} sm={12} className="d-flex breadCrumb-sec">
             <div className="d-flex mt-2">
               <Breadcrumb
                 paths={[
@@ -241,16 +241,15 @@ const ChiefComplaints = ({ OnClose, from }) => {
                 md={4}
                 xl={4}
                 sm={4}
-                className="mb-2 d-flex justify-content-end align-items-center gap-15"
+                className="mb-2 mt-4 d-flex justify-content-end align-items-center gap-2"
               >
-                <div
-                  className="patient-adding"
-                  onClick={() => {
-                    setSelectedData({});
-                    addFormPage();
-                  }}
-                >
-                  <button>+ ADD</button>
+                <div>
+                  <PrimaryButton onClick={() => { addFormPage(); setSelectedData({}) }}>
+                    <div className="d-flex align-items-center gap-2">
+                      <img src={Assets.Add} alt="add" />
+                      <span className="fs-16 fw-600">Add</span>
+                    </div>
+                  </PrimaryButton>
                 </div>
                 {/* <div className="patient-adding">
                   <button>

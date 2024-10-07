@@ -96,8 +96,8 @@ const ExerciseHabitForm = ({
       if (!entry.selectedTime)
         validationErrors[`time_${index}`] = "Time is required.";
       if (!entry.type) validationErrors[`type_${index}`] = "Type is required.";
-      if (!entry.duration)
-        validationErrors[`duration_${index}`] = "Duration is required.";
+      // if (!entry.duration)
+      //   validationErrors[`duration_${index}`] = "Duration is required.";
       if (!entry.intensity)
         validationErrors[`intensity_${index}`] = "Intensity is required.";
     });
@@ -139,12 +139,12 @@ const ExerciseHabitForm = ({
       const body = {
         details: formEntries.map((entry) => ({
           patient_id: data?.user_id,
-          act_catagory: entry.category,
-          act_date: moment(entry.selectedDate).format("yyyy-MM-DD"),
-          act_time: moment(entry.selectedTime).format("HH:mm"),
-          act_type: entry.type,
-          act_duration: Number(entry.duration),
-          act_intensity: entry.intensity,
+          act_catagory: entry?.category,
+          act_date: moment(entry?.selectedDate).format("yyyy-MM-DD"),
+          act_time: moment(entry?.selectedTime).format("HH:mm"),
+          act_type: entry?.type,
+          act_duration: Number(entry?.duration) || "-",
+          act_intensity: entry?.intensity,
           act_intake: "",
           unit: "",
         })),

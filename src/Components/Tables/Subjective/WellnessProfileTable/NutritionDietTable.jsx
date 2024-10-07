@@ -47,7 +47,10 @@ const NutritionDietTable = ({ columns, rowData, getselectedData, from,itemsPerPa
                   {getSerialNumber(itemsPerPage, currentPage, i)}
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
-                  <span className="fs-16 fw-500">{dt?.act_date?.split(" ")[0]?.split("-")?.reverse()?.join("-")}</span>
+                  <span className="fs-16 fw-500">{dt?.act_date?.split(" ")[0]?.split("-")?.reverse()?.join("-")}</span> <br />
+                  <span className="fs-16 fw-500">
+                    {dt?.act_time ? dt?.act_time.split(":").slice(0, 2).join(":") : "-"}
+                  </span>
               </CTableDataCell>
                <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">{dt?.act_type}</span>

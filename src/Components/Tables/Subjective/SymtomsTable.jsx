@@ -68,7 +68,7 @@ const SymtomsTable = ({ columns, rowData, getselectedData, from, itemsPerPage, c
                 <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
                     <span className="fs-16 fw-500">{formatDate(dt?.values?.date)}</span>
-                  </span>
+                  </span> <br />
                   <span className="fs-16 fw-500">
                     {dt?.values?.time ? dt?.values?.time : "-"}
                   </span>

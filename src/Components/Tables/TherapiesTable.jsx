@@ -23,9 +23,11 @@ const formatDate = (dateString) => {
 
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
-  // ${hours}:${minutes}
-  return `${day}-${month}-${year}`; // Format as dd-MM-yyyy HH:mm
+
+  const formattedDate = `${day}-${month}-${year}`;
+  const formattedTime = `${hours}:${minutes}`;
+
+  return { formattedDate, formattedTime }; // Return date and time separately
 };
 
 const TherapiesTable = ({
@@ -71,7 +73,10 @@ const TherapiesTable = ({
                   {getSerialNumber(itemsPerPage, currentPage, i)}
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
-                  <span className="fs-16 fw-500">{formatDate(dt?.date)}</span>
+                  <span className="fs-16 fw-500">
+                  {formatDate(dt?.date).formattedDate} <br />
+                  {formatDate(dt?.date).formattedTime}
+                  </span>
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">

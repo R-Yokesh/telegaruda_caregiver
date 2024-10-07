@@ -57,6 +57,9 @@ function ExerciseHabitTable({
                 <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
                     {moment(dt?.act_date).format("DD-MM-yyyy")}
+                  </span> <br />
+                  <span className="fs-16 fw-500">
+                    {dt?.act_time ? dt?.act_time.split(":").slice(0, 2).join(":") : "-"}
                   </span>
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-left grid-vertical-line">
@@ -77,7 +80,7 @@ function ExerciseHabitTable({
                 </CTableDataCell>
                 {from !== "Consult" && (
                   <CTableDataCell className="subGrid-left grid-vertical-line">
-                   <div className="d-flex align-items-center gap-3 h-100">
+                    <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>
                           <img
