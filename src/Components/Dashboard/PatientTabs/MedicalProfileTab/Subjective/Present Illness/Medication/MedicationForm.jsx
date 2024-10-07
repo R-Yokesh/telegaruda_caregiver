@@ -591,32 +591,38 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
           </div>
         </CCol> */}
 
-        <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Total Qty / Taken *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="0000"
-                name="total_qty"
-                value={formData?.total_qty}
-                onChange={handleChange}
-                maxLength={4}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                }}
-                disabled={view}
-              />
-              {errors.total_qty && (
-                <div className="error-text">{errors.total_qty}</div>
-              )}
-            </div>
-          </div>
-        </CCol>
+<CCol lg={4} className="mb-3">
+  <div style={{ width: "100%" }}>
+    <div className="position-relative">
+      <label htmlFor="validationTooltip01" className="form-label">
+        Total Qty / Taken *
+      </label>
+      <input
+        type="text"
+        className="form-control pad-10"
+        id="validationTooltip01"
+        placeholder="0000"
+        name="total_qty"
+        value={formData?.total_qty}
+        onChange={handleChange}
+        maxLength={4}
+        onInput={(e) => {
+         
+          e.target.value = e.target.value.replace(/[^0-9]/g, "");
+          
+          if (e.target.value === "00") {
+            e.target.value = "0";
+          }
+        }}
+        disabled={view} 
+      />
+      {errors.total_qty && (
+        <div className="error-text">{errors.total_qty}</div>
+      )}
+    </div>
+  </div>
+</CCol>
+
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
@@ -678,31 +684,37 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
           </div>
         </CCol>
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                No. of Day(s) *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="000"
-                name="no_of_days"
-                value={formData?.no_of_days}
-                onChange={handleChange}
-                maxLength={3}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                }}
-                disabled={view}
-              />
-              {errors.no_of_days && (
-                <div className="error-text">{errors.no_of_days}</div>
-              )}
-            </div>
-          </div>
-        </CCol>
+  <div style={{ width: "100%" }}>
+    <div className="position-relative">
+      <label htmlFor="validationTooltip01" className="form-label">
+        No. of Day(s) *
+      </label>
+      <input
+        type="text"
+        className="form-control pad-10"
+        id="validationTooltip01"
+        placeholder="000"
+        name="no_of_days"
+        value={formData?.no_of_days}
+        onChange={handleChange}
+        maxLength={3}
+        onInput={(e) => {
+          // Restrict input to digits only
+          e.target.value = e.target.value.replace(/[^0-9]/g, "");
+          // Allow only a single zero
+          if (e.target.value === "00") {
+            e.target.value = "0";
+          }
+        }}
+        disabled={view} // Keeping it disabled based on the 'view' prop
+      />
+      {errors.no_of_days && (
+        <div className="error-text">{errors.no_of_days}</div>
+      )}
+    </div>
+  </div>
+</CCol>
+
         <CCol lg={4} className="mb-3">
           <div class="position-relative">
             <label for="validationTooltip01" class="form-label">
@@ -790,61 +802,62 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
           </div>
         </CCol>
         <CCol lg={3} className="mb-3">
-          <div className="h-100 d-flex align-items-end w-100 justify-content-start">
-            <div
-              style={{
-                boxSizing: "border-box",
-                borderRadius: "5px",
-                border: "1px solid #17171D33",
-                padding: "10px",
-              }}
-            >
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="food_bf"
-                name="bf"
-                value="bf"
-                checked={formData?.medicine_taken === "bf"}
-                onChange={(e) =>
-                  setFormData({ ...formData, medicine_taken: e.target.value })
-                }
-                disabled={
-                  view === true
-                    ? view
-                    : defaultValues?.lab_status === "Prescribed"
-                    ? false
-                    : defaultValues?.medicines?.length >= 1
-                    ? true
-                    : false
-                }
-                label={
-                  <label for="validationTooltip01" class="form-label mb-0">
-                    BF
-                  </label>
-                }
-              />
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="food_af"
-                name="af"
-                value="af"
-                checked={formData?.medicine_taken === "af"}
-                onChange={(e) =>
-                  setFormData({ ...formData, medicine_taken: e.target.value })
-                }
-                label={
-                  <label for="validationTooltip01" class="form-label mb-0">
-                    AF
-                  </label>
-                }
-              />
-            </div>
-          </div>
-        </CCol>
+  <div className="h-100 d-flex align-items-end w-100 justify-content-start">
+    <div
+      style={{
+        boxSizing: "border-box",
+        borderRadius: "5px",
+        border: "1px solid #17171D33",
+        padding: "10px",
+      }}
+    >
+      <CFormCheck
+        className="mb-0"
+        inline
+        type="radio"
+        id="food_bf"
+        name="bf"
+        value="bf"
+        checked={formData?.medicine_taken === "bf"}
+        onChange={(e) =>
+          setFormData({ ...formData, medicine_taken: e.target.value })
+        }
+        disabled={
+          view === true
+            ? view
+            : defaultValues?.lab_status === "Prescribed"
+            ? false
+            : defaultValues?.medicines?.length >= 1
+            ? true
+            : false
+        }
+        label={
+          <label htmlFor="food_bf" className="form-label mb-0">
+            BF
+          </label>
+        }
+      />
+      <CFormCheck
+        className="mb-0"
+        inline
+        type="radio"
+        id="food_af"
+        name="af"
+        value="af"
+        checked={formData?.medicine_taken === "af"}
+        onChange={(e) =>
+          setFormData({ ...formData, medicine_taken: e.target.value })
+        }
+        label={
+          <label htmlFor="food_af" className="form-label mb-0">
+            AF
+          </label>
+        }
+      />
+    </div>
+  </div>
+</CCol>
+
         <CCol lg={5} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">

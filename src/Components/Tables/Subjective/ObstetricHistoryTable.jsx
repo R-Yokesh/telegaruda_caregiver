@@ -97,7 +97,7 @@ const ObstetricHistoryTable = ({
                             src={Assets?.EditPencil}
                             className={`cursor ${dt?.freeze === 1 ? "greyed-out" : ""
                               }`}
-                            onClick={() => selectedData(dt, dt?.id, "edit")}
+                            onClick={() => selectedData(dt,  "edit" , dt?.id)}
                           />
                         </div>
                         <div
@@ -111,7 +111,7 @@ const ObstetricHistoryTable = ({
                             alt="delete"
                             src={Assets?.Delete}
                             className="cursor"
-                            onClick={() => selectedData(dt, dt?.id, "delete")}
+                            onClick={() => selectedData(dt,"delete", dt?.id,)}
                           />
                         </div>
                       </>

@@ -252,7 +252,7 @@ const NextAppointmentForm = ({
                   closeOnScroll={true}
                   wrapperClassName="date-picker-wrapper"
                   dateFormat={DATE_FORMAT}
-                  maxDate={new Date()}
+                  // maxDate={new Date()}
                 />
               </div>
               <div style={{ width: "20%" }}>

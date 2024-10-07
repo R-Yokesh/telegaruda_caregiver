@@ -356,30 +356,36 @@ const SignsSymptomsForm = ({
           </div>
         </CCol>
         <CCol lg={3}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Duration in Days *
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="0000"
-                value={formData?.duration_days}
-                name="duration_days"
-                onChange={handleChange}
-                maxLength={4}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                }}
-              />
-              {errors.duration_days && (
-                <div className="error-text">{errors.duration_days}</div>
-              )}
-            </div>
-          </div>
-        </CCol>
+  <div style={{ width: "100%" }}>
+    <div className="position-relative">
+      <label htmlFor="validationTooltip01" className="form-label">
+        Duration in Days *
+      </label>
+      <input
+        type="text"
+        className="form-control pad-10"
+        id="validationTooltip01"
+        placeholder="0000"
+        value={formData?.duration_days}
+        name="duration_days"
+        onChange={handleChange}
+        maxLength={4}
+        onInput={(e) => {
+          // Restrict input to digits
+          e.target.value = e.target.value.replace(/[^0-9]/g, "");
+          // Allow only a single zero
+          if (e.target.value === "00") {
+            e.target.value = "0";
+          }
+        }}
+      />
+      {errors.duration_days && (
+        <div className="error-text">{errors.duration_days}</div>
+      )}
+    </div>
+  </div>
+</CCol>
+
       </CRow>
       <CRow className="mb-3">
         <CCol lg={4}>

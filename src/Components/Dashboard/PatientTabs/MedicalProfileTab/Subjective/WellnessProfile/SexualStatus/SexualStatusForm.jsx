@@ -170,193 +170,248 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
   return (
     <>
       <CRow className="mb-3">
-        <CCol lg={6}>
-          <p className="radio-label">Sexual Activity</p>
-          <div className="d-flex align-items-end w-100">
-            <div
-              style={{
-                boxSizing: "border-box",
-                borderRadius: "5px",
-                border: "1px solid #17171D33",
-                padding: "10px",
-              }}
+      <CCol lg={6}>
+    <p className="radio-label">Sexual Activity</p>
+    <div className="d-flex align-items-end w-100">
+      <div
+        style={{
+          boxSizing: "border-box",
+          borderRadius: "5px",
+          border: "1px solid #17171D33",
+          padding: "10px",
+        }}
+      >
+        <CFormCheck
+          className="mb-0"
+          inline
+          type="radio"
+          id="activityYes"
+          value="yes"
+          label={
+            <label
+              className="form-label mb-0"
+              htmlFor="activityYes"
+              onClick={() => handleHistorySexualClick({ target: { value: 'yes' } })}
             >
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="activityYes"
-                value="yes"
-                label={<label className="form-label mb-0">Active</label>}
-                name="activity"
-                checked={historySexual === "yes"}
-                onChange={handleHistorySexualClick}
-                disabled={from === "Consult"}
-              />
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="activityNo"
-                value="no"
-                label={<label className="form-label mb-0">Not Active</label>}
-                name="activity"
-                checked={historySexual === "no"}
-                onChange={handleHistorySexualClick}
-                disabled={from === "Consult"}
-              />
-            </div>
-          </div>
-        </CCol>
-
-        <CCol lg={6}>
-          <p className="radio-label">History of STI</p>
-          <div className="d-flex align-items-end w-100">
-            <div
-              style={{
-                boxSizing: "border-box",
-                borderRadius: "5px",
-                border: "1px solid #17171D33",
-                padding: "10px",
-              }}
+              Active
+            </label>
+          }
+          name="activity"
+          checked={historySexual === "yes"}
+          onChange={handleHistorySexualClick}
+          disabled={from === "Consult"}
+        />
+        <CFormCheck
+          className="mb-0"
+          inline
+          type="radio"
+          id="activityNo"
+          value="no"
+          label={
+            <label
+              className="form-label mb-0"
+              htmlFor="activityNo"
+              onClick={() => handleHistorySexualClick({ target: { value: 'no' } })}
             >
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="historyYes"
-                value="yes"
-                label={<label className="form-label mb-0">Yes</label>}
-                name="sti"
-                checked={historySti === "yes"}
-                onChange={handleHistoryStiClick}
-                disabled={from === "Consult"}
-              />
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="historyNo"
-                value="no"
-                label={<label className="form-label mb-0">No</label>}
-                name="sti"
-                checked={historySti === "no"}
-                onChange={handleHistoryStiClick}
-                disabled={from === "Consult"}
-              />
-            </div>
-          </div>
-        </CCol>
-      </CRow>
+              Not Active
+            </label>
+          }
+          name="activity"
+          checked={historySexual === "no"}
+          onChange={handleHistorySexualClick}
+          disabled={from === "Consult"}
+        />
+      </div>
+    </div>
+  </CCol>
 
-      {historySti === "yes" && (
-        <>
-          <CRow className="mb-3">
-            <CCol lg={6}>
-              <div className="position-relative">
-                <label className="form-label">Last STI Screening Date *</label>
-                <div className="date-size">
-                  <DatePicker
-                    showIcon
-                    selected={selectedDate}
-                    onChange={(date) => setSelectedDate(date)}
-                    dateFormat={DATE_FORMAT}
-                    maxDate={maxDate}
-                  />
-                </div>
-                {errors.selectedDate && (
-                  <p className="text-danger">{errors.selectedDate}</p>
-                )}
-              </div>
-            </CCol>
-            <CCol lg={6}>
-              <div style={{ width: "100%" }}>
-                <div className="position-relative">
-                  <label className="form-label">STI History Notes</label>
-                  <CFormTextarea
-                    type="text"
-                    className="form-control pad-10"
-                    id="sti_history_notes"
-                    placeholder="Enter"
-                    defaultValue={stiNotes}
-                    disabled={from === "Consult"}
-                    onChange={(e) => setStiNotes(e.target.value)}
-                  />
-                </div>
-              </div>
-            </CCol>
-          </CRow>
-          <CRow className="mb-3">
-            <CCol lg={6}>
-              <p className="radio-label">Current STI Status</p>
-              <div className="d-flex align-items-end w-100">
-                <div
-                  style={{
-                    boxSizing: "border-box",
-                    borderRadius: "5px",
-                    border: "1px solid #17171D33",
-                    padding: "10px",
-                  }}
+  {/* History of STI Section */}
+  <CCol lg={6}>
+    <p className="radio-label">History of STI</p>
+    <div className="d-flex align-items-end w-100">
+      <div
+        style={{
+          boxSizing: "border-box",
+          borderRadius: "5px",
+          border: "1px solid #17171D33",
+          padding: "10px",
+        }}
+      >
+        <CFormCheck
+          className="mb-0"
+          inline
+          type="radio"
+          id="historyYes"
+          value="yes"
+          label={
+            <label
+              className="form-label mb-0"
+              htmlFor="historyYes"
+              onClick={() => handleHistoryStiClick({ target: { value: 'yes' } })}
+            >
+              Yes
+            </label>
+          }
+          name="sti"
+          checked={historySti === "yes"}
+          onChange={handleHistoryStiClick}
+          disabled={from === "Consult"}
+        />
+        <CFormCheck
+          className="mb-0"
+          inline
+          type="radio"
+          id="historyNo"
+          value="no"
+          label={
+            <label
+              className="form-label mb-0"
+              htmlFor="historyNo"
+              onClick={() => handleHistoryStiClick({ target: { value: 'no' } })}
+            >
+              No
+            </label>
+          }
+          name="sti"
+          checked={historySti === "no"}
+          onChange={handleHistoryStiClick}
+          disabled={from === "Consult"}
+        />
+      </div>
+    </div>
+  </CCol>
+</CRow>
+
+{/* Conditional rendering when History of STI is Yes */}
+{historySti === "yes" && (
+  <>
+    <CRow className="mb-3">
+      <CCol lg={6}>
+        <div className="position-relative">
+          <label className="form-label">Last STI Screening Date *</label>
+          <div className="date-size">
+            <DatePicker
+              showIcon
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              dateFormat={DATE_FORMAT}
+              maxDate={maxDate}
+            />
+          </div>
+          {errors.selectedDate && (
+            <p className="text-danger">{errors.selectedDate}</p>
+          )}
+        </div>
+      </CCol>
+      <CCol lg={6}>
+        <div className="position-relative">
+          <label className="form-label">STI History Notes</label>
+          <CFormTextarea
+            type="text"
+            className="form-control pad-10"
+            id="sti_history_notes"
+            placeholder="Enter"
+            defaultValue={stiNotes}
+            onChange={(e) => setStiNotes(e.target.value)}
+            disabled={from === "Consult"}
+          />
+        </div>
+      </CCol>
+    </CRow>
+
+    <CRow className="mb-3">
+      <CCol lg={6}>
+        <p className="radio-label">Current STI Status</p>
+        <div className="d-flex align-items-end w-100">
+          <div
+            style={{
+              boxSizing: "border-box",
+              borderRadius: "5px",
+              border: "1px solid #17171D33",
+              padding: "10px",
+            }}
+          >
+            <CFormCheck
+              className="mb-0"
+              inline
+              type="radio"
+              id="statusPositive"
+              value="positive"
+              label={
+                <label
+                  className="form-label mb-0"
+                  htmlFor="statusPositive"
+                  onClick={() => handleCurrentStiClick({ target: { value: 'positive' } })}
                 >
-                  <CFormCheck
-                    className="mb-0"
-                    inline
-                    type="radio"
-                    id="statusPositive"
-                    value="positive"
-                    label={<label className="form-label mb-0">Positive</label>}
-                    name="sti_status"
-                    checked={currentSti === "positive"}
-                    onChange={handleCurrentStiClick}
-                    disabled={from === "Consult"}
-                  />
-                  <CFormCheck
-                    className="mb-0"
-                    inline
-                    type="radio"
-                    id="statusNegative"
-                    value="negative"
-                    label={<label className="form-label mb-0">Negative</label>}
-                    name="sti_status"
-                    checked={currentSti === "negative"}
-                    onChange={handleCurrentStiClick}
-                    disabled={from === "Consult"}
-                  />
-                  <CFormCheck
-                    className="mb-0"
-                    inline
-                    type="radio"
-                    id="statusUnknown"
-                    value="unknown"
-                    label={<label className="form-label mb-0">Unknown</label>}
-                    name="sti_status"
-                    checked={currentSti === "unknown"}
-                    onChange={handleCurrentStiClick}
-                    disabled={from === "Consult"}
-                  />
-                </div>
-              </div>
-            </CCol>
-            {currentSti === "positive" && (
-              <CCol lg={6}>
-                <div style={{ width: "100%" }}>
-                  <div className="position-relative">
-                    <label className="form-label">
-                      Current STI Status Notes
-                    </label>
-                    <CFormTextarea
-                      type="text"
-                      className="form-control pad-10"
-                      id="current_sti_notes"
-                      placeholder="Enter"
-                      defaultValue={currentStiNotes}
-                      disabled={from === "Consult"}
-                      onChange={(e) => setCurrentStiNotes(e.target.value)}
-                    />
-                  </div>
-                </div>
-              </CCol>
-            )}
+                  Positive
+                </label>
+              }
+              name="sti_status"
+              checked={currentSti === "positive"}
+              onChange={handleCurrentStiClick}
+              disabled={from === "Consult"}
+            />
+            <CFormCheck
+              className="mb-0"
+              inline
+              type="radio"
+              id="statusNegative"
+              value="negative"
+              label={
+                <label
+                  className="form-label mb-0"
+                  htmlFor="statusNegative"
+                  onClick={() => handleCurrentStiClick({ target: { value: 'negative' } })}
+                >
+                  Negative
+                </label>
+              }
+              name="sti_status"
+              checked={currentSti === "negative"}
+              onChange={handleCurrentStiClick}
+              disabled={from === "Consult"}
+            />
+            <CFormCheck
+              className="mb-0"
+              inline
+              type="radio"
+              id="statusUnknown"
+              value="unknown"
+              label={
+                <label
+                  className="form-label mb-0"
+                  htmlFor="statusUnknown"
+                  onClick={() => handleCurrentStiClick({ target: { value: 'unknown' } })}
+                >
+                  Unknown
+                </label>
+              }
+              name="sti_status"
+              checked={currentSti === "unknown"}
+              onChange={handleCurrentStiClick}
+              disabled={from === "Consult"}
+            />
+          </div>
+        </div>
+      </CCol>
+
+      {/* Conditional rendering for Positive STI status */}
+      {currentSti === "positive" && (
+        <CCol lg={6}>
+          <div className="position-relative">
+            <label className="form-label">Current STI Status Notes</label>
+            <CFormTextarea
+              type="text"
+              className="form-control pad-10"
+              id="current_sti_notes"
+              placeholder="Enter"
+              defaultValue={currentStiNotes}
+              onChange={(e) => setCurrentStiNotes(e.target.value)}
+              disabled={from === "Consult"}
+            />
+          </div>
+        </CCol>
+      )}
           </CRow>
         </>
       )}

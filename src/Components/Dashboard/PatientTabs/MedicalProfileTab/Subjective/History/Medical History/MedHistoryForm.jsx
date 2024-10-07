@@ -388,29 +388,40 @@ const MedHistoryForm = ({
         </CCol>
       </CRow>
       <CRow className="mb-3">
-        <CCol lg={4}>
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Chronic
-              </label>
-              <CFormCheck
-                type="radio"
-                label="Yes"
-                value="Yes"
-                checked={selectChronic}
-                onChange={handleChronicChange}
-              />
-              <CFormCheck
-                type="radio"
-                label="No"
-                value="No"
-                checked={!selectChronic}
-                onChange={handleChronicChange}
-              />
-            </div>
-          </div>
-        </CCol>
+      <CCol lg={4}>
+  <div style={{ width: "100%" }}>
+    <div className="position-relative">
+      <label htmlFor="chronic_yes" className="form-label">
+        Chronic
+      </label>
+      <CFormCheck
+        type="radio"
+        id="chronic_yes"
+        label={
+          <label htmlFor="chronic_yes" className="form-label mb-0" style={{ color: "black", fontSize: "16px" }}>
+            Yes
+          </label>
+        }
+        value="Yes"
+        checked={selectChronic}
+        onChange={handleChronicChange}
+      />
+      <CFormCheck
+        type="radio"
+        id="chronic_no"
+        label={
+          <label htmlFor="chronic_no" className="form-label mb-0" style={{ color: "black", fontSize: "16px" }}>
+            No
+          </label>
+        }
+        value="No"
+        checked={!selectChronic}
+        onChange={handleChronicChange}
+      />
+    </div>
+  </div>
+</CCol>
+
         <CCol lg={4}>
           <div style={{ width: "100%" }}>
             <div class="position-relative">

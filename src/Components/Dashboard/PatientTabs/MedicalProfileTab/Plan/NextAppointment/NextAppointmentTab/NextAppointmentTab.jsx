@@ -237,7 +237,7 @@ const NextAppointmentTab = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  {/* <DateRangePicker getFilterValues={getFilterValues} /> */}
+                  <DateRangePicker getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
