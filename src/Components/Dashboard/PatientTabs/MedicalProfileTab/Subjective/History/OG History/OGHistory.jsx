@@ -412,6 +412,7 @@ const OGHistory = ({ from, back }) => {
   const data = location.state?.PatientDetail;
   const [obsData, setObsData] = useState([]);
   const [mensuData, setMensuData] = useState({});
+  const [mensuStatus, setMensuStatus] = useState(false);
   const [screeningData, setScreeningData] = useState({});
 
   const [obsPagi, setObsPagi] = useState({});
@@ -523,8 +524,8 @@ const OGHistory = ({ from, back }) => {
 
   const obsAdd = async (answerDatas) => {
     try {
-        // Set the loading state to true
-        setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -537,7 +538,7 @@ const OGHistory = ({ from, back }) => {
       toast.success("Added successfully");
       setAddFormView(false);
       setCurrentTab(1);
-      setCurrentPage(1)
+      setCurrentPage(1);
     } catch (error) {
       console.error("Failed to delete:", error);
     } finally {
@@ -547,8 +548,8 @@ const OGHistory = ({ from, back }) => {
   };
   const obsEdit = async (answerDatas, selectedId) => {
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -586,20 +587,23 @@ const OGHistory = ({ from, back }) => {
     setSearchValue(searchValue);
   };
   const getMensuralLists = useCallback(async () => {
+    setMensuStatus(true);
     try {
       const response = await get(
         `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=1&page=1&order_by=id&dir=2` //${data?.user_id}
       );
       const listData = response?.data?.patient_histories[0]; //
       setMensuData(listData);
+      setMensuStatus(false);
     } catch (error) {
+      setMensuStatus(false);
       console.error("Error fetching card data:", error);
     }
-  }, [get]);
+  }, [get, data?.user_id]);
   const mensuEdit = async (answerDatas, selectedId) => {
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -619,8 +623,8 @@ const OGHistory = ({ from, back }) => {
   };
   const mensuAdd = async (answerDatas) => {
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -649,11 +653,11 @@ const OGHistory = ({ from, back }) => {
     } catch (error) {
       console.error("Error fetching card data:", error);
     }
-  }, [get]);
+  }, [get, data?.user_id]);
   const screeningEdit = async (answerDatas, selectedId) => {
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/patientHistories/${selectedId}`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -673,8 +677,8 @@ const OGHistory = ({ from, back }) => {
   };
   const screeningAdd = async (answerDatas) => {
     try {
-       // Set the loading state to true
-       setIsSubmitting(true);
+      // Set the loading state to true
+      setIsSubmitting(true);
       const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
@@ -697,11 +701,11 @@ const OGHistory = ({ from, back }) => {
   }, [getScreeningLists]);
   useEffect(() => {
     getMensuralLists();
-  }, [getMensuralLists]);
+  }, [getMensuralLists, data?.user_id]);
 
   useEffect(() => {
     getObsLists();
-  }, [getObsLists]);
+  }, [getObsLists, data?.user_id]);
 
   return (
     <>

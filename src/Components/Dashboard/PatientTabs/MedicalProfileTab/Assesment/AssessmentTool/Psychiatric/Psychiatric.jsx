@@ -538,7 +538,6 @@ const Psychiatric = ({ from }) => {
   };
 
   const getselectedData = (data, type) => {
-    console.log(type, "first", data);
     setSelectedData(data);
     setFormTitle(data?.name); // Set form title based on selected data
     if (type === "add") {
@@ -552,7 +551,6 @@ const Psychiatric = ({ from }) => {
   };
 
   const onAdd = async (answerDatas) => {
-    console.log("first hello", selectedData);
     try {
       const url = `resource/form_submitted_answers`; // Replace with your API endpoint
       const body = {
@@ -582,7 +580,7 @@ const Psychiatric = ({ from }) => {
     } catch (error) {
       console.error("Error fetching card data:", error);
     }
-  }, [get, addFormView, currentPage]);
+  }, [get, addFormView, data?.user_id]);
 
   useEffect(() => {
     getTableLists();

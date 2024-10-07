@@ -39,6 +39,10 @@ const Dropdown = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    setSelectedOption(defaultValue || "Select" || options[0]);
+  }, [defaultValue]);
   return (
     <div
       className={`dropdown-container ${view === true ? "disabled" : ""}`}

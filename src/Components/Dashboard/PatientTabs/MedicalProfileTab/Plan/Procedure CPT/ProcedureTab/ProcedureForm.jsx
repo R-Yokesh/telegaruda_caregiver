@@ -21,7 +21,13 @@ import { useLocation } from "react-router-dom";
 import ICDCodeDrop from "../../../../../../Dropdown/ICDCodeDrop";
 import { Assets } from "../../../../../../../assets/Assets";
 
-const ProcedureForm = ({ back, defaultValues, addCpt, editCpt,isSubmitting }) => {
+const ProcedureForm = ({
+  back,
+  defaultValues,
+  addCpt,
+  editCpt,
+  isSubmitting,
+}) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
@@ -106,9 +112,15 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt,isSubmitting }) =>
         code: icd,
         name: Description,
       };
+      const editValues = {
+        date: format(selectedDate, "yyyy-MM-dd"),
+        time: format(selectedTime, "HH:mm"),
+        code: icd,
+        name: typeof Description === "string" ? Description : Description[0],
+      };
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
-        editCpt(values, defaultValues?.id);
+        editCpt(editValues, defaultValues?.id);
       }
       if (defaultValues.id === undefined) {
         console.log("Add clicked");
@@ -139,7 +151,6 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt,isSubmitting }) =>
     getICDCode();
   }, [getICDCode]);
 
- 
   const handleClear = () => {
     setSelectedTime(null); // Clear the selected time
   };
@@ -265,7 +276,7 @@ const ProcedureForm = ({ back, defaultValues, addCpt, editCpt,isSubmitting }) =>
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-        <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
             {isSubmitting ? "Saving..." : "SAVE"}
           </PrimaryButton>
         </div>

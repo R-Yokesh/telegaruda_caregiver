@@ -131,7 +131,7 @@ const NextAppointmentTab = ({ from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, startDate, endDate, searchValue]);
+  }, [get, currentPage, startDate, endDate, searchValue,data?.user_id]);
 
   useEffect(() => {
     fetchNextAppointment();

@@ -110,7 +110,7 @@ const ChiefComplaints = ({ OnClose, from, consultSummaryData }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get, currentPage, addFormView, startDate, endDate, searchValue]);
+  }, [get, currentPage, addFormView, startDate, endDate, searchValue,data?.user_id]);
 
   useEffect(() => {
     getChiefComplaints();

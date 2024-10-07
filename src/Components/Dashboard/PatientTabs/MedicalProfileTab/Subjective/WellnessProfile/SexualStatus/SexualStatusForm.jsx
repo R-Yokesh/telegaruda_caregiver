@@ -52,7 +52,7 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get]);
+  }, [get,data?.user_id]);
 
   useEffect(() => {
     fetchSexualStatus();
@@ -165,6 +165,8 @@ const SexualStatusForm = ({ back, defaultValues, from }) => {
       }
     }
   };
+
+
   return (
     <>
       <CRow className="mb-3">

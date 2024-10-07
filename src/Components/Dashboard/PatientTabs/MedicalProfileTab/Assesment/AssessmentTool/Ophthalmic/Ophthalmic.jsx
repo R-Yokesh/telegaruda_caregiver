@@ -161,7 +161,6 @@ const Ophthalmic = ({ from }) => {
   };
 
   const onAdd = async (answerDatas) => {
-    console.log("first hello", selectedData);
     try {
       const url = `resource/form_submitted_answers`; // Replace with your API endpoint
       const body = {
@@ -191,7 +190,7 @@ const Ophthalmic = ({ from }) => {
     } catch (error) {
       console.error("Error fetching card data:", error);
     }
-  }, [get, addFormView, currentPage]);
+  }, [get, addFormView, data?.user_id]);
 
   useEffect(() => {
     getTableLists();

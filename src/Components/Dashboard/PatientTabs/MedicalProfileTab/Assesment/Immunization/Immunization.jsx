@@ -1,4 +1,4 @@
-import React, { useState,useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Breadcrumb from "../../../../../Breadcrumb/Breadcrumb";
 import {
   CCard,
@@ -118,8 +118,8 @@ const Immunization = ({ onClose, from }) => {
   //     taken_date: "06-07-2024",
   //   },
   // ];
-    
-  const { loading, error, get,post,del,clearCache } = useApi();
+
+  const { loading, error, get, post, del, clearCache } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
 
@@ -128,21 +128,16 @@ const Immunization = ({ onClose, from }) => {
   const [addFormView, setAddFormView] = useState(false);
   const [deleteView, setDeleteView] = useState(false);
   const [id, setId] = useState(null);
-  const [ startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
   const [tkDate, setTkDate] = useState(new Date());
   const [slug, setSlug] = useState("");
-  
-
-
-
 
   // Get today's date
   const today = new Date();
-
 
   const itemsPerPage = 5; // Number of items to display per page
 
@@ -150,10 +145,7 @@ const Immunization = ({ onClose, from }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
-   
   };
-
-  
 
   // Function to handle page change
   const onPageChange = (pageNumber) => {
@@ -171,10 +163,9 @@ const Immunization = ({ onClose, from }) => {
     setAddFormView(true);
   };
 
-
-  const getselectedData = (data,slug, type) => {
+  const getselectedData = (data, slug, type) => {
     setSelectedData(data);
-    setSlug(slug)
+    setSlug(slug);
     if (type === "edit") {
       addFormPage();
     }
@@ -182,8 +173,7 @@ const Immunization = ({ onClose, from }) => {
       setDeleteView(true);
     }
   };
-  console.log("selectedData111",selectedData,slug)
-    
+
   const fetchImmunization = useCallback(async () => {
     try {
       // clearCache();
@@ -199,16 +189,14 @@ const Immunization = ({ onClose, from }) => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }, [get]);
+  }, [get, data?.user_id]);
 
   useEffect(() => {
     fetchImmunization();
   }, [fetchImmunization]);
 
-
-   // Add API 
-   const addImmunization = async () => {
-
+  // Add API
+  const addImmunization = async () => {
     try {
       const body = {
         slug: slug,
@@ -224,8 +212,7 @@ const Immunization = ({ onClose, from }) => {
       if (response.code === 201) {
         clearCache();
         await fetchImmunization();
-        setDeleteView(false)
-
+        setDeleteView(false);
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -233,7 +220,7 @@ const Immunization = ({ onClose, from }) => {
       console.error("Error fetching data:", error);
     }
   };
-  
+
   return (
     <>
       {from === "Consult" && (
@@ -282,7 +269,7 @@ const Immunization = ({ onClose, from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                {/* <DateRangePicker getFilterValues={getFilterValues} /> */}
+                  {/* <DateRangePicker getFilterValues={getFilterValues} /> */}
                 </CCol>
                 <CCol
                   lg={4}
@@ -309,7 +296,8 @@ const Immunization = ({ onClose, from }) => {
               <div className="mb-2">
                 <CRow>
                   <ImmunizationTable
-                    rowData={getCurrentPageItems()}
+                    // rowData={getCurrentPageItems()}
+                    rowData={rowData}
                     columns={columnData}
                     getselectedData={getselectedData}
                     currentPage={currentPage || 1}

@@ -14,10 +14,10 @@ const MensturalHistoryForm = ({
   from,
   mensuEdit,
   mensuAdd,
-  isSubmitting
+  isSubmitting,
 }) => {
   const [date, setDate] = useState(defaultValues?.values?.lmp || new Date());
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
 
   // useEffect(() => {
   //   // This should match your expected format
@@ -52,9 +52,7 @@ const MensturalHistoryForm = ({
   const [flowType, setFlowType] = useState(
     defaultValues?.values?.flow?.type || ""
   );
-  const [flowDur, setFlowDur] = useState(
-    defaultValues?.values?.flow?.duration || ""
-  );
+  const [flowDur, setFlowDur] = useState();
 
   const handleClick = (event) => {
     setMenopause(event.target.value);
@@ -199,6 +197,32 @@ const MensturalHistoryForm = ({
     }
   };
 
+  useEffect(() => {
+    setDate(defaultValues?.values?.lmp || new Date());
+    setValue3(defaultValues?.values?.cycle?.days || "");
+    setValue2(defaultValues?.values?.cycle?.year || "");
+    setValue1(defaultValues?.values?.menarche_age || "");
+    setValue(defaultValues?.values?.menopause_age || "");
+    setFlowDur(defaultValues?.values?.flow?.duration || "");
+    setFlowType(defaultValues?.values?.flow?.type);
+    setBleeding(defaultValues?.values?.bleeding || "no");
+    setDysmenorrhea(defaultValues?.values?.dysmenorrhea || "no");
+    setIrregular(defaultValues?.values?.cycle?.irregular || "no");
+    setMenopause(defaultValues?.values?.menopause || "no");
+  }, [
+    defaultValues?.values?.bleeding,
+    defaultValues?.values?.cycle?.days,
+    defaultValues?.values?.cycle?.irregular,
+    defaultValues?.values?.cycle?.year,
+    defaultValues?.values?.dysmenorrhea,
+    defaultValues?.values?.flow?.duration,
+    defaultValues?.values?.flow?.type,
+    defaultValues?.values?.lmp,
+    defaultValues?.values?.menarche_age,
+    defaultValues?.values?.menopause,
+    defaultValues?.values?.menopause_age,
+  ]);
+
   return (
     <>
       <CRow className="mb-3">
@@ -255,7 +279,7 @@ const MensturalHistoryForm = ({
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
-              Cycle Length (in days) {menopause !== "yes" && "*"}
+                Cycle Length (in days) {menopause !== "yes" && "*"}
               </label>
               <input
                 type="text"
@@ -293,11 +317,11 @@ const MensturalHistoryForm = ({
                   defaultValue={
                     defaultValues?.values?.flow?.duration
                       ? flow_duration[
-                      findItemIndex(
-                        flow_duration,
-                        defaultValues?.values?.flow?.duration
-                      )
-                      ]
+                          findItemIndex(
+                            flow_duration,
+                            defaultValues?.values?.flow?.duration
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getSelectedValue2}
@@ -327,11 +351,11 @@ const MensturalHistoryForm = ({
                   defaultValue={
                     defaultValues?.values?.flow?.type
                       ? flow_type[
-                      findItemIndex(
-                        flow_type,
-                        defaultValues?.values?.flow?.type
-                      )
-                      ]
+                          findItemIndex(
+                            flow_type,
+                            defaultValues?.values?.flow?.type
+                          )
+                        ]
                       : null
                   }
                   getSelectedValue={getSelectedValue}
@@ -543,7 +567,11 @@ const MensturalHistoryForm = ({
               {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
             </PrimaryButton> */}
             <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
+              {isSubmitting
+                ? "Saving..."
+                : defaultValues?.id !== undefined
+                ? "UPDATE"
+                : "ADD"}
             </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>

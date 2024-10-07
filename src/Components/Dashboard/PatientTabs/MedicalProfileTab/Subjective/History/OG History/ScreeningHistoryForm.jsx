@@ -13,7 +13,7 @@ const ScreeningHistoryForm = ({
   from,
   screeningAdd,
   screeningEdit,
-  isSubmitting
+  isSubmitting,
 }) => {
   const [date, setDate] = useState(
     defaultValues?.values?.last_pap_smear_at || new Date()
@@ -42,7 +42,7 @@ const ScreeningHistoryForm = ({
   const [breastDesc, setBreastDesc] = useState(
     defaultValues?.values?.breast_exam_desc || ""
   );
-  const maxDate = new Date(); // Restrict future dates 
+  const maxDate = new Date(); // Restrict future dates
 
   const handleAbnormalStatus = (event) => {
     setAbnormalStatus(event.target.value);
@@ -84,6 +84,38 @@ const ScreeningHistoryForm = ({
       }
     }
   };
+  useEffect(() => {
+    setDate(defaultValues?.values?.last_pap_smear_at || new Date());
+    setDate2(defaultValues?.values?.last_mamogram_at || new Date());
+    setDate3(defaultValues?.values?.last_breast_exam_at || new Date());
+    setAbnormalStatus(defaultValues?.values?.is_abnormal_pap_smear || "no");
+    setMamogramStatus(defaultValues?.values?.is_mammogram || "no");
+    setBreastStatus(defaultValues?.values?.is_breast_exam || "no");
+    setAbnormalDesc(defaultValues?.values?.abnormal_pap_smear_desc || "");
+    setMamogramDesc(defaultValues?.values?.mammogram_desc || "");
+    setBreastDesc(defaultValues?.values?.breast_exam_desc || "");
+  }, [
+    defaultValues?.values?.abnormal_pap_smear_desc,
+    defaultValues?.values.bleeding,
+    defaultValues?.values?.breast_exam_desc,
+    defaultValues?.values?.cycle?.days,
+    defaultValues?.values?.cycle?.irregular,
+    defaultValues?.values?.cycle?.year,
+    defaultValues?.values?.dysmenorrhea,
+    defaultValues?.values?.flow?.duration,
+    defaultValues?.values?.flow?.type,
+    defaultValues?.values?.is_abnormal_pap_smear,
+    defaultValues?.values?.is_breast_exam,
+    defaultValues?.values?.is_mammogram,
+    defaultValues?.values?.last_breast_exam_at,
+    defaultValues?.values?.last_mamogram_at,
+    defaultValues?.values?.last_pap_smear_at,
+    defaultValues?.values?.lmp,
+    defaultValues?.values?.mammogram_desc,
+    defaultValues?.values?.menarche_age,
+    defaultValues?.values?.menopause,
+    defaultValues?.values?.menopause_age,
+  ]);
   return (
     <>
       <CRow className="mb-3">
@@ -222,7 +254,7 @@ const ScreeningHistoryForm = ({
             <div style={{ width: "100%" }}>
               <div class="position-relative">
                 <label for="validationTooltip01" class="form-label">
-                Mammogram Details
+                  Mammogram Details
                 </label>
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
@@ -321,7 +353,11 @@ const ScreeningHistoryForm = ({
               {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
             </PrimaryButton> */}
             <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
+              {isSubmitting
+                ? "Saving..."
+                : defaultValues?.id !== undefined
+                ? "UPDATE"
+                : "ADD"}
             </PrimaryButton>
           </div>
           <div style={{ width: "128px" }}>

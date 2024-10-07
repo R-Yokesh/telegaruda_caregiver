@@ -257,7 +257,7 @@ const PhysicalExam = ({ onClose, from }) => {
     } catch (error) {
       console.error("Error fetching saved data:", error);
     }
-  }, [get, date, addFormView]);
+  }, [get, date, addFormView,data?.user_id]);
 
   const getHeadings = useCallback(async () => {
     try {
@@ -328,7 +328,7 @@ const PhysicalExam = ({ onClose, from }) => {
     } catch (error) {
       console.error("Error fetching card data:", error);
     }
-  }, [get, deleteView, addFormView, startDate, endDate]);
+  }, [get, deleteView, addFormView, startDate, endDate,data?.user_id]);
 
   useEffect(() => {
     getSavedValue();
