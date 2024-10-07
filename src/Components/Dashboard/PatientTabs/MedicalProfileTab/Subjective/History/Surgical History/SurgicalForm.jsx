@@ -12,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import ICDDrop from "../../../../../../Dropdown/ICDDrop";
 import { CustomInput, getCurrentTime } from "../../../../../../../Utils/dateUtils";
 import { format, isValid, parse } from "date-fns";
+import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 
 const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit,isSubmitting }) => {
   const [selectedTime, setSelectedTime] = useState(null);
@@ -296,20 +297,21 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit,isSubmitt
               <label for="validationTooltip01" class="form-label">
                 Surgery Name *
               </label>
-              <SearchInput
+              {/* <SearchInput
                 data={surgeryDetails}
                 setSurgeryKey={setSurgeryKey}
                 getSelectedData={getSelectedData}
                 defaultkey={surgerykey}
-              />
+              /> */}
+                <SearchableDrop
+                  getSelectedValue={getSelectedData}
+                  options={surgeryDetails}
+                  defaultValue={surgerykey}
+                  dropKey={setSurgeryKey}
+                />
               {errors.surgeryName && (
                 <div className="text-danger">{errors.surgeryName}</div>
               )}
-              {/* <Dropdown
-                  getSelectedValue={getSelectedGravida}
-                  options={gravidaoptions}
-                  // defaultValue={gravidaoptions[findgravidaIndex]}
-                /> */}
             </div>
           </div>
         </CCol>
@@ -319,19 +321,18 @@ const SurgicalForm = ({ back, defaultValues, surgicalAdd, surgicalEdit,isSubmitt
               <label for="validationTooltip01" class="form-label">
                 Surgery Reason *
               </label>
-              {/* <input
-                type="text"
-                class="form-control pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.name}
-              /> */}
-              <SearchInput
+              {/* <SearchInput
                 data={reasonDetails}
                 setSurgeryKey={setReasonKey}
                 getSelectedData={getSelectedReasonData}
                 defaultkey={reasonkey}
-              />
+              /> */}
+                <SearchableDrop
+                  getSelectedValue={getSelectedReasonData}
+                  options={reasonDetails}
+                  defaultValue={reasonkey}
+                  dropKey={setReasonKey}
+                />
               {errors.reasonName && (
                 <div className="text-danger">{errors.reasonName}</div>
               )}

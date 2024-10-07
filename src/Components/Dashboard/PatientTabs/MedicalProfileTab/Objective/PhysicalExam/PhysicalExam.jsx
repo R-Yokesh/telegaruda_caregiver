@@ -389,7 +389,7 @@ const PhysicalExam = ({ onClose, from }) => {
       {from !== "Consult" && (
         <>
           <CRow className="mb-0">
-            <CCol md={6} className="mb-2">
+            <CCol md={6} className="">
               <div className="d-flex gap-2">
                 <img
                   alt="BackBtn"
@@ -403,7 +403,7 @@ const PhysicalExam = ({ onClose, from }) => {
                 </span>
               </div>
             </CCol>
-            <CCol md={6} className="mb-2 d-flex justify-content-end">
+            <CCol md={6} className=" d-flex justify-content-end">
               <div className="d-flex mt-2">
                 <Breadcrumb
                   paths={[

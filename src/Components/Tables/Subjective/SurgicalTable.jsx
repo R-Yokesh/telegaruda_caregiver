@@ -58,7 +58,8 @@ const SurgicalTable = ({
                         .split("-")
                         .reverse()
                         .join("-")}
-                    </span>
+                    </span><br />
+                    <span className="fs-16 fw-500">{dt?.values?.surgery_time ? dt?.values?.surgery_time : "-"}</span>
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-left grid-vertical-line">
                     <span className="fs-16 fw-500">

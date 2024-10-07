@@ -194,15 +194,18 @@ const ScreeningHistoryForm = ({
 {abnormalStatus === "yes" && (
   <CCol lg={4} className="mb-3">
     <div style={{ width: "100%" }}>
-      <div class="position-relative">
-        <label for="validationTooltip01" class="form-label">
+    <div className="position-relative">
+    <label htmlFor="validationTooltip01" className="form-label">
           Abnormal Pap Smear Details
         </label>
         <CFormTextarea
           id="exampleFormControlTextarea1"
-          rows={3}
+          rows={1}
           defaultValue={abnormalDesc}
-          onChange={(e) => setAbnormalDesc(e.target.value)}
+          onChange={(e) => {setAbnormalDesc(e.target.value);
+            e.target.style.height = "auto"; 
+                    e.target.style.height = `${e.target.scrollHeight}px`;}
+          }
           disabled={from === "Consult-Screen" ? true : false}
         ></CFormTextarea>
       </div>
@@ -286,17 +289,22 @@ const ScreeningHistoryForm = ({
 {mamogramStatus === "yes" && (
   <CCol lg={4} className="mb-3">
     <div style={{ width: "100%" }}>
-      <div class="position-relative">
-        <label for="validationTooltip01" class="form-label">
-          Mammogram Details
+    <div className="position-relative">
+                <label htmlFor="validationTooltip01" className="form-label">
+                Mammogram Details
         </label>
         <CFormTextarea
-          id="exampleFormControlTextarea1"
-          rows={3}
-          defaultValue={mamogramDesc}
-          onChange={(e) => setMamogramDesc(e.target.value)}
-          disabled={from === "Consult-Screen" ? true : false}
-        ></CFormTextarea>
+                  id="exampleFormControlTextarea1"
+                  rows={1}
+                  value={mamogramDesc}
+                  onChange={(e) => {
+                    setMamogramDesc(e.target.value); 
+                    e.target.style.height = "auto"; 
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                  }}
+                  disabled={from === "Consult-Screen" ? true : false}
+                  style={{ overflow: "hidden",height:"45px" }}
+                ></CFormTextarea>
       </div>
     </div>
   </CCol>
@@ -376,22 +384,27 @@ const ScreeningHistoryForm = ({
 </CCol>
 
 {breastStatus === "yes" && (
-  <CCol lg={4} className="mb-3">
-    <div style={{ width: "100%" }}>
-      <div class="position-relative">
-        <label for="validationTooltip01" class="form-label">
-          Breast Exam Details
-        </label>
-        <CFormTextarea
-          id="exampleFormControlTextarea1"
-          rows={3}
-          defaultValue={breastDesc}
-          onChange={(e) => setBreastDesc(e.target.value)}
-          disabled={from === "Consult-Screen" ? true : false}
-        ></CFormTextarea>
-      </div>
-    </div>
-  </CCol>
+            <CCol lg={4} className="mb-3">
+            <div style={{ width: "100%" }}>
+              <div className="position-relative">
+                <label htmlFor="validationTooltip01" className="form-label">
+                Breast Exam Details
+                </label>
+                <CFormTextarea
+                  id="exampleFormControlTextarea1"
+                  rows={1}
+                  value={breastDesc}
+                  onChange={(e) => {
+                   setBreastDesc(e.target.value); 
+                    e.target.style.height = "auto"; 
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                  }}
+                  disabled={from === "Consult-Screen" ? true : false}
+                  style={{ overflow: "hidden",height:"45px" }}
+                ></CFormTextarea>
+              </div>
+            </div>
+          </CCol>
 )}
 
       </CRow>

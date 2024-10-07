@@ -203,7 +203,7 @@ const Allergies = () => {
             </CCol>
             <CCol
               lg={4}
-              className="d-flex justify-content-end align-items-center gap-2"
+              className="d-flex justify-content-end align-items-center gap-2 mt-4"
             >
               <div>
                 <PrimaryButton onClick={() => { addFormPage(); setSelectedData({}) }}>

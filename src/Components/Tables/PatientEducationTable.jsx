@@ -69,10 +69,10 @@ const PatientEducationTable = ({
                 <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
                     {formatDate(dt?.addition_info?.date)}
-                  </span>
-                  {/* <span className="fs-16 fw-500">
+                  </span><br />
+                  <span className="fs-16 fw-500">
                     {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}
-                  </span> */}
+                  </span>
                 </CTableDataCell>
                <CTableDataCell className="subGrid-left grid-vertical-line">
                   <span className="fs-16 fw-500">
