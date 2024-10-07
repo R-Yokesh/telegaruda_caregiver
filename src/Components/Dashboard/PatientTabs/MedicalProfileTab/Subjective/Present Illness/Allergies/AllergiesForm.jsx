@@ -245,7 +245,7 @@ const AllergiesForm = ({ back, defaultValues, addAllergy, editAllergy,isSubmitti
     setAllergyName(data);
     setFormData((prevState) => ({
       ...prevState,
-      category: data?.name,
+      category: data?.attributes?.allergy_category,
     }));
   };
 

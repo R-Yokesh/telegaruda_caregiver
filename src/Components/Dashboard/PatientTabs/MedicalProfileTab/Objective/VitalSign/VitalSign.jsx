@@ -147,7 +147,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
         if (card?.slug !== null) {
           try {
             const response = await get(
-              `resource/vitals?limit=5&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=${data?.user_id}&slug=${card?.slug}`
+              `resource/vitals?limit=10&page=1&from=&to=&order_by=details-%3Edate&dir=2&user_id=${data?.user_id}&slug=${card?.slug}`
             );
             const tableData = response?.data?.vitals;
 
@@ -483,7 +483,7 @@ const VitalSign = ({ setVitalView, onClose }) => {
     async (card) => {
       try {
         const response = await get(
-          `resource/vitals?limit=5&page=${currentPage ?? ""}&searchkey=${
+          `resource/vitals?limit=10&page=${currentPage ?? ""}&searchkey=${
             searchValue ?? ""
           }&from=${startDate ?? ""}&to=${
             endDate ?? ""
