@@ -82,19 +82,25 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
   const numCheck = (e) => {
     const input = e.target.value;
     const name = e.target.name;
-
+  
+    // Remove non-numeric characters and limit to 2 digits
     const newstrValue = input?.replace(/[^0-9]/g, "")?.slice(0, 2);
-
+  
     if (name === "gravida") {
       setGravidaValue(newstrValue);
     }
+  
     if (name === "para") {
-      setParaValue(newstrValue);
+      // If the value starts with "0", allow only "0" as input, otherwise allow up to 2 digits
+      const paraValue = newstrValue.startsWith("0") ? "0" : newstrValue;
+      setParaValue(paraValue);
     }
+  
     if (name === "trimester") {
       setTrimester(newstrValue);
     }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -139,24 +145,24 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
 
   const formsubmit = () => {
     const values = {
-      lmp: preg === "Yes" ? format(date, "dd-MM-yyyy") : "",
-      edd: preg === "Yes" ? format(date2, "dd-MM-yyyy") : "",
-      trimester: preg === "Yes" ? trimester : "",
-      gravida: preg === "Yes" ? gravidaValue : "",
-      para: preg === "Yes" ? paraValue : "",
-      lactation: preg === "Yes" ? lact : "",
-      fertility_treatment: preg === "Yes" ? fertTreat : "",
-      fertility_treatment_desc: preg === "Yes" ? fertTreatmentDesc : "",
-      previous_cesarean_sections: cesarean,
+      lmp: preg === "Yes" ? format(date, "dd-MM-yyyy") : "-",
+      edd: preg === "Yes" ? format(date2, "dd-MM-yyyy") : "-",
+      trimester: preg === "Yes" ? trimester : "-",
+      gravida: preg === "Yes" ? gravidaValue : "-",
+      para: preg === "Yes" ? paraValue : "-",
+      lactation: preg === "Yes" ? lact : "-",
+      fertility_treatment: preg === "Yes" ? fertTreat : "-",
+      fertility_treatment_desc: preg === "Yes" ? fertTreatmentDesc : "-",
+      previous_cesarean_sections: cesarean || "-",
       pregnant: preg,
       boh: obstetric,
-      boh_desc: obstetric === "Yes" ? obstetricDesc : "",
+      boh_desc: obstetric === "Yes" ? obstetricDesc : "-",
     };
+    
     if (defaultValues?.id) {
       console.log("Edit clicked");
       obsEdit(values, defaultValues?.id);
-    }
-    if (!defaultValues?.id) {
+    } else {
       obsAdd(values);
     }
     console.log("clicked");
@@ -165,360 +171,299 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
   return (
     <>
       <CRow className="mb-3">
+  <CCol lg={4} className="mb-3">
+    <div style={{ width: "100%" }}>
+      <div className="position-relative">
+        <label htmlFor="pregnantYes" className="form-label">
+          Pregnant *
+        </label>
+
+        <CFormCheck
+          type="radio"
+          name="pregnant"
+          id="pregnantYes"
+          label="Yes"
+          value="Yes"
+          checked={preg === "Yes"}
+          onChange={handleChange}
+        />
+        <CFormCheck
+          type="radio"
+          name="pregnant"
+          id="pregnantNo"
+          label="No"
+          value="No"
+          checked={preg === "No"}
+          onChange={handleChange}
+        />
+        {errors.preg && <div className="text-danger">{errors.preg}</div>}
+      </div>
+    </div>
+  </CCol>
+
+  {preg === "Yes" && (
+    <>
+      <CCol lg={4} className="mb-3">
+        <div className="position-relative">
+          <label htmlFor="validationTooltip01" className="form-label">
+            LMP Date *
+          </label>
+          <div className="date-size">
+            <DatePicker
+              showIcon
+              selected={date}
+              onChange={(date) => setDate(date)}
+              dateFormat={DATE_FORMAT}
+            />
+          </div>
+          {errors.date && <div className="text-danger">{errors.date}</div>}
+        </div>
+      </CCol>
+
+      <CCol lg={4} className="mb-3">
+        <div className="position-relative">
+          <label htmlFor="validationTooltip01" className="form-label">
+            ED Date
+          </label>
+          <div className="date-size">
+            <DatePicker
+              showIcon
+              selected={date2}
+              onChange={(date) => setDate2(date)}
+              dateFormat={DATE_FORMAT}
+            />
+          </div>
+        </div>
+      </CCol>
+
+      <CCol lg={4} className="mb-3">
+        <div style={{ width: "100%" }}>
+          <div className="position-relative">
+            <label htmlFor="validationTooltip01" className="form-label">
+              Trimester *
+            </label>
+            <input
+              type="text"
+              className="form-control pad-10"
+              id="validationTooltip01"
+              name="trimester"
+              placeholder="00"
+              value={trimester}
+              onChange={numCheck}
+            />
+            {errors.trimester && (
+              <div className="text-danger">{errors.trimester}</div>
+            )}
+          </div>
+        </div>
+      </CCol>
+
+      <CCol lg={4} className="mb-3">
+        <div style={{ width: "100%" }}>
+          <div className="position-relative">
+            <label htmlFor="validationTooltip01" className="form-label">
+              Gravida *
+            </label>
+            <input
+              type="text"
+              className="form-control pad-10"
+              id="validationTooltip01"
+              name="gravida"
+              placeholder="00"
+              value={gravidaValue}
+              onChange={numCheck}
+            />
+            {errors.gravidaValue && (
+              <div className="text-danger">{errors.gravidaValue}</div>
+            )}
+          </div>
+        </div>
+      </CCol>
+
+      <CCol lg={4} className="mb-3">
+        <div style={{ width: "100%" }}>
+          <div className="position-relative">
+            <label htmlFor="validationTooltip01" className="form-label">
+              Para *
+            </label>
+            <input
+              type="text"
+              className="form-control pad-10"
+              id="validationTooltip01"
+              name="para"
+              placeholder="00"
+              value={paraValue}
+              onChange={numCheck}
+            />
+            {errors.paraValue && (
+              <div className="text-danger">{errors.paraValue}</div>
+            )}
+          </div>
+        </div>
+      </CCol>
+
+      <CCol lg={4} className="mb-3">
+        <div style={{ width: "100%" }}>
+          <div className="position-relative">
+            <label htmlFor="validationTooltip01" className="form-label">
+              Fertility Treatment
+            </label>
+            <CFormCheck
+              type="radio"
+              name="fertilityTreatment"
+              id="fertYes"
+              label="Yes"
+              value="Yes"
+              checked={fertTreat === "Yes"}
+              onChange={handleChangeFert}
+            />
+            <CFormCheck
+              type="radio"
+              name="fertilityTreatment"
+              id="fertNo"
+              label="No"
+              value="No"
+              checked={fertTreat === "No"}
+              onChange={handleChangeFert}
+            />
+          </div>
+        </div>
+      </CCol>
+
+      {fertTreat === "Yes" && (
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Pregnant *
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
+                Treatment Description*
               </label>
+              <CFormTextarea
+                className="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="Enter"
+                value={fertTreatmentDesc}
+                onChange={(e) => setFertTreatmentDesc(e.target.value)}
+              />
+              {errors.fertTreatmentDesc && (
+                <div className="text-danger">{errors.fertTreatmentDesc}</div>
+              )}
+            </div>
+          </div>
+        </CCol>
+      )}
 
-              <CFormCheck
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios1"
-                label="Yes"
-                value="Yes"
-                checked={preg === "Yes"}
-                onChange={handleChange}
-              />
-              <CFormCheck
-                type="radio"
-                label="No"
-                value="No"
-                checked={preg === "No"}
-                onChange={handleChange}
-              />
-              {errors.preg && <div className="text-danger">{errors.preg}</div>}
-            </div>
+      <CCol lg={4} className="mb-3">
+        <div style={{ width: "100%" }}>
+          <div className="position-relative">
+            <label htmlFor="validationTooltip01" className="form-label">
+              Lactating
+            </label>
+            <CFormCheck
+              type="radio"
+              name="lactating"
+              id="lactYes"
+              label="Yes"
+              value="Yes"
+              checked={lact === "Yes"}
+              onChange={handleChangeLact}
+            />
+            <CFormCheck
+              type="radio"
+              name="lactating"
+              id="lactNo"
+              label="No"
+              value="No"
+              checked={lact === "No"}
+              onChange={handleChangeLact}
+            />
           </div>
-        </CCol>
-        {preg === "Yes" && (
-          <>
-            <CCol lg={4} className="mb-3">
-              <div class="position-relative">
-                <label for="validationTooltip01" class="form-label">
-                  LMP Date *
-                </label>
-                <div className="date-size">
-                  <DatePicker
-                    showIcon
-                    selected={date}
-                    onChange={(date) => setDate(date)}
-                    dateFormat={DATE_FORMAT}
-                  />
-                </div>
-                {errors.date && (
-                  <div className="text-danger">{errors.date}</div>
-                )}
-              </div>
-            </CCol>
-            <CCol lg={4} className="mb-3">
-              <div class="position-relative">
-                <label for="validationTooltip01" class="form-label">
-                  ED Date
-                </label>
-                <div className="date-size">
-                  <DatePicker
-                    showIcon
-                    selected={date2}
-                    onChange={(date) => setDate2(date)}
-                    dateFormat={DATE_FORMAT}
-                  />
-                </div>
-              </div>
-            </CCol>
-            <CCol lg={4} className="mb-3">
-              <div style={{ width: "100%" }}>
-                <div class="position-relative">
-                  <label for="validationTooltip01" class="form-label">
-                    Trimester *
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control  pad-10"
-                    id="validationTooltip01"
-                    name="trimester"
-                    placeholder="00"
-                    // defaultValue={defaultValues?.trimster}
-                    value={trimester}
-                    onChange={numCheck}
-                  />
-                  {/* <div
-                    className="w-100"
-                    style={{
-                      border: "1px solid #17171D33",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Dropdown
-                      options={options}
-                      defaultValue={options[findIndex]}
-                      getSelectedValue={getSelectedTrimster}
-                    />
-                  </div> */}
-                  {errors.trimester && (
-                    <div className="text-danger">{errors.trimester}</div>
-                  )}
-                </div>
-              </div>
-            </CCol>
-            <CCol lg={4} className="mb-3">
-              <div style={{ width: "100%" }}>
-                <div class="position-relative">
-                  <label for="validationTooltip01" class="form-label">
-                    Gravida *
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control  pad-10"
-                    id="validationTooltip01"
-                    name="gravida"
-                    placeholder="00"
-                    // defaultValue={defaultValues?.gravida}
-                    value={gravidaValue}
-                    onChange={numCheck}
-                  />
-                  {/* <div
-                    className="w-100"
-                    style={{
-                      border: "1px solid #17171D33",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Dropdown
-                      getSelectedValue={getSelectedGravida}
-                      options={gravidaoptions}
-                      defaultValue={gravidaoptions[findgravidaIndex]}
-                    />
-                  </div> */}
-                  {errors.gravidaValue && (
-                    <div className="text-danger">{errors.gravidaValue}</div>
-                  )}
-                </div>
-              </div>
-            </CCol>
-            <CCol lg={4} className="mb-3">
-              <div style={{ width: "100%" }}>
-                <div class="position-relative">
-                  <label for="validationTooltip01" class="form-label">
-                    Para *
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control  pad-10"
-                    id="validationTooltip01"
-                    placeholder="00"
-                    defaultValue={defaultValues?.para}
-                    name="para"
-                    value={paraValue}
-                    onChange={numCheck}
-                  />
-                  {/* <div
-                    className="w-100"
-                    style={{
-                      border: "1px solid #17171D33",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Dropdown
-                      getSelectedValue={getSelectedPara}
-                      options={gravidaoptions}
-                      defaultValue={gravidaoptions[findparaIndex]}
-                    />
-                  </div> */}
-                  {errors.paraValue && (
-                    <div className="text-danger">{errors.paraValue}</div>
-                  )}
-                </div>
-              </div>
-            </CCol>
-            <CCol lg={4} className="mb-3">
-              <div style={{ width: "100%" }}>
-                <div class="position-relative">
-                  <label for="validationTooltip01" class="form-label">
-                    Fertility Treament
-                  </label>
-                  {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.fert_treatment}
-              /> */}
-                  {/* <div
-                    className="w-100"
-                    style={{
-                      border: "1px solid #17171D33",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Dropdown
-                      options={lacatingoptions}
-                      defaultValue={lacatingoptions[findtreatmentIndex]}
-                      getSelectedValue={getSelectedFertValue}
-                    />
-                  </div> */}
-                  <CFormCheck
-                    type="radio"
-                    label="Yes"
-                    value="Yes"
-                    checked={fertTreat === "Yes"}
-                    onChange={handleChangeFert}
-                  />
-                  <CFormCheck
-                    type="radio"
-                    label="No"
-                    value="No"
-                    checked={fertTreat === "No"}
-                    onChange={handleChangeFert}
-                  />
-                </div>
-              </div>
-            </CCol>
-            {fertTreat === "Yes" && (
-              <CCol lg={4} className="mb-3">
-                <div style={{ width: "100%" }}>
-                  <div class="position-relative">
-                    <label for="validationTooltip01" class="form-label">
-                      Treament Description*
-                    </label>
-                    <CFormTextarea
-                      type="text"
-                      class="form-control  pad-10"
-                      id="validationTooltip01"
-                      placeholder="Enter"
-                      // defaultValue={defaultValues?.fert_treatment}
-                      value={fertTreatmentDesc}
-                      onChange={(e) => setFertTreatmentDesc(e.target.value)}
-                    />
-                    {errors.fertTreatmentDesc && (
-                      <div className="text-danger">
-                        {errors.fertTreatmentDesc}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CCol>
-            )}
-            <CCol lg={4} className="mb-3">
-              <div style={{ width: "100%" }}>
-                <div class="position-relative">
-                  <label for="validationTooltip01" class="form-label">
-                    Lacatating
-                  </label>
-                  {/* <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="Enter"
-                defaultValue={defaultValues?.lacating}
-              /> */}
-                  {/* <div
-                    className="w-100"
-                    style={{
-                      border: "1px solid #17171D33",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Dropdown
-                      getSelectedValue={getSelectedLacating}
-                      options={lacatingoptions}
-                      defaultValue={lacatingoptions[findlacatingIndex]}
-                    />
-                  </div> */}
-                  <CFormCheck
-                    type="radio"
-                    label="Yes"
-                    value="Yes"
-                    checked={lact === "Yes"}
-                    onChange={handleChangeLact}
-                  />
-                  <CFormCheck
-                    type="radio"
-                    label="No"
-                    value="No"
-                    checked={lact === "No"}
-                    onChange={handleChangeLact}
-                  />
-                </div>
-              </div>
-            </CCol>
-          </>
-        )}
-      </CRow>
-      <CRow>
-        <CCol lg={6} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Previous Cesarean Sections
-              </label>
-              <CFormCheck
-                type="radio"
-                label="Yes"
-                value="Yes"
-                checked={cesarean === "Yes"}
-                onChange={handleChangeCesa}
-              />
-              <CFormCheck
-                type="radio"
-                label="No"
-                value="No"
-                checked={cesarean === "No"}
-                onChange={handleChangeCesa}
-              />
-            </div>
-          </div>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol lg={6} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Bad Obstetric History
-              </label>
-              <CFormCheck
-                type="radio"
-                label="Yes"
-                value="Yes"
-                checked={obstetric === "Yes"}
-                onChange={handleChangeObste}
-              />
-              <CFormCheck
-                type="radio"
-                label="No"
-                value="No"
-                checked={obstetric === "No"}
-                onChange={handleChangeObste}
-              />
-            </div>
-          </div>
-        </CCol>
-        {obstetric === "Yes" && (
-          <CCol lg={6} className="mb-3">
-            <div style={{ width: "100%" }}>
-              <div class="position-relative">
-                <label for="validationTooltip01" class="form-label">
-                  Bad Obstetric History Description*
-                </label>
-                <CFormTextarea
-                  type="text"
-                  class="form-control  pad-10"
-                  id="validationTooltip01"
-                  placeholder="Enter"
-                  // defaultValue={defaultValues?.fert_treatment}
-                  value={obstetricDesc}
-                  onChange={(e) => setObstetricDesc(e.target.value)}
-                />
-                {errors.obstetricDesc && (
-                  <div className="text-danger">{errors.obstetricDesc}</div>
-                )}
-              </div>
-            </div>
-          </CCol>
-        )}
-      </CRow>
+        </div>
+      </CCol>
+    </>
+  )}
+</CRow>
+
+<CRow>
+  <CCol lg={6} className="mb-3">
+    <div style={{ width: "100%" }}>
+      <div className="position-relative">
+        <label htmlFor="validationTooltip01" className="form-label">
+          Previous Cesarean Sections
+        </label>
+        <CFormCheck
+          type="radio"
+          name="cesarean"
+          id="cesareanYes"
+          label="Yes"
+          value="Yes"
+          checked={cesarean === "Yes"}
+          onChange={handleChangeCesa}
+        />
+        <CFormCheck
+          type="radio"
+          name="cesarean"
+          id="cesareanNo"
+          label="No"
+          value="No"
+          checked={cesarean === "No"}
+          onChange={handleChangeCesa}
+        />
+      </div>
+    </div>
+  </CCol>
+</CRow>
+
+<CRow>
+  <CCol lg={6} className="mb-3">
+    <div style={{ width: "100%" }}>
+      <div className="position-relative">
+        <label htmlFor="validationTooltip01" className="form-label">
+          Bad Obstetric History
+        </label>
+        <CFormCheck
+          type="radio"
+          name="obstetric"
+          id="obstetricYes"
+          label="Yes"
+          value="Yes"
+          checked={obstetric === "Yes"}
+          onChange={handleChangeObste}
+        />
+        <CFormCheck
+          type="radio"
+          name="obstetric"
+          id="obstetricNo"
+          label="No"
+          value="No"
+          checked={obstetric === "No"}
+          onChange={handleChangeObste}
+        />
+      </div>
+    </div>
+  </CCol>
+
+  {obstetric === "Yes" && (
+    <CCol lg={6} className="mb-3">
+      <div style={{ width: "100%" }}>
+        <div className="position-relative">
+          <label htmlFor="validationTooltip01" className="form-label">
+            Bad Obstetric History Description*
+          </label>
+          <CFormTextarea
+            className="form-control pad-10"
+            id="validationTooltip01"
+            placeholder="Enter"
+            value={obstetricDesc}
+            onChange={(e) => setObstetricDesc(e.target.value)}
+          />
+          {errors.obstetricDesc && (
+            <div className="text-danger">{errors.obstetricDesc}</div>
+          )}
+        </div>
+      </div>
+    </CCol>
+  )}
+</CRow>
       <CRow className="mb-1">
         <div style={{ width: "130px" }}>
           <PrimaryButton onClick={handleSubmit} disabled={isSubmitting}>

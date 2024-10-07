@@ -103,189 +103,234 @@ const MedHistoryForm = ({
   return (
     <>
       <CRow className="mb-3">
-        <CCol lg={4}>
-          <p className="radio-label">Smoking</p>
-          <div className="d-flex align-items-end w-100">
-            <div
-              style={{
-                boxSizing: "border-box",
-                borderRadius: "5px",
-                border: "1px solid #17171D33",
-                padding: "10px",
-              }}
-            >
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="smokingYes"
-                value="yes"
-                label={<label className="form-label mb-0">Yes</label>}
-                name="smoking"
-                checked={smokingStatus === "yes"}
-                onChange={handleSmokingStatus}
-                disabled={from === "Consult" ? true : false}
-              />
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="smokingNo"
-                value="no"
-                label={<label className="form-label mb-0">No</label>}
-                name="smoking"
-                checked={smokingStatus === "no"}
-                onChange={handleSmokingStatus}
-                disabled={from === "Consult" ? true : false}
-              />
-            </div>
-          </div>
-        </CCol>
-        {smokingStatus === "yes" && (
-          <CCol lg={4} className="mb-3">
-            <div style={{ width: "100%" }}>
-              <div class="position-relative">
-                <label for="validationTooltip01" class="form-label">
-                  Smoking details*
-                </label>
-                <CFormTextarea
-                  id="exampleFormControlTextarea1"
-                  // label="Example textarea"
-                  rows={1}
-                  defaultValue={smokingDesc}
-                  onChange={(e) => setSmokingDesc(e.target.value)}
-                  // text="Must be 8-20 words long."
-                  disabled={from === "Consult" ? true : false}
-                ></CFormTextarea>
-                {errors.smokingDesc && (
-                  <div className="text-danger">{errors.smokingDesc}</div>
-                )}
-              </div>
-            </div>
-          </CCol>
+      <CCol lg={4}>
+  <p className="radio-label">Smoking</p>
+  <div className="d-flex align-items-end w-100">
+    <div
+      style={{
+        boxSizing: "border-box",
+        borderRadius: "5px",
+        border: "1px solid #17171D33",
+        padding: "10px",
+      }}
+    >
+      <CFormCheck
+        className="mb-0"
+        inline
+        type="radio"
+        id="smokingYes"
+        value="yes"
+        label={
+          <label
+            className="form-label mb-0"
+            htmlFor="smokingYes"
+            onClick={() => setSmokingStatus("yes")}
+          >
+            Yes
+          </label>
+        }
+        name="smoking"
+        checked={smokingStatus === "yes"}
+        onChange={handleSmokingStatus}
+        disabled={from === "Consult" ? true : false}
+      />
+      <CFormCheck
+        className="mb-0"
+        inline
+        type="radio"
+        id="smokingNo"
+        value="no"
+        label={
+          <label
+            className="form-label mb-0"
+            htmlFor="smokingNo"
+            onClick={() => setSmokingStatus("no")}
+          >
+            No
+          </label>
+        }
+        name="smoking"
+        checked={smokingStatus === "no"}
+        onChange={handleSmokingStatus}
+        disabled={from === "Consult" ? true : false}
+      />
+    </div>
+  </div>
+</CCol>
+{smokingStatus === "yes" && (
+  <CCol lg={4} className="mb-3">
+    <div style={{ width: "100%" }}>
+      <div class="position-relative">
+        <label for="validationTooltip01" class="form-label">
+          Smoking details*
+        </label>
+        <CFormTextarea
+          id="exampleFormControlTextarea1"
+          rows={1}
+          defaultValue={smokingDesc}
+          onChange={(e) => setSmokingDesc(e.target.value)}
+          disabled={from === "Consult" ? true : false}
+        ></CFormTextarea>
+        {errors.smokingDesc && (
+          <div className="text-danger">{errors.smokingDesc}</div>
         )}
-        <CCol lg={4}>
-          <p className="radio-label">Alcohol</p>
-          <div className="d-flex align-items-end w-100">
-            <div
-              style={{
-                boxSizing: "border-box",
-                borderRadius: "5px",
-                border: "1px solid #17171D33",
-                padding: "10px",
-              }}
-            >
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="alcoholYes"
-                value="yes"
-                label={<label className="form-label mb-0">Yes</label>}
-                name="alcohol"
-                checked={alcoholStatus === "yes"}
-                onChange={handleAlcoholStatus}
-                disabled={from === "Consult" ? true : false}
-              />
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="alcoholNo"
-                value="no"
-                label={<label className="form-label mb-0">No</label>}
-                name="alcohol"
-                checked={alcoholStatus === "no"}
-                onChange={handleAlcoholStatus}
-                disabled={from === "Consult" ? true : false}
-              />
-            </div>
-          </div>
-        </CCol>
-        {alcoholStatus === "yes" && (
-          <CCol lg={4} className="mb-3">
-            <div style={{ width: "100%" }}>
-              <div class="position-relative">
-                <label for="validationTooltip01" class="form-label">
-                  Alcohol details*
-                </label>
-                <CFormTextarea
-                  id="exampleFormControlTextarea1"
-                  // label="Example textarea"
-                  rows={1}
-                  defaultValue={alcoholDesc}
-                  onChange={(e) => setAlcoholDesc(e.target.value)}
-                  // text="Must be 8-20 words long."
-                  disabled={from === "Consult" ? true : false}
-                ></CFormTextarea>
-                {errors.alcoholDesc && (
-                  <div className="text-danger">{errors.alcoholDesc}</div>
-                )}
-              </div>
-            </div>
-          </CCol>
+      </div>
+    </div>
+  </CCol>
+)}
+
+<CCol lg={4}>
+  <p className="radio-label">Alcohol</p>
+  <div className="d-flex align-items-end w-100">
+    <div
+      style={{
+        boxSizing: "border-box",
+        borderRadius: "5px",
+        border: "1px solid #17171D33",
+        padding: "10px",
+      }}
+    >
+      <CFormCheck
+        className="mb-0"
+        inline
+        type="radio"
+        id="alcoholYes"
+        value="yes"
+        label={
+          <label
+            className="form-label mb-0"
+            htmlFor="alcoholYes"
+            onClick={() => setAlcoholStatus("yes")}
+          >
+            Yes
+          </label>
+        }
+        name="alcohol"
+        checked={alcoholStatus === "yes"}
+        onChange={handleAlcoholStatus}
+        disabled={from === "Consult" ? true : false}
+      />
+      <CFormCheck
+        className="mb-0"
+        inline
+        type="radio"
+        id="alcoholNo"
+        value="no"
+        label={
+          <label
+            className="form-label mb-0"
+            htmlFor="alcoholNo"
+            onClick={() => setAlcoholStatus("no")}
+          >
+            No
+          </label>
+        }
+        name="alcohol"
+        checked={alcoholStatus === "no"}
+        onChange={handleAlcoholStatus}
+        disabled={from === "Consult" ? true : false}
+      />
+    </div>
+  </div>
+</CCol>
+{alcoholStatus === "yes" && (
+  <CCol lg={4} className="mb-3">
+    <div style={{ width: "100%" }}>
+      <div class="position-relative">
+        <label for="validationTooltip01" class="form-label">
+          Alcohol details*
+        </label>
+        <CFormTextarea
+          id="exampleFormControlTextarea1"
+          rows={1}
+          defaultValue={alcoholDesc}
+          onChange={(e) => setAlcoholDesc(e.target.value)}
+          disabled={from === "Consult" ? true : false}
+        ></CFormTextarea>
+        {errors.alcoholDesc && (
+          <div className="text-danger">{errors.alcoholDesc}</div>
         )}
-        <CCol lg={4}>
-          <p className="radio-label">Drugs</p>
-          <div className="d-flex align-items-end w-100">
-            <div
-              style={{
-                boxSizing: "border-box",
-                borderRadius: "5px",
-                border: "1px solid #17171D33",
-                padding: "10px",
-              }}
-            >
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="drugsYes"
-                value="yes"
-                label={<label className="form-label mb-0">Yes</label>}
-                name="drugs"
-                checked={drugStatus === "yes"}
-                onChange={handleDrugStatus}
-                disabled={from === "Consult" ? true : false}
-              />
-              <CFormCheck
-                className="mb-0"
-                inline
-                type="radio"
-                id="drugsNo"
-                value="no"
-                label={<label className="form-label mb-0">No</label>}
-                name="drugs"
-                checked={drugStatus === "no"}
-                onChange={handleDrugStatus}
-                disabled={from === "Consult" ? true : false}
-              />
-            </div>
-          </div>
-        </CCol>
-        {drugStatus === "yes" && (
-          <CCol lg={4} className="mb-3">
-            <div style={{ width: "100%" }}>
-              <div class="position-relative">
-                <label for="validationTooltip01" class="form-label">
-                  Drugs details*
-                </label>
-                <CFormTextarea
-                  id="exampleFormControlTextarea1"
-                  // label="Example textarea"
-                  rows={1}
-                  defaultValue={drugDesc}
-                  onChange={(e) => setDrugDesc(e.target.value)}
-                  // text="Must be 4-20 words long."
-                  disabled={from === "Consult" ? true : false}
-                ></CFormTextarea>
-                {errors.drugDesc && (
-                  <div className="text-danger">{errors.drugDesc}</div>
-                )}
-              </div>
-            </div>
-          </CCol>
+      </div>
+    </div>
+  </CCol>
+)}
+
+<CCol lg={4}>
+  <p className="radio-label">Drugs</p>
+  <div className="d-flex align-items-end w-100">
+    <div
+      style={{
+        boxSizing: "border-box",
+        borderRadius: "5px",
+        border: "1px solid #17171D33",
+        padding: "10px",
+      }}
+    >
+      <CFormCheck
+        className="mb-0"
+        inline
+        type="radio"
+        id="drugsYes"
+        value="yes"
+        label={
+          <label
+            className="form-label mb-0"
+            htmlFor="drugsYes"
+            onClick={() => setDrugStatus("yes")}
+          >
+            Yes
+          </label>
+        }
+        name="drugs"
+        checked={drugStatus === "yes"}
+        onChange={handleDrugStatus}
+        disabled={from === "Consult" ? true : false}
+      />
+      <CFormCheck
+        className="mb-0"
+        inline
+        type="radio"
+        id="drugsNo"
+        value="no"
+        label={
+          <label
+            className="form-label mb-0"
+            htmlFor="drugsNo"
+            onClick={() => setDrugStatus("no")}
+          >
+            No
+          </label>
+        }
+        name="drugs"
+        checked={drugStatus === "no"}
+        onChange={handleDrugStatus}
+        disabled={from === "Consult" ? true : false}
+      />
+    </div>
+  </div>
+</CCol>
+{drugStatus === "yes" && (
+  <CCol lg={4} className="mb-3">
+    <div style={{ width: "100%" }}>
+      <div class="position-relative">
+        <label for="validationTooltip01" class="form-label">
+          Drugs details*
+        </label>
+        <CFormTextarea
+          id="exampleFormControlTextarea1"
+          rows={1}
+          defaultValue={drugDesc}
+          onChange={(e) => setDrugDesc(e.target.value)}
+          disabled={from === "Consult" ? true : false}
+        ></CFormTextarea>
+        {errors.drugDesc && (
+          <div className="text-danger">{errors.drugDesc}</div>
         )}
+      </div>
+    </div>
+  </CCol>
+)}
+
       </CRow>
       {from !== "Consult" && (
         <CRow className="mb-1">
