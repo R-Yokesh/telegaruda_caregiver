@@ -246,7 +246,7 @@ function PatientSummaryView() {
                   />
                 </div>
               )}
-              {/* <div className="mb-2">
+              <div className="mb-2">
                 <div
                   className="mb-3 cursor"
                   onClick={() => {
@@ -256,8 +256,11 @@ function PatientSummaryView() {
                   <h4>History - Family History</h4>
                 </div>
 
-                <FamilyHistory from={"Consult"} />
-              </div> */}
+                <FamilyHistory
+                  from={"Consult"}
+                  consultSummaryData={summaryData?.history?.d_family_history}
+                />
+              </div>
               {/* <div className="mb-2">
                 <div
                   className="mb-3 cursor"

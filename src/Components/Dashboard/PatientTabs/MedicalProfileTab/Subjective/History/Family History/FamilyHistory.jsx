@@ -22,7 +22,7 @@ import useApi from "../../../../../../../ApiServices/useApi";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const FamilyHistory = ({ from }) => {
+const FamilyHistory = ({ from, consultSummaryData }) => {
   const columnData = [
     { id: 1, label: "No." },
     { id: 2, label: "Disease" },
@@ -94,7 +94,9 @@ const FamilyHistory = ({ from }) => {
   const { get, post, clearCache, patch, del, loading } = useApi();
   const location = useLocation();
   const data = location.state?.PatientDetail;
-  const [familyDatas, setFamilyDatas] = useState([]);
+  const [familyDatas, setFamilyDatas] = useState(
+    consultSummaryData ? consultSummaryData : []
+  );
   const [familyPagi, setFamilyPagi] = useState({});
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
@@ -219,7 +221,7 @@ const FamilyHistory = ({ from }) => {
             currentPage={currentPage || 1}
             itemsPerPage={itemsPerPage || 5}
           />
-          {from !== "Consult" && (
+          {/* {from !== "Consult" && ( */}
             <CRow className="mb-3">
               <CCol lg={12} className="d-flex justify-content-center">
                 <Pagination
@@ -230,7 +232,7 @@ const FamilyHistory = ({ from }) => {
                 />
               </CCol>
             </CRow>
-          )}
+          {/* )} */}
         </div>
       </>
 
