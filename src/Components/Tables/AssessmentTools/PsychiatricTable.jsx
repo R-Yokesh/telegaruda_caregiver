@@ -144,8 +144,8 @@ const PsychiatricTable = ({
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-left grid-vertical-line">
                 <span className="fs-16 fw-500">
-                  {capitalizeFirstLetter(dt?.name)}
-                  {/* {dt?.name} */}
+                  {/* {capitalizeFirstLetter(dt?.name)} */}
+                  {dt?.name}
                 </span>
               </CTableDataCell>
               <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">

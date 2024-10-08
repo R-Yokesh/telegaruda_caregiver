@@ -47,8 +47,8 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
   const defaultDateTime = defaultData?.date;
 
   // Split date and time
-  const defaultDate = defaultDateTime.split(" ")[0] || "";
-  const defaultTime = defaultDateTime.split(" ")[1] || getCurrentTime();
+  const defaultDate = defaultDateTime?.split(" ")[0] || "";
+  const defaultTime = defaultDateTime?.split(" ")[1] || getCurrentTime();
   useEffect(() => {
     // Combine default date and time into a single Date object
     let date = new Date();
@@ -61,7 +61,7 @@ const LFTForm = ({ addBack, defaultData, getTableDatas }) => {
     }
 
     if (defaultTime) {
-      const [hours, minutes] = defaultTime.split(":").map(Number);
+      const [hours, minutes] = defaultTime?.split(":").map(Number);
       date.setHours(hours);
       date.setMinutes(minutes);
       date.setSeconds(0); // Reset seconds

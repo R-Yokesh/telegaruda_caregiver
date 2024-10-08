@@ -30,7 +30,7 @@ const formatDate = (dateString) => {
 };
 
 
-const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPage,currentPage }) => {
+const ImmunizationTable = ({ columns, rowData, getselectedData, from, itemsPerPage, currentPage }) => {
   const selectedData = (data, slug, type) => {
     getselectedData(data, slug, type);
   };
@@ -42,24 +42,24 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPag
           <CTableRow>
             {columns?.map((data, i) => (
               <CTableHeaderCell
-              key={i}
-              className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
-            >
-              {data?.label}
-            </CTableHeaderCell>
+                key={i}
+                className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+              >
+                {data?.label}
+              </CTableHeaderCell>
             ))}
           </CTableRow>
         </CTableHead>
         <CTableBody>
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
-              <CTableDataCell  className="subGrid-right grid-vertical-line">
-              {getSerialNumber(itemsPerPage, currentPage, i)}
+              <CTableDataCell className="subGrid-right grid-vertical-line">
+                {getSerialNumber(itemsPerPage, currentPage, i)}
               </CTableDataCell>
-              <CTableDataCell  className="subGrid-left grid-vertical-line">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                 <span className="fs-16 fw-500">{dt?.name}</span>
               </CTableDataCell>
-              <CTableDataCell  className="subGrid-left grid-vertical-line">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                 <div>
                   {dt?.attributes?.values.map((value, index) => (
                     <div key={index} className="fs-16 fw-500">
@@ -69,13 +69,13 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPag
                 </div>
               </CTableDataCell>
 
-              <CTableDataCell  className="subGrid-left grid-vertical-line">
+              {/* <CTableDataCell className="subGrid-left grid-vertical-line">
                 {dt?.attributes?.values.map((value, index) => (
                   <div
                     key={index}
                     className="d-flex align-items-center justify-content-center gap-2"
                   >
-                    {!value.taken_at ? (
+                    {!value?.taken_at ? (
                       <img
                         alt="edit"
                         src={Assets?.vaccined}
@@ -97,9 +97,56 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPag
                     )}
                   </div>
                 ))}
+              </CTableDataCell> */}
+              <CTableDataCell className="subGrid-left grid-vertical-line">
+                {dt?.attributes?.values.map((value, index) => (
+                  <div
+                    key={index}
+                    className="d-flex align-items-center justify-content-center gap-2"
+                  >
+                    {dt?.name === "Oral poliovirus vaccines" || dt?.name === "Rotavirus Vaccine" ? (
+                      <img
+                        alt="drop"
+                        src={Assets?.drop}
+                        className="cursor"
+                        style={{ width: "25px" }}
+                      onClick={() => {
+                        if (from !== "Consult") {
+                          selectedData(value, dt?.slug, "delete");
+                        }
+                      }}
+                      />
+                    ) : (
+                      !value?.taken_at ? (
+                        <img
+                          alt="edit"
+                          src={Assets?.vaccined}
+                          className="cursor"
+                          style={{ width: "25px" }}
+                          onClick={() => {
+                            if (from !== "Consult") {
+                              selectedData(value, dt?.slug, "delete");
+                            }
+                          }}
+                        />
+                      ) : (
+                        <img
+                          alt="delete"
+                          style={{ width: "25px" }}
+                          src={Assets?.colorVaccined}
+                          className="cursor"
+                        />
+                      )
+                    )}
+                  </div>
+                ))}
+
+
               </CTableDataCell>
 
-              <CTableDataCell  className="subGrid-date subGrid-left grid-vertical-line">
+
+
+              <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                 <div>
                   {dt?.attributes?.values.map((value, index) => (
                     <div key={index} className="fs-16 fw-500">
@@ -109,7 +156,7 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from,itemsPerPag
                 </div>
               </CTableDataCell>
 
-              <CTableDataCell  className="subGrid-left grid-vertical-line">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                 <div>
                   {dt?.attributes?.values.map((value, index) => (
                     <div key={index} className="fs-16 fw-500">

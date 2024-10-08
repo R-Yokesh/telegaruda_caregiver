@@ -52,17 +52,17 @@ const NutritionFluidTable = ({
           ) : (
             rowData?.map((dt, i) => (
               <CTableRow key={i}>
-               <CTableDataCell className="subGrid-right grid-vertical-line">
+               <CTableDataCell className="subGrid-right grid-vertical-line numWell">
                   {getSerialNumber(itemsPerPage, currentPage, i)}
                 </CTableDataCell>
                 <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
-                    <span className="fs-16 fw-500">
+                    <span className="fs-16 fw-500" style={{ marginRight: "6px" }}>
                       {dt?.act_date
                         ?.split(" ")[0]
                         ?.split("-")
                         ?.reverse()
                         ?.join("-")}
-                    </span> <br />
+                    </span>
                     <span className="fs-16 fw-500">
                     {dt?.act_time ? dt?.act_time.split(":").slice(0, 2).join(":") : "-"}
                   </span>
@@ -81,7 +81,7 @@ const NutritionFluidTable = ({
                     <span>{dt?.act_intake}</span>
                 </CTableDataCell>
                 {from !== "Consult-Intake" && (
-                   <CTableDataCell className="subGrid-left grid-vertical-line">
+                   <CTableDataCell className="subGrid-left grid-vertical-line actWell">
                   <div className="d-flex align-items-center gap-3 h-100">
                       {dt?.consult_id === !null ? (
                         <div>

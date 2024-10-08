@@ -118,6 +118,7 @@ import cUp from "./Images/chevron-up.svg";
 
 import colorVaccined from "./Images/vaccinated - Colored.png";
 import vaccined from "./Images/vaccinated.png";
+import drop from "./Images/drop.png"
 import UStatus from "./Images/update-status.png";
 import Approve from "./Images/Approve.png";
 import NoImg from "./Images/No-Img.png";
@@ -223,6 +224,7 @@ export const Assets = {
   cUp,
   colorVaccined,
   vaccined,
+  drop,
   UStatus,
   Approve,
   NoImg,
