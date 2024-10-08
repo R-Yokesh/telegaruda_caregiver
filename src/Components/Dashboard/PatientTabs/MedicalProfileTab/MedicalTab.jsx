@@ -7,7 +7,7 @@ const MedicalTab = ({ tabs, getCurrentTab, defaultTab }) => {
 
   const switchTab = (data) => {
     setCurrentTab(data);
-    getCurrentTab(data.id);
+    getCurrentTab(data?.id);
   };
   return (
     <CCard className="medical-tabs">
@@ -22,12 +22,12 @@ const MedicalTab = ({ tabs, getCurrentTab, defaultTab }) => {
           >
             <span
               className={
-                data.id === currentTab?.id
+                data?.id === currentTab?.id
                   ? "medical-tab-title-active"
                   : "medical-tab-title"
               }
             >
-              {data.title}
+              {data?.title}
             </span>
           </div>
         ))}

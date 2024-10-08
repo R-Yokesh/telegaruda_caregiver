@@ -38,7 +38,7 @@ const ProcedureForm = ({
   const [icdkey, setIcdKey] = useState(defaultValues?.values?.code || "");
   const [icd, setIcd] = useState(defaultValues?.values?.code || "");
   const [Description, setDescription] = useState([
-    defaultValues?.values?.name || null,
+    defaultValues?.values?.name || "",
   ]);
 
   const maxDate = new Date(); // Restrict future dates
@@ -95,8 +95,17 @@ const ProcedureForm = ({
       newErrors.date = "Date is required.";
       isValid = false;
     }
-    if (!icd) {
+    if (!icdkey) {
       newErrors.icd = "Code is required.";
+      isValid = false;
+    }
+    // if (!icd) {
+    //   newErrors.icd = "Code is required.";
+    //   isValid = false;
+    // }
+
+    if (!Description || Description[0].length <= 0) {
+      newErrors.description = "Description is required.";
       isValid = false;
     }
 
@@ -104,18 +113,22 @@ const ProcedureForm = ({
     return isValid;
   };
 
+  console.log(Description, "Desc", defaultValues?.values);
+
   const onSubmit = () => {
     if (validate()) {
       const values = {
         date: format(selectedDate, "yyyy-MM-dd"),
         time: format(selectedTime, "HH:mm"),
-        code: icd,
+        // code: icd,
+        code: icdkey,
         name: Description,
       };
       const editValues = {
         date: format(selectedDate, "yyyy-MM-dd"),
         time: format(selectedTime, "HH:mm"),
-        code: icd,
+        // code: icd,
+        code: icdkey,
         name: typeof Description === "string" ? Description : Description[0],
       };
       if (defaultValues.id !== undefined) {
@@ -138,7 +151,7 @@ const ProcedureForm = ({
   const getICDCode = useCallback(async () => {
     try {
       const response = await get(
-        `resource/masters?slug=icd&searchkey=${icdkey}&limit=50&country=undefined`
+        `resource/masters?slug=procedure&searchkey=${icdkey}&limit=50&country=undefined`
       );
       const listData = response?.data?.masters; //
       setIcd10(listData);
@@ -267,9 +280,13 @@ const ProcedureForm = ({
                 id="validationTooltip01"
                 placeholder="Enter"
                 // defaultValue={defaultValues?.remark}
-                disabled
+                // disabled
                 value={Description}
+                onChange={(e) => setDescription(e.target.value)}
               />
+              {errors.description && (
+                <div className="error-text">{errors.description}</div>
+              )}
             </div>
           </div>
         </CCol>

@@ -733,17 +733,17 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
             </div>
           </div>
         </CCol>
-        <CCol lg={4} className="mb-3" style={{ paddingRight: "0" }}>
-          <div style={{ width: "100%" }} className="d-flex gap-3">
+        <CCol lg={8} className="mb-3">
+          <div style={{ width: "100%" }} className="d-flex justify-content-between">
             <div>
               <label for="validationTooltip01" class="form-label">
-                M
+                Morning
               </label>
               <input
                 type="text"
                 class="form-control  pad-10 text-align-center"
                 id="validationTooltip01"
-                placeholder="0"
+                placeholder="Enter morning Qty"
                 name="m"
                 value={formData?.m}
                 onChange={handleChange}
@@ -753,13 +753,13 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
             </div>
             <div>
               <label for="validationTooltip01" class="form-label">
-                A
+                Afternoon
               </label>
               <input
                 type="text"
                 class="form-control  pad-10 text-align-center"
                 id="validationTooltip01"
-                placeholder="0"
+                placeholder="Enter afternoon Qty"
                 name="a"
                 value={formData?.a}
                 onChange={handleChange}
@@ -769,13 +769,13 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
             </div>
             <div>
               <label for="validationTooltip01" class="form-label">
-                E
+                Evening
               </label>
               <input
                 type="text"
                 class="form-control  pad-10 text-align-center"
                 id="validationTooltip01"
-                placeholder="0"
+                placeholder="Enter evening Qty"
                 name="e"
                 value={formData?.e}
                 onChange={handleChange}
@@ -785,13 +785,13 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
             </div>
             <div>
               <label for="validationTooltip01" class="form-label">
-                N
+                Night
               </label>
               <input
                 type="text"
                 class="form-control  pad-10 text-align-center"
                 id="validationTooltip01"
-                placeholder="0"
+                placeholder="Enter night Qty"
                 name="n"
                 value={formData?.n}
                 onChange={handleChange}
@@ -801,8 +801,8 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
             </div>
           </div>
         </CCol>
-        <CCol lg={3} className="mb-3">
-  <div className="h-100 d-flex align-items-end w-100 justify-content-start">
+        <CCol lg={4} className="mb-3">
+  <div className="h-100 d-flex align-items-start w-100 justify-content-start mt-4">
     <div
       style={{
         boxSizing: "border-box",
@@ -858,7 +858,7 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
   </div>
 </CCol>
 
-        <CCol lg={5} className="mb-3">
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">
@@ -875,7 +875,7 @@ const MedicationForm = ({ back, addMedication, defaultValues, view,isSubmitting}
             </div>
           </div>
         </CCol>
-        <CCol lg={5} className="mb-3">
+        <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
               <label for="validationTooltip01" class="form-label">

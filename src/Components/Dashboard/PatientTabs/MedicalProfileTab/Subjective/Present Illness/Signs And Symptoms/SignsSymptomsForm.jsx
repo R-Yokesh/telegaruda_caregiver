@@ -9,7 +9,10 @@ import { toast } from "react-toastify";
 import { DATE_FORMAT } from "../../../../../../../Config/config";
 import { format, isValid, parse } from "date-fns";
 import { duration } from "moment";
-import { CustomInput,getCurrentTime } from "../../../../../../../Utils/dateUtils";
+import {
+  CustomInput,
+  getCurrentTime,
+} from "../../../../../../../Utils/dateUtils";
 import useApi from "../../../../../../../ApiServices/useApi";
 import {
   findItemIndex,
@@ -19,13 +22,14 @@ import {
 import SearchInput from "../../../../../../Input/SearchInput";
 import { useLocation } from "react-router-dom";
 import ChiefInput from "../../../../../../Input/ChiefInput";
+import SearchableDrop from "../../../../../../Dropdown/SearchableDrop";
 
 const SignsSymptomsForm = ({
   back,
   defaultValues,
   addSymptoms,
   editSymptoms,
-  isSubmitting
+  isSubmitting,
 }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const [selectedTime, setSelectedTime] = useState(null);
@@ -46,7 +50,7 @@ const SignsSymptomsForm = ({
     defaultValues?.values?.location || ""
   );
   const [locationName, setLocationName] = useState(
-    defaultValues?.values?.location || {}
+    defaultValues?.values?.location || ""
   );
 
   const defaultDateTime = defaultValues?.values?.date || "";
@@ -108,7 +112,14 @@ const SignsSymptomsForm = ({
     "Very Severe",
     "Worst",
   ];
-  const options1 = ["Normal", "Mild", "Moderate", "Severe","Very Severe","Worst"];
+  const options1 = [
+    "Normal",
+    "Mild",
+    "Moderate",
+    "Severe",
+    "Very Severe",
+    "Worst",
+  ];
 
   // Function to update symptoms
   const getSelectedValue = (data) => {
@@ -138,7 +149,8 @@ const SignsSymptomsForm = ({
       newErrors.time = "Time is required.";
       isValid = false;
     }
-    if (!locationName || !locationName?.name) {
+    console.log(locationName, reasonName);
+    if (!locationName) {
       newErrors.locationName = "Location is required.";
       isValid = false;
     }
@@ -146,7 +158,7 @@ const SignsSymptomsForm = ({
       newErrors.duration_days = "Duration is required.";
       isValid = false;
     }
-    if (!reasonName?.name) {
+    if (!reasonName) {
       newErrors.symptoms = "Symptoms is required.";
       isValid = false;
     }
@@ -159,7 +171,6 @@ const SignsSymptomsForm = ({
     return isValid;
   };
 
-
   const handleClear = () => {
     setSelectedTime(null); // Clear the selected time
   };
@@ -168,15 +179,14 @@ const SignsSymptomsForm = ({
     setSelectedTime(null);
   };
 
-  
   const onSubmit = () => {
     if (validate()) {
       const values = {
         date: format(selectedDate, "dd-MM-yyyy"),
         time: format(selectedTime, "HH:mm"),
-        location: locationName?.name,
+        location: locationName?.name || locationName,
         duration: formData.duration_days,
-        symptoms: reasonName?.name,
+        symptoms: reasonName?.name || reasonName,
         aggravating_factors: formData.aggravating_factors,
         releiving_factors: formData.releiving_factors,
         temporal_factors: formData.temporal_factors,
@@ -184,6 +194,7 @@ const SignsSymptomsForm = ({
         notes: formData.notes,
         quality: "",
       };
+
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
         editSymptoms(values, defaultValues?.id);
@@ -229,7 +240,7 @@ const SignsSymptomsForm = ({
   }, [getSymptoms]);
 
   const getSelectedlocation = (data) => {
-    setLocationName(data);
+    setLocationName(data?.name);
   };
 
   const [reasonDetails, setReasonDetails] = useState([]);
@@ -237,7 +248,7 @@ const SignsSymptomsForm = ({
     defaultValues?.values?.symptoms || ""
   );
   const [reasonName, setReasonName] = useState(
-    defaultValues?.values?.symptoms || {}
+    defaultValues?.values?.symptoms || ""
   );
   const getSurgeryReasons = useCallback(async () => {
     try {
@@ -251,7 +262,7 @@ const SignsSymptomsForm = ({
     }
   }, [get, reasonkey]);
   const getSelectedReasonData = (data) => {
-    setReasonName(data);
+    setReasonName(data?.name);
   };
   useEffect(() => {
     getSurgeryReasons();
@@ -261,7 +272,7 @@ const SignsSymptomsForm = ({
     <>
       <CRow className="mb-3">
         <CCol lg={3}>
-           <div class="position-relative d-flex flex-column gap-1">
+          <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Date *
             </label>
@@ -298,7 +309,7 @@ const SignsSymptomsForm = ({
           </div>
         </CCol>
         <CCol lg={3}>
-        <div class="position-relative d-flex flex-column gap-1">
+          <div class="position-relative d-flex flex-column gap-1">
             <label for="validationTooltip01" class="form-label">
               Time *
             </label>
@@ -342,12 +353,18 @@ const SignsSymptomsForm = ({
               <label for="validationTooltip01" class="form-label">
                 Location *
               </label>
-              <SearchInput
+              <SearchableDrop
+                getSelectedValue={getSelectedlocation}
+                options={locationDetails}
+                defaultValue={locationKey}
+                dropKey={setLocationKey}
+              />
+              {/* <SearchInput
                 data={locationDetails}
                 setSurgeryKey={setLocationKey}
                 getSelectedData={getSelectedlocation}
                 defaultkey={locationKey}
-              />
+              /> */}
 
               {errors.locationName && (
                 <div className="error-text">{errors.locationName}</div>
@@ -356,36 +373,35 @@ const SignsSymptomsForm = ({
           </div>
         </CCol>
         <CCol lg={3}>
-  <div style={{ width: "100%" }}>
-    <div className="position-relative">
-      <label htmlFor="validationTooltip01" className="form-label">
-        Duration in Days *
-      </label>
-      <input
-        type="text"
-        className="form-control pad-10"
-        id="validationTooltip01"
-        placeholder="0000"
-        value={formData?.duration_days}
-        name="duration_days"
-        onChange={handleChange}
-        maxLength={4}
-        onInput={(e) => {
-          // Restrict input to digits
-          e.target.value = e.target.value.replace(/[^0-9]/g, "");
-          // Allow only a single zero
-          if (e.target.value === "00") {
-            e.target.value = "0";
-          }
-        }}
-      />
-      {errors.duration_days && (
-        <div className="error-text">{errors.duration_days}</div>
-      )}
-    </div>
-  </div>
-</CCol>
-
+          <div style={{ width: "100%" }}>
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
+                Duration in Days *
+              </label>
+              <input
+                type="text"
+                className="form-control pad-10"
+                id="validationTooltip01"
+                placeholder="0000"
+                value={formData?.duration_days}
+                name="duration_days"
+                onChange={handleChange}
+                maxLength={4}
+                onInput={(e) => {
+                  // Restrict input to digits
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                  // Allow only a single zero
+                  if (e.target.value === "00") {
+                    e.target.value = "0";
+                  }
+                }}
+              />
+              {errors.duration_days && (
+                <div className="error-text">{errors.duration_days}</div>
+              )}
+            </div>
+          </div>
+        </CCol>
       </CRow>
       <CRow className="mb-3">
         <CCol lg={4}>
@@ -418,11 +434,17 @@ const SignsSymptomsForm = ({
                   getSelectedValue={getSelectedValue}
                 />
               </div> */}
-              <ChiefInput
+              {/* <ChiefInput
                 data={reasonDetails}
                 setSurgeryKey={setReasonKey}
                 getSelectedData={getSelectedReasonData}
                 defaultkey={reasonkey}
+              /> */}
+              <SearchableDrop
+                getSelectedValue={getSelectedReasonData}
+                options={reasonDetails}
+                defaultValue={reasonkey}
+                dropKey={setReasonKey}
               />
               {errors.symptoms && (
                 <div className="error-text">{errors.symptoms}</div>

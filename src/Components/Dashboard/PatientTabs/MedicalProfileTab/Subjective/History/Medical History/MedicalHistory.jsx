@@ -178,11 +178,12 @@ const MedicalHistory = ({ from, consultSummaryData }) => {
 
   // api integration of list,filter and search of medical history
   const getMedicalLists = useCallback(async () => {
+    
     try {
       const response = await get(
         `resource/patientHistories?user_id=${
           data?.user_id
-        }&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values->onset_date&dir=2&from=${
+        }&slug=medical-history&limit=${itemsPerPage}&page=${currentPage}&order_by=values-%3Eonset_date&dir=2&from=${
           startDate ?? ""
         }&to=${endDate ?? ""}&searchkey=${searchValue ?? ""}`
       );
