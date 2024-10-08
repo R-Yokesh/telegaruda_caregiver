@@ -364,6 +364,21 @@ body {
 .subGrid-left{
   text-align: left !important;
 }
+.numWell{
+  width: 65px;
+}
+.actWell{
+  width: 105px;
+}
+
+/* Objective Grid */
+.objGridTh-No{
+  width: 65px !important;
+  text-align: right !important;
+}
+.objGridTh-Act{
+  /* width: 85px !important; */
+}
 
 /* Remove bottom border for last row in tbody */
 .lab-responsive-table tbody tr:last-child td {

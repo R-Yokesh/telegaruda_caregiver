@@ -81,7 +81,12 @@ const DynamicTable = ({
               {columnsData?.map(
                 (data, i) =>
                   from === "Consult" && i === columnsData.length - 1 ? null : (
-                    <th key={i} style={{ paddingLeft: "15px" }}>
+                    <th key={i} style={{ paddingLeft: "15px" }}
+                      className={`${data?.label === "NO."
+                          ? "objGridTh-No" : "objGridTh-Act"
+            
+                        }`}
+                    >
                       {data?.label}
                     </th>
                   )
@@ -101,8 +106,9 @@ const DynamicTable = ({
                 <tr key={rowIndex}>
                   {columnsData.map((column, i) =>
                     from === "Consult" &&
-                    i === columnsData.length - 1 ? null : (
-                      <td key={`${rowIndex}-${column?.id}`}>
+                      i === columnsData.length - 1 ? null : (
+                      <td key={`${rowIndex}-${column?.id}`}
+                        style={{ textAlign: column?.label === "NO." ? "right" : "" }}>
                         {renderCell(row, column)}
                       </td>
                     )
