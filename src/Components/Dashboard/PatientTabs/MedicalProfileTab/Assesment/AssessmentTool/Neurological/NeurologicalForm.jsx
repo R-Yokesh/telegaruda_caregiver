@@ -124,6 +124,12 @@ const NeurologicalForm = ({
                         disabled={isEditMode}
                         defaultValue={formData[question?.question?.id]?.answer}
                         class="form-control  pad-10"
+                        maxLength={question?.question?.name === "Age" ? 3 : undefined} 
+                        onInput={(e) => {
+                          if (question?.question?.name === "Age") {
+                            e.target.value = e.target.value.replace(/[^0-9]/g, ""); 
+                          }
+                        }}
                       />
                     ) : null}
                     {question?.question?.type === "sub_question"
