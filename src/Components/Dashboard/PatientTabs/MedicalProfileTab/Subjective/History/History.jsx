@@ -25,9 +25,9 @@ const History = ({ OnClose }) => {
         ]
       : [
           { id: 1, title: "Medical History" },
-          { id: 2, title: "Surgical History" },
-          { id: 3, title: "Family History" },
-          { id: 4, title: "Social History" },
+          { id: 3, title: "Surgical History" },
+          { id: 4, title: "Family History" },
+          { id: 5, title: "Social History" },
         ];
   const PatientSubMenu3 = localStorage.getItem("PatientSubMenu-3");
   const ParsedPatientSubMenu = PatientSubMenu3

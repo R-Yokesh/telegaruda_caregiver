@@ -272,7 +272,7 @@ const Medication = ({ from }) => {
           startDate ?? ""
         }&to=${endDate ?? ""}&searchkey=${
           searchValue ?? ""
-        }&order_by=values-%3Estart_date&dir=2&user_id=${
+        }&order_by=created_at&dir=2&user_id=${
           data?.user_id
         }&slug=medicine&slug_array=`
       );
