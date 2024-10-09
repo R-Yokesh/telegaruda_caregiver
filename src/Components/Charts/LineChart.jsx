@@ -38,7 +38,8 @@ const LineChartDetails = ({ datas }) => {
           item?.["urea_value"] ||
           item?.["creatinine_value"] ||
           item?.["gfr_value"] ||
-          item?.["ldl_(mg/dl)"] || 0
+          item?.["ldl_(mg/dl)"] ||
+          0
       ), // Convert pluse to integer if needed
 
       data2: parseInt(
@@ -131,6 +132,33 @@ const LineChartDetails = ({ datas }) => {
     }
     return [name, value];
   };
+
+  const legendPayload = [];
+
+  // Define the labels and their corresponding data checks
+  const labels = [
+    { key: "data6", label: datas?.chartLabel6, color: "#E5A000" },
+    { key: "data5", label: datas?.chartLabel5, color: "#5157F3" },
+    { key: "data4", label: datas?.chartLabel4, color: "#B37655" },
+    { key: "data3", label: datas?.chartLabel3, color: "#8AC185" },
+    { key: "data2", label: datas?.chartLabel2, color: "#EC5A5A" },
+    { key: "data1", label: datas?.chartLabel1, color: "#0084CF" },
+  ];
+
+  // Check each data key and build the payload
+  labels.forEach(({ key, label, color }) => {
+    if (formattedData.some((entry) => entry[key])) {
+      legendPayload.push({ value: label, type: "line", color });
+    }
+  });
+
+  // Check if any entry in formattedData has the corresponding data points
+  const hasData1 = formattedData.some((entry) => entry.data1);
+  const hasData2 = formattedData.some((entry) => entry.data2);
+  const hasData3 = formattedData.some((entry) => entry.data3);
+  const hasData4 = formattedData.some((entry) => entry.data4);
+  const hasData5 = formattedData.some((entry) => entry.data5);
+  const hasData6 = formattedData.some((entry) => entry.data6);
   return (
     <LineChart
       width={1000}
@@ -151,7 +179,8 @@ const LineChartDetails = ({ datas }) => {
         tickLine={false}
       />
       <Tooltip formatter={tooltipFormatter} />
-      {formattedData[0]?.data6 &&
+      <Legend payload={legendPayload} />
+      {/* {formattedData[0]?.data6 &&
       formattedData[0]?.data5 &&
       formattedData[0]?.data4 &&
       formattedData[0]?.data3 &&
@@ -216,10 +245,10 @@ const LineChartDetails = ({ datas }) => {
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
           ]}
         />
-      ) : null}
+      ) : null} */}
 
       <CartesianGrid horizontal={true} vertical={false} strokeWidth={1} />
-      <Line type="linear" dataKey="data1" stroke="#0084CF" />
+      {/* <Line type="linear" dataKey="data1" stroke="#0084CF" />
       {formattedData[0]?.data2 && (
         <Line type="linear" dataKey="data2" stroke="#EC5A5A" />
       )}
@@ -234,7 +263,15 @@ const LineChartDetails = ({ datas }) => {
       )}
       {formattedData[0]?.data6 && (
         <Line type="linear" dataKey="data6" stroke="#E5A000" />
-      )}
+      )} */}
+      <>
+    {hasData1 && <Line type="linear" dataKey="data1" stroke="#0084CF" />}
+    {hasData2 && <Line type="linear" dataKey="data2" stroke="#EC5A5A" />}
+    {hasData3 && <Line type="linear" dataKey="data3" stroke="#8AC185" />}
+    {hasData4 && <Line type="linear" dataKey="data4" stroke="#B37655" />}
+    {hasData5 && <Line type="linear" dataKey="data5" stroke="#5157F3" />}
+    {hasData6 && <Line type="linear" dataKey="data6" stroke="#E5A000" />}
+  </>
     </LineChart>
   );
 };

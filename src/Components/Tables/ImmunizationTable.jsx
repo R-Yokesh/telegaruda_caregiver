@@ -22,15 +22,21 @@ const formatDate = (dateString) => {
   if (isNaN(parsedDate)) return "N/A"; // Return "N/A" if the date is invalid
 
   const date = new Date(parsedDate);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
   const year = date.getFullYear();
 
   return `${day}-${month}-${year}`; // Format as dd-MM-yyyy
 };
 
-
-const ImmunizationTable = ({ columns, rowData, getselectedData, from, itemsPerPage, currentPage }) => {
+const ImmunizationTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  itemsPerPage,
+  currentPage,
+}) => {
   const selectedData = (data, slug, type) => {
     getselectedData(data, slug, type);
   };
@@ -43,7 +49,9 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from, itemsPerPa
             {columns?.map((data, i) => (
               <CTableHeaderCell
                 key={i}
-                className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+                className={`${
+                  data?.label === "No." ? "subGridTh-No" : "subGridTh"
+                } `}
               >
                 {data?.label}
               </CTableHeaderCell>
@@ -98,53 +106,63 @@ const ImmunizationTable = ({ columns, rowData, getselectedData, from, itemsPerPa
                   </div>
                 ))}
               </CTableDataCell> */}
+              {/* onClick={() => {
+                        if (from !== "Consult") {
+                          selectedData(value, dt?.slug, "delete");
+                        }
+                      }} */}
               <CTableDataCell className="subGrid-left grid-vertical-line">
                 {dt?.attributes?.values.map((value, index) => (
                   <div
                     key={index}
                     className="d-flex align-items-center justify-content-center gap-2"
                   >
-                    {dt?.name === "Oral poliovirus vaccines" || dt?.name === "Rotavirus Vaccine" ? (
+                    {(dt?.name === "Oral poliovirus vaccines" &&
+                      !value?.taken_at) ||
+                    (dt?.name === "Rotavirus Vaccine" && !value?.taken_at) ? (
                       <img
                         alt="drop"
-                        src={Assets?.drop}
+                        src={Assets?.bfDrop}
                         className="cursor"
                         style={{ width: "25px" }}
-                      onClick={() => {
-                        if (from !== "Consult") {
-                          selectedData(value, dt?.slug, "delete");
-                        }
-                      }}
+                        onClick={() => {
+                          if (from !== "Consult") {
+                            selectedData(value, dt?.slug, "delete");
+                          }
+                        }}
+                      />
+                    ) : (dt?.name === "Oral poliovirus vaccines" &&
+                        value?.taken_at) ||
+                      (dt?.name === "Rotavirus Vaccine" && value?.taken_at) ? (
+                      <img
+                        alt="drop"
+                        src={Assets?.afDrop}
+                        className="cursor"
+                        style={{ width: "25px" }}
+                      />
+                    ) : !value?.taken_at ? (
+                      <img
+                        alt="edit"
+                        src={Assets?.vaccined}
+                        className="cursor"
+                        style={{ width: "25px" }}
+                        onClick={() => {
+                          if (from !== "Consult") {
+                            selectedData(value, dt?.slug, "delete");
+                          }
+                        }}
                       />
                     ) : (
-                      !value?.taken_at ? (
-                        <img
-                          alt="edit"
-                          src={Assets?.vaccined}
-                          className="cursor"
-                          style={{ width: "25px" }}
-                          onClick={() => {
-                            if (from !== "Consult") {
-                              selectedData(value, dt?.slug, "delete");
-                            }
-                          }}
-                        />
-                      ) : (
-                        <img
-                          alt="delete"
-                          style={{ width: "25px" }}
-                          src={Assets?.colorVaccined}
-                          className="cursor"
-                        />
-                      )
+                      <img
+                        alt="delete"
+                        style={{ width: "25px" }}
+                        src={Assets?.colorVaccined}
+                        className="cursor"
+                      />
                     )}
                   </div>
                 ))}
-
-
               </CTableDataCell>
-
-
 
               <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
                 <div>

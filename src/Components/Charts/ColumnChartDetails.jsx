@@ -131,6 +131,31 @@ const ColumnChartDetails = ({ datas }) => {
     }
     return [name, value];
   };
+  const legendPayload = [];
+
+  // Define the labels and their corresponding data checks
+  const labels = [
+    { key: "data6", label: datas?.chartLabel6, color: "#E5A000" },
+    { key: "data5", label: datas?.chartLabel5, color: "#5157F3" },
+    { key: "data4", label: datas?.chartLabel4, color: "#B37655" },
+    { key: "data3", label: datas?.chartLabel3, color: "#8AC185" },
+    { key: "data2", label: datas?.chartLabel2, color: "#EC5A5A" },
+    { key: "data1", label: datas?.chartLabel1, color: "#0084CF" },
+  ];
+
+  // Check each data key and build the payload
+  labels.forEach(({ key, label, color }) => {
+    if (formattedData.some((entry) => entry[key])) {
+      legendPayload.push({ value: label, type: "line", color });
+    }
+  });
+    // Check if any entry in formattedData has the corresponding data points
+    const hasData1 = formattedData.some((entry) => entry.data1);
+    const hasData2 = formattedData.some((entry) => entry.data2);
+    const hasData3 = formattedData.some((entry) => entry.data3);
+    const hasData4 = formattedData.some((entry) => entry.data4);
+    const hasData5 = formattedData.some((entry) => entry.data5);
+    const hasData6 = formattedData.some((entry) => entry.data6);
   return (
     <BarChart
       width={1000}
@@ -144,8 +169,9 @@ const ColumnChartDetails = ({ datas }) => {
         <Tooltip formatter={(value) => `${value}%`} />
       ) : ( */}
       <Tooltip formatter={tooltipFormatter} />
+      <Legend payload={legendPayload} />
 
-      {formattedData[0]?.data6 &&
+      {/* {formattedData[0]?.data6 &&
       formattedData[0]?.data5 &&
       formattedData[0]?.data4 &&
       formattedData[0]?.data3 &&
@@ -210,13 +236,19 @@ const ColumnChartDetails = ({ datas }) => {
             { value: datas?.chartLabel1, type: "line", color: "#0084CF" },
           ]}
         />
-      ) : null}
-      <Bar dataKey="data1" fill="#0084CF" />
+      ) : null} */}
+      {/* <Bar dataKey="data1" fill="#0084CF" />
       {formattedData[0]?.data2 && <Bar dataKey="data2" fill="#EC5A5A" />}
       {formattedData[0]?.data3 && <Bar dataKey="data3" fill="#8AC185" />}
       {formattedData[0]?.data4 && <Bar dataKey="data4" fill="#B37655" />}
       {formattedData[0]?.data5 && <Bar dataKey="data5" fill="#5157F3" />}
-      {formattedData[0]?.data6 && <Bar dataKey="data6" fill="#E5A000" />}
+      {formattedData[0]?.data6 && <Bar dataKey="data6" fill="#E5A000" />} */}
+      {hasData1 && <Bar dataKey="data1" fill="#0084CF" />}
+    {hasData2 && <Bar dataKey="data2" fill="#EC5A5A" />}
+    {hasData3 && <Bar dataKey="data3" fill="#8AC185" />}
+    {hasData4 && <Bar dataKey="data4" fill="#B37655" />}
+    {hasData5 && <Bar dataKey="data5" fill="#5157F3" />}
+    {hasData6 && <Bar dataKey="data6" fill="#E5A000" />}
     </BarChart>
   );
 };

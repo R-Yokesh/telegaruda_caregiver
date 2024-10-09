@@ -118,7 +118,7 @@ import cUp from "./Images/chevron-up.svg";
 
 import colorVaccined from "./Images/vaccinated - Colored.png";
 import vaccined from "./Images/vaccinated.png";
-import drop from "./Images/drop.png"
+import drop from "./Images/drop.png";
 import UStatus from "./Images/update-status.png";
 import Approve from "./Images/Approve.png";
 import NoImg from "./Images/No-Img.png";
@@ -128,6 +128,9 @@ import testSubIcon from "./Images/testSubIcon.svg";
 import testUnSubIcon from "./Images/testUnSubIcon.svg";
 import testViewIcon from "./Images/testViewIcon.svg";
 import videoCall_icon from "./Images/videoCall_icon.svg";
+
+import bfDrop from "./Images/bf-drop.svg";
+import afDrop from "./Images/af-drop.svg";
 
 export const Assets = {
   BackBtn,
@@ -234,4 +237,6 @@ export const Assets = {
   testViewIcon,
   videoCall_icon,
   ResetSearch,
+  bfDrop,
+  afDrop,
 };
