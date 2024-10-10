@@ -17,7 +17,7 @@ const DiagnosisForm = ({
   defaultValues,
   addDiagnosis,
   editDiagnosis,
-  isSubmitting
+  isSubmitting,
 }) => {
   const { loading, error, get, post, clearCache, patch } = useApi();
   const location = useLocation();
@@ -88,7 +88,7 @@ const DiagnosisForm = ({
       newErrors.date = "Date is required.";
       isValid = false;
     }
-    if (!icd) {
+    if (!icdkey) {
       newErrors.icd = "Code is required.";
       isValid = false;
     }
@@ -101,8 +101,9 @@ const DiagnosisForm = ({
     if (validate()) {
       const values = {
         date: format(selectedDate, "yyyy-MM-dd"),
-        title: icd,
-        notes: Description,
+        // title: icd,
+        title: icdkey,
+        notes: typeof Description === "string" ? Description : Description[0],
       };
       if (defaultValues.id !== undefined) {
         console.log("Edit clicked");
@@ -195,9 +196,10 @@ const DiagnosisForm = ({
                 class="form-control  pad-10"
                 id="validationTooltip01"
                 // placeholder="Enter"
-                disabled
+                // disabled
                 // defaultValue={defaultValues?.treatment}
                 value={Description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
           </div>
@@ -205,7 +207,7 @@ const DiagnosisForm = ({
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-        <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
+          <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
             {isSubmitting ? "Saving..." : "SAVE"}
           </PrimaryButton>
         </div>

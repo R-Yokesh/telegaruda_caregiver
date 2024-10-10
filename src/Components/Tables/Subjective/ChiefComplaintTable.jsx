@@ -63,7 +63,7 @@ const ChiefComplaintTable = ({
                         .split("-")
                         .reverse()
                         .join("-")}
-                    </span> <br />
+                    </span>
                     <span className="fs-16 fw-500">
                       {dt?.addition_info?.time ? dt?.addition_info?.time : "-"}
                     </span>

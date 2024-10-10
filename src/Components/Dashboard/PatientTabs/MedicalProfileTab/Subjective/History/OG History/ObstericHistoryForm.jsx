@@ -84,7 +84,7 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
     const name = e.target.name;
   
     // Remove non-numeric characters and limit to 2 digits
-    const newstrValue = input?.replace(/[^0-9]/g, "")?.slice(0, 2);
+    const newstrValue = input?.replace(/[^0-9]/g, "")?.slice(0, 1);
   
     if (name === "gravida") {
       const gravidaValue = newstrValue.startsWith("0") ? "0" : newstrValue;
@@ -249,7 +249,7 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
               className="form-control pad-10"
               id="validationTooltip01"
               name="trimester"
-              placeholder="00"
+              placeholder="0"
               value={trimester}
               onChange={numCheck}
             />
@@ -271,7 +271,7 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
               className="form-control pad-10"
               id="validationTooltip01"
               name="gravida"
-              placeholder="00"
+              placeholder="0"
               value={gravidaValue}
               onChange={numCheck}
             />
@@ -293,7 +293,7 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
               className="form-control pad-10"
               id="validationTooltip01"
               name="para"
-              placeholder="00"
+              placeholder="0"
               value={paraValue}
               onChange={numCheck}
             />

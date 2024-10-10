@@ -20,6 +20,7 @@ import useApi from "../../../../../../../ApiServices/useApi";
 import DateRangePicker from "../../../../../../DateRangePicker/DateRangePicker";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import FutureDatepicker from "../../../../../../DateRangePicker/FutureDatepicker";
 
 const NextAppointmentTab = ({ from }) => {
   const columnData = [
@@ -237,11 +238,11 @@ const NextAppointmentTab = ({ from }) => {
             <>
               <CRow className="mb-2">
                 <CCol lg={8} className="">
-                  <DateRangePicker getFilterValues={getFilterValues} />
+                  <FutureDatepicker getFilterValues={getFilterValues} />
                 </CCol>
                 <CCol
                   lg={4}
-                  className="d-flex justify-content-end align-items-center gap-2"
+                  className="d-flex justify-content-end align-items-center gap-2 mt-4"
                 >
                   <div>
                     <PrimaryButton

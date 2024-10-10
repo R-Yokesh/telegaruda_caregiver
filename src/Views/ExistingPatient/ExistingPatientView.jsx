@@ -20,8 +20,8 @@ import PhoneNumberInput from "../../Components/PhoneNumberInput/PhoneNumberInput
 import { toast } from "react-toastify";
 import ProfileUpdate from "./ProfileUpdate";
 import { format } from "date-fns";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 function ExistingPatientView() {
   const navigate = useNavigate();
@@ -102,6 +102,7 @@ function ExistingPatientView() {
   const addPatient = () => {
     console.log("first");
     setVisible(!visible);
+    clearFormData();
   };
 
   const addPatientModalClose = () => {
@@ -156,6 +157,15 @@ function ExistingPatientView() {
     }
   };
 
+  const clearFormData = () => {
+    setAge("");
+    setMobile("");
+    setFirstName("");
+    setLastName("");
+    setGender("");
+    setMrnNumber("");
+  };
+
   const createPatient = async () => {
     try {
       const url = `resource/patients`; // Replace with your API endpoint
@@ -183,11 +193,13 @@ function ExistingPatientView() {
       clearCache();
       await getPatients();
       toast.success("Added successfully");
+      clearFormData();
       addPatientModalClose();
     } catch (error) {
       console.error("Failed to delete:", error);
     }
   };
+
   useEffect(() => {
     getPatients();
   }, [currentPage]);
@@ -423,16 +435,14 @@ function ExistingPatientView() {
                     </div> */}
 
                     <div>
-                      <p className="form-label">Mobile Number</p>
+                      <p className="form-label">Mobile Number *</p>
                       <PhoneInput
-                        country={'in'}
+                        country={"in"}
                         placeholder="Enter" // Set placeholder here
                         onChange={(value) => setMobile(value)}
                       />
                       {errors.mobileNumber && (
-                        <div className="text-danger">
-                          {errors.mobileNumber}
-                        </div>
+                        <div className="text-danger">{errors.mobileNumber}</div>
                       )}
                     </div>
                   </CCol>

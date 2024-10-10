@@ -65,8 +65,8 @@ const PsychiatricTable = ({
                     {score?.trim()
                       ? score?.trim() + " Score"
                       : titleMatch
-                      ? titleMatch[1]?.trim()
-                      : ""}{" "}
+                        ? titleMatch[1]?.trim()
+                        : ""}{" "}
                   </span>
                   <br />
                   <span>{additional}</span>
@@ -127,11 +127,11 @@ const PsychiatricTable = ({
             {columns?.map((data, i) =>
               from === "Consult" && i === columns.length - 1 ? null : (
                 <CTableHeaderCell
-                key={i}
-                className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
-              >
-                {data?.label}
-              </CTableHeaderCell>
+                  key={i}
+                  className={`${data?.label === "No." ? "subGridTh-No" : "subGridTh"} `}
+                >
+                  {data?.label}
+                </CTableHeaderCell>
               )
             )}
           </CTableRow>
@@ -140,12 +140,12 @@ const PsychiatricTable = ({
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableDataCell className="subGrid-right grid-vertical-line">
-                  {getSerialNumber(itemsPerPage, currentPage, i)}
-                </CTableDataCell>
-                <CTableDataCell className="subGrid-left grid-vertical-line">
+                {getSerialNumber(itemsPerPage, currentPage, i)}
+              </CTableDataCell>
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                 <span className="fs-16 fw-500">
-                  {capitalizeFirstLetter(dt?.name)}
-                  {/* {dt?.name} */}
+                  {/* {capitalizeFirstLetter(dt?.name)} */}
+                  {dt?.name}
                 </span>
               </CTableDataCell>
               <CTableDataCell className="subGrid-date subGrid-left grid-vertical-line">
@@ -157,7 +157,7 @@ const PsychiatricTable = ({
               {/* <CTableDataCell>
               <span className="fs-16 fw-500">{dt?.result}</span>
               </CTableDataCell> */}
-             <CTableDataCell className="subGrid-left grid-vertical-line">
+              <CTableDataCell className="subGrid-left grid-vertical-line">
                 {/* <div className="d-flex flex-column align-items-center">
                   <Badge
                     label={dt?.latest_form_submisson?.score}
@@ -167,33 +167,48 @@ const PsychiatricTable = ({
                 {dt?.id === 22
                   ? extractHeadingsAndStatus(dt?.latest_form_submisson?.message)
                   : formatText(
-                      dt?.latest_form_submisson?.message,
-                      dt?.latest_form_submisson?.score
-                    )}
+                    dt?.latest_form_submisson?.message,
+                    dt?.latest_form_submisson?.score
+                  )}
               </CTableDataCell>
 
               {from !== "Consult" && (
-                <CTableDataCell className="subGrid-left grid-vertical-line">
-                  <div className="d-flex align-items-center gap-3 h-100">
-                    <img
-                      alt="edit"
-                      src={
-                        dt?.latest_form_submisson?.score
-                          ? Assets?.testSubIcon
-                          : Assets?.testUnSubIcon
-                      }
-                      className="cursor"
-                      onClick={() => selectedData(dt, "add")}
-                    />
-                    {dt?.latest_form_submisson?.score && (
+                <CTableDataCell className="subGrid-left grid-vertical-line" style={{width:"95px"}}>
+                    {dt?.id == 27 || dt?.id == 28 ? (
+                      <>
+                      <div className="d-flex align-items-center gap-3 justify-content-center h-100">
                       <img
                         alt="delete"
                         src={Assets?.testViewIcon}
                         className="cursor"
                         onClick={() => selectedData(dt, "view")}
                       />
+                      </div>
+                      </>
+                    ) : (
+                      <>
+                      <div className="d-flex align-items-center gap-3 h-100" >
+                        <img
+                          alt="edit"
+                          src={
+                            dt?.latest_form_submisson?.score
+                              ? Assets?.testSubIcon
+                              : Assets?.testUnSubIcon
+                          }
+                          className="cursor"
+                          onClick={() => selectedData(dt, "add")}
+                        />
+                        {dt?.latest_form_submisson?.score && (
+                          <img
+                            alt="delete"
+                            src={Assets?.testViewIcon}
+                            className="cursor"
+                            onClick={() => selectedData(dt, "view")}
+                          />
+                        )}
+                        </div>
+                      </>
                     )}
-                  </div>
                 </CTableDataCell>
               )}
             </CTableRow>

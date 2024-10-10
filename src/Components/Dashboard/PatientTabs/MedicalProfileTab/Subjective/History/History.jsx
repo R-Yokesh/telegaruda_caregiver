@@ -8,15 +8,27 @@ import SurgicalHistory from "./Surgical History/SurgicalHistory";
 import OGHistory from "./OG History/OGHistory";
 import SocialHistory from "./Social History/SocialHistory";
 import FamilyHistory from "./Family History/FamilyHistory";
+import { useLocation } from "react-router-dom";
 
 const History = ({ OnClose }) => {
-  const tabs = [
-    { id: 1, title: "Medical History" },
-    { id: 2, title: "O/G History" },
-    { id: 3, title: "Surgical History" },
-    { id: 4, title: "Family History" },
-    { id: 5, title: "Social History" },
-  ];
+  const location = useLocation();
+  const data = location.state?.PatientDetail;
+  console.log(data?.user?.gender, "userData Female ");
+  const tabs =
+    data?.user?.gender === "Female"
+      ? [
+          { id: 1, title: "Medical History" },
+          { id: 2, title: "O/G History" },
+          { id: 3, title: "Surgical History" },
+          { id: 4, title: "Family History" },
+          { id: 5, title: "Social History" },
+        ]
+      : [
+          { id: 1, title: "Medical History" },
+          { id: 3, title: "Surgical History" },
+          { id: 4, title: "Family History" },
+          { id: 5, title: "Social History" },
+        ];
   const PatientSubMenu3 = localStorage.getItem("PatientSubMenu-3");
   const ParsedPatientSubMenu = PatientSubMenu3
     ? JSON.parse(PatientSubMenu3)
@@ -73,7 +85,7 @@ const History = ({ OnClose }) => {
         )}
         {currentTab === 2 && (
           <>
-            <OGHistory from={""} back={OnClose}/>
+            <OGHistory from={""} back={OnClose} />
           </>
         )}
         {currentTab === 3 && (
@@ -88,7 +100,7 @@ const History = ({ OnClose }) => {
         )}
         {currentTab === 5 && (
           <>
-            <SocialHistory back={OnClose}/>
+            <SocialHistory back={OnClose} />
           </>
         )}
       </CRow>
