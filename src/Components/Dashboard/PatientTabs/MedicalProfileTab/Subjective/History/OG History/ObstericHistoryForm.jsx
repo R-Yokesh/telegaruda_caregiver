@@ -87,7 +87,8 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
     const newstrValue = input?.replace(/[^0-9]/g, "")?.slice(0, 2);
   
     if (name === "gravida") {
-      setGravidaValue(newstrValue);
+      const gravidaValue = newstrValue.startsWith("0") ? "0" : newstrValue;
+      setGravidaValue(gravidaValue);
     }
   
     if (name === "para") {
@@ -97,7 +98,8 @@ const ObstericHistoryForm = ({ back, defaultValues, obsAdd, obsEdit,isSubmitting
     }
   
     if (name === "trimester") {
-      setTrimester(newstrValue);
+      const trimester = newstrValue.startsWith("0") ? "0" : newstrValue;
+      setTrimester(trimester);
     }
   };
   
