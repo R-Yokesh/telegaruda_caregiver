@@ -9,8 +9,17 @@ import {
 import React from "react";
 import Badge from "../../Badge/Badge";
 import { Assets } from "../../../assets/Assets";
+import { getSerialNumber } from "../../../Utils/commonUtils";
 
-const GynaecHistoryTable = ({ columns, rowData, getselectedData, from }) => {
+
+const GynaecHistoryTable = ({
+  columns,
+  rowData,
+  getselectedData,
+  from,
+  itemsPerPage,
+  currentPage,
+}) => {
   const selectedData = (data, type) => {
     getselectedData(data, type);
   };
@@ -22,6 +31,7 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData, from }) => {
             {columns?.map((data, i) =>
               from === "Consult-Gynaec" && i === columns.length - 1 ? null : (
                 <CTableHeaderCell key={i}>{data?.label}</CTableHeaderCell>
+
               )
             )}
           </CTableRow>
@@ -30,13 +40,14 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData, from }) => {
           {rowData?.map((dt, i) => (
             <CTableRow key={i}>
               <CTableHeaderCell style={{ height: "10px" }}>
+              {getSerialNumber(itemsPerPage, currentPage, i)}
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.id}</span>
+                  <span className="fs-16 fw-500">{}</span>
                 </div>
               </CTableHeaderCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.age}</span>
+                <span className="fs-16 fw-500">{dt?.values?.menarche_age}</span>
                 </div>
               </CTableDataCell>
               {/* 
@@ -62,22 +73,22 @@ const GynaecHistoryTable = ({ columns, rowData, getselectedData, from }) => {
               </CTableDataCell> */}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.irregularity}</span>
+                <span>{dt?.values?.cycle?.irregular}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.dysmenorrhea}</span>
+                <span>{dt?.values?.dysmenorrhea}</span>
                 </div>
               </CTableDataCell>{" "}
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex flex-column align-items-center">
-                  <span>{dt?.lmp}</span>
+                  <span>{dt?.values?.lmp}</span>
                 </div>
               </CTableDataCell>
               <CTableDataCell style={{ height: "10px" }}>
                 <div className="d-flex align-items-center justify-content-center h-100">
-                  <span className="fs-16 fw-500">{dt?.menopause}</span>
+                <span className="fs-16 fw-500">{dt?.values?.menopause}</span>
                 </div>
               </CTableDataCell>
               {from !== "Consult-Gynaec" && (

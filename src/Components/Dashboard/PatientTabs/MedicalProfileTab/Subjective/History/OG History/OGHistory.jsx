@@ -411,7 +411,7 @@ const OGHistory = ({ from, back }) => {
   const location = useLocation();
   const data = location.state?.PatientDetail;
   const [obsData, setObsData] = useState([]);
-  const [mensuData, setMensuData] = useState({});
+  const [mensuData, setMensuData] = useState([]);
   const [mensuStatus, setMensuStatus] = useState(false);
   const [screeningData, setScreeningData] = useState({});
 
@@ -421,6 +421,7 @@ const OGHistory = ({ from, back }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
+
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -444,7 +445,7 @@ const OGHistory = ({ from, back }) => {
   const getCurrentMenstrualPageItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return MenstrualrowData?.slice(startIndex, endIndex);
+    return mensuData?.slice(startIndex, endIndex);
   };
 
   const getCurrentScreeningItem = () => {
@@ -590,9 +591,9 @@ const OGHistory = ({ from, back }) => {
     setMensuStatus(true);
     try {
       const response = await get(
-        `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=1&page=1&order_by=id&dir=2` //${data?.user_id}
+        `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=5&page=1&order_by=id&dir=2` //${data?.user_id}
       );
-      const listData = response?.data?.patient_histories[0]; //
+      const listData = response?.data?.patient_histories; //
       setMensuData(listData);
       setMensuStatus(false);
     } catch (error) {
@@ -709,7 +710,7 @@ const OGHistory = ({ from, back }) => {
 
   return (
     <>
-      {from === "Consult" && (
+      {/* {from === "Consult" && (
         <CRow>
           <ObstetricHistoryTable
             rowData={getCurrentPageItems()}
@@ -744,7 +745,7 @@ const OGHistory = ({ from, back }) => {
             </CCardBody>
           </CCard>
         </CRow>
-      )}
+      )} */}
       {from === "" && (
         <>
           <CRow className="mb-2">
@@ -933,6 +934,76 @@ const OGHistory = ({ from, back }) => {
               </div>
             </>
           )}
+          {!addFormView && currentTab === 2 && (
+            <>
+              <CRow className="mb-2">
+                <CCol lg={8} className="">
+                  <DateSearch getFilterValues={getFilterValues} />
+                </CCol>
+                <CCol
+                  lg={4}
+                  className="d-flex justify-content-end align-items-center gap-2 mt-4"
+                >
+                  <div>
+                    <PrimaryButton onClick={() => addFormPage()}>
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={Assets.Add} alt="add" />
+                        <span className="fs-16 fw-600">Add</span>
+                      </div>
+                    </PrimaryButton>
+                  </div>
+                </CCol>
+              </CRow>
+
+              <div className="mb-2">
+                {currentTab === 2 && currentHistoryTab === 1 && (
+                  <>
+                    <CRow>
+                      <GynaecHistoryTable
+                        rowData={getCurrentMenstrualPageItems()}
+                        columns={MensuralcolumnData}
+                        getselectedData={getselectedData}
+                        from={from}
+                        currentPage={currentPage || 1}
+                        itemsPerPage={itemsPerPage || 5}
+                      />
+                    </CRow>
+                    <CRow className="mb-3">
+                      <CCol lg={12} className="d-flex justify-content-center">
+                        <Pagination
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                          totalItems={3}
+                          itemsPerPage={itemsPerPage}
+                        />
+                      </CCol>
+                    </CRow>
+                  </>
+                )}
+                {currentTab === 2 && currentHistoryTab === 2 && (
+                  <>
+                    <CRow>
+                      <ScreeningHistory
+                        rowData={getCurrentScreeningItem()}
+                        columns={ScreeningcolumnData}
+                        getselectedData={getselectedData}
+                      />
+                    </CRow>
+                    <CRow className="mb-3">
+                      <CCol lg={12} className="d-flex justify-content-center">
+                        <Pagination
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                          totalItems={rowData?.length}
+                          itemsPerPage={itemsPerPage}
+                        />
+                      </CCol>
+                    </CRow>
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </>
       )}
 
@@ -954,30 +1025,41 @@ const OGHistory = ({ from, back }) => {
                       isSubmitting={isSubmitting}
                     />
                   )}
-                  {/* {currentTab === 2 && currentHistoryTab === 1 && (
-                <MensturalHistoryForm
-                  back={() => {
-                    setAddFormView(false);
-                    setSelectedData({});
-                  }}
-                  defaultValues={selectedData}
-                />
-              )}
-              {currentTab === 2 && currentHistoryTab === 2 && (
-                <ScreeningHistoryForm
-                  back={() => {
-                    setAddFormView(false);
-                    setSelectedData({});
-                  }}
-                  defaultValues={selectedData}
-                />
-              )} */}
+                  {currentTab === 2 && currentHistoryTab === 1 && (
+                    // <MensturalHistoryForm
+                    //   back={() => {
+                    //     setAddFormView(false);
+                    //     setSelectedData({});
+                    //   }}
+                    //   defaultValues={selectedData}
+                    // />
+                    <MensturalHistoryForm
+                      // back={back}
+                      back={() => {
+                        setAddFormView(false);
+                        setSelectedData({});
+                      }}
+                      defaultValues={mensuData}
+                      mensuEdit={mensuEdit}
+                      mensuAdd={mensuAdd}
+                      isSubmitting={isSubmitting}
+                    />
+                  )}
+                  {currentTab === 2 && currentHistoryTab === 2 && (
+                    <ScreeningHistoryForm
+                      back={() => {
+                        setAddFormView(false);
+                        setSelectedData({});
+                      }}
+                      defaultValues={selectedData}
+                    />
+                  )}
                 </CCardBody>
               </CCard>
             </CRow>
           )}
 
-          {currentTab !== 1 && (
+          {/* {currentTab !== 1 && (
             <CRow className="mb-2">
               <CCard className="p-2 cursor-default mb-5">
                 <CCardBody className="mb-3">
@@ -1002,7 +1084,7 @@ const OGHistory = ({ from, back }) => {
                 </CCardBody>
               </CCard>
             </CRow>
-          )}
+          )} */}
 
           {detailView && (
             <BlurBackground>
