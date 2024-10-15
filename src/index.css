@@ -49,6 +49,11 @@ code {
   font-size: 12px;
 }
 
+.text-danger {
+  color: red;
+  font-size: 12px;
+}
+
 html,
 body {
   overflow-y: hidden;

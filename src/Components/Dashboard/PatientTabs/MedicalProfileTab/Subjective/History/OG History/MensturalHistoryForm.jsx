@@ -19,20 +19,6 @@ const MensturalHistoryForm = ({
   const [date, setDate] = useState(defaultValues?.values?.lmp || new Date());
   const maxDate = new Date(); // Restrict future dates
 
-  // useEffect(() => {
-  //   // This should match your expected format
-  //   const defaultDateTime = defaultValues?.values?.lmp || "";
-  //   const defaultDate = defaultDateTime.split(" ")[0] || "";
-  //   // Parse the date string into a Date object
-  //   if (defaultDate) {
-  //     // Define the format of the date string you are parsing
-  //     const parsedDate = parse(defaultDate, DATE_FORMAT, new Date());
-  //     if (isValid(parsedDate)) {
-  //       setDate(parsedDate);
-  //     }
-  //   }
-  // }, [defaultValues?.values?.lmp]);
-
   const flow_duration = ["2-7 days", "< 2 Days", "> 7 Days"];
   const flow_type = ["Less", "Moderate", "Severe"];
 
@@ -54,17 +40,6 @@ const MensturalHistoryForm = ({
   );
   const [flowDur, setFlowDur] = useState();
 
-  const handleClick = (event) => {
-    setMenopause(event.target.value);
-  };
-
-  const getSelectedValue = (data) => {
-    setFlowType(data);
-  };
-  const getSelectedValue2 = (data) => {
-    setFlowDur(data);
-  };
-
   const [value, setValue] = useState(
     defaultValues?.values?.menopause_age
       ? defaultValues?.values?.menopause_age
@@ -83,6 +58,17 @@ const MensturalHistoryForm = ({
   );
   const [error, setError] = useState("");
   const [errors, setErrors] = useState("");
+
+  const handleClick = (event) => {
+    setMenopause(event.target.value);
+  };
+
+  const getSelectedValue = (data) => {
+    setFlowType(data);
+  };
+  const getSelectedValue2 = (data) => {
+    setFlowDur(data);
+  };
 
   const handleChange = (e) => {
     const input = e.target.value;
@@ -228,16 +214,15 @@ const MensturalHistoryForm = ({
       <CRow className="mb-3">
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
                 Menarche Age *
               </label>
               <input
                 type="text"
-                class="form-control  pad-10"
+                className="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="00"
-                // defaultValue={}
                 name="MenarcheAge"
                 value={value1}
                 onChange={handleChange}
@@ -271,14 +256,14 @@ const MensturalHistoryForm = ({
 
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
                 Flow Duration {menopause !== "yes" && "*"}
               </label>
               <div
                 className="w-100"
                 style={{
-                  border: "1px solid #17171D33",
+                  border : "1px solid #17171D33",
                   borderRadius: "5px",
                 }}
               >
@@ -305,8 +290,8 @@ const MensturalHistoryForm = ({
         </CCol>
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
                 Flow Type {menopause !== "yes" && "*"}
               </label>
               <div
@@ -340,16 +325,15 @@ const MensturalHistoryForm = ({
 
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
                 Cycle Length (in days) {menopause !== "yes" && "*"}
               </label>
               <input
                 type="text"
-                class="form-control  pad-10"
+                className="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="00"
-                // defaultValue={defaultValues?.cycle_in_days}
                 name="cycle_in_days"
                 value={value3}
                 onChange={handleChange}
@@ -362,7 +346,6 @@ const MensturalHistoryForm = ({
             </div>
           </div>
         </CCol>
-        
 
         <CCol lg={4} className="mb-3">
           <p className="radio-label">Cycle Irregularity</p>
@@ -409,16 +392,15 @@ const MensturalHistoryForm = ({
 
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
                 Cycles per Year {menopause !== "yes" && "*"}
               </label>
               <input
                 type="text"
-                class="form-control  pad-10"
+                className="form-control  pad-10"
                 id="validationTooltip01"
                 placeholder="00"
-                // defaultValue={defaultValues?.cycle_per_year}
                 name="cycle_per_year"
                 value={value2}
                 onChange={handleChange}
@@ -588,9 +570,6 @@ const MensturalHistoryForm = ({
       {from !== "Consult-Gynaec" && (
         <CRow className="mb-1">
           <div style={{ width: "130px" }}>
-            {/* <PrimaryButton onClick={onSubmit}>
-              {defaultValues?.id !== undefined ? "UPDATE" : "ADD"}
-            </PrimaryButton> */}
             <PrimaryButton onClick={onSubmit} disabled={isSubmitting}>
               {isSubmitting
                 ? "Saving..."

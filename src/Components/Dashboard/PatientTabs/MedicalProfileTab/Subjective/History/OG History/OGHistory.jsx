@@ -425,7 +425,6 @@ const OGHistory = ({ from, back }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedData, setSelectedData] = useState({});
 
-
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [searchValue, setSearchValue] = useState("");
@@ -594,7 +593,7 @@ const OGHistory = ({ from, back }) => {
     setMensuStatus(true);
     try {
       const response = await get(
-        `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=5&page=1&order_by=id&dir=2` //${data?.user_id}
+        `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=5&page=${currentPage}&order_by=id&dir=2`
       );
       const listData = response?.data?.patient_histories; //
       setMensuData(listData);
@@ -605,7 +604,7 @@ const OGHistory = ({ from, back }) => {
       setMensuStatus(false);
       console.error("Error fetching card data:", error);
     }
-  }, [get, data?.user_id]);
+  }, [get, data?.user_id, currentPage]);
   const mensuEdit = async (answerDatas, selectedId) => {
     try {
       // Set the loading state to true
@@ -628,10 +627,11 @@ const OGHistory = ({ from, back }) => {
     }
   };
   const mensuAdd = async (answerDatas) => {
+    console.log("answer", answerDatas);
     try {
       // Set the loading state to true
       setIsSubmitting(true);
-      const url = `resource/patientHistories/`; // Replace with your API endpoint
+      const url = `resource/patientHistories`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
         patient_id: data?.user_id, //data?.user_id
@@ -642,7 +642,8 @@ const OGHistory = ({ from, back }) => {
       await getMensuralLists();
       toast.success("Added successfully");
       setAddFormView(false);
-      setCurrentTab(1);
+      setCurrentTab(2);
+      setCurrentHistoryTab(1);
     } catch (error) {
       console.error("Failed to delete:", error);
     } finally {
@@ -1033,23 +1034,16 @@ const OGHistory = ({ from, back }) => {
                       isSubmitting={isSubmitting}
                     />
                   )}
+
                   {currentTab === 2 && currentHistoryTab === 1 && (
-                    // <MensturalHistoryForm
-                    //   back={() => {
-                    //     setAddFormView(false);
-                    //     setSelectedData({});
-                    //   }}
-                    //   defaultValues={selectedData}
-                    // />
                     <MensturalHistoryForm
-                      // back={back}
                       back={() => {
                         setAddFormView(false);
                         setSelectedData({});
                       }}
-                      defaultValues={mensuData}
-                      mensuEdit={mensuEdit}
+                      defaultValues={selectedData}
                       mensuAdd={mensuAdd}
+                      mensuEdit={mensuEdit}
                       isSubmitting={isSubmitting}
                     />
                   )}
@@ -1058,13 +1052,12 @@ const OGHistory = ({ from, back }) => {
                       back={() => {
                         setAddFormView(false);
                         setSelectedData({});
-                      back={back}
-                      screeningAdd={screeningAdd}
-                      // screeningEdit={screeningEdit}
-                      isSubmitting={isSubmitting}
+                        back = { back };
+                        screeningAdd = { screeningAdd };
+                        // screeningEdit={screeningEdit}
+                        isSubmitting = { isSubmitting };
                       }}
                       defaultValues={screeningData}
-
                     />
                   )}
                 </CCardBody>
