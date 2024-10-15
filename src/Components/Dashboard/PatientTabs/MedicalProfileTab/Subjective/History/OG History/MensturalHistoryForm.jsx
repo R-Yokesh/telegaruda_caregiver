@@ -251,54 +251,24 @@ const MensturalHistoryForm = ({
             )}
           </div>
         </CCol>
+
         <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Cycles per Year {menopause !== "yes" && "*"}
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="00"
-                // defaultValue={defaultValues?.cycle_per_year}
-                name="cycle_per_year"
-                value={value2}
-                onChange={handleChange}
-                onPaste={handlePaste}
-                disabled={from === "Consult-Gynaec" ? true : false}
+          <div className="position-relative">
+            <label htmlFor="validationTooltip01" className="form-label">
+              LMP Date *
+            </label>
+            <div className="date-size">
+              <DatePicker
+                showIcon
+                selected={date}
+                onChange={(date) => setDate(date)}
+                dateFormat={DATE_FORMAT}
+                maxDate={maxDate}
               />
-              {errors.cyclePerYear && (
-                <p className="text-danger">{errors.cyclePerYear}</p>
-              )}
             </div>
           </div>
         </CCol>
-        <CCol lg={4} className="mb-3">
-          <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
-                Cycle Length (in days) {menopause !== "yes" && "*"}
-              </label>
-              <input
-                type="text"
-                class="form-control  pad-10"
-                id="validationTooltip01"
-                placeholder="00"
-                // defaultValue={defaultValues?.cycle_in_days}
-                name="cycle_in_days"
-                value={value3}
-                onChange={handleChange}
-                onPaste={handlePaste}
-                disabled={from === "Consult-Gynaec" ? true : false}
-              />
-              {errors.cycleLengthDays && (
-                <p className="text-danger">{errors.cycleLengthDays}</p>
-              )}
-            </div>
-          </div>
-        </CCol>
+
         <CCol lg={4} className="mb-3">
           <div style={{ width: "100%" }}>
             <div class="position-relative">
@@ -367,216 +337,251 @@ const MensturalHistoryForm = ({
             </div>
           </div>
         </CCol>
+
         <CCol lg={4} className="mb-3">
-  <p className="radio-label">InterMenstrual Bleeding</p>
-  <div className="d-flex align-items-end w-100">
-    <div
-      style={{
-        boxSizing: "border-box",
-        borderRadius: "5px",
-        border: "1px solid #17171D33",
-        padding: "10px",
-      }}
-    >
-      <label>
-        <CFormCheck
-          className="mb-0"
-          inline
-          type="radio"
-          id="menstrualYes"
-          value="yes"
-          label={<span className="form-label mb-0">Yes</span>}
-          name="menstrual"
-          disabled={from === "Consult-Gynaec" ? true : false}
-          onChange={(e) => setBleeding(e.target.value)}
-          checked={bleeding === "yes"}
-        />
-      </label>
-      <label>
-        <CFormCheck
-          className="mb-0"
-          inline
-          type="radio"
-          id="menstrualNo"
-          value="no"
-          label={<span className="form-label mb-0">No</span>}
-          name="menstrual"
-          disabled={from === "Consult-Gynaec" ? true : false}
-          onChange={(e) => setBleeding(e.target.value)}
-          checked={bleeding === "no"}
-        />
-      </label>
-    </div>
-  </div>
-</CCol>
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Cycle Length (in days) {menopause !== "yes" && "*"}
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="00"
+                // defaultValue={defaultValues?.cycle_in_days}
+                name="cycle_in_days"
+                value={value3}
+                onChange={handleChange}
+                onPaste={handlePaste}
+                disabled={from === "Consult-Gynaec" ? true : false}
+              />
+              {errors.cycleLengthDays && (
+                <p className="text-danger">{errors.cycleLengthDays}</p>
+              )}
+            </div>
+          </div>
+        </CCol>
+        
 
-<CCol lg={4} className="mb-3">
-  <p className="radio-label">Cycle Irregularity</p>
-  <div className="d-flex align-items-end w-100">
-    <div
-      style={{
-        boxSizing: "border-box",
-        borderRadius: "5px",
-        border: "1px solid #17171D33",
-        padding: "10px",
-      }}
-    >
-      <label>
-        <CFormCheck
-          className="mb-0"
-          inline
-          type="radio"
-          id="irregularityYes"
-          value="yes"
-          label={<span className="form-label mb-0">Yes</span>}
-          name="irregularity"
-          disabled={from === "Consult-Gynaec" ? true : false}
-          checked={irregular === "yes"}
-          onChange={(e) => setIrregular(e.target.value)}
-        />
-      </label>
-      <label>
-        <CFormCheck
-          className="mb-0"
-          inline
-          type="radio"
-          id="irregularityNo"
-          value="no"
-          label={<span className="form-label mb-0">No</span>}
-          name="irregularity"
-          disabled={from === "Consult-Gynaec" ? true : false}
-          checked={irregular === "no"}
-          onChange={(e) => setIrregular(e.target.value)}
-        />
-      </label>
-    </div>
-  </div>
-</CCol>
+        <CCol lg={4} className="mb-3">
+          <p className="radio-label">Cycle Irregularity</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <label>
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="irregularityYes"
+                  value="yes"
+                  label={<span className="form-label mb-0">Yes</span>}
+                  name="irregularity"
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                  checked={irregular === "yes"}
+                  onChange={(e) => setIrregular(e.target.value)}
+                />
+              </label>
+              <label>
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="irregularityNo"
+                  value="no"
+                  label={<span className="form-label mb-0">No</span>}
+                  name="irregularity"
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                  checked={irregular === "no"}
+                  onChange={(e) => setIrregular(e.target.value)}
+                />
+              </label>
+            </div>
+          </div>
+        </CCol>
 
-<CCol lg={4} className="mb-3">
-  <p className="radio-label">Dysmenorrhea</p>
-  <div className="d-flex align-items-end w-100">
-    <div
-      style={{
-        boxSizing: "border-box",
-        borderRadius: "5px",
-        border: "1px solid #17171D33",
-        padding: "10px",
-      }}
-    >
-      <label>
-        <CFormCheck
-          className="mb-0"
-          inline
-          type="radio"
-          id="dysmenorrheaYes"
-          value="yes"
-          label={<span className="form-label mb-0">Yes</span>}
-          name="dysmenorrhea"
-          disabled={from === "Consult-Gynaec" ? true : false}
-          onChange={(e) => setDysmenorrhea(e.target.value)}
-          checked={dysmenorrhea === "yes"}
-        />
-      </label>
-      <label>
-        <CFormCheck
-          className="mb-0"
-          inline
-          type="radio"
-          id="dysmenorrheaNo"
-          value="no"
-          label={<span className="form-label mb-0">No</span>}
-          name="dysmenorrhea"
-          disabled={from === "Consult-Gynaec" ? true : false}
-          onChange={(e) => setDysmenorrhea(e.target.value)}
-          checked={dysmenorrhea === "no"}
-        />
-      </label>
-    </div>
-  </div>
-</CCol>
+        <CCol lg={4} className="mb-3">
+          <div style={{ width: "100%" }}>
+            <div class="position-relative">
+              <label for="validationTooltip01" class="form-label">
+                Cycles per Year {menopause !== "yes" && "*"}
+              </label>
+              <input
+                type="text"
+                class="form-control  pad-10"
+                id="validationTooltip01"
+                placeholder="00"
+                // defaultValue={defaultValues?.cycle_per_year}
+                name="cycle_per_year"
+                value={value2}
+                onChange={handleChange}
+                onPaste={handlePaste}
+                disabled={from === "Consult-Gynaec" ? true : false}
+              />
+              {errors.cyclePerYear && (
+                <p className="text-danger">{errors.cyclePerYear}</p>
+              )}
+            </div>
+          </div>
+        </CCol>
 
-<CCol lg={4} className="mb-3">
-  <div className="position-relative">
-    <label htmlFor="validationTooltip01" className="form-label">
-      LMP Date *
-    </label>
-    <div className="date-size">
-      <DatePicker
-        showIcon
-        selected={date}
-        onChange={(date) => setDate(date)}
-        dateFormat={DATE_FORMAT}
-        maxDate={maxDate}
-      />
-    </div>
-  </div>
-</CCol>
+        <CCol lg={4} className="mb-3">
+          <p className="radio-label">Intermenstrual Bleeding</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <label>
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="menstrualYes"
+                  value="yes"
+                  label={<span className="form-label mb-0">Yes</span>}
+                  name="menstrual"
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                  onChange={(e) => setBleeding(e.target.value)}
+                  checked={bleeding === "yes"}
+                />
+              </label>
+              <label>
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="menstrualNo"
+                  value="no"
+                  label={<span className="form-label mb-0">No</span>}
+                  name="menstrual"
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                  onChange={(e) => setBleeding(e.target.value)}
+                  checked={bleeding === "no"}
+                />
+              </label>
+            </div>
+          </div>
+        </CCol>
 
-<CCol lg={4} className="mb-3">
-  <p className="radio-label">Menopause</p>
-  <div className="d-flex align-items-end w-100">
-    <div
-      style={{
-        boxSizing: "border-box",
-        borderRadius: "5px",
-        border: "1px solid #17171D33",
-        padding: "10px",
-      }}
-    >
-      <label>
-        <CFormCheck
-          className="mb-0"
-          inline
-          type="radio"
-          id="menopauseYes"
-          value="yes"
-          label={<span className="form-label mb-0">Yes</span>}
-          name="menopause"
-          checked={menopause === "yes"}
-          onChange={handleClick}
-          disabled={from === "Consult-Gynaec" ? true : false}
-        />
-      </label>
-      <label>
-        <CFormCheck
-          className="mb-0"
-          inline
-          type="radio"
-          id="menopauseNo"
-          value="no"
-          label={<span className="form-label mb-0">No</span>}
-          name="menopause"
-          checked={menopause === "no"}
-          onChange={handleClick}
-          disabled={from === "Consult-Gynaec" ? true : false}
-        />
-      </label>
-    </div>
-  </div>
-</CCol>
+        <CCol lg={4} className="mb-3">
+          <p className="radio-label">Dysmenorrhea</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <label>
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="dysmenorrheaYes"
+                  value="yes"
+                  label={<span className="form-label mb-0">Yes</span>}
+                  name="dysmenorrhea"
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                  onChange={(e) => setDysmenorrhea(e.target.value)}
+                  checked={dysmenorrhea === "yes"}
+                />
+              </label>
+              <label>
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="dysmenorrheaNo"
+                  value="no"
+                  label={<span className="form-label mb-0">No</span>}
+                  name="dysmenorrhea"
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                  onChange={(e) => setDysmenorrhea(e.target.value)}
+                  checked={dysmenorrhea === "no"}
+                />
+              </label>
+            </div>
+          </div>
+        </CCol>
 
-{menopause === "yes" && (
-  <CCol lg={4} className="mb-3">
-    <div style={{ width: "100%" }}>
-      <div className="position-relative">
-        <label htmlFor="validationTooltip01" className="form-label">
-          Menopause Age
-        </label>
-        <input
-          type="text"
-          className="form-control pad-10"
-          id="validationTooltip01"
-          placeholder="00"
-          name="MenopauseAge"
-          value={value}
-          onChange={handleChange}
-          onPaste={handlePaste}
-          disabled={from === "Consult-Gynaec" ? true : false}
-        />
-      </div>
-    </div>
-  </CCol>
+        <CCol lg={4} className="mb-3">
+          <p className="radio-label">Menopause</p>
+          <div className="d-flex align-items-end w-100">
+            <div
+              style={{
+                boxSizing: "border-box",
+                borderRadius: "5px",
+                border: "1px solid #17171D33",
+                padding: "10px",
+              }}
+            >
+              <label>
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="menopauseYes"
+                  value="yes"
+                  label={<span className="form-label mb-0">Yes</span>}
+                  name="menopause"
+                  checked={menopause === "yes"}
+                  onChange={handleClick}
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                />
+              </label>
+              <label>
+                <CFormCheck
+                  className="mb-0"
+                  inline
+                  type="radio"
+                  id="menopauseNo"
+                  value="no"
+                  label={<span className="form-label mb-0">No</span>}
+                  name="menopause"
+                  checked={menopause === "no"}
+                  onChange={handleClick}
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                />
+              </label>
+            </div>
+          </div>
+        </CCol>
+
+        {menopause === "yes" && (
+          <CCol lg={4} className="mb-3">
+            <div style={{ width: "100%" }}>
+              <div className="position-relative">
+                <label htmlFor="validationTooltip01" className="form-label">
+                  Menopause Age
+                </label>
+                <input
+                  type="text"
+                  className="form-control pad-10"
+                  id="validationTooltip01"
+                  placeholder="00"
+                  name="MenopauseAge"
+                  value={value}
+                  onChange={handleChange}
+                  onPaste={handlePaste}
+                  disabled={from === "Consult-Gynaec" ? true : false}
+                />
+              </div>
+            </div>
+          </CCol>
         )}
       </CRow>
 

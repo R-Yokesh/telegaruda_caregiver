@@ -159,17 +159,18 @@ const OGHistory = ({ from, back }) => {
 
   const MensuralcolumnData = [
     { id: 1, label: "No." },
-    { id: 3, label: "Menarche Age" },
-    // { id: 3, label: "Cycles per Year" },
-    // { id: 4, label: "Cycle Length in days" },
-    // { id: 5, label: "Flow Duration" },
-    // { id: 6, label: "Flow Type" },
-    // { id: 7, label: "InterMenstrual Bleeding" },
+    { id: 5, label: "LMP" },
+    { id: 4, label: "Cycle Length in days" },
+    { id: 5, label: "Flow Duration" },
     { id: 3, label: "cycle irregularity" },
     { id: 4, label: "dysmenorrhea" },
-    { id: 5, label: "LMP" },
-    { id: 2, label: "Menopause" },
     { id: 6, label: "ACTIONS" },
+
+    // { id: 3, label: "Menarche Age" },
+    // { id: 3, label: "Cycles per Year" },
+    // { id: 6, label: "Flow Type" },
+    // { id: 7, label: "InterMenstrual Bleeding" },
+    // { id: 2, label: "Menopause" },
   ];
   const MenstrualrowData = [
     {
@@ -416,6 +417,8 @@ const OGHistory = ({ from, back }) => {
   const [screeningData, setScreeningData] = useState({});
 
   const [obsPagi, setObsPagi] = useState({});
+  const [mensuPagi, setmensuPagi] = useState({});
+
   const [addFormView, setAddFormView] = useState(false);
   const [detailView, setDetailView] = useState(false);
 
@@ -595,6 +598,8 @@ const OGHistory = ({ from, back }) => {
       );
       const listData = response?.data?.patient_histories; //
       setMensuData(listData);
+      setmensuPagi(response?.data?.pagination);
+
       setMensuStatus(false);
     } catch (error) {
       setMensuStatus(false);
@@ -626,7 +631,7 @@ const OGHistory = ({ from, back }) => {
     try {
       // Set the loading state to true
       setIsSubmitting(true);
-      const url = `resource/patientHistories`; // Replace with your API endpoint
+      const url = `resource/patientHistories/`; // Replace with your API endpoint
       const body = {
         values: answerDatas,
         patient_id: data?.user_id, //data?.user_id
@@ -636,6 +641,8 @@ const OGHistory = ({ from, back }) => {
       clearCache();
       await getMensuralLists();
       toast.success("Added successfully");
+      setAddFormView(false);
+      setCurrentTab(1);
     } catch (error) {
       console.error("Failed to delete:", error);
     } finally {
@@ -690,6 +697,7 @@ const OGHistory = ({ from, back }) => {
       clearCache();
       await getScreeningLists();
       toast.success("Added successfully");
+      setCurrentHistoryTab(1);
     } catch (error) {
       console.error("Failed to delete:", error);
     } finally {
@@ -973,7 +981,7 @@ const OGHistory = ({ from, back }) => {
                         <Pagination
                           currentPage={currentPage}
                           onPageChange={onPageChange}
-                          totalItems={3}
+                          totalItems={mensuPagi?.total || 0}
                           itemsPerPage={itemsPerPage}
                         />
                       </CCol>
@@ -1050,8 +1058,13 @@ const OGHistory = ({ from, back }) => {
                       back={() => {
                         setAddFormView(false);
                         setSelectedData({});
+                      back={back}
+                      screeningAdd={screeningAdd}
+                      // screeningEdit={screeningEdit}
+                      isSubmitting={isSubmitting}
                       }}
-                      defaultValues={selectedData}
+                      defaultValues={screeningData}
+
                     />
                   )}
                 </CCardBody>
@@ -1072,15 +1085,15 @@ const OGHistory = ({ from, back }) => {
                       isSubmitting={isSubmitting}
                     />
                   )}
-                  {currentTab === 2 && currentHistoryTab === 2 && (
-                    <ScreeningHistoryForm
-                      back={back}
-                      defaultValues={screeningData}
-                      screeningAdd={screeningAdd}
-                      screeningEdit={screeningEdit}
-                      isSubmitting={isSubmitting}
-                    />
-                  )}
+                  // {currentTab === 2 && currentHistoryTab === 2 && (
+                  //   <ScreeningHistoryForm
+                  //     back={back}
+                  //     defaultValues={screeningData}
+                  //     screeningAdd={screeningAdd}
+                  //     screeningEdit={screeningEdit}
+                  //     isSubmitting={isSubmitting}
+                  //   />
+                  // )}
                 </CCardBody>
               </CCard>
             </CRow>
