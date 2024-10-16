@@ -5,12 +5,11 @@ import SecondaryButton from "../../../../../Buttons/SecondaryButton/SecondaryBut
 import DatePicker from "react-datepicker";
 
 const ImmunizationForm = ({ back, defaultValues }) => {
-  console.log("first", defaultValues);
   const [date, setDate] = useState(null);
   const [takendate, setTakenDate] = useState(null);
+  const [error, setError] = useState(""); // State for error message
 
   useEffect(() => {
-    // Function to parse date string "MM-DD-YYYY HH:mm" to Date object
     const parseDateString = (dateString) => {
       const parts = dateString?.split(" ");
       const datePart = parts[0];
@@ -18,11 +17,9 @@ const ImmunizationForm = ({ back, defaultValues }) => {
       return new Date(year, month - 1, day);
     };
 
-    // Example default date string
     const defaultDateString = defaultValues?.dosage_date;
     const defaultDateString1 = defaultValues?.taken_date;
 
-    // Parse default date string to Date object
     const defaultDate = defaultValues?.dosage_date
       ? parseDateString(defaultDateString)
       : new Date();
@@ -30,23 +27,32 @@ const ImmunizationForm = ({ back, defaultValues }) => {
       ? parseDateString(defaultDateString1)
       : new Date();
 
-    // Set default date in state
     setDate(defaultDate);
     setTakenDate(defaultDate1);
   }, [defaultValues]);
+
+  const handleSubmit = () => {
+    if (!takendate) {
+      setError("Taken Date is required");
+    } else {
+      setError(""); // Clear the error if the date is selected
+      // Proceed with form submission or other logic
+      console.log("Form submitted");
+    }
+  };
 
   return (
     <>
       <CRow className="mb-3">
         <CCol lg={6}>
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
                 Vaccine *
               </label>
               <input
                 type="text"
-                class="form-control pad-10"
+                className="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.vaccine}
@@ -56,13 +62,13 @@ const ImmunizationForm = ({ back, defaultValues }) => {
         </CCol>
         <CCol lg={6}>
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
                 Period *
               </label>
               <input
                 type="text"
-                class="form-control  pad-10"
+                className="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.period}
@@ -74,13 +80,13 @@ const ImmunizationForm = ({ back, defaultValues }) => {
       <CRow className="mb-3">
         <CCol lg={4}>
           <div style={{ width: "100%" }}>
-            <div class="position-relative">
-              <label for="validationTooltip01" class="form-label">
+            <div className="position-relative">
+              <label htmlFor="validationTooltip01" className="form-label">
                 Status *
               </label>
               <input
                 type="text"
-                class="form-control  pad-10"
+                className="form-control pad-10"
                 id="validationTooltip01"
                 placeholder="Enter"
                 defaultValue={defaultValues?.status}
@@ -89,8 +95,8 @@ const ImmunizationForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4}>
-          <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
+          <div className="position-relative">
+            <label htmlFor="validationTooltip01" className="form-label">
               Dosage Date *
             </label>
             <div className="date-size">
@@ -103,8 +109,8 @@ const ImmunizationForm = ({ back, defaultValues }) => {
           </div>
         </CCol>
         <CCol lg={4}>
-          <div class="position-relative">
-            <label for="validationTooltip01" class="form-label">
+          <div className="position-relative">
+            <label htmlFor="validationTooltip01" className="form-label">
               Taken Date *
             </label>
             <div className="date-size">
@@ -114,12 +120,13 @@ const ImmunizationForm = ({ back, defaultValues }) => {
                 onChange={(date) => setTakenDate(date)}
               />
             </div>
+            {error && <p className="text-danger">{error}</p>} {/* Error message */}
           </div>
         </CCol>
       </CRow>
       <CRow className="mb-1">
         <div style={{ width: "128px" }}>
-          <PrimaryButton>SAVE</PrimaryButton>
+          <PrimaryButton onClick={handleSubmit}>SAVE</PrimaryButton>
         </div>
         <div style={{ width: "128px" }}>
           <SecondaryButton onClick={back}>CANCEL</SecondaryButton>
