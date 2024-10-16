@@ -423,6 +423,9 @@ const OGHistory = ({ from, back }) => {
   const [detailView, setDetailView] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageMensu , setCurrentPageMensu] = useState(1);
+  const [currentPageScreen , setCurrentPageScreen]  =useState(1);
+
   const [selectedData, setSelectedData] = useState({});
 
   const [startDate, setStartDate] = useState(null);
@@ -437,6 +440,14 @@ const OGHistory = ({ from, back }) => {
     setCurrentPage(pageNumber);
   };
 
+  const onPageChangeMensu = (pageNumber) => {
+    setCurrentPageMensu(pageNumber);
+  };
+
+  const onPageChangeScreening = (pageNumber) => {
+    setCurrentPageScreen(pageNumber);
+  };
+
   // Function to get items for the current page
   const getCurrentPageItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -445,7 +456,7 @@ const OGHistory = ({ from, back }) => {
   };
 
   const getCurrentMenstrualPageItems = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
+    const startIndex = (currentPageMensu - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     return mensuData?.slice(startIndex, endIndex);
   };
@@ -588,12 +599,13 @@ const OGHistory = ({ from, back }) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setSearchValue(searchValue);
+    setCurrentPageMensu(1);
   };
   const getMensuralLists = useCallback(async () => {
     setMensuStatus(true);
     try {
       const response = await get(
-        `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=5&page=${currentPage}&order_by=id&dir=2`
+        `resource/patientHistories?slug=menstrual-history&user_id=${data?.user_id}&limit=5&page=${currentPageMensu}&order_by=id&dir=2`
       );
       const listData = response?.data?.patient_histories; //
       setMensuData(listData);
@@ -604,7 +616,8 @@ const OGHistory = ({ from, back }) => {
       setMensuStatus(false);
       console.error("Error fetching card data:", error);
     }
-  }, [get, data?.user_id, currentPage]);
+  }, [get, data?.user_id, currentPageMensu]);
+
   const mensuEdit = async (answerDatas, selectedId) => {
     try {
       // Set the loading state to true
@@ -619,6 +632,10 @@ const OGHistory = ({ from, back }) => {
       clearCache();
       await getMensuralLists();
       toast.success("Updated successfully");
+      setAddFormView(false);
+      setCurrentTab(2);
+      setCurrentHistoryTab(1);
+      setCurrentPageMensu(1);
     } catch (error) {
       console.error("Failed to delete:", error);
     } finally {
@@ -644,6 +661,7 @@ const OGHistory = ({ from, back }) => {
       setAddFormView(false);
       setCurrentTab(2);
       setCurrentHistoryTab(1);
+      setCurrentPageMensu(1);
     } catch (error) {
       console.error("Failed to delete:", error);
     } finally {
@@ -969,19 +987,20 @@ const OGHistory = ({ from, back }) => {
                   <>
                     <CRow>
                       <GynaecHistoryTable
-                        rowData={getCurrentMenstrualPageItems()}
+                        // rowData={getCurrentMenstrualPageItems()}
+                        rowData={mensuData}
                         columns={MensuralcolumnData}
                         getselectedData={getselectedData}
                         from={from}
-                        currentPage={currentPage || 1}
+                        currentPage={currentPageMensu || 1}
                         itemsPerPage={itemsPerPage || 5}
                       />
                     </CRow>
                     <CRow className="mb-3">
                       <CCol lg={12} className="d-flex justify-content-center">
                         <Pagination
-                          currentPage={currentPage}
-                          onPageChange={onPageChange}
+                          currentPage={currentPageMensu}
+                          onPageChange={onPageChangeMensu}
                           totalItems={mensuPagi?.total || 0}
                           itemsPerPage={itemsPerPage}
                         />
@@ -1001,8 +1020,8 @@ const OGHistory = ({ from, back }) => {
                     <CRow className="mb-3">
                       <CCol lg={12} className="d-flex justify-content-center">
                         <Pagination
-                          currentPage={currentPage}
-                          onPageChange={onPageChange}
+                          currentPage={currentPageScreen}
+                          onPageChange={onPageChangeScreening}
                           totalItems={rowData?.length}
                           itemsPerPage={itemsPerPage}
                         />
@@ -1047,17 +1066,19 @@ const OGHistory = ({ from, back }) => {
                       isSubmitting={isSubmitting}
                     />
                   )}
+                  
                   {currentTab === 2 && currentHistoryTab === 2 && (
                     <ScreeningHistoryForm
                       back={() => {
                         setAddFormView(false);
                         setSelectedData({});
-                        back = { back };
-                        screeningAdd = { screeningAdd };
-                        // screeningEdit={screeningEdit}
-                        isSubmitting = { isSubmitting };
+                        // back = { back };
+                        
                       }}
                       defaultValues={screeningData}
+                      screeningAdd = { screeningAdd }
+                      screeningEdit={screeningEdit}
+                      isSubmitting = { isSubmitting }
                     />
                   )}
                 </CCardBody>

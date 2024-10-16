@@ -251,6 +251,7 @@ const MensturalHistoryForm = ({
                 maxDate={maxDate}
               />
             </div>
+            {errors.lmpDate && <p className="text-danger">{errors.lmpDate}</p>}
           </div>
         </CCol>
 
@@ -263,7 +264,7 @@ const MensturalHistoryForm = ({
               <div
                 className="w-100"
                 style={{
-                  border : "1px solid #17171D33",
+                  border: "1px solid #17171D33",
                   borderRadius: "5px",
                 }}
               >
